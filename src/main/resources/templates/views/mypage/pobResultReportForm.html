@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">결과보고서</div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>보고서 내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    담당자(기관)
+                                </th>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                    <span th:text="${content[0].bizOrgAplyPicNm}">홍길동</span>
+                                    (<span th:text="${content[0].organizationInfo.organizationName}">케이브레인</span>)
+                                </td>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyPicNm}">홍길동</span>
+                                    (<span th:text="${content[0].bizOrganizationAply.organizationInfo.organizationName}">케이브레인</span>)
+                                </td>
+                                <th scope="row">
+                                    파견강사
+                                </th>
+                                <td id="teacherList">
+                                    홍길동
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    사업기간
+                                </th>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                    <span th:text="${content[0].bizOrgAplyLsnPlanBgng}">2022-04-06</span>
+                                    ~
+                                    <span th:text="${content[0].bizOrgAplyLsnPlanEnd}">2022-04-13</span>
+                                </td>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanBgng}">2022-04-06</span>
+                                    ~
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-04-13</span>
+                                </td>
+                                <th scope="row">
+                                    강의시간
+                                </th>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                    <span th:text="${content[0].bizOrgAplyTime}">16.0</span>
+                                </td>
+                                <td th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyTime}">16.0</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    수강인원
+                                </th>
+                                <td colspan="3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                    <span th:text="${content[0].bizOrgAplyLsnPlanNope}">15</span>명
+                                </td>
+                                <td colspan="3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanNope}">15</span>명
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    교육주제
+                                </th>
+                                <td colspan="3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                    <span th:text="${content[0].bizPbancMaster.bizPbancNm}">주제 내용</span>
+                                </td>
+                                <td colspan="3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                                    <span th:text="${content[0].bizOrganizationAply.bizPbancMaster.bizPbancNm}">주제 내용</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>보고서 내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w132">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col" colspan="2" class="hp_wAuto hp_lg_show">차시</th>
+                            </tr>
+                            </thead>
+                            <tbody th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                <tr th:each="item:${content[0].bizOrganizationAplyDtls}">
+                                    <th:block th:if="${!#lists.isEmpty(item.bizInstructorAsgnms)&&!#lists.isEmpty(item.bizInstructorIdentifyDtls)&&item.bizInstructorAsgnms[0].bizInstructorAply!=null}">
+                                    <th scope="row">
+                                        <span th:text="${item.bizOrgAplyLsnDtlRnd}"></span>
+                                        <span class="hp_md_show">차시</span>
+                                    </th>
+                                    <td class="bl_boardWrite_clear">
+                                        <table class="bl_boardWrite_table">
+                                            <caption>차시 내용</caption>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">일시</th>
+                                                <td th:text="${item.bizOrgAplyLsnDtlYmd}">
+                                                    2022-04-06
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">강사</th>
+                                                <td th:text="${item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}">
+                                                    강사
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">시간</th>
+                                                <td>
+                                                    <span th:text="${#strings.substring(item.bizOrgAplyLsnDtlBgngTm,0,5)}">10:00</span> ~
+                                                    <span th:text="${#strings.substring(item.bizOrgAplyLsnDtlEndTm,0,5)}">12:00</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">내용</th>
+                                                <td class="bizInstrIdntyDtlCn" th:text="${item.bizInstructorIdentifyDtls[0].bizInstrIdntyDtlCn}">
+                                                    내용
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    </th:block>
+                                </tr>
+                            </tbody>
+                            <tbody th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                            <tr th:each="item:${content[0].bizOrganizationAply.bizOrganizationAplyDtls}">
+                                <th:block th:if="${!#lists.isEmpty(item.bizInstructorAsgnms)&&!#lists.isEmpty(item.bizInstructorIdentifyDtls)&&item.bizInstructorAsgnms[0].bizInstructorAply!=null}">
+
+                                <th scope="row">
+                                    <span th:text="${item.bizOrgAplyLsnDtlRnd}"></span>
+                                    <span class="hp_md_show">차시</span>
+                                </th>
+                                <td class="bl_boardWrite_clear">
+                                    <table class="bl_boardWrite_table">
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">일시</th>
+                                            <td th:text="${item.bizOrgAplyLsnDtlYmd}">
+                                                2022-04-06
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">강사</th>
+                                            <td th:text="${item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}">
+                                                강사
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">시간</th>
+                                            <td>
+                                                <span th:text="${#strings.substring(item.bizOrgAplyLsnDtlBgngTm,0,5)}">10:00</span> ~
+                                                <span th:text="${#strings.substring(item.bizOrgAplyLsnDtlEndTm,0,5)}">12:00</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">내용</th>
+                                            <td class="bizInstrIdntyDtlCn" th:text="${item.bizInstructorIdentifyDtls[0].bizInstrIdntyDtlCn}">
+                                                내용
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                </th:block>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="textarea_box">
+                        <div style="margin-bottom: 10px"><label for="textArea1">사업 성과</label></div>
+
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea1" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'"></textarea>
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea1" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'" th:text="${content[0].bizOrgRsltRptRslt}"></textarea>
+                    </div>
+                    <div class="textarea_box">
+                        <div style="margin-bottom: 10px"><label for="textArea2">우수 사례</label></div>
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea2" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'"></textarea>
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea2" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'" th:text="${content[0].bizOrgRsltRptExmp}"></textarea>
+                    </div>
+                    <div class="textarea_box">
+                        <div style="margin-bottom: 10px"><label for="textArea3">건의사항 및 개선사항</label></div>
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'"></textarea>
+                        <textarea class="common_input hp_w100p" cols="30" rows="10" id="textArea3" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'" th:text="${content[0].bizOrgRsltRptDmnd}"></textarea>
+                    </div>
+
+                    <div class="file_box">
+                        <div style="margin-bottom: 10px">첨부파일</div>
+                        <div class="bl_uploadGrid2">
+                            <div class="bl_upload js_upload hp_lg_w462">
+                                <label for="file__" class="hidden_label">파일</label>
+                                <input type="text" id="p1_file" class="common_input bl_upload_path js_path" readonly="" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                                <input type="text" id="p1_file" class="common_input bl_upload_path js_path" readonly="" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'" th:value="${content[0].bizOrgRsltRptFile}">
+                                <label for="p1_file" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                <input type="file" name="file" class="bl_upload_file js_file" id="file__">
+                            </div>
+                            <th:block th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3] == 'edit'}">
+                                <a th:if="${content[0].bizOrgRsltRptFile!=null}" class="btn_type1 btn_md btn_blue download_ajax"
+                                   th:href="@{/api/business/organization/report/download(attachFilePath=${content[0].bizOrgRsltRptFile})}">다운로드</a>
+                            </th:block>
+                        </div>
+                        <p class="bl_uploadNote">업로드 가능한 파일 확장자 : gif, jpg, png, pdf, hwp, doc, docx, ppt, pptx, xls, xlsx, zip / 파일 용량 : 10MB 미만</p>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'write'">
+                            <div class="btn_type1 btn_gray" onclick="go('temp')">임시저장</div>
+                            <div class="btn_type1 btn_blue" onclick="go('submit')">제출하기</div>
+                        </div>
+                        <div class="bl_gridBtns_md" th:if="${#strings.setSplit(#httpServletRequest.servletPath,'/')[3]} == 'edit'">
+                            <div class="btn_type1 btn_gray" onclick="modi('temp')">임시저장</div>
+                            <div class="btn_type1 btn_blue" onclick="modi('submit')">수정하기</div>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/business-state/result">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                const CONT = [[ ${content} ]];
+
+                function onLoadSubmit() {
+                    navigation(0,0,0);
+                    console.log("content: ", [[ ${content} ]]);
+                }
+                // 엔터 표시
+                $(".bizInstrIdntyDtlCn").each((idx,item)=>{$(item).html($(item).text().replace(/\n|\\n/g,'<br>'))})
+
+                let teacherList=instrNm()
+                function instrNm(){
+                    let temp = CONT[0]
+                    let idList = [];
+                    let teacherList = [];
+                    try {
+                        if (window.location.pathname.split('/')[4] === 'write') {
+                            temp.bizOrganizationAplyDtls.forEach(item => {
+                                if (!(idList.includes(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId))) {
+                                    idList.push(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId);
+                                    teacherList.push(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm);
+                                }
+                            })
+                        } else if (window.location.pathname.split('/')[4] === 'edit') {
+                            temp.bizOrganizationAply.bizOrganizationAplyDtls.forEach(item => {
+                                if (!(idList.includes(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId))) {
+                                    idList.push(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId);
+                                    teacherList.push(item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm);
+                                }
+                            })
+                        }
+                    }catch (e){
+                        alert('강사배정 정보를 불러오는 과정에서 오류가 발생하였습니다.')
+                    }
+                    return teacherList;
+                }
+
+                document.getElementById('teacherList').innerText = teacherList.toString();
+
+                function go(type){
+                    let param = {
+                        "bizOrgAplyNo": CONT[0].bizOrgAplyNo,
+                        "bizOrgRsltRptDmnd": document.getElementById('textArea3').value,
+                        "bizOrgRsltRptExmp": document.getElementById('textArea2').value,
+                        "bizOrgRsltRptFile": "",
+                        "bizOrgRsltRptNo": "",
+                        "bizOrgRsltRptRslt": document.getElementById('textArea1').value,
+                        "bizOrgRsltRptStts": 0,
+                        "bizPbancNo": CONT[0].bizPbancNo,
+                        "orgCd": CONT[0].orgCd
+                    }
+
+                    if(type === 'submit'){
+                        param.bizOrgRsltRptStts = 1
+                    } else if(type === 'temp'){
+                        param.bizOrgRsltRptStts = 0
+                    }
+
+                    $.ajax({ //jquery ajax
+                        type:"post", //http method
+                        url:"/api/business/organization/report/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(param),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            if($("#file__")[0].files.length>0){
+                                let atchFile = new FormData();
+                                atchFile.append( "attachFile", $("#file__")[0].files[0] );
+                                $.ajax({
+                                    type:"put", //http method
+                                    url:`/api/business/organization/report/upload/${data.bizOrgRsltRptNo}`,
+                                    processData : false,
+                                    contentType : false,
+                                    data: atchFile,
+                                    async:false,
+                                    error:function (){
+                                        alert('파일등록 중 오류가 발생했습니다.')
+                                    }
+                                })
+                            }
+                            alert('등록에 성공했습니다.');
+                            window.location.href='/mypage/business-state/result';
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('등록하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+                function modi(type){
+                    let param = {
+                        "bizOrgAplyNo": CONT[0].bizOrganizationAply.bizOrgAplyNo,
+                        "bizOrgRsltRptDmnd": document.getElementById('textArea3').value,
+                        "bizOrgRsltRptExmp": document.getElementById('textArea2').value,
+                        "bizOrgRsltRptFile": CONT[0].bizOrgRsltRptFile,
+                        "bizOrgRsltRptNo": CONT[0].bizOrgRsltRptNo,
+                        "bizOrgRsltRptRslt": document.getElementById('textArea1').value,
+                        "bizOrgRsltRptStts": 0,
+                        "bizPbancNo": CONT[0].bizOrganizationAply.bizPbancNo,
+                        "orgCd": CONT[0].bizOrganizationAply.orgCd
+                    }
+
+                    if(type === 'submit'){
+                        param.bizOrgRsltRptStts = 1
+                    } else if(type === 'temp'){
+                        param.bizOrgRsltRptStts = 0
+                    }
+                    $.ajax({ //jquery ajax
+                        type:"put", //http method
+                        url:"/api/business/organization/report/update", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(param),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            if($("#file__")[0].files.length>0){
+                                let atchFile = new FormData();
+                                atchFile.append( "attachFile", $("#file__")[0].files[0] );
+                                $.ajax({
+                                    type:"put", //http method
+                                    url:`/api/business/organization/report/upload/${data.bizOrgRsltRptNo}`,
+                                    processData : false,
+                                    contentType : false,
+                                    data: atchFile,
+                                    async:false,
+                                    error:function (){
+                                        alert('파일등록 중 오류가 발생했습니다.')
+                                    }
+                                })
+                            }
+                            alert('등록에 성공했습니다.');
+                            window.location.href='/mypage/business-state/result';
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('등록하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

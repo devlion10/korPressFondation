@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:replace="fragments/include :: include"></th:block>
+</head>
+<body>
+    <!-- WRAP -->
+    <div class="wrap">
+        <a href="#main-content" class="skip-link">본문 바로가기</a>
+        <header th:replace="fragments/header :: header"></header>
+        <div id="main-content" layout:fragment="content"></div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            window.onload = function () {
+                if ([[ ${errorMessage}]]) { alert([[ ${errorMessage}]]); }
+                onLoadSubmit();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</body>
+</html>

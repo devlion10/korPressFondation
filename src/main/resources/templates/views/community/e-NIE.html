@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">e-NIE</div>
+                <div class="bl_gridIntro">
+                    <div class="bl_gridIntro_details">
+                        <p class="bl_gridIntro_desc">e-NIE는 국내 주요 언론사의 뉴스를 수업도구로서 활용할 수 있도록 해주는 미디어교육 툴입니다.<br>
+                            신문보기, 비교보기,스크랩북,수업지도안 자료실 등을 활용할 수 있습니다.</p>
+                        <a class="btn_type1 btn_darkblue" href="http://enie.forme.or.kr/" target="_blank">바로가기</a>
+                    </div>
+                    <div class="bl_gridIntro_img hp_lg_MT40">
+                        <img th:src="@{/assets/images/subpage_community/img_enie_top.png}" alt="">
+                    </div>
+                </div>
+
+
+                <div class="el_lv2heading">e-NIE 기능 소개</div>
+                <ul class="bl_boxCardList">
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie1.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">신문보기</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie2.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">방송뉴스</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie3.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">뉴스검색</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon "><img th:src="@{/assets/images/subpage_community/icon_enie4.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">비교보기</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie5.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">종류별보기</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie6.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">스크랩북</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard bl_boxCard__mini">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_enie7.png}" alt=""></p>
+                            <strong class="bl_boxCard_tit">자료실</strong>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="bl_listFolder">
+                    <li>
+                        <div class="bl_listFolder_head">
+                            <p class="bl_listFolder_icon"><img th:src="@{/assets/images/subpage_community/icon_enie_folder1.png}" alt=""></p>
+                            <h3 class="bl_listFolder_tit">신문보기</h3>
+                            <p class="bl_listFolder_deck">날짜별, 신문사별, 카테고리별 지면을 한 눈에!</p>
+                        </div>
+
+                        <div class="bl_listFolder_body">
+                            <p><img th:src="@{/assets/images/subpage_community/img_enie_folder1.png}" alt=""></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_listFolder_head">
+                            <p class="bl_listFolder_icon"><img th:src="@{/assets/images/subpage_community/icon_enie_folder2.png}" alt=""></p>
+                            <h3 class="bl_listFolder_tit">비교보기</h3>
+                            <p class="bl_listFolder_deck">2개의 신문을 비교해서 볼 수 있어요!</p>
+                        </div>
+
+                        <div class="bl_listFolder_body">
+                            <p><img th:src="@{/assets/images/subpage_community/img_enie_folder2.png}" alt=""></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_listFolder_head">
+                            <p class="bl_listFolder_icon"><img th:src="@{/assets/images/subpage_community/icon_enie_folder3.png}" alt=""></p>
+                            <h3 class="bl_listFolder_tit">스크랩북</h3>
+                            <p class="bl_listFolder_deck">종이신문을 온라인으로 손쉽게 스크랩하세요.<br>
+                                기사를 스크랩하고, 나만의 의견을 남겨보세요.</p>
+                        </div>
+
+                        <div class="bl_listFolder_body">
+                            <p class="hp_MT10"><img th:src="@{/assets/images/subpage_community/img_enie_folder3.png}" alt=""></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_listFolder_head">
+                            <p class="bl_listFolder_icon"><img th:src="@{/assets/images/subpage_community/icon_enie_folder4.png}" alt=""></p>
+                            <h3 class="bl_listFolder_tit">자료실</h3>
+                            <p class="bl_listFolder_deck">e-NIE 자료실에서 수업지도안, 활동지, 강의동영상 외 미디어교육 연구자료까지
+                                확인할 수 있습니다.</p>
+                        </div>
+
+                        <div class="bl_listFolder_body">
+                            <p class="hp_MT20"><img th:src="@{/assets/images/subpage_community/img_enie_folder4.png}" alt=""></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,4);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

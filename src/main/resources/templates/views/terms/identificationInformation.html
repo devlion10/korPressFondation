@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<body class="winPop">
+<div layout:fragment="content">
+<!-- CONTAINER -->
+<div class="container">
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="ly_grid">
+            <div class="bl_title">
+                <div class="bl_title_left">
+                    <div class="page_title">고유 식별 정보 처리 동의</div>
+                    <div class="btn_type3 d-none" onclick="window.close()">닫기</div>
+                </div>
+            </div>
+
+            <div class="terms"> <!-- terms 내부 지우지 말아주세요. -->
+                <h5>[고유식별정보 처리에 대한 안내]</h5>
+                <p>1. 재단은 정보주체의 동의 없이 고유식별정보를 재단 KPF미카에 수집, 저장 및 활용하지 않으며, 고유식별 정보를 사용하지 않고도 실명인증을 할 수 있도록 휴대폰 인증서비스를 제공 하고 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+        }
+        /* ]]> */
+    </script>
+</th:block>
+</div>
+</body>
+</html>

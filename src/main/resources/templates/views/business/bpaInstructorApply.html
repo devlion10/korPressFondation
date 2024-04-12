@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사모집</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                                <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                                <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                                <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                                <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : TITLE -->
+                    <div class="bl_boardTitle">
+                        <h4 class="bl_boardTitle_tit" th:text="${content[0].bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</h4>
+                    </div><!-- BOARD : TITLE -->
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>구분정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">운영구분</th>
+                                <td th:text="${content[0].bizOrgAplyOperCtgr}">1학기(예시)</td>
+                                <th scope="row">교육대상</th>
+                                <td th:text="${content[0].bizOrgAplyLsnPlanTrgt}">교과수업(예시)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="el_lv2heading">신청기관</h4>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>신청기관</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">기관명</th>
+                                <td colspan="3" th:if="${content[0].organization != null}" th:text="${content[0].organization.organizationName}">한국언론진흥재단</td>
+                                <td colspan="3" th:unless="${content[0].organization != null}" th:text="${content[0].organizationInfo.organizationName}">한국언론진흥재단</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">지역</th>
+                                <td colspan="3" th:text="${content[0].bizOrgAplyRgn}">서울</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">주소(기관/학교)</th>
+                                <td colspan="3" th:if="${content[0].organization != null}">
+                                    [<span th:text="${content[0].organization.organizationZipCode}"></span>]
+                                    <span th:text="${content[0].organization.organizationAddress1}"></span>
+                                    <span th:text="${content[0].organization.organizationAddress2}"></span>
+                                </td>
+                                <td colspan="3" th:unless="${content[0].organization != null}">
+                                    [<span th:text="${content[0].organizationInfo.organizationZipCode}"></span>]
+                                    <span th:text="${content[0].organizationInfo.organizationAddress1}"></span>
+                                    <span th:text="${content[0].organizationInfo.organizationAddress2}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">대표전화</th>
+                                <td th:if="${content[0].organization != null}" th:text="${content[0].organization.organizationTelNumber}"></td>
+                                <td th:unless="${content[0].organization != null}" th:text="${content[0].organizationInfo.organizationTelNumber}"></td>
+                                <th scope="row">대표자</th>
+                                <td th:text="${content[0].bizOrgAplyRprsvNm}"></td>
+                            </tr>
+                            <th:block th:if="${content != null and #lists.size(content) > 0 and content[0].bizOrganizationAplyDtls != null and content[0].bizOrganizationAplyDtls.?[bizInstructorAsgnms != null] != null}">
+                                <tr id="pic">
+                                    <th scope="row">담당자 연락처</th>
+                                    <td>
+                                        <div th:text="'전화번호: ' + ${content[0].bizOrgAplyPicTelno}"></div>
+                                        <div th:text="'개인번호: ' + ${content[0].bizOrgAplyPicMpno}"></div>
+                                    </td>
+                                    <th scope="row">담당자</th>
+                                    <td th:text="${content[0].bizOrgAplyPicNm}"></td>
+                                </tr>
+                            </th:block>
+                            <tr th:if="${content[0].organization != null}">
+                                <th:block th:if="${content[0].organization.bizAuthority == 'SCHOOL'}">
+                                    <th scope="row">홈페이지</th>
+                                    <td th:text="${content[0].organization.homepage}"></td>
+                                    <th scope="row">학생수 및 학급수</th>
+                                    <td><span th:text="${content[0].organization.learningCount}"></span>학급 / <span th:text="${content[0].organization.numberStudents}"></span>명</td>
+                                </th:block>
+                                <th:block th:unless="${content[0].organization.bizAuthority == 'SCHOOL'}">
+                                    <th scope="row">홈페이지</th>
+                                    <td colspan="3" th:text="${content[0].organization.homepage}"></td>
+                                </th:block>
+                            </tr>
+                            <tr th:unless="${content[0].organization != null}">
+                                <th:block th:if="${content[0].organizationInfo.organizationType == '3'}">
+                                    <th scope="row">홈페이지</th>
+                                    <td th:text="${content[0].organizationInfo.organizationHomepage}"></td>
+                                    <th scope="row">학생수 및 학급수</th>
+                                    <td>(정보 없음) 학급 / (정보 없음) 명</td>
+                                </th:block>
+                                <th:block th:unless="${content[0].organizationInfo.organizationType == '3'}">
+                                    <th scope="row">홈페이지</th>
+                                    <td colspan="3" th:text="${content[0].organizationInfo.organizationHomepage}"></td>
+                                </th:block>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="dtlInfo" class="bl_boardWrite bl_boardWrite__gray hp_mt60" th:if="${content[0].bizOrgAplyChgYn==1}">
+                        <table class="">
+                            <caption>교육시간</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">총 교육시간</th>
+                                <td th:text="${content[0].bizOrgAplyTime}">1학기(예시)</td>
+                                <th scope="row">최초 총 교육시간</th>
+                                <td th:text="${content[0].bizOrgAplyTimeFrst}">교과수업(예시)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- COMPONENT : SCROLL -->
+                    <div class="content_mypage">
+
+
+                        <div class="bl_boardWrite">
+
+                            <div class="content_mypage bl_boardWrite bl_scroll bl_scroll__hor hp_mt60">
+                                <!-- COMPONENT : TABLE -->
+                                <table class="bl_table border_none">
+                                    <caption>수업시간표</caption>
+                                    <thead>
+                                    <tr>
+                                        <th style="width:5%;" scope="col">번호</th>
+                                        <th style="width:12%;" scope="col">수업일시</th>
+                                        <th style="width:16%;" scope="col">수업주제</th>
+                                        <th style="width:7%;" scope="col">수업시간</th>
+                                        <th style="width:13%;" scope="col">시작시간</th>
+                                        <th style="width:13%;" scope="col">종료시간</th>
+                                        <th style="width:7%;" scope="col">인원(명)</th>
+                                        <th style="width:12%;" scope="col">수업장소</th>
+                                        <th style="width:12%;" scope="col">비고</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="dtl_list" th:each="item,stat : ${content[0].bizOrganizationAplyDtls}">
+
+                                        <th:block th:if="${content[0].bizOrgAplyChgYn==0 || #lists.isEmpty(item.bizInstructorAsgnms) || (instr != null && item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId != instr.userId) }">
+                                            <td>
+                                                <input type="hidden" class="common_input bizOrgAplyDtlNo" th:value="${item.bizOrgAplyDtlNo}">
+                                                <input type="hidden" class="common_input bizOrgAplyDtlIndex" th:value="${stat.index}">
+                                                <span class="bizOrgAplyLsnDtlRnd" th:text="${item.bizOrgAplyLsnDtlRnd}"></span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" class="common_input bizOrgAplyLsnDtlYmd" th:value="${item.bizOrgAplyLsnDtlYmd}">
+                                                <span class="bizOrgAplyLsnDtlYmd"  th:text="${item.bizOrgAplyLsnDtlYmd}"></span>
+                                            </td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlTpic}">가나다라(예시)</td>
+                                            <td><span th:text="${item.bizOrgAplyLsnDtlHr}"></span>
+                                                <input type="hidden" class="common_input bizOrgAplyLsnDtlHr" th:value="${item.bizOrgAplyLsnDtlHr}"></td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlBgngTm}">11:00(예시)</td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlEndTm}">18:00(예시)</td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlNope}">1(예시)</td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlPlc}">미정(예시)</td>
+                                            <td th:text="${item.bizOrgAplyLsnDtlEtc}">-(예시)</td>
+                                        </th:block>
+
+                                        <th:block th:if="${content[0].bizOrgAplyChgYn!=0 && ! #lists.isEmpty(item.bizInstructorAsgnms) && instr != null && (item.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId == instr.userId) }">
+                                            <td>
+                                                <input type="hidden" class="common_input bizOrgAplyDtlNo" th:value="${item.bizOrgAplyDtlNo}">
+                                                <input type="hidden" class="common_input bizOrgAplyDtlIndex" th:value="${stat.index}">
+                                                <input type="text" class="common_input bizOrgAplyLsnDtlRnd" th:value="${item.bizOrgAplyLsnDtlRnd}" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="el_datePicker common_input bizOrgAplyLsnDtlYmd" th:value="${item.bizOrgAplyLsnDtlYmd}" data-not_null="true" data-alert_name="수업시간표 수업일정" data-reg_type="date">
+                                            </td>
+                                            <td>
+                                                <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
+                                            </td>
+                                            <td>
+                                                <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
+                                            </td>
+                                            <td>
+                                                <div class="time_select">
+                                                    <select class="common_select bgng1" th:id="${'startHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                                    <select class="common_select bgng2" th:id="${'startMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="time_select">
+                                                    <select class="common_select end1" th:id="${'endHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
+                                                    <select class="common_select end2" th:id="${'endMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="number" onchange="changeNope()" class="common_input bizOrgAplyLsnDtlNope" th:value="${item.bizOrgAplyLsnDtlNope}" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlPlc" th:value="${item.bizOrgAplyLsnDtlPlc}" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="common_input bizOrgAplyLsnDtlEtc" th:value="${item.bizOrgAplyLsnDtlEtc}">
+                                            </td>
+                                        </th:block>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dtlBtn" class="bl_gridBtns mt-2" th:if="${content[0].bizOrgAplyChgYn==1}">
+                        <div class="bl_gridBtns_md">
+                            <span class="guide_text">배정된 시간표만 수정이 가능합니다. 수업시간표의 수업시간 합이 총 교육시간을 초과할 수 없습니다. </span>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type1 btn_blue" onclick="updateDtl()" >시간표 수정하기</a>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray mt-5">
+                        <table>
+                            <caption>사업신청서</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유</th>
+                                <td th:text="${content[0].bizOrgAplyLsnPlanDscr1}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">미디어교육 운영 현황</th>
+                                <td th:text="${content[0].bizOrgAplyLsnPlanDscr2}">서울</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">향후 활용계획 및 수업을 통한 기대효과</th>
+                                <td th:text="${content[0].bizOrgAplyLsnPlanDscr3}">서울</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <input type="hidden" id="bizInstrRcptEnd" th:value="${content[0].bizInstrRcptEnd}">
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md" th:if="${#authentication.principal.bizAuth != null && #authentication.principal.bizAuth == 'INSTR' && content[0].bizInstrPbancStts==1 && content[0].loginUserApplied==null }">
+                            <button class="btn_type1 btn_blue btn_aply" th:onclick="aply()">지원하기</button>
+                        </div>
+                        <div class="bl_gridBtns_md" th:if="${#authentication.principal.bizAuth != null && #authentication.principal.bizAuth == 'INSTR' && content[0].bizInstrPbancStts==1 && content[0].loginUserApplied!=null }">
+                            <button class="btn_type1 btn_lightgray" disabled>지원완료</button>
+                        </div>
+                        <div class="bl_gridBtns_md" th:if="${#authentication.principal.bizAuth != null && #authentication.principal.bizAuth == 'INSTR' && content[0].bizInstrPbancStts==0}">
+                            <button class="btn_type1 btn_lightgray" disabled>신청마감</button>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/business/instructor">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <input id="bizOrgAplyTime" type="hidden" th:value="${content[0].bizOrganizationAply.bizOrgAplyTime}">
+    <input id="bizOrgAplyNo" type="hidden" th:value="${content[0].bizOrgAplyNo}">
+    <input id="date1" type="hidden" th:value="${content[0].bizOrgAplyLsnPlanBgng}">
+    <input id="date2" type="hidden" th:value="${content[0].bizOrgAplyLsnPlanEnd}">
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            // 강의확인서 있으면 수정 불가
+            let CONT = [[${content}]]
+            $(".dtl_list").each((i, item)=>{
+                if(CONT[0].bizOrganizationAplyDtls[i].bizInstructorIdentifyDtls.length >0){
+                    $(item).find("input").each((i2, item2)=>{
+                        $(item2).attr("disabled","true")
+                    })
+
+                    $(item).find("select").each((i2, item2)=>{
+                        $(item2).attr("disabled","true")
+                    })
+                }
+            })
+
+            picInfo();
+            let bizPbancMaxTm=0;
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(2,0,1);
+
+                let CONT =getCONT();
+                bizPbancMaxTm = CONT[0].bizOrganizationAply.bizOrgAplyTime;
+                $(".el_datePicker").each((index,item)=>{
+                    $(item).datepicker("option", "maxDate", CONT[0].bizOrganizationAply.bizPbancMaster.bizPbancSprtEnd);   // 사업공고 종료일까지 지원
+                    $(item).datepicker("option", "minDate", CONT[0].bizOrganizationAply.bizPbancMaster.bizPbancSprtBgng); // 사업공고 지원시작일부터 지원
+                    $(item).datepicker("option", "onClose", ( ) =>{
+                        planDtl()
+                    });
+
+                })
+                $('.bizOrgAplyLsnDtlHr').each(function(index, item){
+                    $(item).change(function (){changeDtlHr(this)})
+                })
+                CONT[0].bizOrganizationAplyDtls.forEach((item,index) => {
+                    if($('#startHour'+index).is("select")) {
+                        setSelected(item.bizOrgAplyLsnDtlBgngTm.substring(0,2), 'startHour'+index);
+                        if(item.bizOrgAplyLsnDtlBgngTm.substring(3,5) == '00'){
+                            setSelected(0, 'startMin'+index);
+                        } else {
+                            setSelected(item.bizOrgAplyLsnDtlBgngTm.substring(3,5), 'startMin'+index);
+                        }
+                        setSelected(item.bizOrgAplyLsnDtlEndTm.substring(0,2), 'endHour'+index);
+                        if(item.bizOrgAplyLsnDtlEndTm.substring(3,5) == '00'){
+                            setSelected(0, 'endMin'+index);
+                        } else {
+                            setSelected(item.bizOrgAplyLsnDtlEndTm.substring(3,5), 'endMin'+index);
+                        }
+                    }
+                })
+
+            }
+
+            function picInfo() {
+                CONT=[[ ${content[0]} ]]
+                userId=[[ ${#authentication.principal.userId} ]]
+
+                $('#pic').hide();
+                for(let i=0; i<CONT.bizOrganizationAplyDtls.length; i++){
+                    if (CONT.bizOrganizationAplyDtls[i].bizInstructorAsgnms.length > 0
+                        && CONT.bizOrganizationAplyDtls[i].bizInstructorAsgnms[0].bizInstructorAply != null
+                        && CONT.bizOrganizationAplyDtls[i].bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrId == userId) {
+                        $('#pic').show();
+                        $(".btn_type2").attr("href", "/mypage/instructor-state/recruit/result")
+                    }
+                }
+                if(document.referrer=='https://www.meca.or.kr/mypage/instructor-state/recruit/result'){
+                    $(".btn_type2").attr("href", "/mypage/instructor-state/recruit/result")
+                }
+                if($(".bl_table").find("input:text").length == 0){
+                    $("#dtlBtn").remove()
+                    $("#dtlInfo").remove()
+                }
+            }
+
+            function getCONT(){
+                let CONT = [[ ${content} ]];
+                return CONT;
+            }
+            function updateDtl(){
+                if(nullCheck() && totalClassTimeSet()){
+                    if (checkTimes() < 1) {
+                        if (confirm("정말로 수정하시겠습니까? 내용을 수정하면 담당자와 관리자도 같은 내용을 확인할 수 있습니다.")) {
+                            let dtlData = getDtlData($("#bizOrgAplyNo").val())
+                            if(dtlData.length==0){
+                                alert(successText)
+                                window.location.replace("/mypage/business-state/apply");
+                            }else{
+                                dtlData.forEach(item=>{
+                                    $.ajax({
+                                        type: "put",
+                                        headers: {'Content-Type' : 'application/json'},
+                                        url: `/api/business/organization/aply/dtl/update`,
+                                        data: JSON.stringify(item),
+                                        dataType: "json",
+                                        async:false,
+                                        success: function (data){
+                                            console.log("success")
+                                        },
+                                        error:function (e){
+                                            console.log(e)
+                                        }
+                                    })
+                                    if(item ==dtlData[dtlData.length-1]){
+                                        let params = getOrgAplyData();
+                                        if(params==null){
+                                            alert('수정되었습니다.');
+                                            window.location.reload();
+                                        }else{
+                                            $.ajax({
+                                                type: "put",
+                                                headers: {'Content-Type' : 'application/json'},
+                                                url: "/api/business/organization/aply/update",
+                                                data: JSON.stringify(params),
+                                                dataType: "json",
+                                                async:false,
+                                                success: function (data){
+                                                    alert('수정되었습니다.');
+                                                    window.location.reload();
+                                                },
+                                                error:function (e){
+                                                    if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                                        alert(e.responseJSON.resultMessage);
+                                                    }else{
+                                                        alert('사업신청서를 수정하는 과정에서 오류가 발생하였습니다.');
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    } else alert("수업시간표의 종료시간과 시작시간의 차이가 최소시간 미만인 회차가 있습니다. 재확인 해주세요.")
+                }
+            }
+            function checkTimes(){
+                var start = 0;
+                var end = 0;
+                var check = 0;
+                $(".dtl_list").each(function (index, item){
+                    start = ($(this).find(".bgng1").val() * 60) + $(this).find(".bgng2").val()
+                    end = ($(this).find(".end1").val() * 60) + $(this).find(".end2").val()
+                    if ((end - start) < 30) check += 1
+                })
+                return check;
+            }
+            function getOrgAplyData(){
+                let CONT = getCONT();
+                let params;
+                params = CONT[0].bizOrganizationAply;
+
+                if(CONT[0].bizOrganizationAply.bizOrgAplyLsnPlanBgng ==  $("#date1").val()
+                && CONT[0].bizOrganizationAply.bizOrgAplyLsnPlanEnd == $("#date2").val()
+                && CONT[0].bizOrganizationAply.bizOrgAplyTime == parseInt($("#bizOrgAplyTime").val())){
+                    return null;
+                }else{
+                    params.bizOrgAplyLsnPlanBgng = $("#date1").val();
+                    params.bizOrgAplyLsnPlanEnd = $("#date2").val();
+                    params.bizOrgAplyTime = parseInt($("#bizOrgAplyTime").val());
+                    return params;
+                }
+            }
+            function getDtlData(bizOrgAplyNo){
+                let CONT = getCONT();
+                let itemArray = [];
+                let temp = {}
+                $(".dtl_list").each(function (index, item){
+                    if($(item).find(".bizOrgAplyLsnDtlEtc").is("input")){
+                        temp ={bizOrgAplyNo : bizOrgAplyNo}
+                        temp.bizOrgAplyLsnDtlEtc = $(this).find(".bizOrgAplyLsnDtlEtc").val();
+                        temp.bizOrgAplyLsnDtlHr = parseInt($(this).find(".bizOrgAplyLsnDtlHr").val());
+                        temp.bizOrgAplyLsnDtlNope =parseInt($(this).find(".bizOrgAplyLsnDtlNope").val());
+                        temp.bizOrgAplyLsnDtlPlc = $(this).find(".bizOrgAplyLsnDtlPlc").val();
+                        temp.bizOrgAplyLsnDtlRnd = parseInt($(this).find(".bizOrgAplyLsnDtlRnd").val());
+                        temp.bizOrgAplyLsnDtlTpic = $(this).find(".bizOrgAplyLsnDtlTpic").val();
+                        temp.bizOrgAplyLsnDtlYmd = $(this).find(".bizOrgAplyLsnDtlYmd").val();
+                        temp.bizOrgAplyLsnDtlBgngTm = $(this).find(".bgng1").val()+":"
+                        temp.bizOrgAplyLsnDtlBgngTm += $(this).find(".bgng2").val()=="0"?"00":$(this).find(".bgng2").val();
+                        temp.bizOrgAplyLsnDtlBgngTm = temp.bizOrgAplyLsnDtlBgngTm.replace("60", "00");
+                        temp.bizOrgAplyLsnDtlEndTm = $(this).find(".end1").val()+":"
+                        temp.bizOrgAplyLsnDtlEndTm += $(this).find(".end2").val()=="0"?"00":$(this).find(".end2").val();
+                        temp.bizOrgAplyLsnDtlEndTm = temp.bizOrgAplyLsnDtlEndTm.replace("60", "00");
+                        temp.bizOrgAplyDtlNo = $(this).find(".bizOrgAplyDtlNo").val()!='' ? $(this).find(".bizOrgAplyDtlNo").val() :"BOAD0000000";
+                        itemArray.push(temp)
+                    }else{
+                        let dataIndex = parseInt($(item).find(".bizOrgAplyDtlIndex").val());
+                        temp = CONT[0].bizOrganizationAplyDtls[dataIndex];
+                        if(parseInt($(this).find(".bizOrgAplyLsnDtlRnd").text()) !=temp.bizOrgAplyLsnDtlRnd ){
+                            temp.bizOrgAplyLsnDtlRnd=parseInt($(this).find(".bizOrgAplyLsnDtlRnd").text());
+                            itemArray.push(temp);
+                        }
+                    }
+                })
+                return itemArray;
+            }
+            function getCheckData(){
+                const cont = getCONT()
+                const instr = [[ ${instr} ]]
+                let params = new Array(1);
+                params[0] ={};
+                params[0].bizInstrNo = cont[0].bizInstrNo;
+                params[0].bizOrgAplyNo = cont[0].bizOrgAplyNo;
+                //강사배정방식 선착순 바로접수
+                if(cont[0].bizPbancInstrSlctnMeth==1){
+                    params[0].bizInstrAplyStts = 1;
+                }else{
+                    params[0].bizInstrAplyStts = 0;
+                }
+                params[0].bizInstrAplyInstrNm = instr.instrNm;
+                params[0].bizInstrAplyInstrId = instr.userId;
+                params[0].bizInstrAplyCndtOrdr =1;
+                if (cont[0].organization != null) {
+                    params[0].bizInstrAplyCndtDist = getDistance(instr.instrAddr1, cont[0].organization.organizationAddress1)
+                } else {
+                    params[0].bizInstrAplyCndtDist = getDistance(instr.instrAddr1, cont[0].organizationInfo.organizationAddress1)
+                }
+                params[0].bizInstrAplyCmnt = null;
+                return params;
+            }
+            function aply(){
+                if( [[ ${instr} ]] === null){
+                    alert('강사로 등록되지 않거나 강사 목록에서 제외 되었습니다. 관리자에게 문의 부탁드립니다.')
+                } else {
+                    let params = getCheckData();
+                    $.ajax({
+                        type: "POST",
+                        headers: {'Content-Type' : 'application/json'},
+                        url: "/api/business/instructor/aply/create",
+                        data: JSON.stringify(params),
+                        dataType: "json",
+                        success: function (res){
+                            if(res && res.result && res.result=="ERROR3601"){
+                                alert('강사모집 지원 수를 초과하였습니다. 강사모집 지원은 최대 5개 기관까지 가능합니다. 마이페이지 강사참여현황(지원중인 사업, 지원완료 사업)에서 확인해 주세요.');
+                                window.location.href='/mypage/instructor-state/recruit'
+                            }else if(res.length == 0){
+                                alert('이미 지원하셨습니다. 마이페이지 강사참여현황(지원중인 사업, 지원완료 사업)에서 확인해 주세요.');
+                                window.location.href='/mypage/instructor-state/recruit'
+                            }else if(res[0] == null){
+                                alert('선착순 마감되었습니다.');
+                            }else{
+                                alert("강사모집 지원에 성공했습니다. 마이페이지 강사참여현황에서 우선순위를 선택하여 최종지원 부탁드립니다.")
+                                window.location.href='/mypage/instructor-state/recruit'
+                            }
+                        },
+                        error: function (e){
+                            alert(e.responseJSON.resultMessage)
+                        }
+                    })
+                }
+            }
+
+            /* ]]> */
+
+            //주소 string으로 거리를 계산하는 함수
+            function getDistance(start, end){
+                let startPoint = findPoint(start);
+                let endPoint= findPoint(end);
+                if(startPoint && endPoint){
+                    let len = distance(startPoint.y,startPoint.x,endPoint.y, endPoint.x)
+                    len = Math.round(len * 10)/10;
+                    return len;
+                }else if(startPoint == null){
+                    alert("출발지 주소를 검색하는 과정에서 오류가 발생했습니다.")
+                    return 0;
+                }else if(endPoint == null){
+                    alert("기관 주소를 검색하는 과정에서 오류가 발생했습니다.")
+                    return 0;
+                }
+
+            }
+
+            //좌표 구하는 함수
+            //INDEX는 서울 강남구 강남대로 238 와 같이 건물 주소
+            function findPoint(input,currentPage=1,countPerPage=10) {
+                let result={};
+                let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                let url ="https://dapi.kakao.com/v2/local/search/address.json";
+                $.ajax({
+                    data: { query: input,page:currentPage,size:countPerPage },
+                    url: url,
+                    headers : {
+                        "Content-Type" : "application/json",
+                        Authorization : "KakaoAK "+newkey
+                    },
+                    async: false,
+                    dataType: "json",
+                    method: "GET",
+                    error: function (error) {
+                        result.documents=false
+                    },
+                    success: function (data) {
+                        result = data;
+                    },
+                })
+                if(result.documents && result.documents.length>0)
+                    return result.documents[0];
+                else
+                    return null;
+            }
+
+
+            //시작Y, 시작X, 도착Y, 도착X 좌표를 입력하면 추천거리 계산
+            function distance(lat1,lng1,lat2,lng2){
+                let result=0;
+                let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                let url =`https://apis-navi.kakaomobility.com/v1/directions?origin=${lng1},${lat1}&destination=${lng2},${lat2}&summary=true`;
+                $.ajax({
+                    url: url,
+                    headers : {
+                        "Content-Type" : "application/json",
+                        Authorization : "KakaoAK "+newkey
+                    },
+                    async: false,
+                    dataType: "json",
+                    method: "GET",
+                    error: function (error) {
+                        result=0
+                    },
+                    success: function (data) {
+                        result = data.routes[0].summary.distance/1000
+                    },
+                })
+                return result;
+            }
+
+            let now = new Date();
+            now.setUTCHours(now.getUTCHours()+9);
+            let toDay = now.toJSON().split('T')[0];
+            let endDate = $("#bizInstrRcptEnd").val();
+            if(toDay>endDate){
+                $(".btn_aply").remove();
+            }
+            //수업시수 검사
+            function changeDtlHr(input){
+                if($(input).val()<2){
+                    alert("수업시수는 2보다 커야 합니다.")
+                    $(input).val(2)
+                }
+                if(!totalClassTimeSet()){
+                    $(input).val(2);
+                    totalClassTimeSet();
+                };
+            }
+            //총 교육시간, 최초 총 교육시간
+            function totalClassTimeSet() {
+                let totalClassTime = 0;
+
+                for (let i = 0; i < $('.bizOrgAplyLsnDtlHr').length; i++) {
+                    totalClassTime = Number(totalClassTime);
+                    totalClassTime += Number($('.bizOrgAplyLsnDtlHr')[i].value);
+                }
+
+                if(bizPbancMaxTm!=0){
+                    if(parseInt(totalClassTime)>bizPbancMaxTm){
+                        totalClassTime = Number(bizPbancMaxTm);
+                        $('#bizOrgAplyTime').attr('value', totalClassTime);
+                        alert("총 교육시간을 초과했습니다.");
+                        return false
+                    }
+                }
+
+                $('#bizOrgAplyTime').attr('value', totalClassTime);
+                return true;
+            }
+
+            //날짜 순으로 정렬
+            function sortPlanDtl(){
+                let n = $('.bizOrgAplyLsnDtlYmd').length;
+                let nowDate, nextDate;
+                let nowTime, nextTime;
+                for (let i=n-1; i>0; i--) {
+                    for (let j=0; j<i; j++) {
+                        nowDate=$('.bizOrgAplyLsnDtlYmd')[j].value;
+                        nextDate=$('.bizOrgAplyLsnDtlYmd')[j+1].value;
+                        if (nowDate > nextDate) {
+                            moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                        }else if(nowDate==nextDate){
+                            // 같은 날이면 시작 시간 순으로 정렬
+                            nowTime = $(".bgng1")[j].value;
+                            nextTime=$('.bgng1')[j+1].value;
+                            if(nowTime>nextTime){
+                                moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                            }
+                        }
+                    }
+                    if(i==1){
+                        dtlRnd();
+                    }
+                }
+
+            }
+
+
+            //회차 계산
+            function dtlRnd(){
+                $(".bizOrgAplyLsnDtlRnd").each((index,item)=>{
+                    $(item).text(index+1)
+                    $(item).val(index+1);
+                })
+            }
+
+            //아래행과 위치변경
+            function moveDown(el){
+                let $tr = $(el).parent().parent();
+                $tr.next().after($tr);
+            }
+
+            //수업기간에 따른 교육기간 설정
+            function planDtl(){
+                let dtlDate = new Array( $('.bizOrgAplyLsnDtlYmd').length);
+                $('.bizOrgAplyLsnDtlYmd').each((index, item)=>{
+                    dtlDate[index] = $(item).val()==""? null:$(item).val();
+                })
+                let maxDate = "2000-00-00"
+                let minDate = "3000-00-00";
+                for(let i=0; i<dtlDate.length; i++){
+                    if(dtlDate[i]<minDate){
+                        minDate=dtlDate[i];
+                    }
+                    if(dtlDate[i]>maxDate){
+                        maxDate=dtlDate[i];
+                    }
+                    if((i+1)==dtlDate.length){
+                        if(minDate!="3000-00-00"){
+                            $('#date1').val(minDate);
+                        }
+                        if(maxDate!="2000-00-00"){
+                            $('#date2').val(maxDate);
+                        }
+                    }
+                }
+                sortPlanDtl();
+            }
+
+            // 시작시간 ~ 종료시간 계산(수업시간)
+            function classTime(time) {
+                const dtl_list = document.querySelectorAll('.dtl_list');
+                let tr = time.parentElement.parentElement.parentElement;
+                let tr_idx = '';
+                $('.dtl_list').each(function(idx, item){
+                    if (tr == item) {
+                        tr_idx = idx;
+                    }
+                });
+
+                if($(time).hasClass("bgng1")){
+                    $(tr).find(".end1").removeAttr('disabled');
+                    $(tr).find(".end2").removeAttr('disabled');
+                    sortPlanDtl();
+                }
+
+                let bgng1Val = $('.dtl_list').eq(tr_idx).find('.bgng1').val();
+                let bgng2Val = $('.dtl_list').eq(tr_idx).find('.bgng2').val();
+                let end1Val = $('.dtl_list').eq(tr_idx).find('.end1').val();
+                let end2Val = $('.dtl_list').eq(tr_idx).find('.end2').val();
+
+                // 시작 시가 종료 시보다 클 때
+                if (bgng1Val != '0' && end1Val != '0' && bgng1Val > end1Val) {
+                    alert('시작 시간이 종료 시간보다 큽니다. 수업시간표를 다시 확인해 주세요.');
+                    return false;
+                }else if (bgng1Val != '0' && bgng2Val != '60' && end1Val != '0' && end2Val != '60') {
+                    // 시작 시와 종료 시가 같고, 시작 분이 종료 분보다 클 때
+                    if (bgng1Val == end1Val && bgng2Val > end2Val) {
+                        alert('시작 시간과 종료 시간이 같습니다. 수업시간표를 다시 확인해 주세요.');
+                        return false;
+                    }
+                }else {
+                    return true;
+                }
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(/assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">로그인</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="cont_title">아이디 찾기</div>
+
+                <!-- 1. 아이디 찾기 결과 -->
+                <div class="card" th:if="${param.youth != null && param.youth[0] != 'null'}">
+                    <div>
+                        <div class="text_box">
+                            <p class="card_text">아이디 찾기 결과입니다.</p>
+                            <br>
+                            <p class="card_title result"></p>
+                        </div>
+                        <div class="btn_box">
+                            <a href="/login/find?pw=true" class="btn_type1 btn_gray">비밀번호 찾기</a>
+                            <a href="/login" class="btn_type1 btn_blue">로그인 하기</a>
+                        </div>
+                    </div>
+                </div>
+                <div th:unless="${param.youth != null && param.youth[0] != 'null'}">
+                    <div class="card" th:if="${param.userId != null && param.userId[0] != 'null'}">
+                        <div>
+                            <div class="text_box">
+                                <p class="card_text">회원님의 아이디 찾기 결과입니다.</p>
+                                <br>
+                                <p class="card_title" th:text="${param.userId}"></p>
+                            </div>
+                            <div class="btn_box">
+                                <a href="/login/find?pw=true" class="btn_type1 btn_gray">비밀번호 찾기</a>
+                                <a href="/login" class="btn_type1 btn_blue">로그인 하기</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 인증한 정보로 가입된 아이디가 없는 경우 -->
+                    <div class="card" th:unless="${param.userId != null && param.userId[0] != 'null'}">
+                        <div>
+                            <div class="text_box">
+                                <p class="card_title">입력하신 정보로 가입된 아이디가 없습니다.</p>
+                            </div>
+                            <div class="btn_box">
+                                <a href="/login/find" class="btn_type1 btn_gray">아이디 찾기</a>
+                                <a href="/user/join" class="btn_type1 btn_blue">회원가입</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit(){
+                console.log('error: ', [[ ${errorMessage} ]] )
+                console.log('result: ', [[ ${result} ]] )
+                console.log('param: ', [[ ${param} ]] )
+            }
+
+            const params = [[ ${param} ]];
+            if (params.youth != null && params.youth!="null") {
+                const id = params.userIds[0];
+                const name = params.userNames[0];
+                if (id && id != 'null') {
+                    let infos = '';
+                    let ids = id.split(",");
+                    let names = name.split(",");
+                    ids.forEach((value, index) => {
+                        if (value) {
+                            if (index > 0){
+                                infos = infos+', '+ names[index] + "("+value+")"
+                            } else {
+                                infos = infos+ names[index] + "("+value+")"
+                            }
+                        }
+                    })
+                    $('.result').text(infos)
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

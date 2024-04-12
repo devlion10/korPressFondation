@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual3.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">교육신청</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">이러닝교육</div>
+                    </div>
+                </div>
+
+                <div class="sch_box">
+                    <label class="hidden_label" for="p1"></label>
+                    <select id="p1" class="common_select2">
+                        <option>이러닝 교육</option>
+                    </select>
+                    <label class="lectureName" for="lectureName"></label>
+                    <input id="lectureName" class="common_input2 form_input_md" placeholder="과정명을 입력해주세요.">
+                    <button onclick="$('#lectureName').val()?searchJson({lectureName:$('#lectureName').val()}):searchJson({})" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                </div>
+                <!-- BOARD : LIST -->
+                <div class="bl_board3">
+                    <div class="bl_board3_head">
+                        <div class="bl_board3_ctg">카테고리</div>
+                        <div class="bl_board3_article">과정명</div>
+                        <div class="bl_board3_dateRange">신청기간
+                            <br>교육기간</div>
+                        <div class="bl_board3_application">신청</div>
+                    </div>
+
+                    <div class="bl_board3_body">
+                        <div class="bl_board3_unit" th:each="item, stat: ${content}">
+                            <div class="bl_board3_ctg">
+                                <div class="el_ctg text-center">
+                                    <div><img th:if="${item.isTop==true}" th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
+                                    <div th:switch="${item.curriculumMaster.educationType}">
+                                        <span th:case="'1'">화상 교육</span>
+                                        <span th:case="'2'">집합 교육</span>
+                                        <span th:case="'3'">이러닝 교육</span>
+                                        <span th:case="*">미정의 교육</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a th:href="@{/education/application/e-learning/view/{educationPlanCode}(educationPlanCode=${item.educationPlanCode})}"
+                               class="bl_board3_article">
+                                <div class="bl_board3_thumb">
+                                        <img th:if="${(item.thumbnailFilePath != null) && (item.thumbnailFilePath != '')}"
+                                             th:src="@{/Public} + ${item.thumbnailFilePath}" alt="">
+                                        <img th:unless="${(item.thumbnailFilePath != null) && (item.thumbnailFilePath != '')}"
+                                             th:src="@{/assets/images/@tmp/main_video.jpg}" alt="">
+                                </div>
+                                <div class="bl_board3_content">
+                                    <p class="bl_board3_subject">
+                                        <strong class="hp_ellipsis" th:text="${item.lectureName}"></strong>
+                                    </p>
+                                    <div class="bl_baord3_desc"> <p th:text="${item.curriculumMaster.curriculumName}"></p>
+                                        <br th:text="${item.curriculumMaster.educationContent}">
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="bl_board3_dateRange hp_md_ord51">
+                                <div class="bl_board3_dateRange_date">
+                                    <span class="bl_board3_label hp_md_show">신청기간</span>
+                                    <th:block th:if="${item.applyBeginDateTime ne null}">
+                                        <span th:text="${#strings.substring(item.applyBeginDateTime, 0, 10)} + ' ~ ' + ${#strings.substring(item.applyEndDateTime, 0, 10)}"></span>
+                                    </th:block>
+                                    <th:block th:unless="${item.applyBeginDateTime ne null}">
+                                        <span>상시</span>
+                                    </th:block>
+                                </div>
+                                <div class="bl_board3_dateRange_date">
+                                    <span class="bl_board3_label hp_md_show">교육기간</span>
+                                    <span th:text="${#strings.substring(item.operationBeginDateTime, 0, 10)} + ' ~ ' + ${#strings.substring(item.operationEndDateTime, 0, 10)}"></span>
+                                </div>
+                            </div>
+                            <div class="bl_board3_application hp_md_ord52" th:unless="${(#authentication.principal == 'anonymousUser')}">
+                                <span
+                                        th:if="${
+                                        ((#authentication.principal.roleGroup == 'SUPER')) ||
+                                        (
+                                            (item.curriculumMaster.educationTarget == '1') ||
+                                            ((item.curriculumMaster.educationTarget == '2') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')) ||
+                                            ((item.curriculumMaster.educationTarget == '3') && (#authentication.principal.roleGroup == 'TEACHER')) ||
+                                            ((item.curriculumMaster.educationTarget == '4') && (#authentication.principal.roleGroup == 'STUDENT')) ||
+                                            ((item.curriculumMaster.educationTarget == '5') && (#authentication.principal.roleGroup == 'PARENTS')) ||
+                                            (item.curriculumMaster.educationTarget == '6')
+                                        )
+                                    }"
+                                >
+                                    <span th:if="${item.availableApplicationType} == '1'"  class="btn_type1 btn_ghost hp_lg_w90" >신청불가</span>
+                                    <span th:if="${item.availableApplicationType} == '2'"  class="btn_type1 btn_ghost hp_lg_w90" >신청마감</span>
+                                    <span th:if="${item.availableApplicationType} == '4'"  class="btn_type1 btn_lightgray hp_lg_w90" >신청완료</span>
+                                    <a th:if="${item.availableApplicationType} == '3'"  class="btn_type1 btn_red hp_lg_w90" th:href="@{/education/application/e-learning/view/{educationPlanCode}(educationPlanCode=${item.educationPlanCode})}">신청</a>
+                                </span>
+                            </div>
+                            <div class="bl_board3_application hp_md_ord52" th:if="${(#authentication.principal == 'anonymousUser')}">
+                                <span th:if="${(item.curriculumMaster.educationTarget == '6')}">
+                                    <span th:if="${item.availableApplicationType} == '1'"  class="btn_type1 btn_ghost hp_lg_w90" >신청불가</span>
+                                    <span th:if="${item.availableApplicationType} == '2'"  class="btn_type1 btn_ghost hp_lg_w90" >신청마감</span>
+                                    <span th:if="${item.availableApplicationType} == '4'"  class="btn_type1 btn_lightgray hp_lg_w90" >신청완료</span>
+                                    <a th:if="${item.availableApplicationType} == '3'"  class="btn_type1 btn_red hp_lg_w90" th:href="@{/education/application/e-learning/view/{educationPlanCode}(educationPlanCode=${item.educationPlanCode})}">신청</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(1,2);
+            }
+
+            function goSearch() {
+                const subParams = {};
+                subParams.startDate = document.querySelector('#startDate').value.replaceAll('.','-');
+                subParams.endDate = document.querySelector('#endDate').value.replaceAll('.','-');
+                if(subParams.endDate < subParams.startDate) {
+                    alert("조회 일자가 올바르지 않습니다.");
+                    return false;
+                }
+                subParams.educationType = $('#educationType').children("option:selected").val();
+                subParams.province = document.querySelector('#province').value;
+                subParams.lectureName = document.querySelector('#lectureName').value;
+                const queryParams = Object.entries(subParams).filter(data => data[1] != null && data[1] !== '').map(data => data.join('=')).join('&');
+
+                location.href = "/education/application/e-learning?" + queryParams;
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

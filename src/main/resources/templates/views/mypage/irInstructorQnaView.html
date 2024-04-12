@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사지원문의</div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite">
+                        <table>
+                            <caption>강의지원문의 내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td colspan="3" th:text="${content[0].bizPbancMaster.bizPbancNm}">
+                                    사업명이 나옵니다. 사업명이 나옵니다.
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기관</th>
+                                <td th:text="${content[0].bizOrganizationAply.organizationInfo.organizationName}"></td>
+                                <th scope="row">지역</th>
+                                <td th:text="${content[0].bizOrganizationAply.bizOrgAplyRgn}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">교육기간</th>
+                                <td colspan="3">
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanBgng}">2022-10-01</span>
+                                    <span class="blank">~</span>
+                                    <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-11-01</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">질문</th>
+                                <td colspan="3" th:text="${content[0].bizInstrQstnCn}">
+                                    질문내용이 나옵니다.
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">답변</th>
+                                <td colspan="3" th:if="${#lists.isEmpty(content[0].bizInstructorQuestionAnswers)}">
+                                    <span th:if="${content[0].bizInstrQstnStts == 0}">미확인</span>
+                                    <span th:if="${content[0].bizInstrQstnStts == 1}">처리중</span>
+                                </td>
+                                <td colspan="3" th:unless="${#lists.isEmpty(content[0].bizInstructorQuestionAnswers)}" th:utext="${content[0].bizInstructorQuestionAnswers[0].bizInstrQstnAnsCn}">
+                                    답변내용이 나옵니다.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_gray" onclick="deleteQna()">삭제하기</a>
+                            <a class="btn_type1 btn_blue" th:href="@{/mypage/instructor-state/qna/write/{id}(id=${content[0].bizInstrQstnNo})}">수정하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/instructor-state/qna">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                function deleteQna(){
+                    if(confirm("정말로 삭제하시겠습니까?")){
+                        let CONT = [[ ${content} ]] ;
+                        $.ajax({ //jquery ajax
+                            type: "delete", //http method
+                            url: `/api/business/instructor/question/delete/${CONT[0].bizInstrQstnNo}`,
+                            headers: {'Content-Type': 'application/json'},
+                            data: JSON.stringify(CONT[0]),
+                            dataType: "json",
+                            success: function(data) {
+                                alert("문의가 삭제되었습니다.");
+                                window.location.replace(`/mypage/instructor-state/qna`);
+                            },
+                            error: function(e) {
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert('문의 삭제하는 과정에서 오류가 발생하였습니다.');
+                                }
+                            }
+
+                        })
+                    }
+
+                }
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,2);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

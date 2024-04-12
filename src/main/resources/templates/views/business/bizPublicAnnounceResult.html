@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container" th:if="${content!=null}">
+            <!-- CONTENT -->
+            <div class="content" th:each="content: ${content}">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">공모사업</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                                <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                                <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                                <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                                <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : TITLE -->
+                    <div class="bl_boardTitle">
+                        <em class="bl_boardTitle_deck hp_brown" th:if="${content.bizPbancCtgr == 0}">미디어교육</em>
+                        <em class="bl_boardTitle_deck hp_main" th:if="${content.bizPbancCtgr == 1}">언론인연수</em>
+                        <h4 class="bl_boardTitle_tit" th:text="${content.bizPbancNm}"></h4>
+                    </div><!-- BOARD : TITLE -->
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">작성자</th>
+                                <td>
+                                    <span th:text="${content.userName}">홍길동</span>
+                                    (<span th:text="${content.registUserId}"></span>)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">내용</th>
+                                <td th:utext="${content.bizPbancRsltCn}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">첨부파일</th>
+                                <td>
+                                    <a th:if="${content.bizPbancRsltFileOrigin!=null && content.bizPbancRsltFile != null}" class="btn_type5 btn_file"
+                                       th:href="@{/api/business/pbanc/rslt/download(attachFilePath=${content.bizPbancRsltFile})}"
+                                       th:text="${content.bizPbancRsltFileOrigin}"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div th:if="${content.bizPbancType != 5 && !#lists.isEmpty(content.bizOrganizationAprvs)}" class="bl_gridBtns_md">
+                            <div class="btn_type1 btn_blue" id="orgViewBtn" onclick="listView()">선정기관 보기</div>
+                        </div>
+                        <div th:if="${content.bizPbancType == 5 && !#lists.isEmpty(content.bizAprvs)}" class="bl_gridBtns_md">
+                            <div class="btn_type1 btn_blue" id="aprvViewBtn" onclick="listView()">선정목록 보기</div>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/business/pbanc">목록</a>
+                        </div>
+                    </div>
+
+                    <!-- 선정기관 리스트 -->
+                    <div th:if="${content.bizPbancType != 5 && !#lists.isEmpty(content.bizOrganizationAprvs)}" class="orgList" style="display: none">
+                        <div class="line hp_lg_show"></div>
+    
+                        <!-- COMPONENT : TABLE -->
+                        <table class="bl_table hp_mt60">
+                            <colgroup>
+                                <col width="13%">
+                                <col width="28%">
+                                <col width="28%">
+                                <col width="*">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">순번</th>
+                                    <th scope="col">지역</th>
+                                    <th scope="col">시군</th>
+                                    <th scope="col">기관명</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, stat: ${content.bizOrganizationAprvs}">
+                                    <td><span th:text="${stat.index + 1}"></span></td>
+                                    <td th:text="${item.bizOrgAplyRgn}">충청북도</td>
+                                    <td class="addressCity" th:text="${item.organizationInfo.organizationAddress1}">청주시</td>
+                                    <td th:text="${item.organizationInfo.organizationName}">경덕중학교</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- 선정기관 리스트 -->
+
+                    <!-- 선정목록 리스트 -->
+                    <div th:if="${content.bizPbancType == 5 && !#lists.isEmpty(content.bizAprvs)}" class="aprvList" style="display: none">
+                        <div class="line hp_lg_show"></div>
+
+                        <!-- COMPONENT : TABLE -->
+                        <table class="bl_table hp_mt60">
+                            <colgroup>
+                                <col width="13%">
+                                <col width="28%">
+                                <col width="28%">
+                                <col width="*">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">순번</th>
+                                <th scope="col">이름</th>
+                                <th scope="col">아이디</th>
+                                <th scope="col">기관명</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item, stat: ${content.bizAprvs}">
+                                <td><span th:text="${stat.index + 1}"></span></td>
+                                <td class="aprvInfo" th:text="${item.bizAplyUserNm}">이름</td>
+                                <td class="aprvInfo" th:text="${item.bizAplyUserID}">아이디</td>
+                                <td th:text="${#strings.isEmpty(item.orgName) && item.organizationInfo != null ? item.organizationInfo.organizationName : item.orgName}">학교</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" th:unless="${content!=null}">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">공모사업</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                                <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                                <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                                <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                                <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>선정결과가 없습니다.</p>
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/business/pbanc">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode}]])
+                navigation(2, 0, 0);
+            }
+
+            /* 선정기관/선정목록 보기 */
+            function listView() {
+                if ($('.orgList').is(':visible')) {
+                    $('#orgViewBtn').text('선정기관 보기');
+                    $('.orgList').hide();
+                } else {
+                    $('#orgViewBtn').text('선정기관 닫기');
+                    $('.orgList').show();
+                }
+                
+                if ($('.aprvList').is(':visible')) {
+                    $('#aprvViewBtn').text('선정목록 보기');
+                    $('.aprvList').hide();
+                } else {
+                    $('#aprvViewBtn').text('선정목록 닫기');
+                    $('.aprvList').show();
+                }
+            }
+
+            /* 신청기관 리스트 - 시군 데이터 가공 */
+            for (let i = 0; i < $('.addressCity').length; i++) {
+                let addressCity = $('.addressCity')[i].innerText;
+                const regExp = /[ㄱ-ㅎ가-힣]*([시$]|[군$])/g
+                addressCity = addressCity.match(regExp);
+                $('.addressCity')[i].innerText = addressCity;
+            }
+            /* 신청목록 리스트 - 이름, 아이디 데이터 가공 */
+            for (let i = 0; i < $('.aprvInfo').length; i++) {
+                let aprvInfo = $('.aprvInfo')[i].innerText;
+                if (aprvInfo.length > 2) {
+                    var originName = aprvInfo.split('');
+                    originName.forEach(function(name, i) {
+                        if (i > 1)
+                            originName[i] = '*';
+                    });
+                    var joinName = originName.join();
+                    aprvInfo = joinName.replace(/,/g, '');
+                } else {
+                    aprvInfo.replace(aprvInfo.split('')[1], '*');
+                }
+                $('.aprvInfo')[i].innerText = aprvInfo;
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="join_step">
+                    <div class="step step1 active">
+                        <span>01</span>
+                        <span>약관동의</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step2">
+                        <span>02</span>
+                        <span>본인인증</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step3">
+                        <span>03</span>
+                        <span>회원정보 입력</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step4">
+                        <span>04</span>
+                        <span>회원가입 완료</span>
+                    </div>
+                </div>
+                <div class="page_title hp_show_tb hp_show_mo">회원가입</div>
+                <div class="cont_title flex-row align-items-center">홈페이지 이용약관(필수)<a onclick="openWindowPop('/terms/of-use', 'terms1')" class="btn_type1 btn_gray btn_xs">전문보기</a></div>
+                <div class="join_policy">
+                    <div id="terms1" class="policy_text"></div>
+                </div>
+                <div class="join_agree">
+                    <div class="chk_box text_sm">
+                        <input id="join_agree1" type="checkbox" >
+                        <label for="join_agree1">
+                            <span></span>
+                            서비스 이용약관에 동의합니다.(필수)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cont_title flex-row align-items-center">개인정보 수집ㆍ이용ㆍ제공 동의(필수)<a onclick="openWindowPop('/terms/personal-agreement','terms3')" class="btn_type1 btn_gray btn_xs">전문보기</a></div>
+                <div class="join_policy">
+                    <div id="terms3" class="policy_text"></div>
+                </div>
+                <div class="join_agree">
+                    <div class="chk_box text_sm">
+                        <input id="join_agree2" type="checkbox" >
+                        <label for="join_agree2">
+                            <span></span>
+                            개인정보 수집 및 이용에 대한 안내에 동의합니다.(필수)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cont_title flex-row align-items-center">개인정보 수집ㆍ이용ㆍ제공 동의(선택)<a onclick="openWindowPop('/terms/personal-information','terms4')" class="btn_type1 btn_gray btn_xs">전문보기</a></div>
+                <div class="join_policy">
+                    <div id="terms4" class="policy_text"></div>
+                </div>
+                <div class="join_agree">
+                    <div class="chk_box text_sm">
+                        <input id="join_agree4" type="checkbox" >
+                        <label for="join_agree4">
+                            <span></span>
+                            개인정보 수집 및 이용에 대한 안내에 동의합니다.(선택)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cont_title flex-row align-items-center">고유 식별 정보 처리 동의(필수)<a onclick="openWindowPop('/terms/identification-information','terms2')" class="btn_type1 btn_gray btn_xs">전문보기</a></div>
+                <div class="join_policy">
+                    <div id="terms2" class="policy_text">
+                        <h5>[고유식별정보 처리에 대한 안내]</h5>
+                        <p>1. 재단은 정보주체의 동의 없이 고유식별정보를 재단 KPF미카에 수집, 저장 및 활용하지 않으며, 고유식별 정보를 사용하지 않고도 실명인증을 할 수 있도록 휴대폰 인증서비스를 제공 하고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="join_agree">
+                    <div class="chk_box text_sm">
+                        <input id="join_agree3" type="checkbox" >
+                        <label for="join_agree3">
+                            <span></span>
+                            고유 식별 정보 처리에 대해 동의합니다.(필수)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="join_agree_all">
+                    <div class="chk_box">
+                        <input id="join_agree_all" type="checkbox" onclick="allCheck()">
+                        <label for="join_agree_all">
+                            <span></span>
+                            모든 내용을 확인하고 전체 동의합니다.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_gray" href="/user/join">비동의</a>
+                        <a class="btn_type1 btn_blue" onclick="agree()">동의</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() { }
+
+            function termsCont(id, type) {
+                $.ajax({
+                    type: "get",
+                    url: "/api/documents/page?size=1&documentType="+type,
+                    dataType: "json",
+                    success: function (data) {
+                        $('#'+id).html(data.content[0].documentContent);
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        alert(e.responseJSON.resultMessage);
+                    }
+                });
+            }
+
+            termsCont('terms1', 1);
+            termsCont('terms2', 0);
+            termsCont('terms3', 3);
+            termsCont('terms4', 4);
+
+            function allCheck() {
+                if (document.querySelector('#join_agree_all').checked) {
+                    document.querySelector('#join_agree1').checked = true;
+                    document.querySelector('#join_agree2').checked = true;
+                    document.querySelector('#join_agree3').checked = true;
+                    document.querySelector('#join_agree4').checked = true;
+                } else {
+                    document.querySelector('#join_agree1').checked = false;
+                    document.querySelector('#join_agree2').checked = false;
+                    document.querySelector('#join_agree3').checked = false;
+                    document.querySelector('#join_agree4').checked = false;
+                }
+            }
+
+            function eachCheck(e) {
+                if (e.target.id != "join_agree_all") {
+                    if (document.querySelector('#join_agree1').checked &&
+                        document.querySelector('#join_agree2').checked &&
+                        document.querySelector('#join_agree3').checked &&
+                        document.querySelector('#join_agree4').checked) {
+                        document.querySelector('#join_agree_all').checked = true;
+                    } else {
+                        document.querySelector('#join_agree_all').checked = false;
+                    }
+                }
+            }
+            $('input[type="checkbox"]').change(eachCheck)
+
+            function agree() {
+                if(!document.querySelector('#join_agree1').checked
+                    || !document.querySelector('#join_agree2').checked
+                    || !document.querySelector('#join_agree3').checked) {
+                    alert('미동의 필수 약관이 존재합니다.');
+                } else {
+                    if([[ ${userId} ]]) {
+                        const form = document.createElement('form'); // 폼객체 생성
+                        const userIdInput = document.createElement('input'); // 형식
+                        userIdInput.setAttribute('type', 'text'); // type
+                        userIdInput.setAttribute('name', 'userId'); // 객체이름
+                        userIdInput.setAttribute('value', [[ ${userId} ]]); //객체값
+                        form.appendChild(userIdInput);
+
+                        form.setAttribute('method', 'post'); //get,post 가능
+                        form.setAttribute('action', '/user/join/auth'); //보내는 url
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else if([[ ${youth} ]]) {
+                        const form = document.createElement('form'); // 폼객체 생성
+                        const youthInput = document.createElement('input'); // 형식
+                        youthInput.setAttribute('type', 'text'); // type
+                        youthInput.setAttribute('name', 'youth'); // 객체이름
+                        youthInput.setAttribute('value', [[ ${youth} ]]); //객체값
+                        form.appendChild(youthInput);
+
+                        form.setAttribute('method', 'post'); //get,post 가능
+                        form.setAttribute('action', '/user/join/auth'); //보내는 url
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else {
+                        location.href = '/user/join/auth';
+                    }
+                }
+            }
+
+            function openWindowPop(url, name){
+                const popupWidth = 800;
+                const popupHeight = 700;
+                const popupX = (window.screen.width / 2) - (popupWidth / 2);
+                const popupY = (window.screen.height / 2) - (popupHeight / 2);
+                const options = 'top=' + popupY + ', left=' + popupX + ', width=' + popupWidth + ', height=' + popupHeight + ', status=no, menubar=no, toolbar=no, resizable=no';
+                let win = window.open(url, name, options);
+                win.addEventListener('load', () => {
+                    var html = win.document.body; // 팝업창의 html 전체
+
+                    if (html == null) {
+                        //로드 x
+                    } else {
+                        //로드 o
+                        win.openWindowPopHide()
+                    }
+                });
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

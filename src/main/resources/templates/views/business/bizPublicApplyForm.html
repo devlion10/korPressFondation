@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">사업 신청서</div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+                                <tr>
+                                    <th class="hp_lg_w150" scope="row">
+                                        사업명
+                                    </th>
+                                    <td th:text="${content[0].bizPbancNm}">
+                                        미디어교육 평생교실new
+                                    </td>
+                                    <th class="hp_lg_w150" scope="row">
+                                        년도
+                                    </th>
+                                    <td th:text="${content[0].bizPbancYr}">
+                                        2022
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        사용자 정보
+                                    </th>
+                                    <td>
+                                        <div class="d-flex" th:if="${#authentication.principal != null}">
+                                            <span th:text="${#authentication.principal.username}">이름</span>
+                                            (<span th:text="${#authentication.principal.userId}">아이디</span>)
+                                            <span></span>
+                                        </div>
+                                        <div th:unless="${#authentication.principal != null}">
+                                            사용자 정보를 찾을 수 없습니다.
+                                        </div>
+                                    </td>
+                                    <th scope="row" class="lh" th:unless="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                                        사업자등록번호(고유번호)
+                                    </th>
+                                    <td th:unless="${content[0].bizPbancType==2||content[0].bizPbancType==3}" th:text="${(content[0].organizationInfo.bizLicenseNumber)?:'-'}"></td>
+                                    <th scope="row" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}" >
+                                        <span class="el_required">*</span>
+                                        신청유형
+                                    </th>
+                                    <td th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                                        <div class="radio_box">
+                                            <input id="trgtKin" type="radio" name="trgt" value="유치원_">
+                                            <label for="trgtKin">
+                                                <span></span>
+                                                유치원
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="trgtEl" type="radio" name="trgt" value="초등학교_">
+                                            <label for="trgtEl">
+                                                <span></span>
+                                                초등학교
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="trgtMid" type="radio" name="trgt" value="중학교_">
+                                            <label for="trgtMid">
+                                                <span></span>
+                                                중학교
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="trgtHigh" type="radio" name="trgt" value="고등학교_">
+                                            <label for="trgtHigh">
+                                                <span></span>
+                                                고등학교
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                                    <th scope="row">
+                                        <span class="el_required">*</span>
+                                        <label for="bizOrgAplyLsnPlanTrgt">수업대상학년</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt" data-not_null="true" data-alert_name="수업대상학년">
+                                    </td>
+                                    <th scope="row">
+                                        <span class="el_required">*</span>
+                                        <label for="bizOrgAplyOperMeth">수업형태</label>
+                                    </th>
+                                    <td>
+                                        <select  class="common_select" id="bizOrgAplyOperMeth" data-not_null="true" data-alert_name="수업형태" onchange="methEtc(this.value)">
+                                            <option value="교과수업">교과수업</option>
+                                            <option value="동아리">동아리</option>
+                                            <option value="진로">진로수업</option>
+                                            <option value="자율수업">자율수업</option>
+                                            <option value="자유학기제">자유학기제</option>
+                                            <option value="기타">기타</option>
+                                        </select>
+                                        <input type="text" class="common_input" id="bizOrgAplyOperMethEtc" placeholder="(선택)25자 이내">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:unless="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" />
+                                <col />
+                                <col class="hp_lg_w150" />
+                                <col />
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    학교/기관 구분
+                                </th>
+                                <td th:if="${content[0].organizationInfo.organizationType=='1'}">
+                                    매체사
+                                </td>
+                                <td th:if="${content[0].organizationInfo.organizationType=='2'}">
+                                    기관
+                                </td>
+                                <td th:if="${content[0].organizationInfo.organizationType=='3'}">
+                                    학교
+                                </td>
+                                <th scope="row">
+                                    수업형태
+                                </th>
+                                <td id="operCtgr"> -
+                                    <input id="bizOrgAplyOperMeth" type="hidden" value="-">
+                                    <input id="bizOrgAplyOperMethEtc" type="hidden" value="-">
+                                </td>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:unless="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+                            <tr>
+                                <th class="hp_lg_w150" scope="row">
+                                    소속학교/기관
+                                </th>
+                                <td colspan="3">
+                                    <div class="d-flex">
+                                        <input type="text" class="common_input form_input_sm me-1" th:value="${(content[0].organizationInfo.organizationZipCode)?:'-'}" disabled>
+                                        <input type="text" class="common_input" th:value="${content[0].organizationInfo.organizationName}" disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hp_lg_w150" scope="row">
+                                    <span class="el_required">*</span>
+                                    대표자명
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyRprsvNm" type="text" class="common_input" th:value="${content[0].organiztionRepName}">
+                                </td>
+                                <th class="hp_lg_w150" scope="row">
+                                    <span class="el_required">*</span>
+                                    교육기간
+                                </th>
+                                <td>
+                                    <div class="bl_dateRange hp_md_w100p">
+                                        <input id="bizOrgAplyLsnPlanBgng" type="text" class="sdate common_input" disabled>
+                                        <span class="blank">~</span>
+                                        <input id="bizOrgAplyLsnPlanEnd" type="text" class="edate common_input" disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    총 교육시간
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyTime" type="text" class="common_input" disabled>
+                                </td>
+                                <th scope="row" class="lh">
+                                    최초 총 교육시간
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyTimeFrst" type="text" class="common_input" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    담당자<br>이름(직급)
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" data-not_null="true" data-alert_name="담당자 이름" placeholder="이름" th:value="${#authentication.principal.name}">
+                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${content[0].organizationUserRank}"  placeholder="직급" data-not_null="true" data-alert_name="담당자 직급">
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    담당자 이메일
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyPicEml" type="text" class="common_input" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email"  placeholder="test@test.com" th:value="${#authentication.principal.email}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    담당자 전화번호
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input" id="bizOrgAplyPicTelno" th:value="${(content[0].organizationInfo.organizationTelNumber)?:'-'}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number" >
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    담당자 휴대폰
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input" id="bizOrgAplyPicMpno" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number" th:value="${#authentication.principal.phone}">
+                                </td>
+                            </tr>
+                            <tr id="dtlListRow" th:if="${#authentication.principal.roleGroup!='JOURNALIST'}">
+                                <th scope="row" >
+                                    <span class="el_required">*</span>
+                                    수업시간표
+                                </th>
+                                <td colspan="3">
+                                    <!-- COMPONENT : SCROLL -->
+                                    <div class="bl_scroll bl_scroll__hor dtl_list_table">
+                                        <!-- COMPONENT : TABLE -->
+                                        <table class="bl_table">
+                                            <caption>수업시간표</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="width:6%;" scope="col">회차</th>
+                                                <th style="width:13%;" scope="col">수업일정</th>
+                                                <th style="width:8%;" scope="col">수업주제</th>
+                                                <th style="width:6%;" scope="col">수업 시수</th>
+                                                <th style="width:12%;" scope="col">시작시간</th>
+                                                <th style="width:12%;" scope="col">종료시간</th>
+                                                <th style="width:7%;" scope="col">인원(명)</th>
+                                                <th style="width:12%;" scope="col">수업장소</th>
+                                                <th style="width:10%;" scope="col">비고</th>
+                                                <th style="width:6%;" scope="col">관리</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="bizScheduleTbody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">주소</th>
+                                <td colspan="3">
+                                    <div class="common_input_box">
+                                        <div class="d-flex flex-column hp_md_w100p">
+                                            <div class="d-flex">
+                                                <input id="organizationZipCode" type="text" class="common_input form_input" th:value="${(content[0].organizationInfo.organizationZipCode)?:'-'}" readonly>
+                                            </div>
+                                            <input id="organizationAddress1" type="text" class="common_input form_input_lg" th:value="${(content[0].organizationInfo.organizationAddress1)?:'-'}" readonly>
+                                            <input id="organizationAddress2" type="text" class="common_input form_input_lg" th:value="${(content[0].organizationInfo.organizationAddress2)?:'-'}" readonly>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyRgn">지역</label>
+                                </th>
+                                <td th:colspan="${content[0].bizPbancType == 1? 1 : 3}">
+                                    <select id="bizOrgAplyRgn" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역"></select>
+                                </td>
+                                <th scope="row" th:if="${content[0].bizPbancType == 1}">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanNope">회차당 교육인원</label>
+                                </th>
+                                <td th:if="${content[0].bizPbancType == 1}">
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" disabled>
+                                </td>
+                            </tr>
+                            <tr th:if="${content[0].bizPbancType == 1}">
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    신청유형
+                                </th>
+                                <td colspan="3">
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,0)}">
+                                        <input id="type1" type="checkbox" name="applicationType" value="유아" >
+                                        <label for="type1">
+                                            <span></span>
+                                            유아
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk"  th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,1)}">
+                                        <input id="type2" type="checkbox" name="applicationType" value="초등학생">
+                                        <label for="type2">
+                                            <span></span>
+                                            초등학생
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk"  th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,2)}">
+                                        <input id="type3" type="checkbox" name="applicationType" value="중학생">
+                                        <label for="type3">
+                                            <span></span>
+                                            중학생
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk"  th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,3)}">
+                                        <input id="type4" type="checkbox" name="applicationType" value="고등학생">
+                                        <label for="type4">
+                                            <span></span>
+                                            고등학생
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,4)}">
+                                        <input id="type5" type="checkbox" name="applicationType" value="성인">
+                                        <label for="type5">
+                                            <span></span>
+                                            성인
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,5)}">
+                                        <input id="type6" type="checkbox" name="applicationType" value="학부모">
+                                        <label for="type6">
+                                            <span></span>
+                                            학부모
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,6)}">
+                                        <input id="type7" type="checkbox" name="applicationType" value="노년층">
+                                        <label for="type7">
+                                            <span></span>
+                                            노년층
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,7)}">
+                                        <input id="type8" type="checkbox" name="applicationType" value="정보취약계층">
+                                        <label for="type8">
+                                            <span></span>
+                                            정보취약계층(장애인, 다문화 등)
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk" th:if="${#arrays.contains(content[0].bizPbancTmpl1.bizPbancTmpl1Trgts,8)}">
+                                        <input id="type9" type="checkbox" name="applicationType" value="북한이탈주민">
+                                        <label for="type9">
+                                            <span></span>
+                                            북한이탈주민
+                                        </label>
+                                    </div>
+                                    <div class="chk_box item_chk">
+                                        <input id="type10" type="checkbox" name="applicationType" value="기타:">
+                                        <label for="type10">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                    <span>
+                                        <input class="common_input form_input_sm" type="text" id="type11" name="applicationType" placeholder="기타">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr th:unless="${content[0].bizPbancType == 1}">
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanTrgt">수업대상학년</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt" data-not_null="true" data-alert_name="수업대상학년">
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanNope">회차당 교육인원</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <span class="el_required">*</span>
+                                    우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유
+                                </th>
+                                <td colspan="3">
+                                    <label for="bizOrgAplyLsnPlanDscr1" class="hidden_label">회차당 교육인원</label>
+                                    <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr1" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr2" >미디어교육 운영 현황</label>
+                                </th>
+                                <td colspan="3">
+                                    <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr2" data-not_null="true" data-alert_name="미디어교육 운영 현황"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                            <th scope="row" class="lh">
+                                <span class="el_required">*</span>
+                                <label for="bizOrgAplyLsnPlanDscr3" >향후 활용계획 및 수업을 통한 기대효과</label>
+                            </th>
+                            <td colspan="3">
+                                <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr3" data-not_null="true" data-alert_name="기대효과"></textarea>
+                            </td>
+                            </tr>
+                            <tr>
+                            <th scope="row" class="lh">
+                                희망강사
+
+                            </th>
+                            <td colspan="3">
+                                <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1">
+                                <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2">
+                                <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <th scope="row" class="lh">
+                                건의사항 (기타의견)
+                            </th>
+                            <td colspan="3">
+                                <input type="text" class="common_input form_input_lg" id="bizOrgAplyLsnPlanEtc">
+                            </td>
+                            </tr>
+                            <tr th:if="${content[0].bizPbancPeprYn==1}">
+                                <th scope="row" class="lh">
+                                    e-NIE(온라인 뉴스활용교육) 프로그램 신청 여부
+                                </th>
+                                <td colspan="3">
+                                    <div class="radio_box">
+                                        <input id="peprY" type="radio" name="bizOrgAplyPeprYn">
+                                        <label for="peprY">
+                                            <span></span>
+                                            신청
+                                        </label>
+                                    </div>
+                                    <div class="radio_box">
+                                        <input id="peprN" type="radio" name="bizOrgAplyPeprYn">
+                                        <label for="peprN">
+                                            <span></span>
+                                            미신청
+                                        </label>
+                                    </div>
+                                    <div class="guide_text">※ 총 교육시간 16시간 이상 신청 시에만 지원됩니다. 한정된 예산으로 인해 모든 신청기관에 제공되지 않을 수 있습니다. </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <!-- 기관정보 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+                            <tr>
+                                <th class="hp_lg_w150" scope="row">
+                                    학교/기관 구분
+                                </th>
+                                <td th:if="${content[0].organizationInfo.organizationType=='1'}">
+                                    매체사
+                                </td>
+                                <td th:if="${content[0].organizationInfo.organizationType=='2'}">
+                                    기관
+                                </td>
+                                <td th:if="${content[0].organizationInfo.organizationType=='3'}">
+                                    학교
+                                </td>
+                                <th class="hp_lg_w150" scope="row">
+                                    <span class="el_required">*</span>
+                                    소속학교/기관
+                                </th>
+                                <td>
+                                    <div class="d-flex">
+                                        <label for="p1_1" class="hidden_label">대표전화</label>
+                                        <input id="p1_1" type="text" class="common_input form_input_sm me-1" th:value="${(content[0].organizationInfo.organizationZipCode)?:'-'}" disabled>
+                                        <label for="p1_2" class="hidden_label">대표전화</label>
+                                        <input id="p1_2" type="text" class="common_input" th:value="${content[0].organizationInfo.organizationName}" disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyRgn">지역</label>
+                                </th>
+                                <td>
+                                    <select id="bizOrgAplyRgn" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역"></select>
+                                </td>
+                                <th scope="row">
+                                    주소
+                                </th>
+                                <td>
+                                    (<span th:text="${(content[0].organizationInfo.organizationZipCode)?:'-'}"></span>)
+                                    <span th:text="${(content[0].organizationInfo.organizationAddress1)?:'-'}"></span>, <span th:text="${(content[0].organizationInfo.organizationAddress2)?:' '}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyRprsvNm">대표자명</label>
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyRprsvNm" type="text" class="common_input" th:value="${content[0].organiztionRepName}">
+                                </td>
+                                <th scope="row" class="lh">
+                                    사업자등록번호(고유번호)
+                                </th>
+                                <td th:text="${(content[0].organizationInfo.bizLicenseNumber)?:'-'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 담당자 정보 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    담당자<br>이름(직급)
+                                </th>
+                                <td>
+                                    <label for="bizOrgAplyPicNm" class="hidden_label">담당자 이름</label>
+                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" data-not_null="true" data-alert_name="담당자 이름" placeholder="이름" th:value="${#authentication.principal.name}">
+                                    <label for="bizOrgAplyPicJbgd" class="hidden_label">담당자 직급</label>
+                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${content[0].organizationUserRank}" placeholder="직급" data-not_null="true" data-alert_name="담당자 직급">
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyPicEml">담당자 이메일</label>
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyPicEml" type="text" class="common_input" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email"  placeholder="test@test.com" th:value="${#authentication.principal.email}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyPicTelno">담당자 전화번호</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input" id="bizOrgAplyPicTelno" th:value="${content[0].organizationInfo.organizationTelNumber}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number" >
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyPicMpno">담당자 휴대폰</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input" id="bizOrgAplyPicMpno" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number" th:value="${#authentication.principal.phone}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 교육 일시/인원 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    교육기간
+                                </th>
+                                <td>
+                                    <div class="bl_dateRange hp_md_w100p">
+                                        <label for="bizOrgAplyLsnPlanBgng" class="hidden_label">교육기간 시작</label>
+                                        <input id="bizOrgAplyLsnPlanBgng" type="text" class="sdate common_input" disabled>
+                                        <span class="blank">~</span>
+                                        <label for="bizOrgAplyLsnPlanEnd" class="hidden_label">교육기간 종료</label>
+                                        <input id="bizOrgAplyLsnPlanEnd" type="text" class="edate common_input" disabled>
+                                    </div>
+                                </td>
+                                <th scope="row">
+                                    <label for="bizOrgAplyTime">총 교육시간</label>
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyTime" type="text" class="common_input" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <label for="bizOrgAplyTimeFrst">최초 총 교육시간</label>
+                                </th>
+                                <td>
+                                    <input id="bizOrgAplyTimeFrst" type="text" class="common_input" disabled>
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanNope">회차당 교육인원</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" disabled>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 수업시간표 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+
+                            <tr id="dtlListRow" th:if="${#authentication.principal.roleGroup!='JOURNALIST'}">
+                                <th class="hp_lg_w150" scope="row" >
+                                    <span class="el_required">*</span>
+                                    수업시간표
+                                </th>
+                                <td >
+                                    <!-- COMPONENT : SCROLL -->
+                                    <div class="bl_scroll bl_scroll__hor dtl_list_table">
+                                        <!-- COMPONENT : TABLE -->
+                                        <table class="bl_table">
+                                            <caption>수업시간표</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="width:6%;" scope="col">회차</th>
+                                                <th style="width:13%;" scope="col">수업일정</th>
+                                                <th style="width:8%;" scope="col">수업주제</th>
+                                                <th style="width:6%;" scope="col">수업 시수</th>
+                                                <th style="width:12%;" scope="col">시작시간</th>
+                                                <th style="width:12%;" scope="col">종료시간</th>
+                                                <th style="width:7%;" scope="col">인원(명)</th>
+                                                <th style="width:12%;" scope="col">수업장소</th>
+                                                <th style="width:10%;" scope="col">비고</th>
+                                                <th style="width:6%;" scope="col">관리</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="bizScheduleTbody"></tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 기타신청내용 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="hp_lg_w150 lh">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr1">우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유</label>
+                                </th>
+                                <td >
+                                    <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr1" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr2">미디어교육 운영 현황</label>
+                                </th>
+                                <td >
+                                    <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr2" data-not_null="true" data-alert_name="미디어교육 운영 현황"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr3">향후 활용계획 및 수업을 통한 기대효과</label>
+                                </th>
+                                <td >
+                                    <textarea cols="30" rows="10" class="common_input" id="bizOrgAplyLsnPlanDscr3" data-not_null="true" data-alert_name="기대효과"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <label for="bizOrgAplyLsnPlanEtcInstr1">희망강사</label>
+                                    <label for="bizOrgAplyLsnPlanEtcInstr2" class="hidden_label">희망강사2</label>
+                                </th>
+                                <td >
+                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1">
+                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2">
+                                    <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    <label for="bizOrgAplyLsnPlanEtc">건의사항 (기타의견)</label>
+                                </th>
+                                <td >
+                                    <input type="text" class="common_input form_input_lg" id="bizOrgAplyLsnPlanEtc">
+                                </td>
+                            </tr>
+                            <tr th:if="${content[0].bizPbancPeprYn==1}">
+                                <th scope="row" class="lh">
+                                    e-NIE(온라인 뉴스활용교육) 프로그램 신청 여부
+                                </th>
+                                <td >
+                                    <div class="radio_box">
+                                        <input id="peprY" type="radio" name="bizOrgAplyPeprYn">
+                                        <label for="peprY">
+                                            <span></span>
+                                            신청
+                                        </label>
+                                    </div>
+                                    <div class="radio_box">
+                                        <input id="peprN" type="radio" name="bizOrgAplyPeprYn">
+                                        <label for="peprN">
+                                            <span></span>
+                                            미신청
+                                        </label>
+                                    </div>
+                                    <div class="guide_text">※ 총 교육시간 16시간 이상 신청 시에만 지원됩니다. 한정된 예산으로 인해 모든 신청기관에 제공되지 않을 수 있습니다. </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 저장시 세션 오류 안내용 -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <div id="timeoutGuide" class="guide_text"></div>
+                        </div>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <button id="saveBtn" class="btn_type1 btn_gray" onclick="save()">임시저장</button>
+                            <button id="createBtn" class="btn_type1 btn_blue" onclick="create()">제출하기</button>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/business/pbanc">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 강사등록 -->
+        <div class="iframe_wrap">
+            <iframe title="강사등록" id="addInstructor" src="about:blank" style="width:100%"></iframe>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                $(".ui-datepicker-calendar").append(`<caption>날짜선택용</caption>`)
+
+                // 저장시 세션 오류 안내용...
+                setTimeout(function (){
+                    alert('일정 시간 페이지 이동이 없으면 자동 로그아웃됩니다. 페이지 최상단 좌측 meca 로고를 우클릭->새창으로 열기 하여 새로운 창에서 로그인 한 후에, 원래 페이지로 돌아와서 임시저장/제출을 진행해 주세요.');
+                    $("#timeoutGuide").text("일정 시간 페이지 이동이 없으면 자동 로그아웃됩니다. 페이지 최상단 좌측 meca 로고를 우클릭->새창으로 열기 하여 새로운 창에서 로그인 한 후에, 원래 페이지로 돌아와서 임시저장/제출을 진행해 주세요.")
+                },1000*60*55)
+
+                var bizPbancMaxTm = 0;
+                const CONT = [[ ${content} ]]
+                if(CONT[0].loginUserApplied=="applied"){
+                    alert("소속 기관에서 이미 등록한 사업입니다. 마이페이지에서 확인해 주세요.");
+                    window.location.replace("/mypage/business-state/apply");
+                }
+                if(CONT[0].bizPbancSlctnMeth==1 && CONT[0].orgAplyCnt >= CONT[0].bizPbancMaxInst){
+                    alert('선착순 마감되었습니다.');
+                    window.history.back();
+                }
+                function create(){
+                    $("#createBtn").attr("disabled", true);
+                    $("#createBtn").addClass("btn_lightgray");
+                    $("#saveBtn").attr("disabled", true);
+                    $("#saveBtn").addClass("btn_lightgray");
+
+                    if(nullCheck() && totalClassTimeSet()){
+                        let params = getFormData();
+                        if(CONT[0].bizPbancSlctnMeth==1){
+                            params.bizOrgAplyStts = 2
+                        }else{
+                            params.bizOrgAplyStts = 1
+                        }
+                        if($("input:radio[name=trgt]").length == 4){
+                            if($("input:radio[name=trgt]:checked").length==1){
+                                sendApply(params);
+                            }else{
+                                alert('신청 유형(유치원, 초등학교, 중학교, 고등학교)을 선택해 주세요.');
+                                setTimeout(function (){
+                                    $("#saveBtn").removeAttr("disabled");
+                                    $("#saveBtn").removeClass("btn_lightgray");
+                                    $("#createBtn").removeAttr("disabled");
+                                    $("#createBtn").removeClass("btn_lightgray");
+                                }, 5000)
+                            }
+                        }else{
+                            sendApply(params);
+                        }
+                    }else{
+                        setTimeout(function (){
+                            $("#saveBtn").removeAttr("disabled");
+                            $("#saveBtn").removeClass("btn_lightgray");
+                            $("#createBtn").removeAttr("disabled");
+                            $("#createBtn").removeClass("btn_lightgray");
+                        }, 5000)
+                    }
+                }
+                function save(){
+                    $("#saveBtn").attr("disabled", true);
+                    $("#saveBtn").addClass("btn_lightgray");
+                    $("#createBtn").attr("disabled", true);
+                    $("#createBtn").addClass("btn_lightgray");
+                    if(nullCheck() && totalClassTimeSet()){
+                        if (checkTimes() < 1) {
+                            let params = getFormData();
+                            if($("input:radio[name=trgt]").length == 4){
+                                if($("input:radio[name=trgt]:checked").length==1){
+                                    sendApply(params);
+                                }else{
+                                    alert('신청 유형(유치원, 초등학교, 중학교, 고등학교)을 선택해 주세요.');
+                                    setTimeout(function (){
+                                        $("#saveBtn").removeAttr("disabled");
+                                        $("#saveBtn").removeClass("btn_lightgray");
+                                        $("#createBtn").removeAttr("disabled");
+                                        $("#createBtn").removeClass("btn_lightgray");
+                                    }, 5000)
+                                }
+                            }else{
+                                sendApply(params);
+                            }
+                        } else {
+                            alert("수업시간표의 종료시간과 시작시간의 차이가 최소시간 미만인 회차가 있습니다. 재확인 해주세요.")
+                            setTimeout(function (){
+                                $("#saveBtn").removeAttr("disabled");
+                                $("#saveBtn").removeClass("btn_lightgray");
+                                $("#createBtn").removeAttr("disabled");
+                                $("#createBtn").removeClass("btn_lightgray");
+                            }, 5000)
+                        }
+
+                    } else {
+                        setTimeout(function (){
+                            $("#saveBtn").removeAttr("disabled");
+                            $("#saveBtn").removeClass("btn_lightgray");
+                            $("#createBtn").removeAttr("disabled");
+                            $("#createBtn").removeClass("btn_lightgray");
+                        }, 5000)
+                    }
+                }
+                function checkTimes(){
+                    var start = 0;
+                    var end = 0;
+                    var check = 0;
+                    $(".dtl_list").each(function (index, item){
+                        start = ($(this).find(".bgng1").val() * 60) + $(this).find(".bgng2").val()
+                        end = ($(this).find(".end1").val() * 60) + $(this).find(".end2").val()
+                        if ((end - start) < 30) check += 1
+                    })
+                    return check;
+                }
+                function sendApply(params){
+                    let item = getDtlData(data.bizOrgAplyNo);
+                    if(item.length == 0){
+                        alert("수업계획서 내용 없이 사업신청서 저장이 불가합니다.")
+                    } else {
+                        if(confirm("저장 하시겠습니까?")) {
+                            params.bizOrganizationAplyDtlApiRequestVOS = item
+                            $.ajax({
+                                type: "POST",
+                                headers: {'Content-Type' : 'application/json'},
+                                url: "/api/business/organization/aply/create",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (data){
+                                    window.location.replace("/mypage/business-state/apply");
+                                },
+                                error: function (e){
+                                    if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                        alert(e.responseJSON.resultMessage);
+                                    }else{
+                                        alert('사업신청서를 저장하는 과정에서 오류가 발생하였습니다.');
+                                    }
+                                    console.log(e);
+                                    setTimeout(function (){
+                                        $("#saveBtn").removeAttr("disabled");
+                                        $("#saveBtn").removeClass("btn_lightgray");
+                                        $("#createBtn").removeAttr("disabled");
+                                        $("#createBtn").removeClass("btn_lightgray");
+                                    }, 5000)
+                                }
+                            })
+                        } else {
+                            setTimeout(function (){
+                                $("#saveBtn").removeAttr("disabled");
+                                $("#saveBtn").removeClass("btn_lightgray");
+                                $("#createBtn").removeAttr("disabled");
+                                $("#createBtn").removeClass("btn_lightgray");
+                            }, 5000)
+                        }
+                    }
+                }
+                /* <![CDATA[ */
+                function getDtlData(bizOrgAplyNo){
+                    let itemArray = [];
+                    let temp = {}
+                    $(".dtl_list").each(function (index, item){
+                        temp ={bizOrgAplyNo : bizOrgAplyNo}
+                        temp.bizOrgAplyLsnDtlEtc = $(this).find(".bizOrgAplyLsnDtlEtc").val();
+                        temp.bizOrgAplyLsnDtlHr = parseInt($(this).find(".bizOrgAplyLsnDtlHr").val());
+                        temp.bizOrgAplyLsnDtlNope =parseInt($(this).find(".bizOrgAplyLsnDtlNope").val());
+                        temp.bizOrgAplyLsnDtlPlc = $(this).find(".bizOrgAplyLsnDtlPlc").val();
+                        temp.bizOrgAplyLsnDtlRnd = parseInt($(this).find(".bizOrgAplyLsnDtlRnd").val());
+                        temp.bizOrgAplyLsnDtlTpic = $(this).find(".bizOrgAplyLsnDtlTpic").val();
+                        temp.bizOrgAplyLsnDtlYmd = $(this).find(".bizOrgAplyLsnDtlYmd").val();
+                        temp.bizOrgAplyLsnDtlBgngTm = $(this).find(".bgng1").val()+":"
+                        temp.bizOrgAplyLsnDtlBgngTm += $(this).find(".bgng2").val()=="0"?"00":$(this).find(".bgng2").val();
+                        temp.bizOrgAplyLsnDtlBgngTm = temp.bizOrgAplyLsnDtlBgngTm.replace("60", "00");
+                        temp.bizOrgAplyLsnDtlEndTm = $(this).find(".end1").val()+":"
+                        temp.bizOrgAplyLsnDtlEndTm += $(this).find(".end2").val()=="0"?"00":$(this).find(".end2").val();
+                        temp.bizOrgAplyLsnDtlEndTm = temp.bizOrgAplyLsnDtlEndTm.replace("60", "00");
+                        temp.bizOrgAplyDtlNo = "BOA0000001"
+                        itemArray.push(temp)
+                    })
+                    return itemArray;
+                }
+                function getContent(){
+                    let CONT =  [[ ${content} ]];
+                    return CONT;
+                }
+                function getFormData(){
+                    let CONT =  getContent();
+                    let AUTH = [[ ${#authentication} ]];
+                    let params = {};
+                    params.bizOrgAplyChgYn = 0;
+                    params.bizOrgAplyFile = "0";
+                    params.bizOrgAplyLsnPlanBgng = $("#bizOrgAplyLsnPlanBgng").val();
+                    params.bizOrgAplyLsnPlanEnd = $("#bizOrgAplyLsnPlanEnd").val();
+                    params.bizOrgAplyLsnPlanDscr1 = $("#bizOrgAplyLsnPlanDscr1").val();
+                    params.bizOrgAplyLsnPlanDscr2 = $("#bizOrgAplyLsnPlanDscr2").val();
+                    params.bizOrgAplyLsnPlanDscr3 = $("#bizOrgAplyLsnPlanDscr3").val();
+                    params.bizOrgAplyLsnPlanEtc = $("#bizOrgAplyLsnPlanEtc").val();
+                    params.bizOrgAplyLsnPlanEtcInstr = $("#bizOrgAplyLsnPlanEtcInstr1").val();
+                    params.bizOrgAplyLsnPlanEtcInstr += $("#bizOrgAplyLsnPlanEtcInstr2").val()!='' && $("#bizOrgAplyLsnPlanEtcInstr1").val()!=''?',':'';
+                    params.bizOrgAplyLsnPlanEtcInstr += $("#bizOrgAplyLsnPlanEtcInstr2").val();
+                    params.bizOrgAplyLsnPlanNope = parseInt($("#bizOrgAplyLsnPlanNope").val());
+                    if(CONT[0].bizPbancType==1){
+                        params.bizOrgAplyLsnPlanTrgt = new Array($("[name=applicationType]:checked").length);
+                        $("[name=applicationType]:checked").each((index,item)=>{
+                            params.bizOrgAplyLsnPlanTrgt[index] = $(item).val();
+                        })
+                        params.bizOrgAplyLsnPlanTrgt = params.bizOrgAplyLsnPlanTrgt.toString()
+                        if($("#type10[name=applicationType]:checked").length==1){
+                            params.bizOrgAplyLsnPlanTrgt+=$("#type11").val()!=""?$("#type11").val() : "기타";
+                        }
+                        if(params.bizOrgAplyLsnPlanTrgt==""){
+                            params.bizOrgAplyLsnPlanTrgt="-"
+                        }
+                    }else if(CONT[0].bizPbancType==2 || CONT[0].bizPbancType==3){
+                        params.bizOrgAplyLsnPlanTrgt =$("input:radio[name=trgt]:checked").val() ? $("input:radio[name=trgt]:checked").val() : "";
+                        params.bizOrgAplyLsnPlanTrgt += $("#bizOrgAplyLsnPlanTrgt").val();
+                    }else{
+                        params.bizOrgAplyLsnPlanTrgt = $("#bizOrgAplyLsnPlanTrgt").val();
+                    }
+                    params.bizOrgAplyNo = "BOA000001";
+                    params.bizOrgAplyOperCtgr = $("#bizOrgAplyOperCtgr").text() ? $("#bizOrgAplyOperCtgr").text() :"-" ;
+                    params.bizOrgAplyOperMeth =  ($("#bizOrgAplyOperMeth").val().startsWith('교과수업') || $("#bizOrgAplyOperMeth").val().startsWith('기타')) && $("#bizOrgAplyOperMethEtc").val() ? $("#bizOrgAplyOperMeth").val() + '_' + $("#bizOrgAplyOperMethEtc").val() : $("#bizOrgAplyOperMeth").val();
+                    params.bizOrgAplyPicEml = $("#bizOrgAplyPicEml").val();
+                    params.bizOrgAplyPicJbgd = $("#bizOrgAplyPicJbgd").val();
+                    params.bizOrgAplyPicMpno =  $("#bizOrgAplyPicMpno").val();
+                    params.bizOrgAplyPicTelno =  $("#bizOrgAplyPicTelno").val();
+                    params.bizOrgAplyPicNm =  $("#bizOrgAplyPicNm").val();
+                    params.bizOrgAplyRgn =  $("#bizOrgAplyRgn").val();
+                    params.bizOrgAplyRprsvNm =  $("#bizOrgAplyRprsvNm").val() ? $("#bizOrgAplyRprsvNm").val() : "-";
+                    params.bizOrgAplyStts =  0;
+                    params.bizOrgAplySttsCmnt =  '-';
+                    params.bizOrgAplyTime = $("#bizOrgAplyTime").val();
+                    params.bizOrgAplyTimeFrst = $("#bizOrgAplyTimeFrst").val();
+                    params.bizOrgAplyPeprYn = $("input:radio[name=bizOrgAplyPeprYn]:checked").attr('id') == 'peprY'?1:0;
+                    params.bizPbancNo =CONT[0].bizPbancNo;
+                    params.orgCd = CONT[0].organizationInfo != null ? CONT[0].organizationInfo.organizationCode : null;
+
+                    let auth =  [[ ${#authentication} ]];
+                    params.bizOrgAplyPic=auth.principal.userId;
+
+                    console.log(params);
+                    return params;
+                }
+                window.addEventListener('message', handleDocHeightMsg, false); // 메시지 수신 이벤트 등록
+
+                let instrPopupId;
+                function handleDocHeightMsg(eventObj) { // 메시지 수신 처리를 위한 함수
+                    setPopData(eventObj.data);
+                }
+                function setPopData(data){
+                    if(data && data.userId){
+                        $(`#${instrPopupId}`).val(`${data.instrNm}(${data.userId.substring(0,3)}*****)`)
+                    }else if(data && data.instrEml){
+                        $(`#${instrPopupId}`).val(`${data.instrNm}(${data.instrEml.substring(0,3)}*****)`)
+                    }else{
+                        $(`#${instrPopupId}`).val(null);
+                    }
+                }
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    let CONT = [[ ${content} ]];
+                    bizPbancMaxTm = CONT[0].bizPbancMaxTm ? CONT[0].bizPbancMaxTm  : 0;
+
+                    methEtc($('#bizOrgAplyOperMeth').val())
+                    addList();
+                    navigation(2,0,0);
+                    $(".instr-list").each((index,item)=>{
+                        $(item).bind('click', function (){
+                            instrPopupId=$(this).attr("id");
+                            openPop('', '/business/pbanc/pop/instr?instructorName=0', 'addInstructor');
+                        })
+                    })
+                }
+
+                //회차당 평균 교육인원 계산 함수
+                function changeNope(){
+                    let Nope = $('.bizOrgAplyLsnDtlNope')
+                    let length =Nope.length;
+                    let data = 0;
+                    for(let i of Nope){
+                        if(i.value && parseInt(i.value)){
+                            data += parseInt(i.value);
+                        }
+                    }
+                    data = Math.ceil(data/length)
+                    if(data){
+                        $("#bizOrgAplyLsnPlanNope").val(data);
+                    }else{
+                        $("#bizOrgAplyLsnPlanNope").val(0);
+                        alert('수업시간표 인원에는 숫자만 입력해 주세요.');
+                    }
+                }
+                /**
+                 * 수업시간표 Row 동적 생성
+                 * @returns {*}
+                 */
+                function makeScheduleTr(cloneTarget){
+                    let matRandId = "ScheduleTr_"+(new Date().getTime());
+                    cloneTarget = cloneTarget ? cloneTarget : $(`
+                        <tr class="dtl_list">
+                            <td>
+                                <label for="${matRandId}_1" class="hidden_label"></label>
+                                <input type="text" id="${matRandId}_1" class="common_input bizOrgAplyLsnDtlRnd" disabled>
+                            </td>
+                            <td>
+                                <label for="${matRandId}_2" class="hidden_label"></label>
+                                <input type="text" id="${matRandId}_2" class="el_datePicker common_input bizOrgAplyLsnDtlYmd" data-not_null="true" data-alert_name="수업시간표 수업일정" data-reg_type="date">
+                            </td>
+                            <td>
+                                <label for="${matRandId}_3" class="hidden_label"></label>
+                                <input type="text" id="${matRandId}_3" ="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
+                            </td>
+                            <td>
+                                <label for="${matRandId}_4" class="hidden_label"></label>
+                                <input type="number" id="${matRandId}_4" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
+                            </td>
+                            <td>
+                                <div class="time_select">
+                                    <label for="${matRandId}_5" class="hidden_label"></label>
+                                    <select id="${matRandId}_5" class="common_select bgng1" data-list="hourList" onchange="classTime(this,event)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                    <label for="${matRandId}_6" class="hidden_label"></label>
+                                    <select id="${matRandId}_6" class="common_select bgng2" data-list="minuteList" onchange="classTime(this,event)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="time_select">
+                                    <label for="${matRandId}_7" class="hidden_label"></label>
+                                    <select id="${matRandId}_7" class="common_select end1" data-list="hourList" onchange="classTime(this,event)" data-not_null="true" data-alert_name="수업시간표 종료시간" disabled></select>
+                                    <label for="${matRandId}_8" class="hidden_label"></label>
+                                    <select id="${matRandId}_8" class="common_select end2" data-list="minuteList" onchange="classTime(this,event)" data-not_null="true" data-alert_name="수업시간표 종료시간" disabled></select>
+                                </div>
+                            </td>
+                            <td>
+                                <label for="${matRandId}_9" class="hidden_label"></label>
+                                <input id="${matRandId}_9" type="number" class="common_input bizOrgAplyLsnDtlNope" onchange="changeNope()" data-not_null="true" data-alert_name="수업시간표 수업인원" data-reg_type="int">
+                            </td>
+                            <td>
+                                <label for="${matRandId}_10" class="hidden_label"></label>
+                                <input id="${matRandId}_10" type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlPlc" data-not_null="true" data-alert_name="수업시간표 수업장소">
+                            </td>
+                            <td>
+                                <label for="${matRandId}_11" class="hidden_label"></label>
+                                <input id="${matRandId}_11" type="text" class="common_input bizOrgAplyLsnDtlEtc">
+                            </td>
+                            <td>
+                                <div class="btn_type3" onclick="addList(this)">추가</div>
+                                <div class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</div>
+                            </td>
+                        </tr>
+                    `);
+                    cloneTarget.find('.bizOrgAplyLsnDtlHr').each(function(idx,el){
+                        $(el).change(function (){changeDtlHr(this)})
+                    })
+                    let cont =getContent();
+                    cloneTarget.find(".el_datePicker").each(function(idx,el){
+                        CommonUI.datePicker(el);
+                        let getYear=new Date().getFullYear();
+                        $(el).datepicker("option", "maxDate", cont[0].bizPbancSprtEnd); // 사업공고 종료일까지 지원
+                        $(el).datepicker("option", "minDate", cont[0].bizPbancSprtBgng); // 사업공고 지원시작일부터 지원
+                        $(el).datepicker("option", "onClose", function ( selectedDate ) {
+                            planDtl();
+                        })
+                    })
+                    cloneTarget.find(".common_select").each(function(idx, el){
+                        CommonUI.dataListSelectBox(el);
+                    })
+                    return cloneTarget[0];
+                }
+                //수업기간에 따른 교육기간 설정
+                function planDtl(){
+                    let dtlDate = new Array( $('.bizOrgAplyLsnDtlYmd').length);
+                    $('.bizOrgAplyLsnDtlYmd').each((index, item)=>{
+                        dtlDate[index] = $(item).val()==""? null:$(item).val();
+                    })
+                    let maxDate = "2000-00-00"
+                    let minDate = "3000-00-00";
+                    for(let i=0; i<dtlDate.length; i++){
+                        if(dtlDate[i]<minDate){
+                            minDate=dtlDate[i];
+                        }
+                        if(dtlDate[i]>maxDate){
+                            maxDate=dtlDate[i];
+                        }
+                        if((i+1)==dtlDate.length){
+                            if(minDate!="3000-00-00"){
+                                $('#bizOrgAplyLsnPlanBgng').val(minDate);
+                            }
+                            if(maxDate!="2000-00-00"){
+                                $('#bizOrgAplyLsnPlanEnd').val(maxDate);
+                            }
+                        }
+                    }
+                    sortPlanDtl();
+                }
+
+
+                //날짜 순으로 정렬
+                function sortPlanDtl(){
+                    let n = $('.bizOrgAplyLsnDtlYmd').length;
+                    let nowDate, nextDate;
+                    let nowTime, nextTime;
+                    for (let i=n-1; i>0; i--) {
+                        for (let j=0; j<i; j++) {
+                            nowDate=$('.bizOrgAplyLsnDtlYmd')[j].value;
+                            nextDate=$('.bizOrgAplyLsnDtlYmd')[j+1].value;
+                            if (nowDate > nextDate) {
+                                moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                            }else if(nowDate==nextDate){
+                                // 같은 날이면 시작 시간 순으로 정렬
+                                nowTime = $(".bgng1")[j].value;
+                                nextTime=$('.bgng1')[j+1].value;
+                                if(nowTime>nextTime){
+                                    moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                                }
+                            }
+                        }
+                        if(i==1){
+                            dtlRnd();
+                        }
+                    }
+
+                }
+
+                //아래행과 위치변경
+                function moveDown(el){
+                    let $tr = $(el).parent().parent();
+                    $tr.next().after($tr);
+                }
+
+
+                //회차 계산
+                function dtlRnd(){
+                    $(".bizOrgAplyLsnDtlRnd").each((index,item)=>{
+                        $(item).val(index+1);
+                    })
+                }
+                /**
+                 * 수업시간표 Row 생성
+                 * @param addBtn
+                 */
+                function addList(addBtn) {
+                    // node 선택
+                    let cloneDiv = addBtn ? addBtn.parentElement.parentElement : null;
+                    let timeNow =parseInt($("#bizOrgAplyTime").val()) ? parseInt($("#bizOrgAplyTime").val()):0;
+                    let timeMax = parseInt($(cloneDiv).find(".bizOrgAplyLsnDtlHr").val()) + parseInt(timeNow);
+
+                    //수업시수를 초과하지 않을 때만
+                    if(timeNow+2<=bizPbancMaxTm){
+                        // 노드 복사하기 (deep copy)
+                        let newDiv = makeScheduleTr();
+
+                        // input 값 초기화
+                        let input = newDiv.querySelectorAll('input');
+                        if(cloneDiv){
+                            let cloneInput = $(cloneDiv).find('input');
+                            let count=0;
+                            input.forEach(item => {
+                                item.value = cloneInput[count].value;
+                                count+=1;
+                            })
+                        }else{
+                            input.forEach(item => {
+                                item.value = '';
+                            })
+                        }
+                        // select 값 초기화
+                        let select = newDiv.querySelectorAll('select');
+                        if(cloneDiv){
+                            let cloneSelect= $(cloneDiv).find('select');
+                            let count=0;
+
+                            if($(cloneSelect[0]).val()!=0){
+                                $(select[2]).removeAttr('disabled');
+                                $(select[3]).removeAttr('disabled');
+                            }
+                            select.forEach(item => {
+                                for (let i = 0; i < item.options.length; i++) {
+                                    item.options[i].removeAttribute('selected');
+                                }
+                                if( $(cloneSelect[count]).val() ){
+                                    $(item).val($(cloneSelect[count]).val()).prop("selected", true);
+                                    count++;
+                                }
+                            })
+                        }else{
+                            select.forEach(item => {
+                                for (let i = 0; i < item.options.length; i++) {
+                                    item.options[i].removeAttribute('selected');
+                                }
+                                if( item.options.length ){
+                                    item.options[0].setAttribute('selected', true);
+                                }
+                                if($(item).attr("data-list")=="minuteList"){
+                                    $(item).val("60").prop("selected", false);
+                                    $(item).val("00").prop("selected", true);
+                                }
+                            })
+                        }
+
+                        // 복제할 값보다는 남은 수업시수가 적다면 남은 값으로 적용
+                        if(timeMax>bizPbancMaxTm ){
+                            $(newDiv).find(".bizOrgAplyLsnDtlHr").val(bizPbancMaxTm-timeNow);
+                        }
+                        if( cloneDiv ){
+                            cloneDiv.after(newDiv);
+                        }else{
+                            $("#bizScheduleTbody").append(newDiv);
+                        }
+                        dtlRnd();
+                        totalClassTimeSet();
+                    }else{
+                        alert('시간표를 더 추가하면 사업에서 지원 가능한 최대 수업시수를 초과하게 됩니다. 수업시간표 하나의 최소 수업시수는 2입니다.')
+                    }
+                }
+
+                function removeList(delBtn) {
+                    let table = delBtn.parentElement.parentElement.parentElement.parentElement;
+                    let btnList = table.querySelectorAll('.dtl_list').length;
+
+                    if (btnList == 1) { // 삭제 버튼 1개일 때(테이블 리스트 1개일 때)
+                        alert('현재 수업시간표가 1회차라서 삭제할 수 없습니다.');
+                        return;
+                    }
+
+                    // 클릭한 리스트 삭제
+                    delBtn.parentElement.parentElement.remove();
+                    dtlRnd();
+                    planDtl();
+
+                    totalClassTimeSet();
+                }
+
+                //수업시수 검사
+                function changeDtlHr(input){
+                    if($(input).val()<2){
+                        alert("수업시수는 2보다 커야 합니다.")
+                        $(input).val(2)
+                    }
+                    totalClassTimeSet();
+                }
+                //총 교육시간, 최초 총 교육시간
+                function totalClassTimeSet() {
+                    let totalClassTime = 0;
+                    for (let i = 0; i < $('.bizOrgAplyLsnDtlHr').length; i++) {
+                        totalClassTime = Number(totalClassTime);
+                        totalClassTime += Number($('.bizOrgAplyLsnDtlHr')[i].value);
+                    }
+                    if(bizPbancMaxTm!=0){
+                        if(parseInt(totalClassTime)>bizPbancMaxTm){
+                            totalClassTime = Number(bizPbancMaxTm);
+                            alert("총 교육시간이 사업공고의 최대 시간보다 큽니다. 수업시수를 확인해 주세요.");
+                            $('#bizOrgAplyTime').attr('value', totalClassTime);
+                            $('#bizOrgAplyTimeFrst').attr('value', totalClassTime);
+                            return false
+                        }
+                    }
+                    $('#bizOrgAplyTime').attr('value', totalClassTime);
+                    $('#bizOrgAplyTimeFrst').attr('value', totalClassTime);
+                    return true;
+                }
+
+                // 시작시간 ~ 종료시간 계산(수업시간)
+                function classTime(time,event) {
+                    const dtl_list = document.querySelectorAll('.dtl_list');
+                    let tr = time.parentElement.parentElement.parentElement;
+                    let tr_idx = '';
+                    $('.dtl_list').each(function(idx, item){
+                        if (tr == item) {
+                            tr_idx = idx;
+                        }
+                    });
+                    if($(time).hasClass("bgng1")){
+                        $(tr).find(".end1").removeAttr('disabled');
+                        $(tr).find(".end2").removeAttr('disabled');
+                        sortPlanDtl();
+                    }
+                    let bgng1Val = $('.dtl_list').eq(tr_idx).find('.bgng1').val();
+                    let bgng2Val = $('.dtl_list').eq(tr_idx).find('.bgng2').val();
+                    let end1Val = $('.dtl_list').eq(tr_idx).find('.end1').val();
+                    let end2Val = $('.dtl_list').eq(tr_idx).find('.end2').val();
+
+                    // 시작 시가 종료 시보다 클 때
+                    if (bgng1Val != '0' && end1Val != '0' && bgng1Val > end1Val) {
+                        alert('시작 시간이 종료 시간보다 큽니다. 수업시간표를 다시 확인해 주세요.')
+                        return false;
+                    }else if (bgng1Val != '0' && bgng2Val != '60' && end1Val != '0' && end2Val != '60') {
+                        // 시작 시와 종료 시가 같고, 시작 분이 종료 분보다 클 때
+                        if (bgng1Val == end1Val && bgng2Val > end2Val) {
+                            alert('시작 시간과 종료 시간이 같습니다. 수업시간표를 다시 확인해 주세요.');
+                            return false;
+                        }
+                    }else {
+                        return true;
+                    }
+                }
+
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+
+            function methEtc(val) {
+                $("#bizOrgAplyOperMethEtc").hide()
+                if (val == '교과수업' || val == '기타') {
+                    $("#bizOrgAplyOperMethEtc").show()
+                } else {
+                    $("#bizOrgAplyOperMethEtc").hide()
+                }
+            }
+
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

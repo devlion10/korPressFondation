@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="bl_title hp_show_tb hp_show_mo">
+                    <div class="bl_title_left">
+                        <div class="page_title">회원가입</div>
+                    </div>
+                </div>
+
+                <p class="cont_description_tit">회원 유형 선택</p>
+                <p class="cont_description">
+                    한국언론진흥재단 미카에 오신 것을 환영합니다. 회원이 되시면 보다 다양한 서비스를 편하게 이용하실 수 있습니다.<br>
+                    가입하시고자 하는 회원 유형을 선택해주세요.
+                </p>
+
+                <div class="card_wrap">
+                    <div class="card half">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_join/join_icon6.png}" alt="언론인" >
+                            <div class="text_box">
+                                <p class="card_title">언론인</p>
+                                <p class="card_text">신문, 방송, 통신, 잡지, 인터넷 등
+                                    <br>보도매체 소속 언론인</p>
+                            </div>
+                            <a onclick="goJournalist()" class="btn_type1 btn_blue">언론인 선택</a>
+                        </div>
+                    </div>
+                    <div class="card half">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_join/join_icon7.png}" alt="일반" >
+                            <div class="text_box">
+                                <p class="card_title">일반</p>
+                                <p class="card_text">
+                                    교원, 학생, 학부모, 일반인 등
+                                </p>
+                            </div>
+                            <a onclick="goGeneral()" class="btn_type1 btn_blue">일반인 선택</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const form = document.createElement('form'); // 폼객체 생성
+            function onLoadSubmit() {
+                if([[ ${userId} ]]) {
+                    const userIdInput = document.createElement('input'); // 형식
+                    userIdInput.setAttribute('type', 'text'); // type
+                    userIdInput.setAttribute('name', 'userId'); // 객체이름
+                    userIdInput.setAttribute('value', [[ ${userId} ]]); //객체값
+                    form.appendChild(userIdInput);
+                }
+                const userNameInput = document.createElement('input'); // 형식
+                userNameInput.setAttribute('type', 'text'); // type
+                userNameInput.setAttribute('name', 'userName'); // 객체이름
+                userNameInput.setAttribute('value', [[ ${userName} ]] ) ; //객체값
+                form.appendChild(userNameInput);
+                const userPhoneInput = document.createElement('input'); // 형식
+                userPhoneInput.setAttribute('type', 'text'); // type
+                userPhoneInput.setAttribute('name', 'userPhone'); // 객체이름
+                userPhoneInput.setAttribute('value', [[ ${userPhone} ]] ); //객체값
+                form.appendChild(userPhoneInput);
+                const birthDateInput = document.createElement('input'); // 형식
+                birthDateInput.setAttribute('type', 'text'); // type
+                birthDateInput.setAttribute('name', 'birthDate'); // 객체이름
+                birthDateInput.setAttribute('value', [[ ${birthDate} ]]); //객체값
+                form.appendChild(birthDateInput);
+                const genderInput = document.createElement('input'); // 형식
+                genderInput.setAttribute('type', 'text'); // type
+                genderInput.setAttribute('name', 'gender'); // 객체이름
+                genderInput.setAttribute('value', [[ ${gender} ]]); //객체값
+                form.appendChild(genderInput);
+                form.setAttribute('method', 'post'); //get,post 가능
+            }
+
+            function goJournalist() {
+                form.setAttribute('action', "/user/join/profile/journalist"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            function goGeneral() {
+                form.setAttribute('action', "/user/join/profile/normal"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

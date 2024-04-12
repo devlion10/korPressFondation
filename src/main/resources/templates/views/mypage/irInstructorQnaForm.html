@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사지원문의</div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite">
+                        <table>
+                            <caption>작성영역</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td colspan="3">
+                                    <label class="hidden_label" for="selectBox">사업 선택</label>
+                                    <select id='selectBox' class="common_select" th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" onchange="changeSelect()">
+                                        <option value="test"> 사업을 선택하세요 </option>
+                                        <option th:each="item,stat:${content}" th:text="${item.bizPbancMaster.bizPbancNm}" th:value="${stat.index}">사업명</option>
+                                    </select>
+                                    <select id="selectBox" class="common_select" th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" >
+                                        <option th:each="item,stat:${content}" th:text="${item.bizPbancMaster.bizPbancNm}" th:value="${stat.index}">사업명</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기간</th>
+                                <td>
+                                    <span th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}">
+                                        <span id="startDt"></span> ~
+                                        <span id="endDt"></span>
+                                    </span>
+                                    <span th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}">
+                                        <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanBgng}"></span> ~
+                                        <span th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanEnd}"></span>
+                                    </span>
+                                </td>
+                                <th scope="row">지역</th>
+                                <td>
+                                    <span id="rgn" th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}"></span>
+                                    <span th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" th:text="${content[0].bizOrganizationAply.bizOrgAplyRgn}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">교육기관</th>
+                                <td colspan="3">
+                                    <span id="organization" th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}"></span>
+                                    <span th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" th:text="${content[0].bizOrganizationAply.organizationInfo.organizationName}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">질문</th>
+                                <td colspan="3">
+                                    <label class="hidden_label" for="bizInstrQstnCn">질문</label>
+                                    <textarea class="common_input hp_w100p" name="bizInstrQstnCn" id="bizInstrQstnCn" cols="30" rows="3"  th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" data-not_null="true" data-alert_name="문의 내용"></textarea>
+                                    <textarea class="common_input hp_w100p" name="bizInstrQstnCn" id="bizInstrQstnCn" cols="30" rows="3"  th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}" th:text="${content[0].bizInstrQstnCn}" data-not_null="true" data-alert_name="문의 내용"></textarea>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_blue" href="#none" onclick="create()" th:if="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}">등록하기</a>
+                            <a class="btn_type1 btn_blue" href="#none" onclick="update()" th:unless="${#httpServletRequest.servletPath == '/mypage/instructor-state/qna/write'}">수정하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/instructor-state/qna">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+
+                const CONT = [[ ${content} ]]
+
+                function update(){
+                    let params = getFormData();
+                    params.bizInstrQstnNo = CONT[0].bizInstrQstnNo;
+                    if(params){
+                        $.ajax({ //jquery ajax
+                            type: "put", //http method
+                            url: "/api/business/instructor/question/update",
+                            headers: {'Content-Type': 'application/json'},
+                            data: JSON.stringify(params),
+                            dataType: "json",
+                            success: function(data) {
+                                alert("문의가 수정되었습니다.");
+                                window.location.replace(`/mypage/instructor-state/qna/view/${data.bizInstrQstnNo}`);
+                            },
+                            error: function(e) {
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert('문의를 수정하는 과정에서 오류가 발생하였습니다.');
+                                }
+                            }
+
+                        })
+                    }else{
+                        alert("사업명을 선택해 주세요.");
+                    }
+                }
+                function create(){
+                    let params = getFormData();
+                    if(params && params.bizInstrQstnCn!=''){
+                        $.ajax({ //jquery ajax
+                            type: "post", //http method
+                            url: "/api/business/instructor/question/create",
+                            headers: {'Content-Type': 'application/json'},
+                            data: JSON.stringify(params),
+                            dataType: "json",
+                            success: function(data) {
+                                alert("문의가 등록되었습니다.");
+                                window.location.replace('/mypage/instructor-state/qna');
+                            },
+                            error: function(e) {
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert('문의를 등록하는 과정에서 오류가 발생하였습니다.');
+                                }
+                            }
+
+                        })
+                    }else{
+                        if(params==null){
+                            alert("사업명을 선택해 주세요.");
+                        }else{
+                            alert("문의 내용을 입력해 주세요.");
+                        }
+                    }
+                }
+                function getFormData(){
+                    let params ={};
+                    let selectVal = parseInt($("#selectBox").val());
+                    if(selectVal || (selectVal>=0)){
+                        params.bizInstrQstnNo = "1";
+                        params.bizOrgAplyNo = CONT[selectVal].bizOrgAplyNo;
+                        params.bizInstrQstnCn = $("#bizInstrQstnCn").val();
+                        params.bizInstrQstnStts = 0;
+                        return params;
+                    }else {
+                        return null;
+                    }
+                }
+                function changeSelect(){
+                    let selectVal = document.getElementById('selectBox').value;
+                    document.getElementById('startDt').innerText = CONT[selectVal].bizOrganizationAply.bizOrgAplyLsnPlanBgng;
+                    document.getElementById('endDt').innerText = CONT[selectVal].bizOrganizationAply.bizOrgAplyLsnPlanEnd;
+                    document.getElementById('rgn').innerText = CONT[selectVal].bizOrganizationAply.bizOrgAplyRgn;
+                    document.getElementById('organization').innerText = CONT[selectVal].bizOrganizationAply.organizationInfo.organizationName;
+
+                }
+
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,2);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div sec:authorize="permitAll">
+        <!-- VISUAL : MAIN -->
+        <div class="bl_mainVisual">
+            <div class="bl_mainSlideWrap">
+                <!-- 슬라이드 이미지 영역 / 계절별 이미지 변경 -->
+                <!-- 슬라이드가 특수한 형태(활성화 슬라이드 가운데 정렬) 꼭 3개로 운영되야합니다. -->
+                <div th:if="${#calendars.format(#calendars.createNow(), 'MM')} >= '03' and ${#calendars.format(#calendars.createNow(), 'MM')} <= '05'" class="bl_mainSlide js-jumbotron slider" id="jumbotromMainVisual">
+                    <div data-title="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_spring.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_spring@tablet.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_spring@mobile.png}" alt="언론인연수">
+                    </div>
+
+                    <div data-title="미션">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_spring2.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_spring2@tablet.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_spring2@mobile.png}" alt="미션">
+                    </div>
+
+                    <div data-title="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_spring3.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_spring3@tablet.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_spring3@mobile.png}" alt="미디어교육">
+                    </div>
+                </div>
+                <div th:if="${#calendars.format(#calendars.createNow(), 'MM')} >= '06' and ${#calendars.format(#calendars.createNow(), 'MM')} <= '08'" class="bl_mainSlide js-jumbotron slider" id="jumbotromMainVisual">
+                    <div data-title="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_summer.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_summer@tablet.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_summer@mobile.png}" alt="언론인연수">
+                    </div>
+
+                    <div data-title="미션">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_summer2.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_summer2@tablet.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_summer2@mobile.png}" alt="미션">
+                    </div>
+
+                    <div data-title="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_summer3.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_summer3@tablet.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_summer3@mobile.png}" alt="미디어교육">
+                    </div>
+                </div>
+                <div th:if="${#calendars.format(#calendars.createNow(), 'MM')} >= '09' and ${#calendars.format(#calendars.createNow(), 'MM')} <= '11'" class="bl_mainSlide js-jumbotron slider" id="jumbotromMainVisual">
+                    <div data-title="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_autumn.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_autumn@tablet.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_autumn@mobile.png}" alt="언론인연수">
+                    </div>
+
+                    <div data-title="미션">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_autumn2.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_autumn2@tablet.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_autumn2@mobile.png}" alt="미션">
+                    </div>
+
+                    <div data-title="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_autumn3.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_autumn3@tablet.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_autumn3@mobile.png}" alt="미디어교육">
+                    </div>
+                </div>
+                <div th:if="${#calendars.format(#calendars.createNow(), 'MM')} >= '12' or ${#calendars.format(#calendars.createNow(), 'MM')} <= '02'" class="bl_mainSlide js-jumbotron slider" id="jumbotromMainVisual">
+                    <div data-title="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_winter.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_winter@tablet.png}" alt="언론인연수">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_winter@mobile.png}" alt="언론인연수">
+                    </div>
+
+                    <div data-title="미션">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_winter2.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_winter2@tablet.png}" alt="미션">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_winter2@mobile.png}" alt="미션">
+                    </div>
+
+                    <div data-title="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_pc" th:src="@{/assets/images/main/visual_main_winter3.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_tb" th:src="@{/assets/images/main/visual_main_winter3@tablet.png}" alt="미디어교육">
+                        <img class="bl_mainSlide_img hp_show_mo" th:src="@{/assets/images/main/visual_main_winter3@mobile.png}" alt="미디어교육">
+                    </div>
+                </div>
+                <div class="__webSizeWrap">
+                    <div class="__webSizeBtn __prev" id="__webSizebtnPrev"></div>
+                    <div class="__webSizeBtn __next" id="__webSizebtnNext"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content" style="padding: 0">
+                <!-- 그리드 공통 -->
+                <div class="ly_grid">
+                    <div class="bl_iscroll bl_navRoll" id="mainSvc">
+                        <div class="bl_iscroll_hor">
+
+                            <ul class="bl_navRoll_nav">
+                                <li>
+                                    <a href="/edu-center/introduce/introduce?view=view1">저널리즘역량강화</a>
+                                </li>
+                                <li>
+                                    <a href="/edu-center/introduce/introduce?view=view5">글로벌역량 강화</a>
+                                </li>
+                                <li>
+                                    <a href="/edu-center/introduce/introduce?view=view8">언론인 학습지원</a>
+                                </li>
+                                <li>
+                                    <a href="/edu-center/introduce/introduce?view=view9">온라인과정</a>
+                                </li>
+                                <li class="bl_navRoll_secondary">
+                                    <a href="/edu-center/introduce/introduce?view=view10">학교 미디어교육</a>
+                                </li>
+                                <li class="bl_navRoll_secondary">
+                                    <a href="/edu-center/introduce/introduce?view=view15">사회 미디어교육</a>
+                                </li>
+                                <li class="bl_navRoll_secondary">
+                                    <a href="/edu-center/introduce/introduce?view=view18">미디어교육 인프라구축</a>
+                                </li>
+                                <li class="bl_navRoll_secondary">
+                                    <a href="/edu-center/introduce/introduce?view=view22">읽기문화 진흥</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button type="button" class="bl_navRoll_btnPrev" disabled><img class="bl_mainSlide_img" th:src="@{/assets/images/icons/roll_prev.png}" alt="이전"></button>
+                        <button type="button" class="bl_navRoll_btnNext"><img class="bl_mainSlide_img" th:src="@{/assets/images/icons/roll_next.png}" alt="다음"></button>
+                    </div>
+                </div>
+                
+                <div id="main-content-preview-list" class="hp_bg_sky__pc cts-loading">
+                    <div class="loading-ly-main">
+                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <!-- 그리드 공통 -->
+                    <div class="ly_grid_wrap">
+                        <div class="ly_grid">
+                            <!-- 메인 컨텐츠 -->
+                            <div class="ly_main">
+                                <div class="ly_main_col">
+                                    <!-- 화상/집합 교육 -->
+                                    <div class="bl_cardUnitWrap">
+                                        <h2 class="el_lv2heading">화상/집합교육</h2>
+
+                                        <ul class="bl_cardUnit empty-ready" id="edu1"></ul>
+
+                                        <div class="bl_cardUnitWrap_more">
+                                            <a href="/education/application/lecture" class="btn_type3 btn_sm">더보기 <img th:src="@{/assets/images/icons/plus__sm.png}" alt="더 보기" class="hp_ml5"></a>
+                                        </div>
+                                    </div>
+
+                                    <!-- 이러닝 교육 -->
+                                    <div class="bl_cardUnitWrap">
+                                        <h2 class="el_lv2heading">이러닝교육</h2>
+                                        <ul class="bl_cardUnit empty-ready" id="edu2"></ul>
+
+                                        <div class="bl_cardUnitWrap_more">
+                                            <a href="/education/application/e-learning" class="btn_type3 btn_sm">더보기 <img th:src="@{/assets/images/icons/plus__sm.png}" alt="더 보기" class="hp_ml5"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ly_main_col">
+                                    <!-- 컴포넌트 : 탭 -->
+                                    <div class="bl_tab js_tab">
+                                        <ul class="bl_tab_menu js_tab_menu">
+                                            <li id="tab1">
+                                                <a href="#none">전체</a>
+                                            </li>
+                                            <li id="tab2">
+                                                <a href="#none">공모</a>
+                                            </li>
+                                            <li id="tab3">
+                                                <a href="#none">공지</a>
+                                            </li>
+                                        </ul>
+
+                                        <div class="bl_tab_body js_tab_contents">
+                                            <!-- 전체 -->
+                                            <div id="tabCont1" class="bl_tab_item js_tab_item"></div>
+
+                                            <!-- 공모 -->
+                                            <div id="tabCont2" class="bl_tab_item js_tab_item"></div>
+
+                                            <!-- 공지 -->
+                                            <div id="tabCont3" class="bl_tab_item js_tab_item"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- 그리드 공통 -->
+                    <div class="ly_grid">
+                        <!-- 메인 그리드 -->
+                        <div class="ly_main">
+                            <div class="ly_main_col">
+                                <ul class="bl_navMain">
+                                    <li>
+                                        <a href="/communication/archive/class-guide">
+                                            <p><img th:src="@{/assets/images/main/icon_class.png}" alt="수업지도안"></p>
+                                            <strong class="bl_navMain_subject">수업지도안</strong>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/communication/archive/edu-data">
+                                            <p><img th:src="@{/assets/images/main/icon_class2.png}" alt="교재 자료"></p>
+                                            <strong class="bl_navMain_subject">교재 자료</strong>
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a href="/communication/archive/publicing">
+                                            <p><img th:src="@{/assets/images/main/icon_class3.png}" alt="연구/간행물"></p>
+                                            <strong class="bl_navMain_subject">연구/간행물</strong>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/communication/archive/media">
+                                            <p><img th:src="@{/assets/images/main/icon_class4.png}" alt="영상자료"></p>
+                                            <strong class="bl_navMain_subject">영상자료</strong>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="bl_boardMain">
+                                    <div class="bl_boardMain_head">
+                                        <h2 class="bl_boardMain_tit">참여/소통</h2>
+                                        <a href="/communication/edu-suggestion" class="btn_type3 btn_sm">더보기 <img th:src="@{/assets/images/icons/plus__sm.png}" alt="더보기" class="hp_ml5"></a>
+                                    </div>
+                                    <div class="bl_boardMain_body">
+                                        <ul class="bl_list" id="suggestion-list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ly_main_col">
+                                <div class="bl_calendarTit">
+                                    <a href="/education/schedule" class="bl_calendarTit_link">오늘 <strong>무엇</strong>을 <strong>신청</strong>할 수 있나요? <img th:src="@{/assets/images/icons/calendar_more.png}" alt="더보기"></a>
+                                </div>
+
+                                <div class="sec_cal">
+                                    <div class="cal_nav">
+                                        <span class="nav-btn go-prev"></span>
+                                        <div class="year-month"></div>
+                                        <span class="nav-btn go-next"></span>
+                                    </div>
+                                    <div class="cal_wrap">
+                                        <div class="dates"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 메인 컴포넌트 : 배너영역1 -->
+                        <ul class="bl_bnnrMain">
+                            <li>
+                                <a href="https://zep.us/play/yWMj9v" target="_blank"><img th:src="@{/assets/images/main/bnnr_main5.png}" alt="메타버스 바로가기"></a>
+                            </li>
+                            <li>
+                                <ul id="bl_bnnrMain_slider">
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <!-- 메인 컴포넌트 : 배너영역2 -->
+                        <ul class="bl_bnnrMain">
+                            <li>
+                                <!-- 카카오 -->
+                                <a href="https://pf.kakao.com/_wGxgXxl" target="_blank"><img th:src="@{/assets/images/main/bnnr_main.png}" alt="카카오채널 바로가기"></a>
+                            </li>
+                            <li>
+                                <!-- e-NIE -->
+                                <a href="http://enie.forme.or.kr/" target="_blank"><img th:src="@{/assets/images/main/bnnr_main2.png}" alt="ENIE 바로가기"></a>
+                            </li>
+                            <li>
+                                <!-- 뉴스알고 -->
+                                <a href="http://newsalgo.or.kr/" target="_blank"><img th:src="@{/assets/images/main/bnnr_main3.png}" alt="뉴스알고 바로가기"></a>
+                            </li>
+                            <li>
+                                <!-- SNS -->
+                                <a href="https://www.instagram.com/kpf__official/" target="_blank"><img th:src="@{/assets/images/main/bnnr_main4.png}" alt="SNS 바로가기"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK MENU -->
+        <div class="quick_menu hp_lg_show">
+            <div class="quick_header">퀵메뉴</div>
+            <ul class="quick_body">
+                <li style="display: none">
+                    <a href="#"><img th:src="@{/assets/images/main/icon_quick.png}" alt="챗봇">챗봇</a>
+                </li>
+                <li>
+                    <a href="/service-center/remote"><img th:src="@{/assets/images/main/icon_quick2.png}" alt="원격지원">원격지원</a>
+                </li>
+                <li>
+                    <a href="/service-center/my-qna"><img th:src="@{/assets/images/main/icon_quick3.png}" alt="1:1 문의">1:1문의</a>
+                </li>
+                <li>
+                    <a href="/service-center/top-qna"><img th:src="@{/assets/images/main/icon_quick_faq.png}" alt="자주하는 질문">
+                        자주하는<br/>질문
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- POPUP : 캘린더 교육신청/공모신청 리스트 -->
+    <div class="pop_wrapper ui-modal" id="popCalList">
+        <div class="pop_wrap pop_fixed pop_secondary">
+            <div class="pop_cont">
+                <div class="cal_date_tit">
+                    <label for="popDate" class="hidden_label"></label>
+                    <input id="popDate" type="text" class="el_datePicker" value="2022.12.27" readonly>
+                </div>
+                
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            총: <strong id="popTotal">0</strong>건
+                        </p>
+                    </div>
+                </div>
+                <div class="cal_list_box_wrap">
+                    <div class="cal_list_box" id="popListBox"></div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close" onclick="closePopCalList()">닫기</button>
+        </div>
+    </div>
+
+    <script th:src="@{/app/js/libs/jquery.mtz.monthpicker.js}"></script>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+            function mainCall(type){
+                $.ajax({
+                    url: "/api/main",
+                    type: 'GET',
+                    data: {
+                        inquiryCriteria : type
+                    },
+                    beforeSend : function(){
+                    },
+                    complete: function(){
+                        $("#main-content-preview-list").removeClass("cts-loading");
+                    },
+                    success: function (data){
+                        // 화상집합교육 랜더링
+                        const EDU = document.getElementById('edu1');
+                        EDU.innerHTML = '';
+                        if( CommonUtil.checkNullArray( data.lectureList )){
+                            const div = document.createElement('div');
+                            div.setAttribute('class','bl_card_empty');
+                            div.innerText = '등록된 교육이 없습니다.'
+                            EDU.appendChild(div);
+                        } else {
+                            for(let i=0; i<data.lectureList.length; i++){
+                                const li = document.createElement('li');
+                                if( data.lectureList[i].availableApplicationType == '2'){
+                                    li.setAttribute('state','finished');
+                                }
+                                if(data.lectureList[i].educationTarget !== '2'){
+                                    li.setAttribute('edu','media')
+                                }
+                                const a = document.createElement('a');
+                                a.setAttribute('href','/education/application/lecture/view/'+data.lectureList[i].educationPlanCode);
+                                a.setAttribute('class','bl_card');
+                                const div = document.createElement('div');
+                                div.setAttribute('class','bl_card_label');
+                                if( data.lectureList[i].availableApplicationType == '1'){
+                                    div.innerText = '신청 완료'
+                                } else if(data.lectureList[i].availableApplicationType == '2'){
+                                    div.innerText = '신청 마감'
+                                } else if(data.lectureList[i].availableApplicationType == '3'){
+                                    div.innerText = '신청 불가'
+                                } else if(data.lectureList[i].availableApplicationType == '4'){
+                                    div.innerText = '신청 가능'
+                                }
+                                const p = document.createElement('p');
+                                p.setAttribute('class', 'bl_card_thumb');
+                                const img = document.createElement('img');
+                                if(data.lectureList[i].thumbnailFilePath == null){
+                                    img.setAttribute('src','/assets/images/@tmp/card2_video.jpg');
+                                    img.setAttribute('alt',data.lectureList[i].curriculumName);
+                                } else {
+                                    img.setAttribute('src','/Public'+data.lectureList[i].thumbnailFilePath);
+                                    img.setAttribute('alt',data.lectureList[i].curriculumName);
+                                }
+                                p.appendChild(img);
+                                const p2 = document.createElement('p');
+                                p2.setAttribute('class','bl_card_subject');
+                                const strong = document.createElement('strong');
+                                strong.innerText = data.lectureList[i].curriculumName;
+                                p2.appendChild(strong);
+
+                                const div2 = document.createElement('div');
+                                div2.setAttribute('class','bl_card_details');
+                                const p3 = document.createElement('p3');
+                                p3.setAttribute('class','bl_card_details_subject');
+                                const strong2 = document.createElement('strong');
+                                strong2.innerText = data.lectureList[i].curriculumName;
+                                p3.appendChild(strong2);
+                                const div3 = document.createElement('div');
+                                div3.setAttribute('class','bl_card_info');
+                                const dl = document.createElement('dl');
+                                const dl_dt = document.createElement('dt');
+                                dl_dt.innerText = '교육기간:'
+                                const dl_dd = document.createElement('dd');
+                                dl_dd.innerText = data.lectureList[i].operationBeginDateTime.substring(2,10) + "~" + data.lectureList[i].operationEndDateTime.substring(2,10);
+                                dl.appendChild(dl_dt);
+                                dl.appendChild(dl_dd);
+                                const dl2 = document.createElement('dl');
+                                const dl2_dt = document.createElement('dt');
+                                dl2_dt.innerText = '교육장소:'
+                                const dl2_dd = document.createElement('dd');
+                                if(data.lectureList[i].educationPlace === null){
+                                    dl2_dd.innerText = '온라인';
+                                } else {
+                                    dl2_dd.innerText = data.lectureList[i].educationPlace;
+                                }
+                                dl2.appendChild(dl2_dt);
+                                dl2.appendChild(dl2_dd);
+                                const dl3 = document.createElement('dl');
+                                const dl3_dt = document.createElement('dt');
+                                dl3_dt.innerText = '모집정원:'
+                                const dl3_dd = document.createElement('dd');
+                                dl3_dd.innerText = data.lectureList[i].numberOfPeople + '명';
+                                dl3.appendChild(dl3_dt);
+                                dl3.appendChild(dl3_dd);
+
+                                div3.appendChild(dl);
+                                div3.appendChild(dl2);
+                                div3.appendChild(dl3);
+                                div2.appendChild(p3);
+                                div2.appendChild(div3);
+
+                                a.appendChild(div);
+                                a.appendChild(p);
+                                a.appendChild(p2);
+                                a.appendChild(div2);
+
+                                li.appendChild(a)
+
+                                EDU.appendChild(li);
+                            }
+                        }
+
+                        // 이러닝 교육
+                        const EDU2 = document.getElementById('edu2');
+                        EDU2.innerHTML = '';
+                        if( CommonUtil.checkNullArray(data.elearningList) ){
+                            const div = document.createElement('div');
+                            div.setAttribute('class','bl_card_empty');
+                            div.innerText = '등록된 교육이 없습니다.'
+                            EDU2.appendChild(div);
+                        } else {
+                            for(let i=0; i<data.elearningList.length; i++){
+                                const li = document.createElement('li');
+                                const a = document.createElement('a');
+                                a.setAttribute('href','/education/application/e-learning/view/'+data.elearningList[i].educationPlanCode);
+                                a.setAttribute('class','bl_card');
+                                const p = document.createElement('p');
+                                p.setAttribute('class', 'bl_card_thumb');
+                                const img = document.createElement('img');
+                                if(data.elearningList[i].thumbnailFilePath == null){
+                                    img.setAttribute('src','/assets/images/@tmp/main_video.jpg');
+                                    img.setAttribute('alt',data.elearningList[i].curriculumName);
+                                } else {
+                                    img.setAttribute('src','/Public'+data.elearningList[i].thumbnailFilePath);
+                                    img.setAttribute('alt',data.elearningList[i].curriculumName);
+                                }
+                                p.appendChild(img);
+                                const p2 = document.createElement('p');
+                                p2.setAttribute('class','bl_card_subject');
+                                const strong = document.createElement('strong');
+                                strong.innerText = data.elearningList[i].curriculumName;
+                                p2.appendChild(strong);
+
+                                a.appendChild(p);
+                                a.appendChild(p2);
+                                li.appendChild(a)
+
+                                EDU2.appendChild(li);
+                            }
+                        }
+
+                        // 전체 탭
+                        const TAB1 = document.getElementById('tab1');
+                        const TABCONT1 = document.getElementById('tabCont1');
+                        TABCONT1.innerHTML = '';
+
+                        if ( CommonUtil.checkNullArray(data.allList) ) {
+                            const div = document.createElement('div');
+                            div.setAttribute('class', 'bl_card_empty');
+                            div.innerText = '데이터가 없습니다'
+                            TABCONT1.append(div)
+                        } else {
+                            const UL = document.createElement('ul');
+                            UL.setAttribute('class', 'bl_listMuti');
+                            for (let i = 0; i < data.allList.length; i++) {
+                                const LI = document.createElement('li');
+                                if (data.allList[i].bizPbancStts === 1) {
+                                    LI.setAttribute('with-state', 'finished')
+                                } else if (data.allList[i].bizPbancStts == 0) {
+                                    LI.setAttribute('with-state', 'ing')
+                                }
+                                const A = document.createElement('a');
+                                A.setAttribute('class', 'hp_flex');
+                                if(data.allList[i].categoryName == '사회 미디어' || data.allList[i].categoryName == '학교 미디어' || data.allList[i].categoryName == '언론인 연수' || data.allList[i].categoryName == '미디어 지원'){
+                                    A.setAttribute('href', '/business/pbanc/view/' + data.allList[i].keyValue);
+                                } else if(data.allList[i].categoryName == '공지사항'){
+                                    A.setAttribute('href', '/service-center/notice/view/' + data.allList[i].keyValue);
+                                }
+                                const SPAN = document.createElement('span');
+                                SPAN.setAttribute('class', 'el_label');
+                                if (data.allList[i].categoryName == '사회 미디어') {
+                                    SPAN.classList.add('el_label__red');
+                                } else if(data.allList[i].categoryName == '공지사항'){
+                                    SPAN.classList.add('el_label__green');
+                                } else if(data.allList[i].categoryName == '미디어 지원'){
+                                    SPAN.classList.add('el_label__srpt');
+                                } else if(data.allList[i].categoryName == '언론인 연수'){
+                                    SPAN.classList.add('el_label__blue');
+                                }
+                                SPAN.innerText = data.allList[i].categoryName;
+                                const DIV = document.createElement('div');
+                                DIV.setAttribute('class', 'bl_listMuti_item');
+                                const P = document.createElement('p');
+                                P.setAttribute('class', 'bl_listMuti_subject hp_ellipsis');
+                                const STRONG = document.createElement('strong');
+                                STRONG.innerText = data.allList[i].title;
+                                const SPAN2 = document.createElement('span');
+                                SPAN2.setAttribute('class', 'btn_type1 btn_xs');
+                                if (data.allList[i].bizPbancStts === 1) {
+                                    SPAN2.classList.add('btn_gray');
+                                    SPAN2.innerText = '신청마감';
+                                    P.append(SPAN2);
+                                } else if (data.allList[i].bizPbancStts == 0) {
+                                    SPAN2.classList.add('btn_red');
+                                    SPAN2.innerText = '신청중';
+                                    P.append(SPAN2);
+                                }
+                                P.append(STRONG);
+                                const DIV2 = document.createElement('div');
+                                DIV2.setAttribute('class', 'bl_listMuti_info');
+                                const DIV2_1 = document.createElement('div');
+                                DIV2_1.setAttribute('class', 'bl_listMuti_ctg');
+                                if(data.allList[i].categoryName == '학교 미디어' || data.allList[i].categoryName == '사회 미디어'){
+                                    if(data.allList[i].bizPbancType == '0' || data.allList[i].bizPbancType == '5'){
+                                        DIV2_1.innerText = '기본형';
+                                    } else if(data.allList[i].bizPbancType == '1'){
+                                        DIV2_1.innerText = '미디어교육 평생교실';
+                                    } else if(data.allList[i].bizPbancType == '2'){
+                                        DIV2_1.innerText = '미디어교육 운영학교';
+                                    } else if(data.allList[i].bizPbancType == '3'){
+                                        DIV2_1.innerText = '자유학기제 미디어교육지원';
+                                    }
+                                } else if(data.allList[i].categoryName == '공지사항'){
+                                    if(data.allList[i].noticeType == '1'){
+                                        DIV2_1.innerText = '미디어교육';
+                                    } else if(data.allList[i].noticeType == '2'){
+                                        DIV2_1.innerText = '언론인연수';
+                                    }
+                                }
+                                const DIV2_2 = document.createElement('div');
+                                DIV2_2.setAttribute('class', 'bl_listMuti_date');
+                                DIV2_2.innerText = data.allList[i].createDateTime.substring(0, 10);
+                                DIV2.append(DIV2_1);
+                                DIV2.append(DIV2_2);
+                                DIV.append(P);
+                                DIV.append(DIV2);
+                                A.append(SPAN);
+                                A.append(DIV);
+                                LI.append(A);
+                                UL.append(LI);
+                            }
+                            TABCONT1.append(UL);
+                        }
+
+                        // 공모 탭
+                        const TAB2 = document.getElementById('tab2');
+                        const TABCONT2 = document.getElementById('tabCont2');
+                        TABCONT2.innerHTML = '';
+
+                        if ( CommonUtil.checkNullArray(data.bizList) ) {
+                            const div = document.createElement('div');
+                            div.setAttribute('class', 'bl_card_empty');
+                            div.innerText = '데이터가 없습니다'
+                            TABCONT2.append(div);
+                        } else {
+                            const UL = document.createElement('ul');
+                            UL.setAttribute('class', 'bl_listMuti');
+                            for (let i = 0; i < data.bizList.length; i++) {
+                                const LI = document.createElement('li');
+                                if (data.bizList[i].bizPbancStts === 1) {
+                                    LI.setAttribute('with-state', 'finished')
+                                } else if (data.bizList[i].bizPbancStts == 0) {
+                                    LI.setAttribute('with-state', 'ing')
+                                }
+                                const A = document.createElement('a');
+                                // 언론인연수가 된다면 링크 변경 고려
+                                A.setAttribute('href', '/business/pbanc/view/' + data.bizList[i].bizPbancNo);
+                                A.setAttribute('class', 'hp_flex');
+                                const SPAN = document.createElement('span');
+                                SPAN.setAttribute('class', 'el_label');
+                                if (data.bizList[i].categoryName == '사회 미디어') {
+                                    SPAN.classList.add('el_label__red');
+                                } else if(data.bizList[i].categoryName == '언론인 연수'){
+                                    SPAN.classList.add('el_label__blue');
+                                } else if(data.bizList[i].categoryName == '미디어 지원'){
+                                    SPAN.classList.add('el_label__srpt');
+                                }
+                                SPAN.innerText = data.bizList[i].categoryName;
+                                const DIV = document.createElement('div');
+                                DIV.setAttribute('class', 'bl_listMuti_item');
+                                const P = document.createElement('p');
+                                P.setAttribute('class', 'bl_listMuti_subject hp_ellipsis');
+                                const STRONG = document.createElement('strong');
+                                STRONG.innerText = data.bizList[i].bizPbancNm;
+                                const SPAN2 = document.createElement('span');
+                                SPAN2.setAttribute('class', 'btn_type1 btn_xs');
+                                if (data.bizList[i].bizPbancStts === 1) {
+                                    SPAN2.classList.add('btn_gray');
+                                    SPAN2.innerText = '신청마감';
+                                } else if (data.bizList[i].bizPbancStts == 0) {
+                                    SPAN2.classList.add('btn_red');
+                                    SPAN2.innerText = '신청중';
+                                }
+                                P.append(STRONG);
+                                P.append(SPAN2);
+                                const DIV2 = document.createElement('div');
+                                DIV2.setAttribute('class', 'bl_listMuti_info');
+                                const DIV2_1 = document.createElement('div');
+                                DIV2_1.setAttribute('class', 'bl_listMuti_ctg');
+                                if(data.bizList[i].bizPbancType == '0' || data.bizList[i].bizPbancType == '5'){
+                                    DIV2_1.innerText = '기본형';
+                                } else if(data.bizList[i].bizPbancType == '1'){
+                                    DIV2_1.innerText = '미디어교육 평생교실';
+                                } else if(data.bizList[i].bizPbancType == '2'){
+                                    DIV2_1.innerText = '미디어교육 운영학교';
+                                } else if(data.bizList[i].bizPbancType == '3'){
+                                    DIV2_1.innerText = '자유학기제 미디어교육지원';
+                                } else if(data.bizList[i].bizPbancType == '4'){
+                                    DIV2_1.innerText = '팩트체크 교실';
+                                }
+                                const DIV2_2 = document.createElement('div');
+                                DIV2_2.setAttribute('class', 'bl_listMuti_date');
+                                DIV2_2.innerText = data.bizList[i].createDateTime.substring(0, 10);
+                                DIV2.append(DIV2_1);
+                                DIV2.append(DIV2_2);
+                                DIV.append(P);
+                                DIV.append(DIV2);
+                                A.append(SPAN);
+                                A.append(DIV);
+                                LI.append(A);
+                                UL.append(LI);
+                            }
+                            TABCONT2.append(UL);
+                            const moreBtn = `
+                                <div class="text-end mt-3">
+                                    <a href="/business/pbanc" class="btn_type3 btn_sm">더보기 <img src="/assets/images/icons/plus__sm.png" alt="더 보기" class="hp_ml5"></a>
+                                </div>`;
+                            TABCONT2.insertAdjacentHTML('beforeend', moreBtn);
+                        }
+
+                        // 공지 탭
+                        const TAB3 = document.getElementById('tab3');
+                        const TABCONT3 = document.getElementById('tabCont3');
+                        TABCONT3.innerHTML = '';
+
+                        if ( CommonUtil.checkNullArray(data.noticeList) ) {
+                            const div = document.createElement('div');
+                            div.setAttribute('class', 'bl_card_empty');
+                            div.innerText = '데이터가 없습니다'
+                            TABCONT3.append(div);
+                        } else {
+                            const UL = document.createElement('ul');
+                            UL.setAttribute('class', 'bl_listMuti');
+                            for (let i = 0; i < data.noticeList.length; i++) {
+                                const LI = document.createElement('li');
+                                const A = document.createElement('a');
+                                A.setAttribute('href', '/service-center/notice/view/' + data.noticeList[i].noticeSerialNo);
+                                A.setAttribute('class', 'hp_flex');
+                                const SPAN = document.createElement('span');
+                                SPAN.setAttribute('class', 'el_label el_label__green');
+                                SPAN.innerText = '공지사항';
+                                const DIV = document.createElement('div');
+                                DIV.setAttribute('class', 'bl_listMuti_item');
+                                const P = document.createElement('p');
+                                P.setAttribute('class', 'bl_listMuti_subject hp_ellipsis');
+                                const STRONG = document.createElement('strong');
+                                STRONG.innerText = data.noticeList[i].title;
+                                P.append(STRONG);
+                                const DIV2 = document.createElement('div');
+                                DIV2.setAttribute('class', 'bl_listMuti_info');
+                                const DIV2_1 = document.createElement('div');
+                                DIV2_1.setAttribute('class', 'bl_listMuti_ctg');
+                                if (data.noticeList[i].noticeType == '1') {
+                                    DIV2_1.innerText = '미디어교육';
+                                } else if (data.noticeList[i].noticeType == '2') {
+                                    DIV2_1.innerText = '언론인연수';
+                                }
+                                const DIV2_2 = document.createElement('div');
+                                DIV2_2.setAttribute('class', 'bl_listMuti_date');
+                                DIV2_2.innerText = data.noticeList[i].createDateTime.substring(0, 10);
+                                DIV2.append(DIV2_1);
+                                DIV2.append(DIV2_2);
+                                DIV.append(P);
+                                DIV.append(DIV2);
+                                A.append(SPAN);
+                                A.append(DIV);
+                                LI.append(A);
+                                UL.append(LI);
+                            }
+                            TABCONT3.append(UL);
+                            const moreBtn = `
+                                <div class="text-end mt-3">
+                                    <a href="/service-center/notice" class="btn_type3 btn_sm">더보기 <img src="/assets/images/icons/plus__sm.png" alt="더 보기" class="hp_ml5"></a>
+                                </div>`;
+                            TABCONT3.insertAdjacentHTML('beforeend', moreBtn);
+                        }
+                    },
+                    error: function (e){
+                        console.log(e)
+                    }
+                })
+            }
+
+            function commuCall(){
+                $.ajax({
+                    url: "/api/main/communication",
+                    type: 'GET',
+                    success: function (res){
+                        const commuList = document.getElementById('suggestion-list');
+                        if( !CommonUtil.checkNullArray(res.communicationList) ){
+                            for(let i=0; i<res.communicationList.length; i++){
+                                const LI = document.createElement('li');
+                                const A = document.createElement('a');
+                                if(res.communicationList[i].category === '[자료실]'){
+                                    // 자료실
+                                    if(res.communicationList[i].type === '9'){
+                                        // 수업지도안
+                                        A.setAttribute('href','/communication/archive/class-guide/view/'+res.communicationList[i].keyValue)
+                                    } else if(res.communicationList[i].type === '1'){
+                                        // 교육자료
+                                        A.setAttribute('href','communication/archive/edu-data/view/'+res.communicationList[i].keyValue)
+                                    } else if(res.communicationList[i].type === '2'){
+                                        // 연구/통계
+                                        A.setAttribute('href','/communication/archive/research-data/view/'+res.communicationList[i].keyValue)
+                                    } else if(res.communicationList[i].type === '3'){
+                                        // 영상 자료
+                                        A.setAttribute('href','/communication/archive/media/view/'+res.communicationList[i].keyValue)
+                                    } else if(res.communicationList[i].type === '4'){
+                                        // 사업결과물
+                                        A.setAttribute('href','/communication/archive/results/view/'+res.communicationList[i].keyValue)
+                                    }  else if(res.communicationList[i].type === '0'){
+                                        // 기타 자료
+                                        A.setAttribute('href','/communication/archive/etc-data/view/'+res.communicationList[i].keyValue)
+                                    }
+                                } else if(res.communicationList[i].category === '[이벤트/설문]'){
+                                    // 이벤트/설문
+                                    A.setAttribute('href','/communication/event/view/'+res.communicationList[i].keyValue)
+                                } else if(res.communicationList[i].category === '[교육후기방]'){
+                                    // 교육후기
+                                    A.setAttribute('href','/communication/review/view/'+res.communicationList[i].keyValue)
+                                }
+                                const DIV = document.createElement('div');
+                                DIV.setAttribute('class','bl_list_item hp_flex');
+                                const P = document.createElement('p');
+                                P.setAttribute('class', 'bl_list_subject hp_ellipsis');
+                                const STRONG = document.createElement('strong');
+                                STRONG.innerText = res.communicationList[i].category;
+                                P.append(STRONG, " ", res.communicationList[i].title);
+                                const DIV2 = document.createElement('div');
+                                DIV2.setAttribute('class','bl_list_info')
+                                const DIV3 = document.createElement('div');
+                                DIV3.setAttribute('class','bl_list_date');
+                                DIV3.innerText = res.communicationList[i].createDateTime.substring(0,10);
+                                DIV2.append(DIV3);
+                                DIV.append(P);
+                                DIV.append(DIV2);
+                                A.append(DIV);
+                                LI.append(A);
+                                commuList.append(LI);
+                            }
+                        } else {
+                            const DIV = document.createElement('div');
+                            DIV.innerText = '목록이 없습니다.';
+                            DIV.style.color = '#999';
+                            DIV.style.minHeight = '190px';
+                            DIV.style.display = 'flex';
+                            DIV.style.justifyContent = 'center';
+                            DIV.style.alignItems = 'center';
+                            commuList.append(DIV);
+                        }
+                    },
+                    error: function (e){
+                        console.log(e)
+e
+                    }
+                })
+            }
+
+            const AUTH = [[ ${#authentication.principal} ]];
+            // 메인 슬라이드 선택
+            let slideIndex___ = 0;
+
+            // 초기 설정
+            if(AUTH == 'anonymousUser'){
+                // 비로그인
+                slideIndex___ = 1;
+                mainCall('MISSION');
+            } else {
+                if(AUTH.bizAuth == 'INSTR'){
+                    // 미디어 강사 권한
+                    slideIndex___ = 2;
+                    mainCall('MEDIA');
+                } else if(AUTH.bizAuth == 'SCHOOL' || AUTH.bizAuth == 'AGENCY'){
+                    // 기관 담당자 권한 OR 학교 담당자 권한
+                    slideIndex___ = 1;
+                    mainCall('MISSION');
+                } else if(AUTH.authorities[0].authority == 'JOURNALIST') {
+                    // 권한 없고 언론인 회원
+                    slideIndex___ = 0;
+                    mainCall('JOURNALIST');
+                }  else if(AUTH.authorities[0].authority == 'GENERAL'){
+                    // 권한 없고 일반인 회원
+                    slideIndex___ = 1;
+                    mainCall('MISSION');
+                } else {
+                    // 권한 없고 일반 (교원, 학생, 학부모) OR 관리자
+                    slideIndex___ = 1;
+                    mainCall('MISSION');
+                }
+            }
+
+            $('#jumbotromMainVisual').on('beforeChange', function(){
+                $("#main-content-preview-list").removeClass("cts-loading");
+                $("#main-content-preview-list").addClass("cts-loading");
+            });
+
+            $('#jumbotromMainVisual').on('afterChange', function (ev, slick){
+                mainSlideBtn(slick.currentSlide);
+                document.getElementById('tab1').setAttribute('style','display:block');
+                document.getElementById('tab2').setAttribute('style','display:block');
+                document.getElementById('tab3').setAttribute('style','display:block');
+                document.getElementById('tabCont1').setAttribute('style','display:block');
+                document.getElementById('tabCont2').setAttribute('style','display:none');
+                document.getElementById('tabCont3').setAttribute('style','display:none');
+                if(slick.currentSlide == 0){
+                    // 언론인 연수
+                    mainCall('JOURNALIST');
+                } else if(slick.currentSlide == 1){
+                    // 미션
+                    if(AUTH == 'anonymousUser'){
+                        $("#main-content-preview-list").removeClass("cts-loading");
+                    }
+                    mainCall('MISSION');
+                } else if(slick.currentSlide == 2){
+                    // 미디어 교육
+                    mainCall('MEDIA');
+                }
+                const tabList = document.querySelectorAll('.bl_tab_menu.js_tab_menu li');
+                for(let i=0; i<tabList.length; i++){
+                    tabList[i].classList.remove('is_active');
+                }
+                if(tabList[0].attributes.style.value == 'display:none'){
+                    tabList[1].setAttribute('class','is_active');
+                } else {
+                    tabList[0].setAttribute('class','is_active');
+                }
+            })
+
+            function onLoadSubmit() {
+
+                if ([[ ${errorMessage}]]) {
+                    alert([[ ${errorMessage}]]);
+                }
+                commuCall();
+                calendarInit();
+                getDisplay();
+            }
+            /* ]]> */
+
+            // 달력
+            /*
+                달력 렌더링 할 때 필요한 정보 목록
+
+                현재 월(초기값 : 현재 시간)
+                금월 마지막일 날짜와 요일
+                전월 마지막일 날짜와 요일
+            */
+
+            let evDateList = [];
+
+            function getEv(start,end){
+                let returnData;
+
+                $.ajax({
+                    url: "/api/main/calendar",
+                    type: 'GET',
+                    async: false,
+                    data: {
+                        startDate: start,
+                        endDate: end
+                    },
+                    success: function (data){
+                        returnData = data;
+                    },
+                    error: function (e){
+                        console.log(e)
+                    }
+                })
+                return returnData;
+            }
+
+            function getMonthEv(start, end){
+                let tempEv = getEv(start, end);
+                compareYM = start.substring(0,4)+start.substring(5,7);
+                evDateList = [];
+                if (tempEv.calendarList && tempEv.calendarList.length > 0) {
+                    for(let i=0; i<tempEv.calendarList.length; i++){
+                        if(tempEv.calendarList[i].category === 'BIZ'){
+                            // 사업일떄는 receiptEndDate를 기준으로 => applyEndDateTime 기준으로 변경
+                            let tempDate = tempEv.calendarList[i].applyEndDateTime.substring(0,4)+tempEv.calendarList[i].applyEndDateTime.substring(5,7);
+                            if(compareYM == tempDate){
+                                evDateList.push(tempEv.calendarList[i].applyEndDateTime.substring(0,4)+tempEv.calendarList[i].applyEndDateTime.substring(5,7)+tempEv.calendarList[i].applyEndDateTime.substring(8,10))
+                            }
+                        } else if(tempEv.calendarList[i].category === 'EDU'){
+                            // 교육일때는 applyEndDateTime를 기준으로
+                            let tempDate = tempEv.calendarList[i].applyEndDateTime.substring(0,4)+tempEv.calendarList[i].applyEndDateTime.substring(5,7);
+                            if(compareYM == tempDate){
+                                evDateList.push(tempEv.calendarList[i].applyEndDateTime.substring(0,4)+tempEv.calendarList[i].applyEndDateTime.substring(5,7)+tempEv.calendarList[i].applyEndDateTime.substring(8,10))
+                            }
+                        }
+                    }
+                }
+            }
+
+            function getDayEv(date){
+                let tmpDate = String(date).substring(0,4)+'-'+String(date).substring(4,6)+'-'+String(date).substring(6,8);
+                return getEv(tmpDate,tmpDate);
+            }
+
+            function calendarInit() {
+                // 날짜 정보 가져오기
+                var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
+                var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
+                var kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
+                var today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
+
+                var thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                // 달력에서 표기하는 날짜 객체
+
+                var currentYear = thisMonth.getFullYear(); // 달력에서 표기하는 연
+                var currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
+                var currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
+
+                // 캘린더 렌더링
+                renderCalender(thisMonth);
+                function renderCalender(thisMonth) {
+                    // 렌더링을 위한 데이터 정리
+                    currentYear = thisMonth.getFullYear();
+                    currentMonth = thisMonth.getMonth();
+                    currentDate = thisMonth.getDate();
+
+                    // 이전 달의 마지막 날 날짜와 요일 구하기
+                    var startDay = new Date(currentYear, currentMonth, 0);
+                    var prevDate = startDay.getDate();
+                    var prevDay = startDay.getDay();
+
+                    // 이번 달의 마지막날 날짜와 요일 구하기
+                    var endDay = new Date(currentYear, currentMonth + 1, 0);
+                    var nextDate = endDay.getDate();
+                    var nextDay = endDay.getDay();
+
+
+                    // 현재 월 표기
+                    $('.year-month').text(currentYear + '.' + (currentMonth + 1));
+
+                    // 렌더링 html 요소 생성
+                    calendar = document.querySelector('.dates')
+                    calendar.innerHTML = '';
+
+                    // 지난달
+                    for (var i = prevDate - prevDay; i <= prevDate; i++) {
+                        calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable">' + i + '</div>'
+                    }
+                    let currentDisaplyMonth = (currentMonth+1) > 9 ?  (currentMonth+1) : "0"+(currentMonth+1);
+                    // 이번달
+                    for (var i = 1; i <= nextDate; i++) {
+                        if(i>9){
+                            calendar.innerHTML = calendar.innerHTML + '<div class="day current" onclick="clickDate('+ (String(currentYear)+currentDisaplyMonth+String(i)) +')">' + i + '</div>'
+                        } else {
+                            calendar.innerHTML = calendar.innerHTML + '<div class="day current" onclick="clickDate('+ (String(currentYear)+currentDisaplyMonth+String(0)+String(i)) +')">' + i + '</div>'
+                        }
+                    }
+                    // 다음달
+                    for (var i = 1; i <= (7 - (nextDay+1) == 7 ? 0 : 7 - (nextDay+1)); i++) {
+                        calendar.innerHTML = calendar.innerHTML + '<div class="day next disable">' + i + '</div>';
+                    }
+
+                    // 이벤트 호출
+                    getMonthEv(String(currentYear)+'-'+currentDisaplyMonth+'-01',String(currentYear)+'-'+currentDisaplyMonth+'-'+nextDate);
+
+                    // 이벤트 날짜 표기
+                    for(let i=0; i<evDateList.length; i++){
+                        evDate = evDateList[i].substring(6,8);
+                        var currentMonthDate = document.querySelectorAll('.dates .current');
+                        currentMonthDate[evDate -1].classList.add('evDate');
+                    }
+
+                    // 오늘 날짜 표기
+                    if (today.getMonth() == currentMonth && today.getFullYear() == currentYear) {
+                        todayDate = today.getDate();
+                        var currentMonthDate = document.querySelectorAll('.dates .current');
+                        currentMonthDate[todayDate -1].classList.add('today');
+                    }
+                }
+
+                // 이전달로 이동
+                $('.go-prev').on('click', function() {
+                    thisMonth = new Date(currentYear, currentMonth - 1, 1);
+                    renderCalender(thisMonth);
+                });
+
+                // 다음달로 이동
+                $('.go-next').on('click', function() {
+                    thisMonth = new Date(currentYear, currentMonth + 1, 1);
+                    renderCalender(thisMonth);
+                });
+
+            }
+
+            // POPUP CLOSE
+            function closePopCalList(){
+                document.body.classList.remove('scroll_lock');
+
+                $('#popCalList').hide();
+
+                let dimm = document.querySelector('.dimm');
+                dimm.remove();
+            }
+
+            function clickDate(selDate){
+                const convertDate = String(selDate)
+                let tempEv = getDayEv(selDate).calendarList;
+
+                // 팝업 생성
+                // 총 갯수
+                const totalCnt = (tempEv === undefined ? 0 : tempEv.length)
+                document.getElementById('popTotal').innerText = totalCnt;
+                // 내용
+
+                $('#popListBox').html('');
+                if(totalCnt > 0){
+                    for(let i=0; i<totalCnt; i++){
+                        let popIcon, title, receiptPeriod, applyPeriod;
+                        if(tempEv[i].category === "BIZ"){
+                            // 공모사업이라면
+                            popIcon = `<div class="list_ctg">
+                                    <img src="/assets/images/main/cal_list_ctg.png" alt="공모사업">
+                                        공모사업
+                                </div>`;
+                            title = `<a href="/business/pbanc/view/${tempEv[i].keyValue}" class="list_tit hp_ellipsis">
+                                    ${tempEv[i].title}
+                                </a>`;
+                            applyPeriod = `<div class="list_dateRange">
+                                            <span class="date_tit">신청기간</span>
+                                            <span class="font_roboto">${tempEv[i].applyBeginDateTime} ~ ${tempEv[i].applyEndDateTime}</span>
+                                        </div>`
+                            receiptPeriod = `<div class="list_dateRange">
+                                            <span class="date_tit">사업기간</span>
+                                            <span class="font_roboto">${tempEv[i].receiptBeginDate} ~ ${tempEv[i].receiptEndDate}</span>
+                                        </div>`;
+                        } else if(tempEv[i].category == "EDU"){
+                            // 교육신청이라면
+                            popIcon = `<div class="list_ctg">
+                                    <img src="/assets/images/main/cal_list_ctg2.png" alt="교육신청">
+                                        교육신청
+                                </div>`
+                            let link;
+                            if(tempEv[i].type == "1" || tempEv[i].type == "2"){
+                                link = '/education/application/lecture/view/'
+                            } else if(tempEv[i].type == "3"){
+                                link = '/education/application/e-learning/view/'
+                            };
+                            title = `<a href=${link}${tempEv[i].keyValue} class="list_tit hp_ellipsis">
+                                    ${tempEv[i].title}
+                                </a>`;
+                            applyPeriod = `<div class="list_dateRange">
+                                            <span class="date_tit">지원기간</span>
+                                            <span class="font_roboto">${tempEv[i].applyBeginDateTime.substring(0,10)} ~ ${tempEv[i].applyEndDateTime.substring(0,10)}</span>
+                                        </div>`;
+                            receiptPeriod = ``;
+                        }
+
+                        let list = `<div class="cal_list">
+                                    ${popIcon}
+                                    <div>
+                                        ${title}
+                                        <div class="list_info">
+                                            ${applyPeriod}
+                                            ${receiptPeriod}
+                                        </div>
+                                        <div class="list_txt hp_ellipsis_2">
+                                            ${tempEv[i].contents}
+                                        </div>
+                                    </div>
+                                </div>`;
+                        $('#popListBox').append(list)
+                    }
+                } else {
+                    const list = `<div class="cal_list" style="justify-content: center">조회된 정보가 없습니다.</div>`
+                    $('#popListBox').append(list)
+                }
+                document.getElementById('popDate').setAttribute('value',convertDate.substring(0,4)+'.'+convertDate.substring(4,6)+'.'+convertDate.substring(6,8));
+
+                document.body.classList.add('scroll_lock');
+
+                $('#popCalList').show();
+
+                let dimm = document.createElement('div');
+                dimm.classList.add('dimm');
+                document.body.appendChild(dimm);
+            }
+
+        </script>
+    </th:block>
+    <form id="submitForm" action="#" style="visibility: hidden;"></form>
+
+    <script>
+        /* /배너&팝업 호출 */
+        function getDisplay(){
+            let loginChk;
+
+            if (AUTH == 'anonymousUser') {
+                loginChk = 'n';
+            } else {
+                loginChk = 'y';
+            }
+
+            $.ajax({
+                url: "/api/main/display",
+                type: 'GET',
+                data: { loginYn: loginChk },
+                success: function (data){
+                    bannerSlider(data);
+                    laypopup(data);
+                },
+                error: function (e){
+                    console.log(e)
+                }
+            });
+        }
+
+        function bannerSlider(data) {
+            if (data.bannerList && data.bannerList.length > 0) {
+                const originNum = $('#bl_bnnrMain_slider li').length;
+
+                data.bannerList.forEach((bannerData, index) => {
+                    let pageNum = index + 1 + originNum;
+                    let html = $(`
+                        <li page-num="${pageNum}">`
+                            + (bannerData.bannerLink ? `<a href="${bannerData.bannerLink}" target="_blank">` : '')
+                            + `<img src="/Public${bannerData.bannerImagePath}"  alt="${bannerData.title}">`
+                            + (bannerData.bannerLink ? `</a>` : '') +
+                        `</li>
+                    `);
+                    $('#bl_bnnrMain_slider').append(html);
+                });
+
+                $('#bl_bnnrMain_slider').slick({
+                    speed: 500,
+                    fade: true,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    cssEase: 'linear',
+                    arrow: true,
+                    dots: false,
+                    infinite: true,
+                    prevArrow: '<div class="slick-prev">이전</div>',
+                    nextArrow: '<div class="slick-next">다음</div>'
+                });
+
+                const bnnr_slide_cnt = $('#bl_bnnrMain_slider li').length;
+                if(bnnr_slide_cnt > 1){
+                    if ($('#bl_bnnrMain_slider').exists()) {
+                        $(`<div class="slick-arrow-bg">
+                        <div class="paging">
+                            <span class="page-active">1</span>
+                            <span class="page-blank">/</span>
+                            <span class="page-last">5</span>
+                        </div>
+                    </div>`).appendTo('#bl_bnnrMain_slider');
+
+                        let activeNum;
+                        $('#bl_bnnrMain_slider .page-last').text(bnnr_slide_cnt);
+                        let pageNumChk = setInterval(() => {
+                            activeNum = $('#bl_bnnrMain_slider .slick-active').attr('page-num');
+                            $('#bl_bnnrMain_slider .page-active').text(activeNum);
+                        }, 100);
+                    }
+                }
+            }
+        }
+
+        function laypopup(data) {
+            if (data && data.popupList && data.popupList.length > 0) {
+                data.popupList.forEach(popData => {
+                    new CommonUI.Laypopup({
+                        layerId : 'layer_'+popData.popupSn,
+                        title: popData.title,
+                        content : popData.contents,
+                        img: popData.popupImagePath,
+                        link: popData.popupLink,
+                        width: popData.windowSizeV,
+                        height: popData.windowSizeH,
+                        startTop: popData.windowTop,
+                        startLeft: popData.windowLeft,
+                        cache: true
+                    });
+                });
+            }
+        }
+    </script>
+
+</div>
+</body>
+</html>

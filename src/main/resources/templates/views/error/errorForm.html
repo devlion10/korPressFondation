@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="한국언론진흥재단" name="keywords" >
+    <title>한국언론진흥재단 미디어아카데미</title>
+    <link rel="icon" th:href="@{/assets/favicon/favicon-32x32.png}">
+    <link th:href="@{/css/custom/global.css}" rel="stylesheet">
+    <link th:href="@{/css/error.css}" rel="stylesheet">
+</head>
+<body>
+    <div layout:fragment="content" class="error_page">
+        <div>
+            <img th:src="@{/assets/images/icons/icon_error.png}">
+            <div class="error_box">
+                <strong>불편을 드려 죄송합니다.</strong>
+                <p>일시적인 장애로 해당 서비스를 사용할 수 없습니다.<br>잠시 후에 다시 시도해주세요.</p>
+            </div>
+            <div>
+                <a class="error_btn" href="javascript:window.history.back()">뒤로가기</a>
+            </div>
+        </div>
+    </div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			/* <![CDATA[ */
+			function onLoadSubmit(){
+                console.log('content: ', [[ ${errorMessage} ]] )
+			}
+			/* ]]> */
+		</script>
+	</th:block>
+	<form id="submitForm" action="#" style="visibility: hidden;">
+    </body>
+</html>

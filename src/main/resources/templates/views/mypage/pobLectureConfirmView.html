@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">강의확인서</div>
+                    </div>
+
+                    <div class="cont_title">사업정보</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>사업정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    사업명
+                                </th>
+                                <td th:text="${content[0].bizPbancMaster.bizPbancNm}">
+                                    미디어교육 평생교실new test
+                                </td>
+                                <th scope="row">
+                                    제출처
+                                </th>
+                                <td th:text="${content[0].bizOrganizationAply.bizOrgAplyRgn}">
+                                    서울
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    학교/기관
+                                </th>
+                                <td th:text="${content[0].BizOrganizationAply.organizationInfo.organizationName}">
+                                    한국언론진흥재단
+                                </td>
+                                <th scope="row">
+                                    담당자명
+                                </th>
+                                <td th:text="${content[0].bizOrganizationAply.bizOrgAplyPicNm}">한국언론진흥재단</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    강사명
+                                </th>
+                                <td th:text="${content[0].bizInstructorAply.bizInstrAplyInstrNm}">
+                                    한국언론진흥재단
+                                </td>
+                                <th scope="row">
+                                    총 강의시간
+                                </th>
+                                <td>
+                                    <span th:text="${content[0].bizInstrIdntyTime}"></span>시간
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cont_title">강의시간표</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>강의시간표</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <th:block th:each="item,stat:${content[0].bizInstructorIdentifyDtls}">
+                            <tr>
+                                <th scope="row" rowspan="3"><span th:text="${stat.count}"></span>회차</th>
+                                <th scope="row">
+                                    일시
+                                </th>
+                                <td class="bl_boardWrite_date">
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        <div>
+                                            <span th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd} + ' '">2022-07-28(목)</span>
+                                            <span th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlBgngTm+'~'+item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm}">09:00~11:00</span>
+                                            (<span class="bizOrgAplyLsnDtlHr" th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlHr}">2</span>시간)
+                                            <span class="bizInstrIdntyDtlNope" th:text="${' / ' + item.bizInstrIdntyDtlNope}">2</span>
+                                            <span th:if="${' / '+item.vdoLctYn==1}">(언택트 강의)</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">주제</th>
+                                <td th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlTpic}">
+                                    주제주제주제주제
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">내용<br class="hp_lg_show" > (200자 이상)</th>
+                                <td class="bizInstrIdntyDtlCn" th:utext="${item.bizInstrIdntyDtlCn}">
+                                    내용내용내용<br>
+                                    내용내용내용<br>
+                                    내용내용내용<br>
+                                    내용내용내용<br>
+                                    내용내용내용
+                                </td>
+                            </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cont_title">자료첨부</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>자료첨부</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">수업지도안</th>
+                                <td>
+                                    <span th:if="${content[0].bizInstrIdntyLsnFile == null}">제출된 파일이 없습니다.</span>
+                                    <a th:if="${content[0].bizInstrIdntyLsnFile != null}" class="btn_type5 btn_file download_ajax" th:href="@{/api/business/instructor/identify/download(attachFilePath=${content[0].bizInstrIdntyLsnFile}, fileType='lsn')}">수업지도안 다운로드</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">수업자료안</th>
+                                <td>
+                                    <span th:if="${content[0].bizInstrIdntyAtchFile == null}">제출된 파일이 없습니다.</span>
+                                    <a th:if="${content[0].bizInstrIdntyAtchFile != null}" class="btn_type5 btn_file download_ajax" th:href="@{/api/business/instructor/identify/download(attachFilePath=${content[0].bizInstrIdntyAtchFile}, fileType='atch')}">수업자료안 다운로드</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md" th:if="${content[0].bizInstrIdntyStts==1}">
+                            <a class="btn_type1 btn_blue" onclick="aprv(2)">승인하기</a>
+                            <a class="btn_type1 btn_red" onclick="aprv(9)">반려하기</a>
+                        </div>
+                        <div class="bl_gridBtns_md" th:if="${content[0].bizInstrIdntyStts==9}">
+                            <a class="btn_type1 btn_blue" onclick="aprv(2)">승인하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/business-state/confirmation">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                $(".bizInstrIdntyDtlCn").each((idx,item)=>{$(item).html($(item).text().replace(/\n|\\n/g,'<br>'))}) // 엔터 표시
+
+                function aprv(stts){
+                    let text = stts==2?"승인":"반려";
+                    let CONT =  [[ ${content} ]];
+                    let params = CONT[0];
+                    params.bizInstrIdntyStts = stts;
+                    let now = new Date(); // 선택일+현재시간
+                    params.bizInstrIdntyAprvDt = stts==2?now.toISOString().split("T")[0]+' '+now.toTimeString().split(" ")[0]:null;
+                    if(confirm(`정말로 ${text} 하시겠습니까?`)){
+                        $.ajax({
+                            type: "put",
+                            headers: {'Content-Type': 'application/json'},
+                            url: "/api/business/instructor/identify/update",
+                            data: JSON.stringify(params),
+                            dataType: "json",
+                            success:function (){
+                                alert(`강의확인서가 ${text} 처리되었습니다.`);
+                                window.location.assign('/mypage/business-state/confirmation')
+                            },
+                            error: function (e){
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert(`강의확인서를 ${text}하는 과정에서 오류가 발생하였습니다.`);
+                                }
+                            }
+                        })
+                    }
+                }
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,0,1);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

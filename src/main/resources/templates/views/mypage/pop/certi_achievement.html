@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body class="reduction">
+<div layout:fragment="pop">
+  <style>
+    .reduction {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .reduction #certi_achievement {
+      transform: scale(0.29) translate(-123%, -123%);
+      font-family: 'ChosunGs';
+    }
+    #certi_achievement .certi_wrap {
+      position: absolute;
+      top: 420px;
+      left: 364px;
+      width: 1753px;
+      height: 2327px;
+    }
+    #certi_achievement .achivement_num {
+      font-size: 51px;
+      line-height: 1;
+      letter-spacing: 10px;
+    }
+    #certi_achievement .tit {
+      width: 257px;
+      margin-right: 30px;
+      flex-shrink: 0;
+    }
+    #certi_achievement .user_info {
+      margin-top: 685px;
+    }
+    #certi_achievement .user_info > div {
+      display: flex;
+      font-size: 51px;
+      line-height: 1.4;
+      letter-spacing: 10px;
+    }
+    #certi_achievement .user_info > div + div {
+      margin-top: 46px;
+    }
+    #certi_achievement .user_info .tit > .blank {
+      display: inline-block;
+      width: 93px;
+    }
+    #certi_achievement .certi_date {
+      position: absolute;
+      bottom: calc(346px + 54px);
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: 5px;
+    }
+    #certi_achievement .certi_btm {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: 5px;
+    }
+    .certi_btns {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+    }
+    #pdfDownBtn {
+      font-size: 15px!important;
+      margin-right: 5px;
+    }
+    #printBtn {
+      font-size: 15px!important;
+    }
+  </style>
+  <div class="certi_btns">
+    <span id="pdfDownBtn" class="btn_type1 btn_md btn_red" onclick="pdfDown()">pdf 다운로드</span>
+    <span id="printBtn" class="btn_type1 btn_md btn_blue" onclick="certiPrint()">인쇄</span>
+  </div>
+  <div id="certi_achievement">
+    <div class="certi_wrap">
+      <div class="achivement_num">
+        <span class="tit">이수번호;</span>
+        <span id="achivementNum">미교원-2023-직무-0401001</span>
+      </div>
+
+      <div class="user_info">
+        <div class="name">
+          <span class="tit">성<span class="blank"></span>명;</span>
+          <span id="userName">박상현</span>
+        </div>
+        <div class="birthday">
+          <span class="tit">생년월일;</span>
+          <span id="userBirthday">1996.04.09</span>
+        </div>
+        <div class="curriculum_type">
+          <span class="tit">연수종류;</span>
+          <span id="curriculumType">직무연수</span>
+        </div>
+        <div class="curriculum_time">
+          <span class="tit">이수시간;</span>
+          <span id="curriculumTime">60</span>
+        </div>
+        <div class="curriculum_name">
+          <span class="tit">연수과정;</span>
+          <span id="curriculumName">제 334기 수습기자 기본교육</span>
+        </div>
+        <div class="curriculum_date">
+          <span class="tit">연수기간;</span>
+          <span id="curriculumSdate" class="curriculum_sdate">2023년 01월 09일</span> ~
+          <span id="curriculumEdate" class="curriculum_edate">2023년 01월 20일</span>
+        </div>
+      </div>
+
+      <div id="certiDate" class="certi_date">2023년 02월 02일</div>
+
+      <div class="certi_btm">교육부 지정 종합교육연수원 (인가번호 제 <span id="certiBtmNum">2021-2</span>호)</div>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+      /* <![CDATA[ */
+
+      let fileName;
+
+      function dateConvert(date){
+        let convertDate = date.substring(0,4)+'년 '+ date.substring(5,7)+'월 ' + date.substring(8,10)+'일';
+        return convertDate
+      }
+
+      function birthdayConvert(date){
+        let convertDate = date.substring(0,4)+'.'+ date.substring(4,6)+'.'+ date.substring(6,8);
+        return convertDate
+      }
+
+      function makeCerti(){
+        const data = window.sendData;
+        if(data){
+          fileName = '이수증_' + data.eduTitle + '_' +data.name;
+
+          /* 이수번호 */
+          document.querySelector('#certi_achievement #achivementNum').innerText = "미교원-"+data.eduCreateDate.substring(0,4)+"-직무-"+data.programCompleteNumber;
+          /* 성명 */
+          document.querySelector('#certi_achievement #userName').innerText = data.name;
+          /* 생년월일 */
+          document.querySelector('#certi_achievement #userBirthday').innerText = birthdayConvert(data.birthDay);
+          /* 이수시간 */
+          document.querySelector('#certi_achievement #curriculumTime').innerText = data.educationTime;
+          /* 연수과정 */
+          document.querySelector('#certi_achievement #curriculumName').innerText = data.eduTitle;
+          /* 연수기간 */
+          document.querySelector('#certi_achievement #curriculumSdate').innerText = dateConvert(data.eduStartDate);
+          if(data.eduEndDate !== null){
+            document.querySelector('#certi_achievement #curriculumEdate').innerText = dateConvert(data.eduEndDate);
+          } else {
+            document.querySelector('#certi_achievement #curriculumEdate').innerText = dateConvert(data.eduCompleteDate);
+          }
+          /* 이수증 하단 날짜 */
+          let today = new Date();
+          let year = today.getFullYear(); // 년도
+          let month = today.getMonth() + 1;  // 월
+          let date = today.getDate();  // 날짜
+
+          let fullMonth
+          if (month < 10)
+            fullMonth = "0"+month
+          else
+            fullMonth = month
+          let fullDate
+          if (date < 10)
+            fullDate = "0"+date
+          else
+            fullDate = date
+
+          document.querySelector('#certi_achievement #certiDate').innerText = year+'년 '+fullMonth+'월 '+fullDate+'일';
+        }else{
+          alert('오류가 발생했습니다.');
+          window.close();
+        }
+      }
+
+      function pdfDown(){
+        $('.reduction').append('<div class="dimm"></div>');
+        $('.reduction').removeClass('reduction');
+        html2canvas(document.querySelector('#certi_achievement')).then(canvas => {
+          // 캔버스를 이미지로 변환
+          var imgData = canvas.toDataURL('image/png');
+
+          var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
+          var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+          var imgHeight = canvas.height * imgWidth / canvas.width;
+          var heightLeft = imgHeight;
+          var margin = 10; // 출력 페이지 여백설정
+          var doc = new jsPDF('p','mm','a4');
+          var position = 0;
+
+          var width = doc.internal.pageSize.getWidth();
+          var height = doc.internal.pageSize.getHeight();
+          doc.addImage(imgData, 'PNG', 0, 11, width, height);
+          doc.save(fileName+'.pdf');
+          window.close();
+        })
+      }
+
+      function certiPrint() {
+        var certi = document.querySelector('#certi_achievement')
+        var certi_btns = document.querySelector('.certi_btns')
+        var certiDiv = document.createElement('div')
+        certiDiv.setAttribute('id', 'certiDiv')
+        certiDiv.setAttribute('class', 'eLearning')
+
+        html2canvas(certi).then(canvas => {
+          certiDiv.append(canvas)
+          certi.parentElement.append(certiDiv)
+          $(certi).hide()
+          $(certi_btns).hide()
+        }).then(function () {
+          window.print();
+          $(certi).show()
+          $(certi_btns).show()
+          $(certiDiv).remove()
+        })
+      }
+
+      function onLoadSubmit() {
+        makeCerti();
+      }
+      /* ]]> */
+    </script>
+  </th:block>
+</div>
+</body>
+</html>

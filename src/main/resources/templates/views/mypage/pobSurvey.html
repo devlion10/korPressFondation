@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="page_title">상호평가</div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>사업내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td th:text="${content[0].bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</td>
+                                <th scope="row">사업기간</th>
+                                <td th:text="${content[0].bizOrgAplyLsnPlanBgng + ' ~ ' + content[0].bizOrgAplyLsnPlanEnd}">2022-08-03 ~ 2022-09-03</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="hp_mt60">
+                        <!-- COMPONENT : TABLE -->
+                        <table class="bl_table" th:each="item,stat : ${content}">
+                            <caption>수업</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">번호</th>
+                                <th scope="col">미디어강사</th>
+                                <th scope="col">상호평가</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="instrs" th:each="item2, stat2 : ${item.bizInstructorAsgnms}">
+                                <td><div class="bl_board_no" th:text="${((pageable.page * pageable.size) + stat2.index + 1)}">3</div></td>
+                                <td th:text="${item2.bizInstructorAply.bizInstrAplyInstrNm}"></td>
+                                <td>
+                                    <div class="btn_type4 btn_blue btn_underline survey_write" data-control="modal" data-handler="popEvaluation" th:if="${#lists.isEmpty(item2.bizSurveyAnsList)}" th:onclick="popupUpdate([[${item2.bizSurvey.bizSurveyQitems}]],[[${stat2.index}]])">작성</div>
+                                    <span class="btn_type4" th:unless="${#lists.isEmpty(item2.bizSurveyAnsList)}">완료</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/business-state">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 상호평가 -->
+        <div class="pop_wrapper ui-modal" id="popEvaluation">
+            <div class="pop_wrap pop_primary">
+                <div class="pop_head">
+                    <h1 class="tit">
+                        상호평가
+                    </h1>
+                </div>
+                <div class="pop_cont hp_h715">
+                    <div class="exam_questions" id='popRand'>
+                        <div class="exam_questions__item">
+                            <div class="exam_questions__num">문제 5번</div>
+                            <div class="exam_questions__title">다음 중 주요 방한시장의 이해로 올바르지 않은 것은 무엇인가?</div>
+                            <!-- 단일선택 -->
+                            <div class="exam_questions__cont">
+                                <div class="radio_box">
+                                    <input id="q1" type="radio" name="questions">
+                                    <label for="q1">
+                                        <span></span>
+                                        선택항목 1번
+                                    </label>
+                                </div>
+
+                                <div class="radio_box">
+                                    <input id="q2" type="radio" name="questions">
+                                    <label for="q2">
+                                        <span></span>
+                                        선택항목 1번
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- 다중선택 -->
+                            <div class="exam_questions__cont">
+                                <div class="chk_box">
+                                    <input id="q2-1" type="checkbox" name="questions2">
+                                    <label for="q2-1">
+                                        <span></span>
+                                        선택항목 1번
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- 단답형 -->
+                            <div class="exam_questions__cont">
+                                <label for="p3" class="hidden_label" ></label>
+                                <input id="p3" class="common_input w100">
+                            </div>
+                            <!-- 서술형 -->
+                            <div class="exam_questions__cont">
+                                <label for="p4" class="hidden_label" ></label>
+                                <textarea id="p4" class="common_input" rows="5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="bl_gridBtns">
+                            <div class="bl_gridBtns_md">
+                                <div class="btn_type2" onclick="examSubmit()">답안제출</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="pop_close pop-close">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                let tempData;
+                let tempNum;
+
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,0,0);
+                    hide_survey([[ ${content} ]][0].bizInstructorAsgnms);
+                }
+
+                function examSubmit(){
+                    if (confirm("제출 후 수정할 수 없습니다. 작성 완료 하시겠습니까?")) {
+                        let params = [];
+                        for(let i=0; i<document.querySelectorAll('.exam_questions__item').length; i++){
+                            let param = {
+                                "bizSurveyAnsCn": "", // 답
+                                "bizSurveyAnsEtc": "", // 기타의견
+                                "bizSurveyAnsNo": "", // 답변 번호인데 보낼떄는 빈칸
+                                "bizSurveyNo": [[ ${content} ]][0].bizInstructorAsgnms[tempNum].bizSurvey.bizSurveyNo,
+                                "bizSurveyQitemNo": tempData[i].bizSurveyQitemNo,
+                                "bizSurveyTrgtNo": [[ ${content} ]][0].bizInstructorAsgnms[tempNum].bizInstrAplyNo
+                            }
+                            if(tempData[i].bizSurveyQitemType === 0){
+                                // 단일선택
+                                param.bizSurveyAnsCn = document.querySelector('input[name='+tempData[i].bizSurveyQitemNo+']:checked').value;
+                            } else if(tempData[i].bizSurveyQitemType === 1){
+                                // 복수선택
+                                const query = 'input[name='+tempData[i].bizSurveyQitemNo+']:checked';
+                                const selectedEls = document.querySelectorAll(query);
+                                let result = [];
+                                selectedEls.forEach((el) => {
+                                    result.push(el.value);
+                                });
+                                param.bizSurveyAnsCn = result.toString();
+                            } else if(tempData[i].bizSurveyQitemType === 2){
+                                // 단답형
+                                param.bizSurveyAnsCn = document.getElementById(tempData[i].bizSurveyQitemNo).value;
+                            } else if(tempData[i].bizSurveyQitemType === 3){
+                                // 복수형
+                                param.bizSurveyAnsCn = document.getElementById(tempData[i].bizSurveyQitemNo).value;
+                            }
+                            if(tempData[i].bizSurveyQitemEtc === 1){
+                                param.bizSurveyAnsEtc = document.querySelector('.'+tempData[i].bizSurveyQitemNo+' .etc').value;
+                            }
+                            params.push(param);
+                        }
+
+                        $.ajax({
+                            type:"post",
+                            url: '/api/business/survey/ans/creates',
+                            headers: {'Content-Type': 'application/json'},
+                            data: JSON.stringify(params),
+                            dataType:"json",
+                            success: function(data){
+                                alert('강사평가를 완료했습니다.');
+                                window.location.reload();
+                            },
+                            error: function (e){
+                                console.log(e)
+                            }
+                        })
+                    }
+                }
+
+                function popupUpdate(data, num){
+                    tempData = data;
+                    tempNum = num;
+                    const rand = document.getElementById('popRand');
+                    rand.innerHTML = '';
+                    for(let i=0; i<data.length; i++){
+                        const questionItem = document.createElement('div');
+                        questionItem.classList.add('exam_questions__item');
+                        questionItem.classList.add(data[i].bizSurveyQitemNo);
+                        questionItem.style.maxHeight = 'none';
+                        // 문제 넘버링
+                        const questionNum = document.createElement('div');
+                        questionNum.classList.add('exam_questions__num');
+                        questionNum.innerText = '문제 '+(i+1)+'번';
+                        questionItem.append(questionNum);
+                        // 문제 제목
+                        const questionTitle = document.createElement('div');
+                        questionTitle.classList.add('exam_questions__title');
+                        questionTitle.style.marginBottom = '5px';
+                        questionTitle.innerText = data[i].bizSurveyQitemName;
+                        questionItem.append(questionTitle);
+                        // 문제 내용
+                        const questionSub = document.createElement('div');
+                        questionSub.style.border = '1px solid var(--color-border)';
+                        questionSub.style.padding = '10px';
+                        questionSub.style.marginBottom = '30px';
+                        questionSub.innerHTML = data[i].bizSurveyQitemContent;
+                        questionItem.append(questionSub);
+                        // 문제 응답
+                        const questionCont = document.createElement('div');
+                        questionCont.classList.add('exam_questions__cont');
+                        if(data[i].bizSurveyQitemType === 0){
+                            // 단일선택
+                            for(let j=0; j<data[i].bizSurveyQitemItems.length; j++){
+                                const radio_box = document.createElement('div');
+                                radio_box.classList.add('radio_box');
+                                const radio = document.createElement('input');
+                                radio.setAttribute('type','radio');
+                                radio.setAttribute('name',data[i].bizSurveyQitemItems[j].bizSurveyQitemNo);
+                                radio.setAttribute('id', data[i].bizSurveyQitemItems[j].bizSurveyQitemItemNo);
+                                radio.setAttribute('value', data[i].bizSurveyQitemItems[j].bizSurveyQitemItemScr);
+                                const radioLabel = document.createElement('label');
+                                radioLabel.setAttribute('for',data[i].bizSurveyQitemItems[j].bizSurveyQitemItemNo);
+                                radioLabel.innerHTML = '<span></span>' + data[i].bizSurveyQitemItems[j].bizSurveyQitemItemCn;
+
+                                radio_box.append(radio);
+                                radio_box.append(radioLabel);
+                                questionCont.append(radio_box);
+                            }
+
+                        } else if(data[i].bizSurveyQitemType === 1){
+                            // 다중선택
+                            for(let j=0; j<data[i].bizSurveyQitemItems.length; j++){
+                                const chk_box = document.createElement('div');
+                                chk_box.classList.add('chk_box');
+                                const chk = document.createElement('input');
+                                chk.setAttribute('type','checkbox');
+                                chk.setAttribute('name',data[i].bizSurveyQitemItems[j].bizSurveyQitemNo);
+                                chk.setAttribute('id', data[i].bizSurveyQitemItems[j].bizSurveyQitemItemNo);
+                                chk.setAttribute('value', data[i].bizSurveyQitemItems[j].bizSurveyQitemItemScr);
+                                const chkLabel = document.createElement('label');
+                                chkLabel.setAttribute('for',data[i].bizSurveyQitemItems[j].bizSurveyQitemItemNo);
+                                chkLabel.innerHTML = '<span></span>' + data[i].bizSurveyQitemItems[j].bizSurveyQitemItemCn;
+
+                                chk_box.append(chk);
+                                chk_box.append(chkLabel);
+                                questionCont.append(chk_box);
+                            }
+
+                        } else if(data[i].bizSurveyQitemType === 2){
+                            // 단답형
+                            const input = document.createElement('input');
+                            input.classList.add('common_input');
+                            input.classList.add('w100');
+                            input.style.marginBottom = '20px';
+                            input.setAttribute('id',data[i].bizSurveyQitemNo)
+                            questionCont.append(input);
+                        } else if(data[i].bizSurveyQitemType === 3){
+                            // 서술형
+                            const textArea = document.createElement('textarea');
+                            textArea.classList.add('common_input');
+                            textArea.setAttribute('rows','5');
+                            textArea.style.marginBottom = '20px';
+                            textArea.setAttribute('id',data[i].bizSurveyQitemNo)
+                            questionCont.append(textArea);
+                        }
+                        questionItem.append(questionCont);
+                        // 기타의견
+                        if(data[i].bizSurveyQitemEtc === 1){
+                            const DIV = document.createElement('div');
+                            const TITLE = document.createElement('div');
+                            TITLE.innerText = '기타의견';
+                            TITLE.style.marginBottom = '5px';
+                            const CONTDIV = document.createElement('div');
+                            const CONT = document.createElement('textarea');
+                            CONT.classList.add('common_input');
+                            CONT.classList.add('etc');
+                            CONT.setAttribute('rows','3');
+                            CONTDIV.append(TITLE);
+                            CONTDIV.append(CONT);
+                            DIV.append(CONTDIV);
+                            questionItem.append(DIV);
+                        }
+                        rand.append(questionItem)
+
+
+                    }
+                    const bl_gridBtns = document.createElement('div');
+                    bl_gridBtns.classList.add('bl_gridBtns');
+                    const bl_gridBtns_md = document.createElement('div');
+                    bl_gridBtns_md.classList.add('bl_gridBtns_md');
+                    const btn_type2 = document.createElement('div');
+                    btn_type2.classList.add('btn_type2');
+                    btn_type2.innerText = '답안제출';
+                    btn_type2.setAttribute('onclick','examSubmit()');
+                    bl_gridBtns_md.append(btn_type2);
+                    bl_gridBtns.append(bl_gridBtns_md);
+                    rand.append(bl_gridBtns);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+
+            function hide_survey(instrList) {
+                const now = new Date();
+                const utc = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+                const koreaTimeDiff = 9 * 60 * 60 * 1000;
+                const koreaNow = new Date(utc + koreaTimeDiff);
+                let nowDateTime = dateFormat(koreaNow);
+
+                $(".instrs").each((i, item)=>{
+                    let classDateTime = instrList[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd+" "+instrList[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm
+                    if (classDateTime <= nowDateTime) {
+                        $(item).find('.survey_write').show();
+                    } else {
+                        $(item).find('.survey_write').hide();
+                    }
+                })
+            }
+
+            function dateFormat(date) {
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let hour = date.getHours();
+                let minute = date.getMinutes();
+                let second = date.getSeconds();
+
+                month = month >= 10 ? month : '0' + month;
+                day = day >= 10 ? day : '0' + day;
+                hour = hour >= 10 ? hour : '0' + hour;
+                minute = minute >= 10 ? minute : '0' + minute;
+                second = second >= 10 ? second : '0' + second;
+
+                return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

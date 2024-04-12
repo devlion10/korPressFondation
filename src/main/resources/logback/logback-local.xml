@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- local 프로파일용 설정 -->
+<included scan="false" scanPeriod="2 seconds">
+
+	<!-- 개별 LOGGING 정책 설정 -->
+	<logger name="kr.or.kpf.lms" level="DEBUG" />
+	<logger name="springfox.documentation" level="INFO" />
+	<logger name="springfox.bean" level="INFO" />
+	<logger name="org.springframework.context" level="INFO" />
+	<logger name="org.springframework.beans.factory.support" level="INFO" />
+	<logger name="org.springframework.data.convert.CustomConversions" level="INFO" />
+	<logger name="org.springframework.boot.autoconfigure.logging" level="INFO" />
+	<logger name="org.springframework.jdbc" level="INFO" />
+	<logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO" />
+	<logger name="org.springframework.orm.jpa.JpaTransactionManager" level="INFO" />
+	<logger name="org.mariadb.jdbc.client.impl.StandardClient" level="INFO" />
+	<logger name="org.springframework.session.jdbc" level="INFO" />
+	<logger name="org.mariadb.jdbc.message.server.OkPacket" level="INFO" />
+	<logger name="org.hibernate" level="INFO" />
+
+	<!-- 사용한 Appender들을 include -->
+	<include resource="logback/appender-console.xml" />
+	<!-- <include resource="logback/appender-file-current.xml" /> -->
+	<!-- <include resource="logback/appender-timerollingfile.xml" /> -->
+	<!-- <include resource="logback/appender-sizeandtimerollingfile.xml" /> -->
+
+	<!-- ROOT LEVEL LOGGING 정책 및 Appender목록 설정 -->
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<!-- <appender-ref ref="FILE_CURRENT" /> -->
+		<!-- <appender-ref ref="TIME_ROLLING_FILE" /> -->
+		<!-- <appender-ref ref="TIME_ROLLING_FILE_WARN" /> -->
+		<!-- <appender-ref ref="SIZE_AND_TIME_ROLLING_FILE" /> -->
+		<!-- <appender-ref ref="SIZE_AND_TIME_ROLLING_FILE_WARN" /> -->
+	</root>
+
+</included>

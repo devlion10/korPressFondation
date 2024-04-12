@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual6.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">1:1 문의</div>
+
+                <form action="./my-qna" method="get">
+                    <div class="sch_box sch_box_wrap">
+                        <label for="myQnaType" class="hidden_label">구분</label>
+                        <select id="myQnaType" name="myQnaType" class="common_select2">
+                            <option selected value="">전체</option>
+                            <option value="1">공모/자격문의</option>
+                            <option value="2">교육문의</option>
+                            <option value="3">사이트 이용문의</option>
+                        </select>
+                        <label for="containTextType" class="hidden_label">구분2</label>
+                        <select id="containTextType" name="containTextType" class="common_select2">
+                            <option value="1">제목+내용</option>
+                            <option value="2">제목</option>
+                            <option value="3">내용</option>
+                        </select>
+                        <label for="containText" class="hidden_label">검색어</label>
+                        <input id="containText" name="containText" class="common_input2 form_input_md" >
+                        <button type="submit" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="" > 검색</button>
+                    </div>
+                </form>
+
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board bl_board__qna">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">No.</div>
+                        <div class="bl_board_ctg">구분</div>
+                        <div class="bl_board_state">상태</div>
+                        <div class="bl_board_subject">제목</div>
+                        <div class="bl_board_date">작성일</div>
+                    </div>
+
+                    <div class="bl_board_body">
+                        <div class="bl_board_unit" th:each="content, stat: ${content}">
+                            <div class="bl_board_no" th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></div>
+                            <div class="bl_board_ctg">
+                                <span th:if="${content.qnaType == '0'}">전체</span>
+                                <span th:if="${content.qnaType == '1'}">공모/자격문의</span>
+                                <span th:if="${content.qnaType == '2'}">교육문의</span>
+                                <span th:if="${content.qnaType == '3'}">사이트 이용문의</span>
+                            </div>
+                            <div class="bl_board_state">
+                                <i class="el_chip" th:if="${content.qnaState == '1'}">미확인</i>
+                                <i class="el_chip el_chip__ing" th:if="${content.qnaState == '2'}">처리중</i>
+                                <i class="el_chip el_chip__success" th:if="${content.qnaState == '3'}">답변완료</i>
+                            </div>
+                            <a th:href="@{/service-center/my-qna/view/{id}(id = ${content.sequenceNo})}" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${content.reqTitle}"></span>
+                            </a>
+                            <div class="bl_board_date" th:text="${#strings.substring(content.createDateTime, 0, 10)}"></div>
+                        </div>
+                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                            <div class="bl_card_empty">등록된 문의글이 없습니다.</div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+
+        <th:block layout:fragment="script">
+            <script th:inline="javascript">
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], true, '글작성');
+                    navigation(4,2);
+                }
+                /* ]]> */
+            </script>
+        </th:block>
+
+    </div>
+</div>
+</body>
+</html>

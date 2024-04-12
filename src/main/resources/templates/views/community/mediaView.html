@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">영상자료</div>
+                    </div>
+
+                    <div class="bl_title_right">
+                        <div class="bl_title_sns">
+                            <a class="btn_sns btn_naver" href=""><span>네이버 공유</span></a>
+                            <a class="btn_sns btn_facebook" href=""><span>페이스북 공유</span></a>
+                            <a class="btn_sns btn_kakao" href=""><span>카카오 공유</span></a>
+                            <a class="btn_sns btn_twitter" href=""><span>트위터 공유</span></a>
+                            <a class="btn_sns btn_star" href=""><span>URL 공유</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx != null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" th:text="${content[param.selectIdx[0]].title}">(한국언론진흥재단X정준희의 방과후 해시태그) 가짜 뉴스 새로운 정의는 트럼프로부터? [정준희의 방과 후 해시태그 7회]</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd th:text="${content[param.selectIdx[0]].author}">홍길동</dd>
+                            <dt>작성일</dt>
+                            <dd th:text="${#strings.substring(content[param.selectIdx[0]].createDateTime,0,10)}">2022.08.18</dd>
+                            <dt class="hp_show">조회수</dt>
+                            <dd id="viewCount" th:text="${content[param.selectIdx[0]].viewCount}">12</dd>
+                            <dt th:if="${content[param.selectIdx[0]].mediaFilePath != null && content[param.selectIdx[0]].mediaFilePath != ''}" class="bl_boardInfo_link hp_show">영상링크</dt>
+                            <dd th:if="${content[param.selectIdx[0]].mediaFilePath != null && content[param.selectIdx[0]].mediaFilePath != ''}" class="bl_boardInfo_link">
+                                <a th:href="@{{link}(link=${content[param.selectIdx[0]].mediaFilePath})}" th:text="${content[param.selectIdx[0]].mediaFilePath}" class="hp_underline">https://www.youtube.com/watch?v=8Wn5keBIi_g&t=197s</a>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        <div id="contents" style="margin-bottom: 50px"></div>
+                        <div class="bl_boardView_file" style="margin-top: 10px" th:if="${content[param.selectIdx[0]].lmsDataFiles != null}" th:each="lmsDataFiles : ${content[param.selectIdx[0]].lmsDataFiles}">
+                            <a class="btn_type5 btn_file" th:href="@{/api/communication/archive/download(attachFilePath=${lmsDataFiles.filePath})}">
+                                <span th:text="${lmsDataFiles.originalFileName}"></span>
+                                <span class="file_size" th:if="${lmsDataFiles.fileSize != null && lmsDataFiles.fileSize != ''}" th:text=" ' [' + ${lmsDataFiles.fileSize} + ']' "></span>
+                            </a>
+                        </div>
+                        <div style="margin-top: 10px" th:if="${content[param.selectIdx[0]].lmsDataFiles != null && content[param.selectIdx[0]].lmsDataFiles.size > 0}" class="guide_text color_red">* 아이폰은 크롬, 엣지, 웨일을 이용해주시기 바랍니다.</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx == null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" data-binding-key="title" th:text="${content[0].title}">수강 문의 드립니다!</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd data-binding-key="author" th:text="${content[0].author}">홍길동</dd>
+                            <dt>작성일</dt>
+                            <dd data-binding-key="createDateTime" th:text="${content[0].createDateTime}">2022.08.18</dd>
+                            <dt class="hp_show">조회수</dt>
+                            <dd id="viewCount" data-binding-key="viewCount" th:text="${content[0].viewCount}">12</dd>
+                            <dt class="bl_boardInfo_link hp_show">영상링크</dt>
+                            <dd id="videoLink" class="bl_boardInfo_link" data-binding-key="mediaFilePath" th:text="${content[0].mediaFilePath}"></dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        <div id="contents" data-binding-key="contents" style="margin-bottom: 50px"></div>
+                        <div class="bl_boardView_file" data-binding-key="lmsDataFiles"></div>
+                    </div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/communication/archive/media">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function change_file_size() {
+                const file_sizes = document.querySelectorAll('.file_size');
+                file_sizes.forEach(function(file_size) {
+                    var size = file_size.innerHTML;
+                    size = size.replace(" [", "");
+                    size = size.replace("]", "");
+                    file_size.innerHTML = " ["+CommonUtil.formatBytes(size)+"]";
+                });
+            }
+            change_file_size();
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,2,4);
+                viewCntUpdate('archive');
+
+                let urlLink = window.location.href;
+                let viewNum = urlLink.split('/');
+                viewNum = viewNum[viewNum.length - 1];
+
+                let CONT = [[ ${content} ]];
+                let url = new URL(window.location.href);
+                let selectIdx = url.searchParams;
+                selectIdx = selectIdx.get('selectIdx');
+                if(selectIdx === null){
+                    (function(){
+                        let dataset = [[ ${content} ]];
+                        let item = _.find(dataset, {'sequenceNo': parseInt(viewNum)});
+                        if( item ){
+                            for(var key in item){
+                                let target = $("[data-binding-key='"+key+"']");
+                                if(target) {
+                                    if (key == "lmsDataFiles" && item[key] && item[key].length) {
+                                        item[key].forEach(function(file){
+                                            let lmsDataFile = file;
+                                            target.append('<div><a class="btn_type5 btn_file download_ajax" style="margin-top: 10px" href="/api/communication/archive/download?attachFilePath='
+                                                +lmsDataFile.filePath+'">'
+                                                +'<span>'+( lmsDataFile.originalFileName )+'</span>'
+                                                +'<span> ['+CommonUtil.formatBytes(lmsDataFile.fileSize)+']</span>'
+                                                +'</a></div>');
+                                        });
+                                        target.append('<div style="margin-top: 10px" class="guide_text color_red">* 아이폰은 크롬, 엣지, 웨일을 이용해주시기 바랍니다.</div>');
+
+                                    } else if(key === 'mediaFilePath'){
+                                        if(item[key] === null || item[key] === ''){
+                                            target.css('display','none');
+                                        } else {
+                                            const link = `<a href="${item.mediaFilePath}" class="hp_underline">${item.mediaFilePath}</a>`;
+                                            target.html(link);
+                                        }
+                                    } else {
+                                        target.html(item[key]);
+                                    }
+                                }
+                            }
+                            if( item.top !== true){
+
+                            }
+                        }
+                    })();
+                } else {
+                    $('#contents').html(CONT[selectIdx].contents);
+                }
+
+                //유튜브 임베드
+                let videoLink = $('#videoLink').text();
+                let startTime = 0;
+                if (videoLink.indexOf('youtu.be') !== -1 || videoLink.indexOf('youtube.com') !== -1) {
+                    if (videoLink.indexOf('youtu.be') !== -1) {
+                        // 시작 시간 설정
+                        if (videoLink.indexOf('&t=') !== -1) {
+                            videoLink = videoLink.split('&t=');
+                            startTime = videoLink[1];
+                            videoLink = videoLink[0];
+                        }
+                        videoLink = videoLink.split('/');
+                        videoLink = videoLink[videoLink.length-1];
+                    } else if (videoLink.indexOf('youtube.com') !== -1) {
+                        // 시작 시간 설정
+                        if (videoLink.indexOf('&t=') !== -1) {
+                            videoLink = videoLink.split('&t=');
+                            startTime = videoLink[1];
+                            startTime = startTime.slice(0, -1);
+                            videoLink = videoLink[0];
+                        }
+                        videoLink = videoLink.split('watch?v=');
+                        videoLink = videoLink[videoLink.length-1];
+                    }
+                    const videoIframe = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoLink}?&amp;start=${startTime}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                    $('#contents').prepend(videoIframe);
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(/assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="join_step">
+                    <div class="step step1">
+                        <span>01</span>
+                        <span>약관동의</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step2">
+                        <span>02</span>
+                        <span>본인인증</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step3 active">
+                        <span>03</span>
+                        <span>회원정보 입력</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step4">
+                        <span>04</span>
+                        <span>회원가입 완료</span>
+                    </div>
+                </div>
+
+                <form id="createUserForm" name="createUserForm" method="POST" action="/anonymous/user/create">
+                    <div class="cont_title">기관 정보
+                        <div class="btn_type3 btn_register" onclick="registerOrg(2)">매체사/기관 등록신청</div>
+                    </div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box">
+                            <div class="common_label"><span class="essential">*</span>기관명</div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                    <input id="organizationName" type="text" class="common_input bl_upload_path js_path" readonly >
+                                    <div class="btn_type1 btn_md btn_gray" onclick="findOrganization()">찾아보기</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">대표전화</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="agencyTel" class="phone">
+                                    <input type="text" maxlength="3" name="organizationTelNumber1" id="organizationTelNumber1" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" name="organizationTelNumber2" id="organizationTelNumber2" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" name="organizationTelNumber3" id="organizationTelNumber3" class="common_input" disabled >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">기관장</label>
+                            </div>
+                            <input maxlength="20" onchange="maxCheck(this)" type="text" id="representative" class="common_input form_input" value="대표자명" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>사업자등록번호</label>
+                            </div>
+                            <div id="bizLicenseNumber" class="d-flex flex-column hp_md_w100p">
+                                <div class="company_number">
+                                    <input type="text" class="common_input form_input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" disabled>
+                                </div>
+                                <p class="input_text"><span class="essential">*</span>비영리기관일 경우 고유번호를 입력해주세요.</p>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">기관 주소</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div class="d-flex">
+                                    <input type="text" id="organizationZipCode" class="common_input form_input" disabled>
+                                </div>
+                                <input type="text" id="organizationAddress1" class="common_input form_input_lg" disabled >
+                                <input type="text" id="organizationAddress2" class="common_input form_input_lg" disabled >
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">홈페이지</label>
+                            </div>
+                            <input maxlength="100" onchange="maxCheck(this)" type="text" id="homepage" class="common_input form_input_md" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">팩스번호</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="agencyFax" class="fax">
+                                    <input type="text" maxlength="3" name="organizationFaxNumber1" id="organizationFaxNumber1" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" name="organizationFaxNumber2" id="organizationFaxNumber2" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" name="organizationFaxNumber3" id="organizationFaxNumber3" class="common_input" disabled >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cont_title">담당자 정보</div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>직위</label>
+                            </div>
+                            <input maxlength="20" onchange="maxCheck(this)" type="text" id="rank" class="common_input form_input" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>담당업무</label>
+                            </div>
+                            <input maxlength="25" onchange="maxCheck(this)" type="text" id="charge" class="common_input form_input" placeholder="한글, 한글/숫자 혼용 25자 제한" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>직통전화</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="chargeTelNumber" class="phone">
+                                    <select class="common_select" data-list="telList"></select>
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn_box">
+                        <button id="createUserButton" name="createUserButton" type="button" class="btn_type1 btn_lg btn_red" onclick="go()">사업 참여 권한 신청</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP : 기관 등록 신청 -->
+    <div class="pop_wrapper ui-modal" id="popCompanyRegistration">
+        <div class="pop_wrap pop_secondary">
+            <div class="pop_cont">
+                <!-- BOARD : WRITE -->
+                <div class="bl_boardWrite">
+                    <table>
+                        <colgroup>
+                            <col class="hp_lg_w236">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tbody id="createCompanyForm">
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>기관명</th>
+                            <td>
+                                <input type="text" class="common_input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>기관 전화번호</th>
+                            <td>
+                                <div class="common_input_box d-flex flex-column hp_md_w100p" style="align-items: baseline;">
+                                    <div id="add_companyTel" class="phone">
+                                        <select class="common_select" data-list="telList"></select>
+                                        <div class="blank">-</div>
+                                        <input type="text" maxlength="4" class="common_input" oninput="CommonUtil.inputEventOnlyNumber(this)">
+                                        <div class="blank">-</div>
+                                        <input type="text" maxlength="4" class="common_input" oninput="CommonUtil.inputEventOnlyNumber(this)">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>사업자등록번호</th>
+                            <td>
+                                <div class="common_input_box">
+                                    <div id="bizLicenseNumberA" class="d-flex flex-column hp_w100p">
+                                        <div class="company_number">
+                                            <input type="text" class="common_input form_input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>기관주소</th>
+                            <td>
+                                <div class="d-flex flex-column hp_md_w100p"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>홈페이지</th>
+                            <td>
+                                <input type="text" class="common_input" id="homePage_pop">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="el_required">*</span>팩스번호</th>
+                            <td>
+                                <div class="common_input_box d-flex flex-column hp_md_w100p" style="align-items: baseline;">
+                                    <div id="add_companyFax" class="fax">
+                                        <input type="text" maxlength="3" class="common_input" oninput="CommonUtil.inputEventOnlyNumber(this)" >
+                                        <div class="blank">-</div>
+                                        <input type="text" maxlength="4" class="common_input" oninput="CommonUtil.inputEventOnlyNumber(this)">
+                                        <div class="blank">-</div>
+                                        <input type="text" maxlength="4" class="common_input" oninput="CommonUtil.inputEventOnlyNumber(this)">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_md btn_blue" onclick="createCompany()">등록요청</a>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <input id="organizationCode" type="hidden">
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+
+            let params = {};
+            let organization = [[ ${content.organizationInfo}]];
+            var orgCode;
+
+            function onLoadSubmit() {
+                if(organization) { /** 회원 가입 당시 기관 정보를 입력하였을 경우 */
+                    /** 기관 등록 요청 데이터 표출 */
+                    document.querySelector('#organizationName').value = organization.organizationName;
+                    bizLicenseNumSet(organization.bizLicenseNumber); /* 사업자번호 / 나이스번호 셋팅 */
+                    addressSet(organization.organizationZipCode, organization.organizationAddress1, organization.organizationAddress2); /* 주소 셋팅 */
+                    telNumSet(organization.organizationTelNumber) /* 전화번호 셋팅 */
+                    faxNumSet(organization.organizationFaxNumber) /* 팩스번호 셋팅 */
+
+                    /** 기존 데이터로 초기 셋팅 */
+                    params = organization;
+                }
+
+                params.userId = [[ ${content.userId} ]];
+            }
+
+            /* 매체사/학교/기관 찾기 */
+            async function findOrganization(type){
+                let code = await CommonUI.searchMediaCompany(type);
+                if(code){
+                    selectMediaCompanyInfo(code);
+                    document.getElementById("organizationName").value = code.organizationName;
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            /* 매체사/학교/기관 등록신청 */
+            async function registerOrg(registerType){
+                let orgItem = await CommonUI.registerOrg(registerType);
+                if(orgItem){
+                    registerOrgInfo(orgItem);
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            // 미입력된 필수 정보가 있을 경우 alert
+            function requiredChk() {
+                /**
+                 * 아이디
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 입력
+                 */
+                if(!params.userId) { alert('잘못된 접근입니다.'); return false; }
+                /** 소속 기관 명 */
+                if(!document.querySelector('#organizationName').value) { alert('소속 기관 명은 필수입니다.'); return false; }
+                else { params.organizationName = document.querySelector('#organizationName').value }
+                /** 소속 기관 사업자 등록번호 */
+                if(!document.querySelector('#bizLicenseNumber > div > input').value) {
+                    alert('소속 기관 사업자 등록번호은 필수입니다.'); return false;
+                } else {
+                    params.bizLicenseNumber = document.querySelector('#bizLicenseNumber > div > input').value;
+                    if(params.bizLicenseNumber.indexOf('-')>0){
+                        params.bizLicenseNumber = params.bizLicenseNumber.split('-').join('');
+                    }
+                }
+                /** 대표전화 */
+                params.organizationTelNumber = document.querySelector('#agencyTel > input:nth-child(1)').value
+                    + document.querySelector('#agencyTel > input:nth-child(3)').value
+                    + document.querySelector('#agencyTel > input:nth-child(5)').value;
+                /** 팩스번호 */
+                params.organizationFaxNumber = document.querySelector('#agencyFax > input:nth-child(1)').value
+                    + document.querySelector('#agencyFax > input:nth-child(3)').value
+                    + document.querySelector('#agencyFax > input:nth-child(5)').value;
+                /** 대표자 */
+                params.representative = document.querySelector('#representative').value;
+                /** 우편번호 */
+                params.organizationZipCode = document.querySelector('#organizationZipCode').value;
+                /** 주소 1 */
+                params.organizationAddress1 = document.querySelector('#organizationAddress1').value;
+                /** 주소 2 */
+                params.organizationAddress2 = document.querySelector('#organizationAddress2').value;
+                /** 홈페이지 */
+                params.homepage = document.querySelector('#homepage').value;
+                /** 직위 */
+                if(!document.querySelector('#rank').value) { alert('직위는 필수입니다.'); return false; }
+                else { params.rank = document.querySelector('#rank').value }
+                /** 담당 */
+                if(!document.querySelector('#charge').value) { alert('담당(과목/콘텐츠)는 필수입니다.'); return false; }
+                else { params.charge = document.querySelector('#charge').value }
+                /** 담당자 연락처 */
+                if(!$('#chargeTelNumber > select > option:selected')[0].innerText
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(5)').value) {
+                    alert('직통전화는 필수입니다.'); return false;
+                } else {
+                    params.chargeTelNumber = $('#chargeTelNumber > select > option:selected')[0].innerText
+                        + document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                        + document.querySelector('#chargeTelNumber > input:nth-child(5)').value;
+                    if(params.chargeTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]{3,4})([0-9]{4})/, "$1-$2-$3").indexOf('-') == -1){
+                        alert('유효하지 않은 전화번호입니다. 직통전화를 다시 확인해 주세요!'); return false;
+                    }
+                }
+                /** 기관코드 */
+                params.organizationCode = document.querySelector('#organizationCode').value;
+
+                return true;
+            }
+
+            function go() { /** 사업 권한 신청 */
+
+                params.bizAuthority = "AGENCY";
+                params.organizationCode = globalOrgCode ? globalOrgCode : params.organizationCode;
+
+                /** 필수 값 체크 */
+                if(!requiredChk()) return;
+                /** 회원 가입 호출 */
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/authority/organization/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(params),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        /** 사업 참여 권한 신청 성공 */
+                        location.href = '/user/join/result'
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('권한을 신청하는 과정에서 오류가 발생했습니다.');
+                        }
+                    }
+                })
+            }
+
+            /**
+             * 기관 등록 신청 폼 주소 찾기
+             */
+            function findAddressAddCompany() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var addr = ''; // 주소 변수
+                        var extraAddr = ''; // 참고항목 변수
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                        if (data.userSelectedType === 'R') {
+                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                extraAddr += data.bname;
+                            }
+                            // 건물명이 있고, 공동주택일 경우 추가한다.
+                            if (data.buildingName !== '' && data.apartment === 'Y') {
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if (extraAddr !== '') {
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                        }
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('add_organizationZipCode').value = data.zonecode;
+                        document.getElementById("add_organizationAddress1").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("add_organizationAddress2").focus();
+
+
+                    }
+                }).open();
+            }
+
+            /* 매체사 등록 신청 */
+            function createCompany() {
+                var subParams = {};
+                var companyFax = $("#add_companyFax > input");
+                subParams.organizationName = document.querySelector('#createCompanyForm > tr:nth-child(1) > td > input').value;
+                subParams.organizationZipCode = document.getElementById("add_organizationZipCode").value;
+                subParams.organizationAddress1 = document.getElementById("add_organizationAddress1").value
+                subParams.organizationAddress2 = document.getElementById("add_organizationAddress2").value
+                subParams.homepage = document.getElementById('homePage_pop').value;
+                subParams.bizLicenseNumber = document.querySelector('#bizLicenseNumberA > div > input').value;
+
+                if($("#add_companyTel > select").length>0){
+                    let companyTelS = $("#add_companyTel > select");
+                    let companyTel = $("#add_companyTel > input");
+                    subParams.organizationTelNumber = companyTelS.eq(0).val()+companyTel.eq(0).val()+companyTel.eq(1).val();
+
+                }else{
+                    let companyTel = $("#add_companyTel > input");
+                    subParams.organizationTelNumber = companyTel.eq(0).val()+companyTel.eq(1).val()+companyTel.eq(2).val();
+                }
+
+                if($("#add_companyFax > select").length>0){
+                    let companyFaxS = $("#add_companyFax > select");
+                    let companyFax = $("#add_companyFax > input");
+                    subParams.organizationFaxNumber = companyFaxS.eq(0).val()+companyFax.eq(0).val()+companyFax.eq(1).val();
+
+                }else{
+                    let companyFax = $("#add_companyFax > input");
+                    subParams.organizationFaxNumber = companyFax.eq(0).val()+companyFax.eq(1).val()+companyFax.eq(2).val();
+                }
+
+
+                if(subParams.bizLicenseNumber == '') {
+                    alert('사업자 등록 번호는 필수입니다.'); return;
+                }
+                if(subParams.bizLicenseNumber.length > 11) {
+                    alert('사업자 등록 번호가 올바르지 않습니다.'); return;
+                }
+
+                subParams.organizationType = "2" //1: 매체사, 2: 기관, 3: 학교
+                /** 기관 등록 */
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/school/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(subParams),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        /** 기관 코드 셋팅 */
+                        organizationCode = data.organizationCode;
+                        params.organizationCode = organizationCode;
+
+                        /** 기관 등록 요청 데이터 표출 */
+                        document.querySelector('#organizationName').value = data.organizationName;
+                        document.querySelector('#organizationCode').value = data.organizationCode;
+
+                        document.querySelector('#organizationZipCode').value = data.organizationZipCode;
+                        document.querySelector('#organizationAddress1').value = data.organizationAddress1;
+                        document.querySelector('#organizationAddress2').value = data.organizationAddress2;
+
+                        let convertPhoneNum = data.organizationTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
+                        let convertPhoneNum1 = convertPhoneNum.split('-')[0];
+                        let convertPhoneNum2 = convertPhoneNum.split('-')[1];
+                        let convertPhoneNum3 = convertPhoneNum.split('-')[2];
+                        document.querySelector('#organizationTelNumber1').value = convertPhoneNum1;
+                        document.querySelector('#organizationTelNumber2').value = convertPhoneNum2;
+                        document.querySelector('#organizationTelNumber3').value = convertPhoneNum3;
+
+                        let convertFaxeNum = data.organizationFaxNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
+                        let convertFaxeNum1 = convertFaxeNum.split('-')[0];
+                        let convertFaxeNum2 = convertFaxeNum.split('-')[1];
+                        let convertFaxeNum3 = convertFaxeNum.split('-')[2];
+                        document.querySelector('#organizationFaxNumber1').value = convertFaxeNum1;
+                        document.querySelector('#organizationFaxNumber2').value = convertFaxeNum2;
+                        document.querySelector('#organizationFaxNumber3').value = convertFaxeNum3;
+
+                        /** 기관 등록 팝업창 close 처리 */
+                        document.querySelector('#popCompanyRegistration > div > button').click();
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('기관을 등록하는 과정에서 오류가 발생했습니다.');
+                        }
+                    }
+                })
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

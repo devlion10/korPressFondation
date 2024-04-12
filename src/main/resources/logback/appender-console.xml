@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included scan="false" scanPeriod="2 seconds">
+
+	<!-- CONSOLE: 콘솔 로깅 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>${LOG_CHARSET}</charset>
+		</encoder>
+	</appender>
+
+</included>

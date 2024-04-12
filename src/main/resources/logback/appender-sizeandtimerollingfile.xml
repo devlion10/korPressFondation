@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included scan="false" scanPeriod="2 seconds">
+
+	<!-- SIZE_AND_TIME_ROLLING_FILE: 일자별 롤링 기록, 기록중인 로깅파일 사이즈가 너무 커져도 롤링 (zip 압축적용) -->
+<!-- 	<appender name="SIZE_AND_TIME_ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>${LOG_CHARSET}</charset>
+		</encoder>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE}.%d{yyyyMMdd}.%i.log.zip</fileNamePattern>
+			<maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+			<cleanHistoryOnStart>false</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender> -->
+
+	<!-- SIZE_AND_TIME_ROLLING_FILE_WARN: 일자별 WARN로그 롤링 기록, 기록중인 로깅파일 사이즈가 너무 커져도 롤링 (zip 압축적용) -->
+<!-- 	<appender name="SIZE_AND_TIME_ROLLING_FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<file>${LOG_FILE}</file>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>${LOG_CHARSET}</charset>
+		</encoder>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE}.%d{yyyyMMdd}.%i.WARN.log.zip</fileNamePattern>
+			<maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+			<cleanHistoryOnStart>false</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender> -->
+
+</included>

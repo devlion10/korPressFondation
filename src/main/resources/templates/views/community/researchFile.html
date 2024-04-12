@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_research">
+            <div class="ly_grid">
+                <div class="bl_title_left">
+                    <div class="page_title">연구/통계 자료</div>
+                </div>
+
+                 <div class="media_box">
+                    <ul class="list">
+                        <li>
+                            <div class="box box1">
+                                <h3>연구보고서</h3>
+                                <ul>
+                                    <li><a href="https://www.kpf.or.kr/front/research/selfListPage.do" target="_blank" title="상세 페이지로 이동"><span>자체연구</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/publicListPage.do" target="_blank" title="상세 페이지로 이동"><span>공모연구</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/areaListPage.do" target="_blank" title="상세 페이지로 이동"><span>지역신문연구</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/etcListPage.do" target="_blank" title="상세 페이지로 이동"><span>기타</span></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box box2">
+                                <h3>조사분석서</h3>
+                                <ul>
+                                    <li><a href="https://www.kpf.or.kr/front/research/consumerListPage.do" target="_blank" title="상세 페이지로 이동"><span>수용자조사</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/reporterListPage.do" target="_blank" title="상세 페이지로 이동"><span>언론인조사</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/realityListPage.do" target="_blank" title="상세 페이지로 이동"><span>산업실태조사</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/yearbookListPage.do" target="_blank" title="상세 페이지로 이동"><span>한국언론연감</span></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box box3">
+                                <h3>정기간행물</h3>
+                                <ul>
+                                    <li><a href="https://www.kpf.or.kr/front/user/subMainA.do" target="_blank" title="상세 페이지로 이동"><span>신문과방송</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/issueListPage.do" target="_blank" title="상세 페이지로 이동"><span>미디어이슈</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/policyListPage.do" target="_blank" title="상세 페이지로 이동"><span>미디어정책리포트</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/research/trendListPage.do" target="_blank" title="상세 페이지로 이동"><span>해외미디어동향</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/news/literListPage.do" target="_blank" title="상세 페이지로 이동"><span>미디어리터러시</span></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box box4">
+                                <h3>미디어통계</h3>
+                                <ul>
+                                    <li><a href="https://www.kpf.or.kr/front/mediaStats/mediaStatsListPage.do" target="_blank" title="상세 페이지로 이동"><span>언론 통계</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/board/boardContentsListPage.do?board_id=292" target="_blank" title="상세 페이지로 이동"><span>미디어이슈 통계</span></a></li>
+                                    <li><a href="http://hannun.or.kr/2021/" target="_blank" title="상세 페이지로 이동"><span>한눈에 보는 미디어</span></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box box5">
+                                <h3>기획취재 아카이브</h3>
+                                <ul>
+                                    <li><a href="https://www.kpf.or.kr/front/user/subMainB.do" target="_blank" title="상세 페이지로 이동"><span>메인으로 가기</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/news/historyReportPaperListPage.do" target="_blank" title="상세 페이지로 이동"><span>역대보도물</span></a></li>
+                                    <li><a href="https://www.kpf.or.kr/front/board/boardContentsListPage.do?board_id=319" target="_blank" title="상세 페이지로 이동"><span>주제제안 게시판</span></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sch_box">
+                    <select id="types" name="types" class="common_select2">
+                        <option value="0" selected>유형</option>
+                        <option value="20">기타</option>
+                        <option value="21">결과보고서</option>
+                        <option value="22">사례/자료집</option>
+                        <option value="23">연구자료</option>
+                        <option value="24">통계자료</option>
+                        <option value="25">교육자료</option>
+                    </select>
+
+                    <select id="containTextType" name="containTextType" class="common_select2">
+                        <option value="1">제목+내용</option>
+                        <option value="2">제목</option>
+                        <option value="3">내용</option>
+                    </select>
+                    <label for="containText" class="hidden_label">검색어</label>
+                    <input id="containText" name="containText" class="common_input2 form_input_md" >
+
+                    <a class="btn_type1 btn_blue" href="javascript:void(0);" onclick="sch()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</a>
+                    <a class="btn_type1 btn_gray" href="/communication/archive/research-data" onclick="reset()">초기화</a>
+                </div>
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            <strong th:text="${pageable.totalElements}">8</strong>개의 게시글이 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">No.</div>
+                        <div class="bl_board_type--long">유형</div>
+                        <div class="bl_board_subject">제목</div>
+                        <div class="bl_board_author">저자</div>
+                        <div class="bl_board_date">작성일</div>
+                        <div class="bl_board_hit">조회수</div>
+                    </div>
+
+                    <div class="bl_board_body" th:if="${content != null && content.size > 0}">
+                        <div class="bl_board_unit" th:each="item, stat: ${content}">
+                            <div class="bl_board_no">
+                                <span th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></span>
+                            </div>
+                            <div class="bl_board_type--long">
+                                <span th:if="${item.materialType != null}">
+                                    <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'MTRL_TYPE'">
+                                        <text th:each="types : ${commonCode.subCode}" th:if="${types.code == item.materialType}" th:text="${types.codeName}"></text>
+                                    </th:block>
+                                </span>
+                            </div>
+
+                            <a th:href="@{/communication/archive/research-data/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${item.title}"></span>
+                                <i class="el_ico" th:if="${item.isNew}"><img th:src="@{/assets/images/icons/new.png}" alt="새글"></i>
+                                <i class="el_ico" th:if="${item.lmsDataFiles != null}"><img th:src="@{/assets/images/icons/file_icon.png}" alt="첨부파일"></i>
+                            </a>
+
+                            <div class="bl_board_author" th:text="${item.author}">
+                                홍길동
+                            </div>
+                            <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime, 0, 10)}">
+                                2022.08.10
+                            </div>
+                            <div class="bl_board_hit" th:text="${item.viewCount}">
+                                10
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bl_board_body" th:unless="${content != null && content.size > 0}">조회된 내역이 없습니다.</div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function sch(){
+                let searchQuery = {}
+                let text = $("#containText").val();
+                let type = $("#containTextType").val();
+                let types = $("#types").val();
+                if(types && types!="0"){
+                    searchQuery.types=types.toString();
+                }
+                if(text){
+                    searchQuery.containText = text
+                    if(type){
+                        searchQuery.containTextType = type
+                    }
+                }
+                searchJson(searchQuery)
+            }
+
+            /* 검색 초기화 */
+            function reset() {
+                $('#types').val("0").prop("selected", true);
+                $('#containTextType').val("1").prop("selected", true);
+
+                let inputAll = document.querySelectorAll('input[type="text"]');
+                inputAll.forEach(item => {
+                    item.value = '';
+                });
+            }
+
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(3,2,2);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+    </div>
+</div>
+</body>
+</html>

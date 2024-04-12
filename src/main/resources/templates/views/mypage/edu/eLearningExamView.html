@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : [탭3] 시험 - 응시하기 - 시험 문제 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <div class="exam_questions">
+                        <div class="exam_questions__grid">
+                            <div class="exam_questions__lft">
+                                <div class="exam_questions__item">
+
+                                    <div class="exam_questions__num">문제 <span id="_exam_index"></span>번</div>
+                                    <div class="exam_questions__title" id="_exam_desc">다음 중 주요 방한시장의 이해로 올바르지 않은 것은 무엇인가?</div>
+                                    <div class="exam_questions__cont" id="_exam_ques_wrap">
+                                        <div class="radio_box">
+                                            <input id="q1" type="radio" name="questions">
+                                            <label for="q1">
+                                                <span></span>
+                                                선택항목 1번
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="q2" type="radio" name="questions">
+                                            <label for="q2">
+                                                <span></span>
+                                                선택항목 2번
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="q3" type="radio" name="questions">
+                                            <label for="q3">
+                                                <span></span>
+                                                선택항목 3번
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="q4" type="radio" name="questions">
+                                            <label for="q4">
+                                                <span></span>
+                                                선택항목 4번
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bl_gridBtns">
+                                    <div class="bl_gridBtns_md">
+                                        <button class="btn_type2" id="_exam_prev_btn">이전문제</button>
+                                        <button class="btn_type2" id="_exam_next_btn">다음문제</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exam_questions__rgt">
+                                <div class="exam_questions__time">
+                                    <div class="time__info">남은 시간</div>
+                                    <div class="time" id="_exam_timer">
+                                        <span>00</span>:<span>00</span>
+                                    </div>
+                                </div>
+                                <div class="exam_questions__progress">
+                                    <div class="progress__top">
+                                        전체 <span id="_exam_cnt_total">10</span>문항 중 <span id="_exam_complate_total">4</span>문항 완료
+                                    </div>
+                                    <div class="progress__box" id="_exam_status_list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /* <![CDATA[ */
+        // 답안 제출시 alert
+        let lectureMaster, examMaster, lectureIndex, examMasterIndex;
+        function examSubmint() {
+            alert('제출한 답안은 수정이 불가합니다. 답안을 최종 제출하시겠습니까?');
+        }
+
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+            [# th:if="${content != null}"]
+            lectureMaster = [[ ${content} ]];
+            targetExamCode = [[ ${param.examId} ]] && [[ ${param.examId} ]].length ? [[ ${param.examId} ]][0]:null;
+            [/]
+            //자료가 있을경우
+            if(lectureMaster && lectureMaster.length ){
+                for(let lmIdx=0; lectureMaster.length>lmIdx;lmIdx++){
+                    for(let exIdx=0; lectureMaster[lmIdx].curriculumApplicationExamList.length>exIdx;exIdx++) {
+                        if( lectureMaster[lmIdx].curriculumApplicationExamList[exIdx].examSerialNo == targetExamCode){
+                            lectureIndex = lmIdx;
+                            examMasterIndex = examMasterIndex;
+                            examMaster = lectureMaster[lmIdx].curriculumApplicationExamList[exIdx];
+                            break;
+                        }
+                    }
+                }
+            }
+            //시험문제 정보가 있을경우
+            if(examMaster){
+                ExampleController.init(examMaster, true);
+            }
+        }
+
+        let examList = [];
+        let ExampleController = {
+            //필요 변수
+            data : [],
+            masterData: null,
+            nowData : null,
+            nowPage : 0,
+            displayPage : 1,
+            Element : {
+                page: document.getElementById("_exam_index"),
+                desc : document.getElementById("_exam_desc"),
+                listWrap: document.getElementById("_exam_ques_wrap"),
+                timmer: document.getElementById("_exam_timer"),
+                timmerWrap : $(".exam_questions__time"),
+                exam_status_list: $("#_exam_status_list"),
+                nextBtn: document.getElementById("_exam_next_btn"),
+                prevBtn: document.getElementById("_exam_prev_btn"),
+                txtToalCtn: document.getElementById("_exam_cnt_total"),
+                txtCompleteCnt: document.getElementById("_exam_complate_total"),
+            },
+            //초기화
+            init : function(data, flag){
+                let _this = this;
+                _this.masterData = data;
+                _this.data = data.examApplicationQuestionList;
+                _this.Element.exam_status_list.empty().append('<div class="progress__num"></div><div class="progress__answer"></div>');
+                if( data.length > 10 ){
+                    _this.Element.exam_status_list.append('<div class="progress__num"></div><div class="progress__answer"></div>');
+                }
+
+                _this.Element.txtToalCtn.innerHTML = _this.data.length;
+                _this.Element.txtCompleteCnt.innerHTML = 0;
+                _this.data.forEach(function(i,index){
+                    let target = {
+                        numList : _this.Element.exam_status_list.find('.progress__num').eq((index > 9) ?1:0),
+                        answerList : _this.Element.exam_status_list.find('.progress__answer').eq((index > 9) ?1:0)
+                    }
+
+                    _this.data[index].html = $(`<div></div>`);
+                    target.numList.append(`<div>${index+1}</div>`);
+                    i.html.appendTo( target.answerList );
+
+                    // 푼 이력이 있을경우
+                    if( _this.data[index].answerQuestionItemValue ){
+                        _this.data[index].answerQuestionItemValue = _this.data[index].answerQuestionItemValue.replace(/'\'/g,"").slice(2, _this.data[index].answerQuestionItemValue.length-2);
+                        let temp2 =  _this.data[index].examQuestionMaster.questionItemList;
+                        let findIndex = _.findIndex( temp2, {questionItemValue: _this.data[index].answerQuestionItemValue });
+                        if( findIndex > -1){
+                            _this.setStatus(index, findIndex, _this.data[index].answerQuestionItemValue);
+                        }
+                    }
+
+
+                });
+                _this.bindEvent();
+                if(flag){
+                    if( !_this.masgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggterData.isComplete ){
+                        _this.timerStat();
+                    }else{
+                        _this.Element.timmerWrap.hide();
+                    }
+                    this.setPage(0);
+                }
+            },
+            //이벤트 바인딩
+            bindEvent : function(){
+                let _this = this;
+                $(_this.Element.nextBtn).click(function(e){
+                    e.preventDefault();
+                    //마지막 페이지 일 경우 최종제출
+                    if( _this.nowPage == (_this.data.length-1)){
+                        let completePageCnt = _.filter( _this.data, (i)=>{return i._selectValueTxt != undefined} ).length;
+                        if( completePageCnt != _this.data.length){
+                            alert('문제를 모두 풀어주세요.');
+                            return false;
+                        }
+                        if(confirm('제출한 답안은 수정이 불가합니다. 답안을 최종 제출하시겠습니까?')){
+                            _this.submit();
+                        }
+                    }else{
+                        _this.nowPage++;
+                        _this.setPage(_this.nowPage);
+                    }
+                });
+                $(_this.Element.prevBtn).click(function(e){
+                    e.preventDefault();
+                    _this.nowPage--;
+                    _this.setPage(_this.nowPage);
+                });
+            },
+            //현재페이지 정보 세팅
+            setPage : function(index){
+                this.nowPage = index;
+                this.displayPage = index+1;
+                this.nowData = this.data[index].examQuestionMaster;
+                this.setDisplayBtn();
+                this.setNowPage();
+                let completePageCnt = _.filter( this.data, (i)=>{return i._selectValueTxt != undefined} ).length;
+                this.Element.txtCompleteCnt.innerText = completePageCnt;
+            },
+            //현재페이지 정보 HTML 바인딩
+            setNowPage : function(){
+                let nowData = this.nowData;
+                this.Element.page.innerHTML = this.displayPage;
+                this.Element.desc.innerHTML = nowData.questionContents;
+                this.generalItem(nowData.questionItemList)
+            },
+            //다음,이전문제 제어
+            setDisplayBtn : function(){
+                if( this.nowPage == 0){
+                    $(this.Element.prevBtn).hide();
+                    $(this.Element.nextBtn).show().text('다음문제');
+                }else if(this.nowPage == (this.data.length-1)){
+                    $(this.Element.prevBtn).show();
+                    if( !this.masterData.isComplete ){
+                        $(this.Element.nextBtn).show().text('최종제출');
+                    }else{
+                        $(this.Element.nextBtn).hide();
+                    }
+                }else{
+                    $(this.Element.prevBtn).show();
+                    $(this.Element.nextBtn).show().text('다음문제');
+                }
+            },
+            //문항 아이템 만들기
+            generalItem : function(list){
+                let _this = this;
+                let _list = _.sortBy(list,"questionSortNo");
+                _this.Element.listWrap.innerHTML = "";
+                _list.forEach(function(item, index){
+                    let file = $(`<a class="btn btn_blue" href="'/api/common/upload/download?attachFilePath='+${list.questionFilePath}">문제 파일 다운로드</a>`);
+                    $(_this.Element.listWrap).append(file);
+
+                   let raido = $(`<div class="radio_box">
+                                            <input id="${item.questionItemSerialNo}" type="radio" name="questions" value="${item.questionItemValue}">
+                                            <label for="${item.questionItemSerialNo}">
+                                                <span></span>
+                                                ${item.questionItemValue}
+                                            </label>
+                                            <a class="btn btn_blue" href="'/api/common/upload/download?attachFilePath='+${item.questionItemFilePath}">문항 파일 다운로드</a>
+                                        </div>`);
+                   // 정답선택이 있을 경우 체크
+                   if( _this.data[_this.nowPage].questionItemValue == item.questionItemValue){
+                       raido.find("input").get(0).checked = true;
+                   }
+                   //완료가 된게 아니라면 이벤트 바인딩
+                   if( !_this.masterData.isComplete ){
+                       raido.find("input").change(function(e){
+                           _this.setStatus(_this.nowPage, index, item.questionItemValue)
+                       });
+                   }else{
+                       raido.find("input").get(0).disabled = true;
+                   }
+                    $(_this.Element.listWrap).append(raido);
+                });
+            },
+            setStatus: function(index, findIndex, value){
+                let _this = this;
+                _this.data[index]._selectValueTxt = findIndex+1;
+                _this.data[index].html.html(findIndex+1);
+                _this.data[index].questionItemValue = value;
+            },
+            //제출
+            submit : function(){
+                let _this = this;
+                _this.asyncForEach( _this.data, async function( data ){
+                    let params = {
+                        answerQuestionItemValue: [ data.questionItemValue ],
+                        applicationNo: _this.masterData.applicationNo,
+                        examSerialNo: _this.masterData.examSerialNo,
+                        questionSerialNo: data.questionSerialNo
+                    };
+                    await $.ajax({
+                        data: JSON.stringify(params),
+                        method:"PUT",
+                        contentType: 'application/json',
+                        url:"/api/mypage/education-state/exam/question/submit"
+                    });
+                });
+                _this.disableExample();
+            },
+            // 문제풀이 비활성화(수정필요)
+            disableExample : function(){
+                this.timmerStop();
+                $('.pop_cont hp_h715').css({ 'pointer-events' : 'none' });
+            },
+            //타이머 인터벌 객체
+            timerInterval: null,
+            //타이머 초기 시간 설정(기본값 1시간)
+            timmerSetTime : 3600,
+            timerThread : function(){
+                let _this = this;
+                let m = `<span>${Math.floor(_this.timmerSetTime / 60).toString().padStart(2,"0")}</span>:<span>${(_this.timmerSetTime % 60).toString().padStart(2,"0")}</span>`; // 남은 시간 계산
+                _this.Element.timmer.innerHTML = m;     // div 영역에 보여줌
+                _this.timmerSetTime--;                  // 1초씩 감소
+                if (_this.timmerSetTime < 0) {          // 시간이 종료 되었으면..
+                    clearInterval(_this.timerInterval);     // 타이머 해제
+                    alert("종료");
+                }
+            },
+            //타이머 시작
+            timerStat : function(second){
+                clearInterval(this.timerInterval);
+                if(second) this.timmerSetTime = second;
+                this.timerInterval=setInterval(()=>{ this.timerThread() },1000)
+            },
+            timmerStop : function(){
+                clearInterval(this.timerInterval);
+            },
+            // 비동기 반복함수
+            asyncForEach : async function(array, callback, delay) {
+                for (let index = 0; index < array.length; index++) {
+                    await callback(array[index], index, array);
+                }
+            }
+        }
+        /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

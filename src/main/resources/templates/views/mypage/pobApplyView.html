@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage" th:each="item:${content}">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">사업 신청서</div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>기본정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    사업명
+                                </th>
+                                <td th:text="${item.bizPbancMaster.bizPbancNm}">
+                                    미디어교육 평생교실new
+                                </td>
+                                <th scope="row">
+                                    년도
+                                </th>
+                                <td th:text="${item.bizPbancMaster.bizPbancYr}">
+                                    2022
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    사용자 정보
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicNm}">
+                                    홍길동
+                                </td>
+                                <th scope="row" class="lh"  th:unless="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    사업자등록번호(고유번호)
+                                </th>
+                                <td th:text="${(item.organizationInfo.bizLicenseNumber)?:'-'}"  th:unless="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    000-00-0000
+                                </td>
+                                <th scope="row" th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    <span class="el_required">*</span>
+                                    신청유형
+                                </th>
+                                <td th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    <span th:text="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[0] :' '}"></span>
+                                </td>
+                            </tr>
+                            <tr th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    수업대상학년
+                                </th>
+                                <td>
+                                    <span th:text="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[1] :item.bizOrgAplyLsnPlanTrgt}"></span>
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    수업형태
+                                </th>
+                                <td th:text="${item.bizOrgAplyOperMeth}">
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:unless="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>신청 정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    학교/기관 구분
+                                </th>
+                                <td>
+                                    <span th:if="${item.organizationInfo.organizationType == '1'}">매체사</span>
+                                    <span th:if="${item.organizationInfo.organizationType == '2'}">기관</span>
+                                    <span th:if="${item.organizationInfo.organizationType == '3'}">학교</span>
+                                </td>
+                                <th scope="row">
+                                    수업형태
+                                </th>
+                                <td th:text="${item.bizOrgAplyOperMeth}">
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:unless="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>신청정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    소속학교/기관
+                                </th>
+                                <td colspan="3" th:text="${item.organizationInfo.organizationName}">
+                                    서귀중앙여자중학교
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    대표자
+                                </th>
+                                <td th:text="${item.bizOrgAplyRprsvNm}">홍길동</td>
+                                <th scope="row">
+                                    교육기간
+                                </th>
+                                <td>
+                                    <span th:text="${item.bizOrgAplyLsnPlanBgng}">
+                                        2022-10-01
+                                    </span>
+                                    <span class="blank">~</span>
+                                    <span th:text="${item.bizOrgAplyLsnPlanEnd}">
+                                        2022-11-01
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    총 교육시간
+                                </th>
+                                <td th:text="${item.bizOrgAplyTime}">
+                                    2.0
+                                </td>
+                                <th scope="row" class="lh">
+                                    최초 총 교육시간
+                                </th>
+                                <td th:text="${item.bizOrgAplyTimeFrst}">
+                                    2.0
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    담당자<br>이름(직급)
+                                </th>
+                                <td>
+                                    <span th:text="${item.bizOrgAplyPicNm}"></span>(<span th:text="${item.bizOrgAplyPicJbgd}"></span>)
+                                </td>
+                                <th scope="row">
+                                    담당자 이메일
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicEml}">
+                                    test123@naver.com
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    담당자 전화번호
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicTelno}">
+                                    010-1234-1234
+                                </td>
+                                <th scope="row">
+                                    담당자 휴대폰
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicMpno}">
+                                    010-1234-1234
+                                </td>
+                            </tr>
+                            <tr id="dtlListRow">
+                                <th scope="row">
+                                    수업시간표
+                                </th>
+                                <td colspan="3">
+                                    <!-- COMPONENT : SCROLL -->
+                                    <div class="bl_scroll" th:unless="${#lists.isEmpty(item.bizOrganizationAplyDtls)}">
+                                        <!-- COMPONENT : TABLE -->
+                                        <table class="bl_table">
+                                            <caption>시간표</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="width:6%;" scope="col">회차</th>
+                                                <th style="width:13%;" scope="col">수업일정</th>
+                                                <th style="width:10%;" scope="col">수업주제</th>
+                                                <th style="width:6%;" scope="col">수업<br>시수</th>
+                                                <th style="width:12%;" scope="col">시작시간</th>
+                                                <th style="width:12%;" scope="col">종료시간</th>
+                                                <th style="width:7%;" scope="col">인원<br>(명)</th>
+                                                <th style="width:12%;" scope="col">수업장소</th>
+                                                <th style="width:10%;" scope="col">비고</th>
+                                                <th style="width:6%;" scope="col">강사</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="dtl_list" th:each="item2,stat:${item.bizOrganizationAplyDtls}">
+                                                <td class="bizOrgAplyLsnDtlRnd" th:text="${item2.bizOrgAplyLsnDtlRnd}">
+                                                    1
+                                                </td>
+                                                <td class="bizOrgAplyLsnDtlYmd" th:text="${item2.bizOrgAplyLsnDtlYmd}">
+                                                    2022-10-06
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlTpic}">
+                                                    주제주제
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlHr}">
+                                                    2.0
+                                                </td>
+                                                <td class="bizOrgAplyLsnDtlBgngTm" th:text="${item2.bizOrgAplyLsnDtlBgngTm}">
+                                                    01:00
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlEndTm}">
+                                                    02:00
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlNope}">
+                                                    1
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlPlc}">
+                                                    장소장소
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlEtc}">
+                                                    비고비고
+                                                </td>
+                                                <td th:if="${item2 != null} and ${item2.bizInstructorAsgnms != null}">
+                                                    <div th:each="item3:${item2.bizInstructorAsgnms}">
+                                                        <div th:text="${item3.bizInstructorAply.bizInstrAplyInstrNm} "></div>
+                                                    </div>
+                                                </td>
+                                                <td th:unless="${item2 != null} and ${item2.bizInstructorAsgnms != null}">
+                                                    (미배정)
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    주소
+                                </th>
+                                <td colspan="3">
+                                    (<span th:text="${(item.organizationInfo.organizationZipCode)?:'-'}"></span>)
+                                    <span th:text="${(item.organizationInfo.organizationAddress1)?:'-'}"></span>, <span th:text="${(item.organizationInfo.organizationAddress2)?:' '}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    지역
+                                </th>
+                                <td th:colspan="${(item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3)? 1 : 3}" th:text="${item.bizOrgAplyRgn}">
+                                    서울
+                                </td>
+                                <th scope="row" th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    신청유형
+                                </th>
+                                <td th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                                    <span th:text="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[0] :' '}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:if="${item.bizPbancMaster.bizPbancType ==1}">
+                                    신청유형
+                                </th>
+                                <th scope="row" th:unless="${item.bizPbancMaster.bizPbancType ==1}">
+                                    수업대상학년
+                                </th>
+                                <td>
+                                    <span th:text="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[1] :item.bizOrgAplyLsnPlanTrgt}"></span>
+                                </td>
+                                <th scope="row">
+                                    회차당 교육인원
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanNope}">
+                                    20
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유
+                                </th>
+                                <td colspan="3" th:text="${item.bizOrgAplyLsnPlanDscr1}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    미디어교육 운영 현황
+                                </th>
+                                <td colspan="3" th:text="${item.bizOrgAplyLsnPlanDscr2}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    향후 활용계획 및 수업을 통한 기대효과
+                                </th>
+                                <td colspan="3" th:text="${item.bizOrgAplyLsnPlanDscr3}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                            <th scope="row" class="lh">
+                                희망강사
+                            </th>
+                            <td colspan="3" th:text="${item.bizOrgAplyLsnPlanEtcInstr}">
+                                내용
+                            </td>
+                            </tr>
+                            <tr>
+                            <th scope="row" class="lh">
+                                건의사항 (기타의견)
+                            </th>
+                            <td colspan="3" th:text="${item.bizOrgAplyLsnPlanEtc}">
+                                내용
+                            </td>
+                            </tr>
+                            <tr th:if="${item.bizPbancMaster.bizPbancPeprYn==1}">
+                                <th scope="row" class="lh">
+                                    e-NIE(온라인 뉴스활용교육) 프로그램 신청 여부
+                                </th>
+                                <td colspan="3">
+                                    <span th:if="${item.bizOrgAplyPeprYn==1}">신청</span>
+                                    <span th:unless="${item.bizOrgAplyPeprYn==1}">미신청</span>
+                                    <div class="guide_text">※ 총 교육시간 16시간 이상 신청 시에만 지원됩니다. 한정된 예산으로 인해 모든 신청기관에 제공되지 않을 수 있습니다. </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+
+                    <!-- 기관정보 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>기관정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    학교/기관 구분
+                                </th>
+                                <td>
+                                    <span th:if="${item.organizationInfo.organizationType == '1'}">매체사</span>
+                                    <span th:if="${item.organizationInfo.organizationType == '2'}">기관</span>
+                                    <span th:if="${item.organizationInfo.organizationType == '3'}">학교</span>
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    소속학교/기관
+                                </th>
+                                <td th:text="${item.organizationInfo.organizationName}">
+                                    서귀중앙여자중학교
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    지역
+                                </th>
+                                <td th:colspan="${(item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3)? 1 : 3}" th:text="${item.bizOrgAplyRgn}">
+                                    서울
+                                </td>
+                                <th scope="row">
+                                    주소
+                                </th>
+                                <td>
+                                    (<span th:text="${(item.organizationInfo.organizationZipCode)?:'-'}"></span>)
+                                    <span th:text="${(item.organizationInfo.organizationAddress1)?:'-'}"></span>, <span th:text="${(item.organizationInfo.organizationAddress2)?:' '}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    대표자
+                                </th>
+                                <td th:text="${item.bizOrgAplyRprsvNm}">홍길동</td>
+                                <th scope="row" class="lh">
+                                    사업자등록번호(고유번호)
+                                </th>
+                                <td th:text="${(item.organizationInfo.bizLicenseNumber)?:'-'}">
+                                    000-00-0000
+                                </td>
+                            </tr>
+
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+
+
+                    <!-- 담당자 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>담당자</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    담당자<br>이름(직급)
+                                </th>
+                                <td>
+                                    <span th:text="${item.bizOrgAplyPicNm}"></span>(<span th:text="${item.bizOrgAplyPicJbgd}"></span>)
+                                </td>
+                                <th scope="row">
+                                    담당자 이메일
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicEml}">
+                                    test123@naver.com
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    담당자 전화번호
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicTelno}">
+                                    010-1234-1234
+                                </td>
+                                <th scope="row">
+                                    담당자 휴대폰
+                                </th>
+                                <td th:text="${item.bizOrgAplyPicMpno}">
+                                    010-1234-1234
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                    <!-- 교육일정 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>교육일정</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        교육기간
+                                    </th>
+                                    <td>
+                                        <span th:text="${item.bizOrgAplyLsnPlanBgng}">
+                                            2022-10-01
+                                        </span>
+                                        <span class="blank">~</span>
+                                        <span th:text="${item.bizOrgAplyLsnPlanEnd}">
+                                            2022-11-01
+                                        </span>
+                                    </td>
+                                    <th scope="row">
+                                        총 교육시간
+                                    </th>
+                                    <td th:text="${item.bizOrgAplyTime}">
+                                        2.0
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="lh">
+                                        최초 총 교육시간
+                                    </th>
+                                    <td th:text="${item.bizOrgAplyTimeFrst}">
+                                        2.0
+                                    </td>
+                                    <th scope="row">
+                                        회차당 교육인원
+                                    </th>
+                                    <td th:text="${item.bizOrgAplyLsnPlanNope}">
+                                        20
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 수업시간표 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>수업시간표</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr id="dtlListRow">
+                                <th scope="row">
+                                    수업시간표
+                                </th>
+                                <td>
+                                    <!-- COMPONENT : SCROLL -->
+                                    <div class="bl_scroll bl_scroll__hor dtl_list_table" th:unless="${#lists.isEmpty(item.bizOrganizationAplyDtls)}">
+                                        <!-- COMPONENT : TABLE -->
+                                        <table class="bl_table">
+                                            <caption>수업시간표 상세</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="width:6%;" scope="col">회차</th>
+                                                <th style="width:13%;" scope="col">수업일정</th>
+                                                <th style="width:10%;" scope="col">수업주제</th>
+                                                <th style="width:6%;" scope="col">수업<br>시수</th>
+                                                <th style="width:12%;" scope="col">시작시간</th>
+                                                <th style="width:12%;" scope="col">종료시간</th>
+                                                <th style="width:7%;" scope="col">인원<br>(명)</th>
+                                                <th style="width:12%;" scope="col">수업장소</th>
+                                                <th style="width:10%;" scope="col">비고</th>
+                                                <th style="width:6%;" scope="col">강사</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="item2,stat:${item.bizOrganizationAplyDtls}">
+                                                <td class="bizOrgAplyLsnDtlRnd" th:text="${item2.bizOrgAplyLsnDtlRnd}">
+                                                    1
+                                                </td>
+                                                <td class="bizOrgAplyLsnDtlYmd" th:text="${item2.bizOrgAplyLsnDtlYmd}">
+                                                    2022-10-06
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlTpic}">
+                                                    주제주제
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlHr}">
+                                                    2.0
+                                                </td>
+                                                <td class="bizOrgAplyLsnDtlBgngTm" th:text="${item2.bizOrgAplyLsnDtlBgngTm}">
+                                                    01:00
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlEndTm}">
+                                                    02:00
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlNope}">
+                                                    1
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlPlc}">
+                                                    장소장소
+                                                </td>
+                                                <td th:text="${item2.bizOrgAplyLsnDtlEtc}">
+                                                    비고비고
+                                                </td>
+                                                <td th:if="${item2 != null} and ${item2.bizInstructorAsgnms != null}">
+                                                    <div th:each="item3:${item2.bizInstructorAsgnms}">
+                                                        <div th:text="${item3.bizInstructorAply.bizInstrAplyInstrNm} "></div>
+                                                    </div>
+                                                </td>
+                                                <td th:unless="${item2 != null} and ${item2.bizInstructorAsgnms != null}">
+                                                    (미배정)
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody><tfoot></tfoot>
+                        </table>
+                    </div>
+                    <!-- 기타 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
+                        <table>
+                            <caption>기타정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanDscr1}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    미디어교육 운영 현황
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanDscr2}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    향후 활용계획 및 수업을 통한 기대효과
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanDscr3}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    희망강사
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanEtcInstr}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="lh">
+                                    건의사항 (기타의견)
+                                </th>
+                                <td th:text="${item.bizOrgAplyLsnPlanEtc}">
+                                    내용
+                                </td>
+                            </tr>
+                            <tr th:if="${item.bizPbancMaster.bizPbancPeprYn==1}">
+                                <th scope="row" class="lh">
+                                    e-NIE(온라인 뉴스활용교육) 프로그램 신청 여부
+                                </th>
+                                <td >
+                                    <span th:if="${item.bizOrgAplyPeprYn==1}">신청</span>
+                                    <span th:unless="${item.bizOrgAplyPeprYn==1}">미신청</span>
+                                    <div class="guide_text">※ 총 교육시간 16시간 이상 신청 시에만 지원됩니다. 한정된 예산으로 인해 모든 신청기관에 제공되지 않을 수 있습니다. </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <input type="hidden" id="bizPbancRcptEnd" th:value="${content[0].bizPbancMaster.bizPbancRcptEnd}">
+
+                    <input type="hidden" id="bizOrgAplyStts" th:value="${content[0].bizOrgAplyStts}">
+                    <input type="hidden" id="bizOrgAplyChgYn" th:value="${content[0].bizOrgAplyChgYn}">
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_blue" th:if="${view == null}" th:href="@{/mypage/business-state/apply/write/{id}(id=${item.bizOrgAplyNo})}">수정하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" th:if="${view == null}" href="/mypage/business-state/apply">목록</a>
+                            <a class="btn_type2" th:unless="${view == null}" href="/mypage/business-state">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                if(window.location.search == "?view"){
+                    $(".btn_type1").remove();
+                    $(".btn_type2").attr("href", "/mypage/business-state/result")
+                }
+                //아래행과 위치변경
+                function moveDown(el){
+                    let $tr = $(el).parent();
+                    $tr.next().after($tr);
+                }
+                function onLoadSubmit() {
+                    $(".bizOrgAplyLsnDtlRnd").each((index,item)=>{
+                        $(item).innerText = index+1;
+                    })
+
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,0,0);
+
+                    let AUTH =[[ ${#authentication} ]];
+                    if(AUTH.principal.roleGroup == "JOURNALIST"){
+                        $("#dtlListRow").remove();
+                    }
+                    let now = new Date();
+                    now.setUTCHours(now.getUTCHours()+9);
+                    let toDay = now.toJSON().split('T')[0];
+                    let endDate = $("#bizPbancRcptEnd").val();
+                    let bizOrgAplyStts = $("#bizOrgAplyStts").val();
+                    let changYn=$("#bizOrgAplyChgYn").val();
+                    if(toDay>endDate && bizOrgAplyStts==0){
+                        $(".btn_type1").remove();
+                    }else if(changYn=="0" && bizOrgAplyStts=="2"){
+                        $(".btn_type1").remove();
+                    }else if(changYn=="1" && bizOrgAplyStts=="2"){
+                        let bizOrgAplyNo= $(".btn_type1").attr('value')
+                        $(".btn_type1").attr("href",`/mypage/business-state/update/${bizOrgAplyNo}`);
+                    }else if(bizOrgAplyStts=="9"){
+                        let bizOrgAplyNo= $(".btn_type1").attr('value')
+                        $(".btn_type1").attr("href",`/mypage/business-state/update/${bizOrgAplyNo}`);
+                    }
+                    let n = $('.bizOrgAplyLsnDtlYmd').length;
+                    let nowDate, nextDate;
+                    let nowTime, nextTime;
+                    for (let i=n-1; i>0; i--) {
+                        for (let j=0; j<i; j++) {
+                            nowDate=$('.bizOrgAplyLsnDtlYmd')[j].innerText;
+                            nextDate=$('.bizOrgAplyLsnDtlYmd')[j+1].innerText;
+                            if (nowDate > nextDate) {
+                                moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                            }else if(nowDate==nextDate){
+                                // 같은 날이면 시작 시간 순으로 정렬
+                                nowTime = $(".bizOrgAplyLsnDtlBgngTm")[j].innerText;
+                                nextTime=$('.bizOrgAplyLsnDtlBgngTm')[j+1].innerText;
+                                if(nowTime>nextTime){
+                                    moveDown($('.bizOrgAplyLsnDtlYmd')[j])
+                                }
+                            }
+                        }
+                    }
+
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+
+</body>
+</html>

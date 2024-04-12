@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(/assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="join_step">
+                    <div class="step step1">
+                        <span>01</span>
+                        <span>약관동의</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step2">
+                        <span>02</span>
+                        <span>본인인증</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step3 active">
+                        <span>03</span>
+                        <span>회원정보 입력</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step4">
+                        <span>04</span>
+                        <span>회원가입 완료</span>
+                    </div>
+                </div>
+
+                <form id="createUserForm" name="createUserForm" method="POST" action="/anonymous/user/create">
+                    <div class="cont_title">학교 정보
+                        <div class="btn_type3 btn_register" onclick="registerOrg(1)">학교 등록신청</div>
+                    </div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box">
+                            <div class="common_label"><span class="essential">*</span>학교명</div>
+                            <div class="d-flex hp_md_w100p">
+                                <input id="organizationName" type="text" class="common_input form_input" readonly >
+                                <div class="btn_type1 btn_md btn_gray" onclick="findOrganization(3)">찾아보기</div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>대표전화</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="schoolTel" class="phone">
+                                    <input type="text" maxlength="3" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" disabled >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>교장</label>
+                            </div>
+                            <input maxlength="20" onchange="maxCheck(this)" type="text" id="representative" class="common_input form_input" value="대표자명" disabled >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>학급수/학생수</label>
+                            </div>
+                            <div class="d-flex align-items-center hp_md_w100p">
+                                <input type="text" id="learningCount" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" class="common_input" >
+                                <div class="blank">학급 /</div>
+                                <input type="text" id="numberStudents" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" class="common_input" >
+                                <div class="blank">명</div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>학교 주소</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div class="d-flex">
+                                    <input type="text" id="organizationZipCode" class="common_input form_input" disabled>
+                                </div>
+                                <input type="text" id="organizationAddress1" class="common_input form_input_lg" disabled >
+                                <input type="text" id="organizationAddress2" class="common_input form_input_lg" disabled >
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">홈페이지</label>
+                            </div>
+                            <input maxlength="100" onchange="maxCheck(this)" type="text" id="homepage" class="common_input form_input_md" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="">팩스번호</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="schoolFax" class="fax">
+                                    <input type="text" maxlength="3" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" disabled >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" disabled >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cont_title">교사 정보</div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>직위</label>
+                            </div>
+                            <input maxlength="20" onchange="maxCheck(this)" type="text" id="rank" class="common_input form_input" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>담당과목</label>
+                            </div>
+                            <input maxlength="25" onchange="maxCheck(this)" type="text" id="charge" class="common_input form_input" placeholder="한글, 한글/숫자 혼용 25자 제한" >
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for=""><span class="essential">*</span>직통전화</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div id="chargeTelNumber" class="phone">
+                                    <select class="common_select" data-list="telList"></select>
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" >
+                                    <div class="blank">-</div>
+                                    <input type="text" maxlength="4" class="common_input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn_box">
+                        <button id="createUserButton" name="createUserButton" type="button" class="btn_type1 btn_lg btn_red" onclick="go()">사업 참여 권한 신청</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <input id="organizationCode" type="hidden">
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            var params = {};
+            var organization = [[ ${content.organizationInfo} ]];
+            var orgCode;
+
+            function onLoadSubmit() {
+                if(organization) { /** 회원 가입 당시 기관 정보를 입력하였을 경우 */
+                    /** 기관 등록 요청 데이터 표출 */
+                    addressSet(organization.organizationZipCode, organization.organizationAddress1, organization.organizationAddress2); /* 주소 셋팅 */
+                    telNumSet(organization.organizationTelNumber) /* 전화번호 셋팅 */
+                    faxNumSet(organization.organizationFaxNumber) /* 팩스번호 셋팅 */
+                    document.querySelector('#organizationName').value = organization.organizationName;
+                    document.querySelector('#organizationCode').value = organization.organizationCode;
+                    /** 기존 데이터로 초기 셋팅 */
+                    params = organization;
+                    orgCode = organization.organizationCode;
+                }
+
+                params.userId = [[ ${content.userId} ]];
+            }
+
+            /* 매체사/학교/기관 찾기 */
+            async function findOrganization(type){
+                let code = await CommonUI.searchMediaCompany(type);
+                if(code){
+                    selectMediaCompanyInfo(code);
+                    document.getElementById("organizationName").value = code.organizationName;
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            /* 매체사/학교/기관 등록신청 */
+            async function registerOrg(registerType){
+                let orgItem = await CommonUI.registerOrg(registerType);
+                if(orgItem){
+                    registerOrgInfo(orgItem);
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            // 미입력된 필수 정보가 있을 경우 alert
+            function requiredChk() {
+                /**
+                 * 아이디
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 입력
+                 */
+                if(!params.userId) { alert('잘못된 접근입니다.'); return false; }
+                /** 소속 기관 명 */
+                if(!document.querySelector('#organizationName').value) { alert('소속 기관 명은 필수입니다.'); return false; }
+                else { params.organizationName = document.querySelector('#organizationName').value }
+
+                /** 학습 수 */
+                if(!document.querySelector('#learningCount').value) { alert('학급 수는 필수입니다.'); return false; }
+                else { params.learningCount = document.querySelector('#learningCount').value }
+                /** 학생 수 */
+                if(!document.querySelector('#numberStudents').value) { alert('학생 수는 필수입니다.'); return false; }
+                else { params.numberStudents = document.querySelector('#numberStudents').value }
+                /** 대표전화 */
+                params.organizationTelNumber = document.querySelector('#schoolTel > input:nth-child(1)').value
+                    + document.querySelector('#schoolTel > input:nth-child(3)').value
+                    + document.querySelector('#schoolTel > input:nth-child(5)').value;
+                /** 팩스번호 */
+                params.organizationFaxNumber = document.querySelector('#schoolFax > input:nth-child(1)').value
+                    + document.querySelector('#schoolFax > input:nth-child(3)').value
+                    + document.querySelector('#schoolFax > input:nth-child(5)').value;
+                /** 대표자 */
+                params.representative = document.querySelector('#representative').value;
+                /** 우편번호 */
+                params.organizationZipCode = document.querySelector('#organizationZipCode').value;
+                /** 주소 1 */
+                params.organizationAddress1 = document.querySelector('#organizationAddress1').value;
+                /** 주소 2 */
+                params.organizationAddress2 = document.querySelector('#organizationAddress2').value;
+                /** 홈페이지 */
+                params.homepage = document.querySelector('#homepage').value;
+                /** 직위 */
+                if(!document.querySelector('#rank').value) { alert('직위는 필수입니다.'); return false; }
+                else { params.rank = document.querySelector('#rank').value }
+                /** 담당 */
+                if(!document.querySelector('#charge').value) { alert('담당(과목/콘텐츠)는 필수입니다.'); return false; }
+                else { params.charge = document.querySelector('#charge').value }
+                /** 담당자 연락처 */
+                if(!$('#chargeTelNumber > select > option:selected')[0].innerText
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(5)').value) {
+                    alert('직통전화는 필수입니다.'); return false;
+                } else {
+                    params.chargeTelNumber = $('#chargeTelNumber > select > option:selected')[0].innerText
+                        + document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                        + document.querySelector('#chargeTelNumber > input:nth-child(5)').value;
+                    if(params.chargeTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]{3,4})([0-9]{4})/, "$1-$2-$3").indexOf('-') == -1){
+                        alert('유효하지 않은 전화번호입니다. 직통전화를 다시 확인해 주세요!'); return false;
+                    }
+                }
+                /** 기관코드 */
+                params.organizationCode = document.querySelector('#organizationCode').value;
+
+                return true;
+            }
+
+            function go() { /** 사업 권한 신청 */
+                params.bizAuthority = "SCHOOL";
+                params.organizationCode = orgCode ? orgCode : params.organizationCode;
+                /** 필수 값 체크 */
+                if(!requiredChk()) return;
+                /** 회원 가입 호출 */
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/authority/organization/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(params),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        /** 사업 참여 권한 신청 성공 */
+                        location.href = '/user/join/result'
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('사업 권한을 신청하는 과정에서 오류가 발생했습니다.');
+                        }
+                    }
+                })
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+    
+</div>
+</body>
+</html>

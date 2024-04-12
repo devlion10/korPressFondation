@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logback 설정 -->
+<included scan="false" scanPeriod="2 seconds">
+
+	<!-- 로그파일명 (경로도 포함가능)  -->
+	<property name="LOG_FILE" value="logs/kpf-lms-web" />
+
+	<!-- 콘솔 기록 패턴 -->
+	<!-- <property name="CONSOLE_LOG_PATTERN" value="%date{HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %X{req.ip} %-5level: %c{50}.%method\\(\\) (%file:%line\\) - %msg%n"/> -->
+	<property name="CONSOLE_LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %X{client.accessIP} %X{client.uuid} %X{client.httpMethod} %X{client.requestURI} %-5level: %c{50}.%method\\(\\) (%file:%line\\) - %msg%n" />
+	<!-- 파일 기록 패턴 -->
+	<!-- <property name="FILE_LOG_PATTERN" value="%date{HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %X{req.ip} %-5level: %c{50}.%method\\(\\) (%file:%line\\) - %msg%n"/> -->
+	<property name="FILE_LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %X{client.accessIP} %-5level: %c{50}.%method\\(\\) (%file:%line\\) - %X{client.httpMethod} %X{client.requestURI} %msg%n" />
+	<!-- 롤링파일 최대 몇일치 보관할지 -->
+	<property name="LOG_FILE_MAX_HISTORY" value="365" />
+	<!-- 사이즈롤링 사용시 롤링파일의 최대사이즈. 이 크기를 초과하면 롤링 -->
+	<property name="LOG_FILE_MAX_SIZE" value="1GB" />
+
+	<!-- 로그출력 문자열셋 -->
+	<property name="LOG_CHARSET" value="UTF-8" />
+
+</included>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사모집</div>
+                        </div>
+                    </div>
+
+                    <!-- COMPONENT : BOX NOTE -->
+                    <div class="bl_boxNote">
+                        <ul class="bl_list2 bl_list2__star">
+                            <li>
+                                <span th:if="${bizInstr != null}" th:text="${'이번 강사 모집 기간('+bizInstr.bizInstrPeriod+') 에는'}"></span>
+                                <span th:if="${bizInstr != null}"><strong class="el_strong" th:text="${'총 '+bizInstr.bizInstrMaxInst+'개 기관까지 지원'}"></strong></span>
+                                <span th:if="${bizInstr != null}"> 하실 수 있습니다.</span>
+                                <span th:unless="${bizInstr != null}">강사모집에는 <strong class="el_strong">총 b개 기관까지 지원</strong> 하실 수 있습니다.</span>
+                            </li>
+                            <li>[마이페이지] &gt; [강사참여현황] &gt; [강사모집]에서 반드시 <strong class="el_strong">“최종 지원”을 해주셔야 신청이 완료</strong>됩니다. </li>
+                        </ul>
+                    </div>
+
+                    <div class="sch_box sch_box_wrap">
+                        <label for="bizOrgAplyRgn" class="hidden_label">지역</label>
+                        <select id="bizOrgAplyRgn" class="common_select2" data-list="regionList"></select>
+                        <label for="containTextType" class="hidden_label">구분</label>
+                        <select id="containTextType" class="common_select2">
+                            <option value="1" selected>사업명+기관명</option>
+                            <option value="2">사업명</option>
+                            <option value="3">기관명</option>
+                        </select>
+                        <label for="containText" class="hidden_label">검색어</label>
+                        <input id="containText" class="common_input2 form_input_md" placeholder="검색어를 입력해주세요." >
+                        <button type="button" th:onclick="searchInst()" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+
+                    <!-- BOARD : LIST -->
+                    <div class="bl_board">
+                        <div class="bl_board_head">
+                            <div class="bl_board_check">
+                                <div class="chk_box">
+                                    <input id="all_check" name="instrApply" type="checkbox">
+                                    <label for="all_check">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="bl_board_ctg hp_lg_fb80">구분</div>
+                            <div class="bl_board_region">지역</div>
+                            <div class="bl_board_corp">기관</div>
+                            <div class="bl_board_subject">사업명</div>
+                            <div class="bl_board_dateRange">강사모집기간</div>
+                            <div class="bl_board_hit">희망강사</div>
+                            <div class="bl_board_application">신청서</div>
+                            <div class="bl_board_state hp_lg_fb120">진행상태</div>
+                        </div>
+                        <div class="bl_board_body" th:each="content,stat : ${content}">
+                            <div class="bl_board_unit">
+                                <div class="bl_board_check hp_md_ord1">
+                                    <div class="chk_box item_chk" th:if="${content.bizInstrPbancStts != 0 && content.loginUserApplied==null}">
+                                        <input th:id="${'instrApply'+stat.index}" name="instrApply" type="checkbox" class="instrApply" th:value="${content.bizInstrNo+','+content.bizOrgAplyNo}" >
+                                        <label th:for="${'instrApply'+stat.index}">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="bl_board_ctg hp_lg_fb80 hp_md_ord3">
+                                    <div class="el_ctg hp_main" th:if="${content.bizInstrPbancStts == 0}">마감</div>
+                                    <div class="el_ctg hp_main" th:if="${content.bizInstrPbancStts == 1 && content.loginUserApplied==null}">모집</div>
+                                    <div class="el_ctg hp_main" th:if="${content.bizInstrPbancStts == 1 && content.loginUserApplied!=null}">지원완료</div>
+                                    <div class="el_ctg hp_main" th:if="${content.bizInstrPbancStts == 2}">추가모집</div>
+                                </div>
+                                <div class="bl_board_region hp_md_ord1" th:if="${#strings.contains(content.bizOrgAplyRgn,'지역')}" th:text="전체"></div>
+                                <div class="bl_board_region hp_md_ord1" th:unless="${#strings.contains(content.bizOrgAplyRgn,'지역')}" th:text="${content.bizOrgAplyRgn}"></div>
+                                <div th:if="${content.organization==null}" class="bl_board_corp hp_md_ord2">
+                                    <span th:if="${content.organizationInfo!=null}" th:text="${content.organizationInfo.organizationName}"></span>
+                                    <span th:unless="${content.organizationInfo!=null}">-</span>
+                                </div>
+                                <div th:unless="${content.organization==null}" class="bl_board_corp hp_md_ord2" th:text="${content.organization.organizationName}"></div>
+                                <!-- 강사 모집 공고 페이지로 넘기기 -->
+                                <a th:href="@{/business/instructor/view/{id}(id=${content.sequenceNo})}" class="bl_board_subject">
+                                    <span class="hp_ellipsis" th:text="${content.bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</span>
+                                </a>
+                                <div class="bl_board_dateRange hp_md_ord52">
+                                    <span class="bl_board_label hp_md_show">강사모집기간</span>
+                                    <span class="bizInstrRcptEnd" th:text="${content.bizInstrRcptBgng}+' ~ '+${content.bizInstrRcptEnd}"></span>
+                                </div>
+                                <div class="bl_board_hit hp_md_ord52 bl_board_md_label">
+                                    <span class="bl_board_label hp_md_show">희망강사</span>
+                                    <span th:text="${ content?.bizOrgAplyLsnPlanEtcInstr != null && content?.bizOrgAplyLsnPlanEtcInstr != '' ? 'O' : 'X'}"></span>
+                                </div>
+
+                                <div class="bl_board_application hp_md_ord52 bl_board_md_label">
+                                    <span class="bl_board_label hp_md_show">신청서</span>
+                                    <a class="btn_type1 btn_blue btn_sm" th:href="@{/business/instructor/view/{no}/{id}(no=${content.sequenceNo}, id=${content.bizOrgAplyNo})}">보기</a>
+                                </div>
+                                <div class="bl_board_state hp_lg_fb120 hp_md_ord2">
+                                    <i class="el_chip" th:if="${content.bizInstrPbancStts == 0}">모집마감</i>
+                                    <i class="el_chip el_chip__success" th:if="${content.bizInstrPbancStts == 1}">모집중</i>
+                                    <i class="el_chip el_chip__success" th:if="${content.bizInstrPbancStts == 2}">모집중</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 지원하기 -->
+        <div class="pop_wrapper ui-modal" id="popApply">
+            <div class="pop_wrap pop_secondary hp_mw500">
+                <div class="pop_cont">
+                    선택한 사업에 강사로 지원하시겠습니까?
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_sm btn_blue pop-close" href="#popApply2" data-control="modal" data-handler="popApply2">확인</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="pop_close pop-close">닫기</button>
+            </div>
+        </div>
+
+        <!-- POPUP : 지원하기 -->
+        <div class="pop_wrapper ui-modal" id="popApply2">
+            <div class="pop_wrap pop_secondary hp_mw500">
+                <div class="pop_cont">
+                    강사 지원이 접수되었습니다.
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_sm btn_blue" href="/mypage/instructor-state/recruit">확인</a>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="pop_close pop-close">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                $("#all_check").bind('click',function (e){
+                    if($(this).is(":checked")){
+                        let name=$(this).attr("name");
+                        $(`input:checkbox[name=${name}]`).prop("checked", true);
+                    }else{
+                        let name=$(this).attr("name");
+                        $(`input:checkbox[name=${name}]`).prop("checked", false);
+
+                    }
+                })
+
+                function searchInst(options = {}){
+                    let searchQuery = Object.assign({},options);
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    let rgn = $("#bizOrgAplyRgn").val();
+
+                    searchQuery.containText = name
+                    searchQuery.containTextType = type
+                    searchQuery.bizOrgAplyRgn = rgn
+                    searchJson(searchQuery)
+                }
+
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(2,0,1);
+                    schBox();
+                    checkBox();
+
+                    if([[ ${instr} ]] === null){
+                        pagination([[ ${pageable} ]], false)
+                    } else {
+                        pagination([[ ${pageable} ]], true, '지원하기', true)
+                    }
+
+                    let pageable = [[ ${pageable} ]];
+                    let pageSize = $(`<div class="bl_paginate_lft">
+                        <label for="pageSize" class="hidden_label">페이징</label>
+                        <select id="pageSize" class="common_select2">
+                            <option value="10" ${pageable.size == 10 ? "selected='true'":""}">10</option>
+                            <option value="20" ${pageable.size == 20 ? "selected='true'":""}">20</option>
+                            <option value="30" ${pageable.size == 30 ? "selected='true'":""}">30</option>
+                            <option value="50" ${pageable.size == 50 ? "selected='true'":""}">50</option>
+                            <option value="100" ${pageable.size == 100 ? "selected='true'":""}">100</option>
+                       </select>
+                    </div>`);
+                    pageSize.change(function(e){
+                        e.preventDefault();
+                        searchInst({ size : e.target.value});
+                    })
+                    $(".bl_paginate").prepend(pageSize);
+                }
+
+                function getCheckData(){
+                    let cont = [[ ${content} ]]
+                    let instr = [[ ${instr} ]]
+                    let params = new Array($('input:checkbox:checked.instrApply').length);
+                    $('input:checkbox:checked.instrApply').each(function (index,item){
+                        let dataIndex = $(item).attr("id").split('instrApply')[1]
+                        dataIndex= parseInt(dataIndex)
+                        params[index] ={};
+                        params[index].bizInstrNo = $(item).attr("value").split(",")[0];
+                        params[index].bizOrgAplyNo = $(item).attr("value").split(",")[1];
+
+                        //강사배정방식 선착순 바로접수
+                        if(cont[dataIndex].bizPbancInstrSlctnMeth==1){
+                            params[index].bizInstrAplyStts = 1;
+                        }else{
+                            params[index].bizInstrAplyStts = 0;
+                        }
+                        params[index].bizInstrAplyCndtOrdr =1;
+                        params[index].bizInstrAplyInstrId = instr.userId;
+                        params[index].bizInstrAplyInstrNm = instr.instrNm;
+                        if (cont[dataIndex].organization != null) {
+                            params[index].bizInstrAplyCndtDist = getDistance(instr.instrAddr1, cont[dataIndex].organization.organizationAddress1)
+                        } else {
+                            params[index].bizInstrAplyCndtDist = getDistance(instr.instrAddr1, cont[dataIndex].organizationInfo.organizationAddress1)
+                        }
+                        params[index].bizInstrAplyCmnt = null;
+
+                    })
+                    return params;
+                }
+                function aply(){
+                    if($('input:checkbox:checked.instrApply').length == 0){
+                        alert("지원할 모집을 선택해 주세요!")
+                    } else{
+                        if(confirm("선택한 사업에 강사로 지원하시겠습니까?")){
+                            let params = getCheckData();
+                            $.ajax({
+                                type: "POST",
+                                headers: {'Content-Type' : 'application/json'},
+                                url: "/api/business/instructor/aply/create",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (res){
+                                    if(res && res.result && res.result=="ERROR3601"){
+                                        alert('강사모집 지원 수를 초과하였습니다. 강사모집 지원은 최대 5개 기관까지 가능합니다. 마이페이지에서 확인해 주세요.');
+                                        window.location.href='/mypage/instructor-state/recruit'
+                                    }else if(res.length == 0) {
+                                        alert('이미 지원하셨습니다. 마이페이지 강사참여현황(지원중인 사업, 지원완료 사업)에서 확인해 주세요.');
+                                        window.location.href = '/mypage/instructor-state/recruit'
+                                    }else if(($('input:checkbox:checked.instrApply').length>res.length)&&(res.includes(null))){
+                                        alert('중복지원, 선착순 마감된 건을 제외하고 신청되었습니다. 마이페이지 강사참여현황에서 우선순위를 선택하여 최종지원 부탁드립니다.');
+                                        window.location.href = '/mypage/instructor-state/recruit'
+                                    }else if($('input:checkbox:checked.instrApply').length>res.length){
+                                        alert('중복지원한 건을 제외하고 신청되었습니다. 마이페이지 강사참여현황에서 우선순위를 선택하여 최종지원 부탁드립니다.');
+                                        window.location.href = '/mypage/instructor-state/recruit'
+                                    }else if(res.includes(null)){
+                                        alert('선착순 마감된 건을 제외하고 신청되었습니다. 마이페이지 강사참여현황에서 우선순위를 선택하여 최종지원 부탁드립니다.');
+                                        window.location.href = '/mypage/instructor-state/recruit'
+                                    }else{
+                                        alert("강사모집 지원에 성공했습니다. 마이페이지 강사참여현황에서 우선순위를 선택하여 최종지원 부탁드립니다.")
+                                        window.location.href='/mypage/instructor-state/recruit'
+                                    }
+                                },
+                                error: function (e){
+                                    console.log(e)
+                                    alert(e.responseJSON.resultMessage)
+                                }
+                            })
+                        }else{
+                            alert('취소되었습니다.')
+                        }
+                    }
+                }
+                /* ]]> */
+
+                //주소 string으로 거리를 계산하는 함수
+                function getDistance(start, end){
+                    let startPoint = findPoint(start);
+                    let endPoint= findPoint(end);
+                    if(startPoint && endPoint){
+                        let len = distance(startPoint.y,startPoint.x,endPoint.y, endPoint.x)
+                        len = Math.round(len * 10)/10;
+                        return len;
+                    }else if(startPoint == null){
+                        return 0;
+                    }else if(endPoint == null){
+                        return 0;
+                    }
+                }
+
+                //좌표 구하는 함수
+                //INDEX는 서울 강남구 강남대로 238 와 같이 건물 주소
+                function findPoint(input,currentPage=1,countPerPage=10) {
+                    let result={};
+                    let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                    let url ="https://dapi.kakao.com/v2/local/search/address.json";
+                    $.ajax({
+                        data: { query: input,page:currentPage,size:countPerPage },
+                        url: url,
+                        headers : {
+                            "Content-Type" : "application/json",
+                            Authorization : "KakaoAK "+newkey
+                        },
+                        async: false,
+                        dataType: "json",
+                        method: "GET",
+                        error: function (e) {
+                            result.documents=false
+                            console.log(e)
+                        },
+                        success: function (data) {
+                            result = data;
+                        },
+                    })
+                    if(result.documents && result.documents.length>0)
+                        return result.documents[0];
+                    else
+                        return null;
+                }
+
+
+                //시작Y, 시작X, 도착Y, 도착X 좌표를 입력하면 추천거리 계산
+                function distance(lat1,lng1,lat2,lng2){
+                    let result=0;
+                    let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                    let url =`https://apis-navi.kakaomobility.com/v1/directions?origin=${lng1},${lat1}&destination=${lng2},${lat2}&summary=true`;
+                    $.ajax({
+                        url: url,
+                        headers : {
+                            "Content-Type" : "application/json",
+                            Authorization : "KakaoAK "+newkey
+                        },
+                        async: false,
+                        dataType: "json",
+                        method: "GET",
+                        error: function (error) {
+                            result=0
+                        },
+                        success: function (data) {
+                            result = data.routes[0].summary.distance/1000
+                        },
+                    })
+                    return result;
+                }
+
+                let now = new Date();
+                now.setUTCHours(now.getUTCHours()+9);
+                let toDay = now.toJSON().split('T')[0];
+                $(".bl_board_unit").each((index, item)=>{
+                    let endDate = $(item).find(".bizInstrRcptEnd").text();
+                    endDate = endDate.split("~ ")[1];
+                    if(toDay>endDate){
+                        $(item).find(".item_chk ").remove();
+                        $(item).find(".hp_main").text("마감");
+                        $(item).find(".el_chip").text("모집마감");
+                        $(item).find(".el_chip").removeClass("el_chip__success");
+                    }
+                })
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

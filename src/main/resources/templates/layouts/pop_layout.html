@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:replace="fragments/include :: include"></th:block>
+</head>
+<body>
+<div layout:fragment="pop"></div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        window.onload = function () {
+            if ([[ ${errorMessage}]]) { alert([[ ${errorMessage}]]); }
+            onLoadSubmit();
+        }
+        /* ]]> */
+    </script>
+</th:block>
+</body>
+</html>

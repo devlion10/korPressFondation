@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <div th:if="${authError == null}">
+        <!-- POPUP : 상호평가 -->
+        <div class="pop_page">
+            <div class="pop_primary">
+                <div class="pop_head">
+                    <h1 class="tit">
+                        희망강사
+                    </h1>
+                </div>
+                <div class="pop_cont hp_h715">
+                    <div class="sch_box">
+                        <input id="containText" type="text" class="common_input2 form_input_md" placeholder="조회를 원하는 강사명을 정확히 입력해주세요.">
+                        <a onclick="searchInstr()" class="btn_type1 btn_icon btn_search">검색</a>
+                    </div>
+
+                    <!-- BOARD : CONTROLLER -->
+                    <div class="bl_boardCtrls">
+                        <div class="bl_boardCtrls_lft">
+                            <p class="bl_boardCtrls_total">
+                                 총: <strong th:text="${pageable.totalElements}"></strong>건
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="tableResponsive overflowMulti">
+                        <table class="table">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">번호</th>
+                                <th scope="col">강사명</th>
+                                <th scope="col">아이디</th>
+                                <th scope="col">선택</th>
+                            </tr>
+                            </thead>
+                            <tbody th:if="${!#lists.isEmpty(content)}">
+                                <tr th:each="item, stat: ${content}">
+                                    <td th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></td>
+                                    <td th:text="${item.instrNm}">홍길동</td>
+                                    <td>
+                                        <span th:unless="${item.userId==null}" th:text="${#strings.substring(item.userId,0,3)+'*****'}"></span>
+                                        <span th:if="${(item.userId==null)&&(item.instrEml!=null)}" th:text="${#strings.substring(item.instrEml,0,3)+'*****'}"></span>
+                                        <span th:if="${(item.userId==null)&&(item.instrEml==null)}"> - </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn_type4 btn_blue" th:onclick="sendData( [[${stat.index}]] )">선택</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody th:unless="${!#lists.isEmpty(content)}">
+                                <tr class="empty_data"><td colspan="8">조회된 내용이 없습니다.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${!#lists.isEmpty(content)}" class="bl_paginate"></div>
+                </div>
+                <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function searchInstr(){
+                let searchQuery = {}
+                let text = $("#containText").val();
+
+                if (text) {
+                    if (text != '0') {
+                        // 정확한 검색에 추가된 키값 instructorName
+                        searchQuery.instructorName = text;
+                    } else {
+                        searchQuery.instructorName = '0';
+                    }
+                } else {
+                    searchQuery.instructorName = '0';
+                }
+                searchJson(searchQuery)
+            }
+            /* <![CDATA[ */
+            const CONT = [[ ${content} ]];
+
+            function sendData(index){
+                window.parent.postMessage(CONT[index],'*')
+                parent.window.closePop()
+            }
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false);
+
+                let searchText = new URLSearchParams(window.location.search);
+                if(searchText.get("instrNm")){
+                    $("#containText").val(searchText.get("instrNm"))
+                }else if(searchText.get("userId")){
+                    $("#containText").val(searchText.get("userId"))
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

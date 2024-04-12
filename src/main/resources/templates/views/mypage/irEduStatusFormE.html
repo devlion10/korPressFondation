@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강의현황</div>
+                        </div>
+                    </div>
+
+                    <!-- 컴포넌트 : 탭 -->
+                    <div class="bl_tab2 js_tab">
+                        <div class="bl_iscroll" id="navTab2">
+                            <div class="hp_md_iscroll">
+                                <ul class="bl_tab2_menu">
+                                    <li>
+                                        <a href="/mypage/instructor-state/lecture">진행중인 사업</a>
+                                    </li>
+                                    <li class="is_active">
+                                        <a href="/mypage/instructor-state/lecture/complete">완료된 사업</a>
+                                    </li>
+                                    <li>
+                                        <a href="/mypage/instructor-state/calculate">강의료 정산</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button class="bl_tab2_btnPrev" disabled><img th:src="@{/assets/images/icons/tab2_prev.png}" alt="이전"></button>
+                            <button class="bl_tab2_btnNext"><img th:src="@{/assets/images/icons/tab2_next.png}" alt="다음"></button>
+                        </div>
+
+                        <div class="bl_tab2_body js_tab_contents">
+                            <!-- 2. 완료된 사업 -->
+                            <div class="bl_tab2_item js_tab_item">
+                                <div class="sch_box sch_box_wrap">
+                                    <label class="hidden_label" for="year">검색구분</label>
+                                    <select id="year" class="common_select2" data-list="yearList"></select>
+                                    <label class="hidden_label" for="rgn">검색구분</label>
+                                    <select id="rgn" class="common_select2" data-list="regionList"></select>
+                                    <label class="hidden_label" for="containTextType">검색구분</label>
+                                    <select id="containTextType" class="common_select2">
+                                        <option value="1">사업명</option>
+                                        <option value="2">기관명</option>
+                                    </select>
+                                    <label class="hidden_label" for="containText">검색구분</label>
+                                    <input id="containText" type="text" class="common_input2 form_input_md" placeholder="검색어를 입력해주세요.">
+                                    <a class="btn_type1 btn_icon btn_search" onclick="searchInstCmpl()">검색</a>
+                                </div>
+
+                                <!-- BOARD : CONTROLLER -->
+                                <div class="bl_boardCtrls">
+                                    <div class="bl_boardCtrls_lft">
+                                        <p class="bl_boardCtrls_total">
+                                            <strong id="trCount">0</strong>개의 게시글이 있습니다.
+                                        </p>
+                                    </div>
+                                    <div class="bl_boardCtrls_rgt">
+                                        <a href="/mypage/instructor-state/lecture/complete" class="btn_type3 btn_gray">MECA 강의 내역 확인</a>
+                                        <a onclick="downloadPdfTest()" class="btn_type3 btn_confirm">강의활동확인서 출력</a>
+                                    </div>
+                                </div>
+
+                                <!-- BOARD : LIST -->
+                                <div class="bl_board mt-20">
+                                    <div class="bl_board_head">
+                                        <div class="bl_board_check">
+                                            <div class="chk_box">
+                                                <input id="all_check" name="bizInstrIdntyNo" type="checkbox">
+                                                <label for="all_check">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="bl_board_year">년도</div>
+                                        <div class="bl_board_region">지역</div>
+                                        <div class="bl_board_agency">기관</div>
+                                        <div class="bl_board_subject">사업명</div>
+                                        <div class="bl_board_dateRange bl_board_dateRange_sm">교육기간</div>
+                                        <div class="bl_board_lessonTime">강의시간</div>
+                                    </div>
+
+                                    <div class="bl_board_body">
+                                        <div class="bl_board_unit bl_board_unit__empty">
+                                            <div class="bl_card_empty">검색 중입니다. 잠시 기다려 주세요.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_paginate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: none;">
+            <table  id="confirmRep">
+                <tr>
+                    <td>강의활동확인서</td>
+                </tr>
+                <tr></tr>
+            </table>
+            <table id="confirmIndex">
+                <tr>
+                    <td>성명</td>
+                    <td th:text="${instructorInfo.instrNm}">홍길동</td>
+                </tr>
+                <tr>
+                    <td>생년월일</td>
+                    <td th:text="${instructorInfo.instrBrdt}">1900-01-01</td>
+                </tr>
+                <tr>
+                    <td>주소</td>
+                    <td>
+                        <span class="too-long" th:text="${instructorInfo.instrAddr1}"></span><br>
+                        <span class="too-long" th:text="${instructorInfo.instrAddr2}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>활동 기간</td>
+                    <td><span id="confirmStartYear">2016</span>년 ~ <span id="confirmEndYear">2016</span>년</td>
+                </tr>
+                <tr>
+                    <td>활동 분야</td>
+                    <td>미디어교육 강사 파견 사업</td>
+                </tr>
+                <tr>
+                    <td>활동 기관</td>
+                    <td>별도 첨부</td>
+                </tr>
+                <tr>
+                    <td>강의시간 총 합계</td>
+                    <td><span id="confirmHour">32</span>시간</td>
+                </tr>
+            </table>
+            <table id="confirmDate">
+                <tr>
+                    <td>위와 같이 한국언론진흥재단에서</td>
+                </tr>
+                <tr>
+                    <td>미디어강사로 활동하였음을 확인합니다.</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td id="confirmDateTd">2023년 05월 15일(출력일)</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td>한국언론진흥재단 이사장</td>
+                </tr>
+            </table>
+            <table id="attach">
+                <thead>
+                    <tr>
+                        <th>년도</th>
+                        <th>사업명</th>
+                        <th>활동기관</th>
+                        <th>수업시간</th>
+                    </tr>
+                </thead>
+                <tbody id="makeTableTbody">
+                    <tr>
+                        <td>년도</td>
+                        <td>사업명</td>
+                        <td>활동기관</td>
+                        <td>수업시간</td>
+                    </tr>
+                    <tr>
+                        <td>년도</td>
+                        <td>사업명</td>
+                        <td>활동기관</td>
+                        <td>수업시간</td>
+                    </tr>
+                    <tr>
+                        <td>년도</td>
+                        <td>사업명</td>
+                        <td>활동기관</td>
+                        <td>수업시간</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>소계</td>
+                        <td></td>
+                        <td>30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script th:src="@{/app/js/malgunFont.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.0.0/jspdf.umd.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                var CONT=null;
+
+                // 체크된 데이터 만드는 함수
+                function makeCheckboxTable(){
+                    $("#makeTableTbody").empty();
+                    let year = 0;
+                    let yearTime = 0;
+                    let allTime =0;
+                    $(".item_chk input:checkbox[name=bizInstrAplyNo]:checked").each((index,item)=>{
+                        let contIndex =$(item).attr("value");
+                        let data = CONT[contIndex];
+                        let time = data.eduTime;
+                        if(index == 0){
+                            year = data.blciYymm.toString().slice(0,4);
+                            $("#confirmEndYear").text(data.blciYymm.toString().slice(0,4));
+                        }else if(year != data.blciYymm.toString().slice(0,4) && index < ($(".item_chk input:checkbox[name=bizInstrAplyNo]:checked").length-1)){
+                            let lastTr = $(`<tr><td></td><td>소계</td><td></td><td>${yearTime}</td></tr>`)
+                            $("#makeTableTbody").append(lastTr);
+                            allTime+=yearTime;
+                            year = data.blciYymm.toString().slice(0,4);
+                            yearTime=0;
+                        }
+                        yearTime+=time;
+                        makeTableYear(data, time);
+                        if(index == ($(".item_chk input:checkbox[name=bizInstrAplyNo]:checked").length-1)){
+                            let lastTr = $(`<tr><td></td><td>소계</td><td></td><td>${yearTime}</td></tr>`)
+                            $("#makeTableTbody").append(lastTr);
+                            allTime+=yearTime;
+                            if(allTime>=0) $("#confirmHour").text(allTime);
+                            $("#confirmStartYear").text(data.blciYymm.toString().slice(0,4));
+                            let finalTr = $(`<tr><td colspan="3">총 합계</td><td>${allTime}</td></tr>`)
+                            $("#makeTableTbody").append(finalTr);
+                        }
+                    })
+                }
+
+                // 년단위로 테이블 추가하는 함수 데이터 형태에 따라서 ${} 추가
+                function makeTableYear(data, time){
+                    let tr = $(`<tr><td>${data.blciYymm.toString().slice(0,4)}</td>
+                                    <td>${data.bninTitle}</td>
+                                    <td>${data.bainInstNm}</td>
+                                    <td>${time}</td></tr>`)
+                    $("#makeTableTbody").append(tr);
+                }
+
+                // 강의활동확인서 다운로드
+                function downloadPdfTest(){
+                    if($(".item_chk input:checkbox[name=bizInstrAplyNo]:checked").length>0){
+                        alert("강의활동확인서를 생성 중입니다. 잠시 기다려주세요")
+
+                        var today = new Date();
+                        var year = today.getFullYear();
+                        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                        var day = ('0' + today.getDate()).slice(-2);
+                        var dateString = year + month + day;
+
+                        makeCheckboxTable();
+                        let doc = new jsPDF({
+                            orientation: "p", // p: 가로(기본), l: 세로
+                            unit: "mm", // 단위 : "pt" (points), "mm", "cm", "m", "in" or "px" 등)
+                            format: "a4", // 포맷 (페이지 크기).
+                        });
+                        doc.setProperties({
+                            title: '강의활동확인서',
+                        });
+
+                        let imgLength=185+Number(tooLong*2.5);
+                        doc.addFileToVFS("malgun.ttf", font);
+                        doc.addFont('malgun.ttf', 'malgun', 'normal');
+                        doc.setFont('malgun');
+                        let img = new Image();
+                        img.src="/assets/images/stamp.png";
+                        img.onload = function() {
+                            doc.addImage(this, 135,imgLength , 30,30);
+                            titleJson.html="#confirmRep";
+                            doc.autoTable(titleJson);
+                            doc.autoTable(indexJson);
+                            dateJson.html="#confirmDate";
+                            doc.autoTable(dateJson);
+                            if($(".item_chk input:checkbox[name=bizInstrAplyNo]:checked").length<5)
+                                doc.addPage(); // 페이지 추가
+                            doc.autoTable(attachJson);
+                            setTimeout(function (){
+                                doc.save("강의활동확인서_FormE_"+dateString+".pdf")
+                            }, 3000)
+                        };
+                    } else {
+                        alert('선택한 참여 사업이 없습니다. 목록에서 출력할 사업의 체크박스를 클릭해 주세요.');
+                    }
+                }
+
+                function searchInstCmpl(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    let rgn = $("#rgn").val();
+                    let year = $("#year").val();
+                    if(name){
+                        searchQuery.containText = name
+                        searchQuery.containTextType = type
+                    }
+                    if(rgn && rgn!="지역"){
+                        searchQuery.rgn = rgn
+                    }
+                    if(year&& year!='0'){
+                        searchQuery.year=year;
+                    }
+                    searchJson(searchQuery)
+                }
+
+                let font = getMalgunFont();
+                let titleJson ={ html: '#title' ,
+                    theme: 'plain',
+                    tableLineColor: [0, 0, 0],
+                    tableLineWidth: 0.6,
+                    styles: { font: "malgun", fontStyle: "normal", cellPadding:5, valign: "middle", halign :"center",fontSize:24, textColor:[0,0,0]} };
+                let dateJson ={ html: '#rep1',
+                    theme: 'plain',
+                    tableLineWidth: 0,
+                    styles: { font: "malgun", fontStyle: "normal", cellPadding:5, valign: "middle",fontSize:16, halign :"center"} };
+
+                let indexJson ={ html: '#confirmIndex' ,
+                    theme: 'grid',
+                    bodyStyles: {lineColor: [0, 0, 0], lineWidth:0.3, fontSize:12,cellPadding:4,valign: "middle", textColor:[0,0,0]},
+                    tableLineColor: [0, 0, 0],
+                    tableLineWidth: 0.6,
+                    styles: { font: "malgun", fontStyle: "normal", cellPadding:4, valign: "middle", textColor:[0,0,0] } };
+                let attachJson ={ html: '#attach' ,
+                    theme: 'grid',
+                    pageBreak:"avoid",
+                    headStyles : {lineColor: [0, 0, 0], lineWidth:0.3,cellPadding:4,halign :"center",fontSize:12, fillColor:[255,255,255] ,textColor:[0,0,0]},
+                    bodyStyles: {lineColor: [0, 0, 0], lineWidth:0.3, cellPadding:3,valign: "middle", textColor:[0,0,0]  },
+                    styles: { font: "malgun", fontStyle: "normal" } };
+
+
+
+                function render(data){
+                    let count=0;
+                    $("div.bl_board_body").empty();
+                    for(item of data){
+                        let tr = `<div class="bl_board_unit">
+                                            <div class="bl_board_check hp_md_ord1">
+                                                <div class="chk_box item_chk">
+                                                    <input id="checkbox_${item.blciId}" name="bizInstrAplyNo" value="${count}" type="checkbox">
+                                                    <label for="checkbox_${item.blciId}">
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="bl_board_year hp_md_ord2"> ${item.blciYymm.slice(0,4)}</div>
+                                            <div class="bl_board_region hp_md_ord3">${item.blciAreaNm}</div>
+                                            <div class="bl_board_agency hp_md_ord4">${item.bainInstNm}</div>
+                                            <div class="bl_board_subject">${item.bninTitle}</div>
+                                            <div class="bl_board_dateRange bl_board_dateRange_sm hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">교육기간</span>
+                                                <span>
+                                                    <span id="bgng">${item.bainEduSdate}</span> ~
+                                                    <span id="end">${item.bainEduEdate}</span>
+                                                </span>
+                                            </div>
+                                            <div class="bl_board_lessonTime bl_board_md_label hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">강의시간</span>
+                                                <span id="total_time">${item.eduTime}</span>
+                                            </div>
+                                        </div>`;
+
+                        $("div.bl_board_body").append($(tr));
+                        count+=1;
+                    }
+                    $("#trCount").text(count);
+                    checkBox()
+                }
+
+                function customAjax(){
+                    $.ajax({ //jquery ajax
+                        type:"get", //http method
+                        url:`/api/business/instructor/identify/forme${window.location.search}`,
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            CONT=data.content;
+                            if(data.numberOfElements !=0){
+                                render(data.content);
+                            }
+                            else{
+                                $(".bl_card_empty").text("검색 결과가 없습니다.")
+                            }
+                        },
+                        error:function(e){
+                            alert('포미 데이터를 불러오는 과정에서 오류가 발생하였습니다.')
+                        }
+                    })
+                }
+                /* <![CDATA[ */
+                function getContIndex(index){
+                    let CONT = [[ ${content} ]];
+                    return CONT[index];
+                }
+
+                let tempData;
+                let tempNum;
+
+                let tooLong = 0;
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,1);
+                    customAjax()
+
+                    let now = new Date();
+                    $("#confirmDateTd").text(`${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일`);
+                    $("span.too-long").each((index, item)=>{
+                        if($(item).text().length>34){
+                            let str = $(item).text().trim().split(' ');
+                            let addr ='';
+                            $(item).text('')
+                            for(let i =0; i<str.length; i++){
+                                if((addr.length+str[i].length)<30){
+                                    addr+=str[i] +' ';
+                                }else{
+                                    $(item).append(`${addr}<br>`);
+                                    addr=str[i];
+                                    tooLong+=1;
+                                }
+                                if(i==(str.length-1) && addr!=""){
+                                    $(item).append(`${addr}`)
+                                    tooLong+=1;
+                                }
+                            }
+                        }
+                    })
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

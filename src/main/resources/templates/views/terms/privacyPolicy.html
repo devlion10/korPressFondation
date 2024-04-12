@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+<div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual.png} + ')'">
+    <div class="ly_grid">
+        <div class="banner_title_area">
+            <h3 class="banner_title">약관 및 방침</h3>
+        </div>
+    </div>
+</div>
+<div class="navigation"></div>
+
+<!-- CONTAINER -->
+<div class="container">
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="ly_grid">
+            <div class="bl_title">
+                <div class="bl_title_left">
+                    <div class="page_title">개인정보 처리 방침</div>
+                    <div class="btn_type3 d-none" onclick="window.close()">닫기</div>
+                </div>
+            </div>
+
+            <!-- 렌더링 -->
+            <div class="terms" th:utext="${content[0].documentContent}"></div>
+
+            <!-- 14. 개인정보 처리방침의 변경에 관한 사항 -->
+            <div class="terms" th:if="${#lists.size(content) > 1}">
+                <h4 id="terms_li_14" class="terms_ic_14">개인정보 처리방침의 변경에 관한 사항</h4>
+                <p>
+                    이 개인정보처리방침은 <span th:text="${#strings.substring(content[0].createDateTime,0,4)}"></span>. <span th:text="${#strings.substring(content[0].createDateTime,5,7)}"></span>. <span th:text="${#strings.substring(content[0].createDateTime,8,10)}"></span>.부터 적용됩니다.<br>
+                    이전의 개인정보 처리방침은 아래에서 확인할 수 있습니다.
+                </p>
+                <ul>
+                    <li th:if="${stat.index != 0}" th:each="item, stat: ${content}">- <span th:text="${#strings.substring(content[stat.index-1].createDateTime,0,10)}">2023. 4. 27</span> 이전 내용 <a th:href="@{/terms/privacy-policy?sequenceNo={id}(id=${item.sequenceNo})}" target="_self">[보기]</a></li>
+                </ul>
+            </div>
+
+            <!-- text editor의 수정 시 class 제거 방지를 위한 사본 -->
+            <div class="terms_backup" style="display: none">
+                <div class="gbox">
+                    <div class="con">
+                        <p>KPF미카는 관련 법령에 근거하거나 정보주체의 동의에 의하여 개인정보를 수집&middot;보유 및 처리 합니다. KPF미카는 개인정보보호법에 따라 이용자의 개인정보 및 권익을 보호하고 개인정보와 관련한 이용자의 고충을 원활하게 처리할 수 있도록 다음과 같은 처리 방침을 두고 있습니다.</p>
+                    </div>
+                </div>
+
+                <p>KPF미카는 개인정보 보호법 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보처리방침을 수립&middot;공개합니다. KPF미카는 개인정보처리방침을 개정하는 경우 웹사이트 공지사항(또는 개별공지)을 통하여 공지할 것입니다.&nbsp;</p>
+
+                <div class="terms_labeling">&nbsp;</div>
+
+                <!-- 목차 -->
+                <h5 class="text-center">[목 차]</h5>
+                <p class="text-center">「개인정보 처리방침」은 다음과 같은 내용으로 구성되어 있습니다.</p>
+                <div class="terms_list">
+                    <a class="terms_ic_01" href="#terms_li_01">개인정보의 처리 목적, 수집 항목 및 보유기간</a>
+                    <a class="terms_ic_04" href="#terms_li_04">개인정보의 제3자 제공에 관한 사항</a>
+                    <a class="terms_ic_05" href="#terms_li_05">개인정보처리 위탁에 관한 사항</a>
+                    <a class="terms_ic_06" href="#terms_li_06">정보주체와 법정대리인의 권리&amp;의무 및 그 행사방법에 관한 사항</a>
+                    <a class="terms_ic_07" href="#terms_li_07">개인정보의 파기 절차 및 방법</a>
+                    <a class="terms_ic_08" href="#terms_li_08">개인정보의 안전성 확보조치에 관한 사항</a>
+                    <a class="terms_ic_09" href="#terms_li_09">개인정보보호책임자</a>
+                    <a class="terms_ic_10" href="#terms_li_10">개인정보 자동 수집 장치의 설치&middot;운영 및 그 거부에 관한 사항</a>
+                    <a class="terms_ic_11" href="#terms_li_11">개인정보의 열람청구 접수&middot;처리부서</a>
+                    <a class="terms_ic_12" href="#terms_li_12">정보주체의 권익침해에 대한 구제방법</a>
+                    <a class="terms_ic_13" href="#terms_li_13">개인정보 관리수준진단 결과</a>
+                    <a class="terms_ic_14" href="#terms_li_14">개인정보 처리방침의 변경에 관한 사항</a>
+                </div>
+                <p class="text-center">※ 위의 항목을 클릭하면 해당 페이지로 이동합니다.</p>
+
+                <!-- 1. 개인정보의 처리 목적, 수집 항목 및 보유기간 -->
+                <h4 id="terms_li_01" class="terms_ic_01">개인정보의 처리 목적, 수집 항목 및 보유기간</h4>
+                <ul>
+                    <li><div class="d-flex">재단은 개인정보를 다음 각 호의 목적을 위해 처리합니다. 처리하고 있는 개인정보는 다음 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는「개인정보 보호법」제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</div>
+                        <ul>
+                            <li>1. 홈페이지 회원 가입 및 관리
+                                <ul>
+                                    <li>회원 가입의사 확인, 회원제 서비스 제공에 따른 본인 식별, 맞춤형 서비스 제공을 위한 통계 등을 목적으로 개인정보를 처리합니다.</li>
+                                </ul>
+                            </li>
+                            <li>2. 개인정보파일의 등록 및 공개
+                                <ul>
+                                    <li>「개인정보 보호법」제32조에 따라 등록·공개하는 개인정보파일의 처리목적·수집 항목 및 보유기간은 아래와 같습니다.</li>
+                                    <li>
+                                        <table class="bl_table" style="min-width:700px">
+                                            <colgroup>
+                                                <col width="10%">
+                                                <col width="20%">
+                                                <col width="10%">
+                                                <col width="*">
+                                                <col width="10%">
+                                                <col width="10%">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">개인정보 파일의 명칭</th>
+                                                <th scope="col">운영근거/처리목적</th>
+                                                <th scope="col">대상</th>
+                                                <th scope="col">개인정보 수집 항목</th>
+                                                <th scope="col">보유기간</th>
+                                                <th scope="col">담당부서</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td rowspan="8">MECA-미디어교육</td>
+                                                <td rowspan="8">
+                                                    <div>정보주체 동의/미디어교육 사이트 운영</div>
+                                                </td>
+                                                <td>14세 미만(학생)</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 보호자 이름, 보호자 생년월일, 보호자 연락처, 보호자 성별, 학교명</div>
+                                                    <div>(선택)학교주소</div>
+                                                </td>
+                                                <td rowspan="8">준영구</td>
+                                                <td rowspan="8">미디어교육팀</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14세 이상(일반인)</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호</div>
+                                                    <div>(선택)없음</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>14세 이상(학부모)</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호</div>
+                                                    <div>(선택)없음</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>14세 이상(학생)</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 학교명</div>
+                                                    <div>(선택)학교 주소, 전화번호, 팩스번호</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>14세 이상(교원)</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 학교명</div>
+                                                    <div>(선택)학교 주소, 전화번호, 팩스번호, NEIS 개인번호</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>기관담당자</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 기관명, 사업자등록번호, 기관대표전화번호, 기관주소, 직위, 담당업무, 직통전화번호</div>
+                                                    <div>(선택)기관장명, 홈페이지 주소, 팩스번호</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>학교담당자</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 학교명, 학교대표번호, 학교 주소, 직위, 담당업무, 직통전화번호</div>
+                                                    <div>(선택)교장명, 학급 및 학생수, 홈페이지 주소, 팩스번호</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>미디어강사</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 사진, 서명/도장, 자택주소, 강의가능지역, 최종학력, 강의 주요내용, 주요이력, 자격증, 계좌번호, 은행명</div>
+                                                    <div>(선택)없음</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MECA-언론인연수</td>
+                                                <td>
+                                                    <div>정보주체 동의/미디어교육 사이트 운영</div>
+                                                </td>
+                                                <td>언론인</td>
+                                                <td>
+                                                    <div>(필수)이름, 성별, 생년월일, 연락처, 이메일, 아이디, 비밀번호, 거주지역, 직장 정보, 직장 연락처, 직장 주소, 부서, 직급, 직책, 재직증명서</div>
+                                                    <div>(선택)팩스번호</div>
+                                                </td>
+                                                <td>3년</td>
+                                                <td>언론인연수팀</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>※ 재단의 개인정보파일 등록사항은 개인정보보호위원회 개인정보 포털 → <img class="policy_btn_img" alt="quick 개인"> → 개인정보파일목록검색 → 개인정보파일검색 에서 기관명에 '한국언론진흥재단'으로 조회가 가능합니다.<a class="btn_type4 btn_blue" href="https://www.privacy.go.kr/front/wcp/dcl/per/personalInfoFileSrhList.do" target="_blank"> (바로조회)</a>
+                            </li>
+                            <li>※ 서비스 이용 과정에서 아래와 같은 정보들이 자동으로 생성되어 수집될 수 있습니다. (접속로그, 접속IP정보, 쿠키, 방문 일시, 서비스 이용기록, 불량 이용 기록)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- 3. 개인정보의 제3자 제공에 관한 사항 -->
+                <h4 id="terms_li_04" class="terms_ic_04">개인정보의 제3자 제공에 관한 사항</h4>
+                <ul>
+                    <li>
+                        <div class="d-flex"><div>①</div>재단은 원칙적으로 이용자의 개인정보를 제1조(개인정보 처리 목적)에서 명시한 범위 내에서 처리하며, 이용자의 사전 동의 없이는 본래의 범위를 초과하여 처리하거나 제3자에게 제공하지 않습니다. 단 다음의 경우에는 개인정보를 처리할 수 있습니다.</div>
+
+                        <ul>
+                            <li><div class="d-flex"><div>1.</div>정보주체의 동의가 있는 경우</div></li>
+                            <li><div class="d-flex"><div>2.</div>다른 법률에 특별한 규정이 있는 경우 또는 법령상 의무를 준수하기 위하여 불가피한 경우</div></li>
+                            <li><div class="d-flex"><div>3.</div>정보주체 또는 그 법정대리인이 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전 동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 급박한 생명, 신체, 재산의 이익을 위하여 필요하다고 인정되는 경우</div></li>
+                            <li><div class="d-flex"><div>4.</div>통계작성 및 학술연구 등의 목적을 위하여 필요한 경우로서 특정 개인을 알아볼 수 없는 형태로 개인정보를 제공하는 경우</div></li>
+                            <li><div class="d-flex"><div>5.</div>개인정보를 목적 외의 용도로 이용하거나 이를 제3자에게 제공하지 아니하면 다른 법률에서 정하는 소관 업무를 수행할 수 없는 경우로서 보호위원회의 심의&middot;의결을 거친 경우</div></li>
+                            <li><div class="d-flex"><div>6.</div>조약, 그 밖의 국제협정의 이행을 위하여 외국정부 또는 국제기구에 제공하기 위하여 필요한 경우</div></li>
+                            <li><div class="d-flex"><div>7.</div>범죄의 수사와 공소의 제기 및 유지를 위하여 필요한 경우</div></li>
+                            <li><div class="d-flex"><div>8.</div>법원의 재판업무 수행을 위하여 필요한 경우</div></li>
+                            <li><div class="d-flex"><div>9.</div>형(刑) 및 감호, 보호처분의 집행을 위하여 필요한 경우</div></li>
+                        </ul>
+                    </li>
+                    <li>※ 재단은 등록된 개인정보파일에 대하여 제1항 각호의 경우를 제외하고는 제3자 에게 제공하고 있지 않습니다.</li>
+                    <li>※ 재단은 제1항 각호의 경우에 해당하 여 제3자 제공이 이루어지면 법령에서 허용하는 범위 내에서 제공 사실을 공지 또는 통보하겠습니다.</li>
+                </ul>
+
+                <!-- 5. 개인정보처리 위탁에 관한 사항 -->
+                <h4 id="terms_li_05" class="terms_ic_05">개인정보처리 위탁에 관한 사항</h4>
+                <ul>
+                    <li><div class="d-flex"><div>①</div>재단은 언론인교육센터의 원활한 개인정보 업무처리를 위하여 다음과 같이 개인정보 처리업무를 위탁하고 있습니다.</div>
+                        <ul>
+                            <li>
+                                <table class="bl_table" style="min-width:700px">
+                                    <colgroup>
+                                        <col width="25%">
+                                        <col width="50%">
+                                        <col width="25%">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">위탁받는 자(수탁자)</th>
+                                        <th scope="col">위탁하는 개인정보 처리업무 내용</th>
+                                        <th scope="col">연락처</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>㈜케이브레인</td>
+                                        <td>사이트 회원가입 및 운영업무</td>
+                                        <td>070-4027-0657</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><div class="d-flex"><div>②</div>재단은 위탁계약 체결시 개인정보 보호법 제26조에 따라 위탁업무 수행목적 외 개인정보 처리금지, 기술적·관리적 보호조치, 재위탁 제한, 수탁자에 대한 관리·감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게 처리하는지를 감독하고 있습니다.</div></li>
+                    <li><div class="d-flex"><div>③</div>위탁업무의 내용이나 수탁자가 변경될 경우에는 지체없이 해당 개인정보 처리방침을 통하여 공개하도록 하겠습니다.</div></li>
+                </ul>
+
+                <!-- 6. 정보주체와 법정대리인의 권리&의무 및 그 행사방법에 관한 사항 -->
+                <h4 id="terms_li_06" class="terms_ic_06">정보주체와 법정대리인의 권리&의무 및 그 행사방법에 관한 사항</h4>
+                <ul>
+                    <li><div class="d-flex"><div>①</div>정보주체는 재단에 대해 언제든지 개인정보 열람·정정·삭제·처리정지 요구 등의 권리를 행사할 수 있습니다.</div></li>
+                    <li><div class="d-flex"><div>②</div>제1항에 따른 권리 행사는 「개인정보 보호법」 시행령 제41조 제1항에 따라 서면, 전자우편, 모사전송(FAX) 등을 통하여 하실 수 있으며, 개인정보보호 포털(www.privacy.go.kr) → 개인서비스 → 정보주체 권리행사 → 개인정보 열람 등 요구 신청 메뉴(하이퍼링크 바로가기)를 통해서도 신청하실 수 있습니다. 재단은 이에 대해 지체없이 조치하겠습니다.</div></li>
+                    <li><div class="d-flex"><div>③</div>또한 제1항에 따른 권리 행사는 정보주체의 법정대리인이나 위임을 받은 자 등 대리인을 통하여 하실 수도 있습니다. 이 경우 “개인정보 처리 방법에 관한 고시(제2020-7호)” 별지 제11호 서식에 따른 위임장을 제출하셔야 합니다.</div>
+                        <ul>
+                            <li>※ 만 14세 미만 아동에 관한 개인정보의 열람 등 요구는 법정대리인이 직접해야 하며, 만 14세 이상의 미성년자인 정보주체는 정보주체의 개인정보에 관하여 미성년자 본인이 권리를 행사하거나 법정대리인을 통하여 권리를 행사할 수도 있습니다.</li>
+                        </ul>
+                    </li>
+                    <li><div class="d-flex"><div>④</div>정보주체가 개인정보의 오류 등에 대한 정정 또는 삭제를 요구한 경우에는 정정 또는 삭제를 완료할 때까지 당해 개인정보를 이용하거나 제공하지 않습니다.</div></li>
+                    <li><div class="d-flex"><div>⑤</div>개인정보 열람 및 처리정지 요구는 「개인정보 보호법」 제35조 제5항, 제37조 제2항에 의하여 정보주체의 권리가 제한될 수 있습니다.</div></li>
+                    <li><div class="d-flex"><div>⑥</div>개인정보의 정정 및 삭제 요구는 다른 법령에서 그 개인정보가 수집 대상으로 명시되어 있는 경우에는 그 삭제를 요구할 수 없습니다.</div></li>
+                    <li><div class="d-flex"><div>⑦</div>재단은 정보주체 권리에 따른 열람의 요구, 정정·삭제의 요구, 처리정지의 요구 시 열람 등 요구를 한 자가 본인이거나 정당한 대리인인지를 확인합니다.</div></li>
+                    <li><div class="d-flex"></div></li>
+                    <li><div class="d-flex"></div>&lt;서식 다운로드&gt;</li>
+                    <li>
+                        * [개인정보 처리 방법에 관한 고시(개인정보보호위원회고시) 별지 제8호] 개인정보 열람요구서 <a class="btn_type4 btn_blue" href="https://www.law.go.kr/LSW//flDownload.do?flSeq=74266949&flNm=%5B%EB%B3%84%EC%A7%80+8%5D+%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4+%EC%97%B4%EB%9E%8C+%EC%9A%94%EA%B5%AC%EC%84%9C" target="_blank">개인정보 열람요구서 <span>내려받기</span></a>
+                    </li>
+                    <li>
+                        * [개인정보 처리 방법에 관한 고시(개인정보보호위원회고시) 별지 제11호] 위임장 <a class="btn_type4 btn_blue" href="https://www.law.go.kr/LSW//flDownload.do?flSeq=74267069&flNm=%5B%EB%B3%84%EC%A7%80+11%5D+%EC%9C%84%EC%9E%84%EC%9E%A5" target="_blank">위임장 <span>내려받기</span></a>
+                    </li>
+                </ul>
+
+                <!-- 7. 개인정보의 파기 절차 및 방법 -->
+                <h4 id="terms_li_07" class="terms_ic_07">개인정보의 파기 절차 및 방법</h4>
+                <ul>
+                    <li><div class="d-flex"><div>①</div>재단은 원칙적으로 개인정보 처리목적이 달성된 경우에는 지체 없이 해당 개인정보를 파기합니다. 파기의 절차, 기한 및 방법은 다음과 같습니다.</div>
+                        <ul>
+                            <li>1. 파기절차</li>
+                            <li><div class="ms-2">재단은 파기하여야 하는 개인정보(또는 개인정보파일)에 대해 개인정보 파기계획을 수립하여 파기합니다. 재단은 파기 사유가 발생한 개인정보(또는 개인정보파일)를 선정하고, 재단 개인정보보호책임자의 승인을 받아 개인정보(또는 개인정보파일)를 파기합니다.</div></li>
+                            <li>2. 파기방법</li>
+                            <li><div class="ms-2">재단은 전자적 파일 형태로 기록, 저장된 개인정보는 기록을 재생할 수 없는 기술적 방법을 사용하여 파기하며, 종이 문서에 기록, 저장된 개인정보는 소각하거나 분쇄하여 파기합니다.</div></li>
+                            <li>3. 파기기한</li>
+                            <li><div class="ms-2">정보주체의 개인정보는 개인정보 보유기간이 경과된 경우 보유기간의 종료일로부터 5일 이내에, 개인정보의 처리목적 달성, 해당 서비스의 폐지, 사업의 종료 등 개인정보 보유가 불필요한 것으로 인정될 경우에는 그 인정일로부터 5일 이내에 해당 개인정보를 파기합니다. 재단 온라인 서비스의 경우 회원탈퇴 시 즉각 DB에서 삭제 처리합니다. 다만 정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는 해당 개인정보(또는 개인정보파일)를 별도의 데이터베이스(DB)로 옮기거나 보관 장소를 달리하여 일정기간 저장된 후 내부방침 및 기타 관련 법령에 따라 즉시 파기됩니다. 이 때, DB로 옮겨진 개인정보는 법률에 의한 경우가 아니고서는 다른 목적으로 이용되지 않습니다.</div></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- 8. 개인정보의 안전성 확보조치에 관한 사항 -->
+                <h4 id="terms_li_08" class="terms_ic_08">개인정보의 안전성 확보조치에 관한 사항</h4>
+                <p>개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
+                <ul>
+                    <li>1. 개인정보 취급직원의 최소화 및 교육</li>
+                    <li><div class="ms-2">개인정보를 취급하는 직원은 반드시 필요한 인원에 한하여 지정&middot; 관리하고 있으며 취급직원을 대상으로 안전한 관리를 위한 교육을 실시하고 있습니다.</div></li>
+                    <li>2. 개인정보에 대한 접근 제한</li>
+                    <li><div class="ms-2">개인정보를 처리하는 개인정보처리시스템에 대한 접근권한의 부여&middot; 변경&middot;말소를 통하여 개인정보에 대한 접근통제를 위한 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.</div></li>
+                    <li>3. 접속기록의 보관</li>
+                    <li><div class="ms-2">개인정보처리시스템에 접속한 기록을 1년 이상 보관&middot;관리 하고 있습니다.</div></li>
+                    <li>4. 개인정보의 암호화</li>
+                    <li><div class="ms-2">개인정보는 암호화 등을 통해 안전하게 저장 및 관리되고 있습니다. 또한, 중요한 데이터는 저장 및 전송 시 암호화하여 사용하는 등의 별도 보안기능을 사용하고 있습니다.</div></li>
+                    <li>5. 보안프로그램 설치 및 주기적 점검&middot;갱신</li>
+                    <li><div class="ms-2">해킹이나 컴퓨터 바이러스 등에 의한 개인정보 유출 및 훼손을 막기 위하여 보안프로그램을 설치하고 주기적으로 갱신&middot;점검하고 있습니다.</div></li>
+                    <li>6. 비인가자에 대한 출입 통제</li>
+                    <li><div class="ms-2">개인정보를 보관하고 있는 개인정보처리시스템의 물리적 보관 장소를 별도로 두고 이에 대해 출입통제 절차를 수립&middot;운영하고 있습니다.</div></li>
+                </ul>
+
+                <!-- 9. 개인정보보호책임자 -->
+                <h4 id="terms_li_09" class="terms_ic_09">개인정보보호책임자</h4>
+                <ul>
+                    <li>
+                        <div class="d-flex"><div>①</div>재단은 개인정보 처리에 관한 업무를 총괄하여 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보보호책임자를 지정하고 있습니다.</div>
+
+                        <ul>
+                            <li>1. 개인정보보호 책임자
+                                <ul>
+                                    <li>&middot; 성 명 : 박재현</li>
+                                    <li>&middot; 직 책 : 디지털혁신지원국장</li>
+                                    <li>&middot; 직 급 : 3급</li>
+                                    <li>&middot; 연락처 : T.02-2001-7550 / F.02-2001-7560 / E-mail.jhpark@kpf.or.kr</li>
+                                </ul>
+                            </li>
+                            <li>2. 개인정보보호 담당자
+                                <ul>
+                                    <li>&middot; 담당자 : 김홍석</li>
+                                    <li>&middot; 연락처 : T.02-2001-7787 / F.02-2001-7848 / E-mail.hs9903@kpf.or.kr</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="d-flex"><div>②</div>정보주체께서는 재단의 서비스(또는 사업)를 이용하시면서 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보보호 책임자 및 담당부서로 문의하실 수 있습니다. 재단은 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.</div>
+                    </li>
+                </ul>
+
+                <!-- 10. 개인정보 자동 수집 장치의 설치&운영 및 그 거부에 관한 사항 -->
+                <h4 id="terms_li_10" class="terms_ic_10">개인정보 자동 수집 장치의 설치&middot;운영 및 그 거부에 관한 사항</h4>
+                <ul>
+                    <li><div class="d-flex"><div>①</div> 재단은 이용자에게 개별적인 맞춤서비스를 제공하기 위해 이용정보를 저장하고 수시로 불러오는 &lsquo;쿠키(cookie)&rsquo;를 사용합니다.</div></li>
+                    <li><div class="d-flex"><div>②</div> 쿠키는 웹사이트를 운영하는 데 이용되는 서버(http)가 이용자의 컴퓨터 브라우저에게 보내는 소량의 정보이며 이용자의 PC 컴퓨터 내의 하드디스크에 저장되기도 합니다.</div>
+                        <ul>
+                            <li>1. 쿠키의 사용목적: 검색어 자동완성 기능 사용여부, 검색어 저장 기능 사용여부, 이용자가 선택 삭제한 뉴스정보 등을 파악하기 위해 사용됩니다.</li>
+                            <li>2. 쿠키의 설치∙운영 및 거부 : 웹브라우저 상단의 도구&gt;인터넷 옵션&gt;개인정보 메뉴의 옵션 설정을 통해 쿠키 저장을 거부할 수 있습니다.</li>
+                            <li>3. 쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이 발생할 수 있습니다.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- 11. 개인정보의 열람청구 접수&처리부서 -->
+                <h4 id="terms_li_11" class="terms_ic_11">개인정보의 열람청구 접수&middot;처리부서</h4>
+                <ul>
+                    <li><div class="d-flex"><div>①</div> 정보주체는 개인정보보호법 제35조(개인정보의 열람)에 따라, 아래의 재단 부서에 개인정보 열람청구를 할 수 있습니다. 재단은 정보주체의 개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.</div>
+                        <ul>
+                            <li>1. 개인정보 열람청구 접수・처리부서
+                                <ul>
+                                    <li>
+                                        <div class="d-flex">&middot; 부서명 :
+                                            <div class="ms-1">언론인연수팀, 미디어교육팀</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex">&middot; 책임자 :
+                                            <div class="ms-1">언론인연수팀 이상기 팀장 (T.02-2001-7211 /F.02-2001-7220 /E-mail.sglee@kpf.or.kr)<br/>
+                                                미디어교육팀 안계현 팀장 (T.02-2001-7231 /F.02-2001-7220 /E-mail.ahngh@kpf.or.kr)</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex">&middot; 담당자 :
+                                            <div class="ms-1">언론인연수팀 개인정보보호 담당자 오충환 (T.02-2001-7223 /F.02-2001-7220 /Email.och0105@kpf.or.kr)<br/>
+                                                미디어교육팀 개인정보보호 담당자 홍주영 (T.02-2001-7232 /F.02-2001-7220 /Email.hjy@kpf.or.kr)</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>2. 정보주체께서는 제1항의 열람청구 접수&middot;처리부서 이외에, 행정자치부의 &lsquo;개인정보보호 종합지원 포털&rsquo; 웹사이트(<a href="http://www.privacy.go.kr/" rel="noopener noreferrer" target="_blank">www.privacy.go.kr</a>)를 통하여서도 개인정보 열람청구를 하실 수 있습니다.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- 12. 정보주체의 권익침해에 대한 구제방법 -->
+                <h4 id="terms_li_12" class="terms_ic_12">정보주체의 권익침해에 대한 구제방법</h4>
+                <ul>
+                    <li>
+                        <div class="d-flex"><div>①</div>개인정보주체는 개인정보 침해에 대한 피해구제, 상담 등을 문의하실 수 있습니다. 아래의 기관은 재단과는 별개의 기관으로서, 재단의 자체적인 개인정보 불만처리, 피해구제 결과에 만족하지 못하시거나 보다 자세한 도움이 필요하시면 문의하여 주시기 바랍니다.</div>
+
+                        <ul>
+                            <li>■ 개인정보침해 신고센터 : 개인정보 침해사실 신고, 상담신청
+                                <ul>
+                                    <li>1) 연락처 : (국번없이)118 /
+                                        <a href="http://privacy.kisa.or.kr" rel="noopener noreferrer" target="_blank">privacy.kisa.or.kr</a>
+                                    </li>
+                                    <li>2) 주소 : (58324) 전남 나주시 진흥길 9(빛가람동 301-2) 3층 개인정보침해 신고센터</li>
+                                </ul>
+                            </li>
+                            <li>■ 개인정보 분쟁조정위원회 : 개인정보 분쟁조정신청, 집단분쟁조정(민사적 해결)
+                                <ul>
+                                    <li>1) 연락처 : (국번없이)1833-6972 /&nbsp;<a href="http://www.kopico.go.kr/" rel="noopener noreferrer" target="_blank">www.kopico.go.kr</a>
+                                    </li>
+                                    <li>2) 주소 : (03171) 서울시 종로구 세종대로 209 정부서울청사 4층</li>
+                                </ul>
+                            </li>
+                            <li>■ 대검찰청 : (국번없이)1301,
+                                <a href="http://www.spo.go.kr/" rel="noopener noreferrer" target="_blank">www.spo.go.kr</a>
+                            </li>
+                            <li>■ 경찰청 : (국번없이)182,
+                                <a href="http://ecrm.police.go.kr/" rel="noopener noreferrer" target="_blank">ecrm.police.go.kr</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="d-flex"><div>②</div>
+                            <div>또한, 개인정보의 열람, 정정&middot;삭제, 처리정지 등에 대한 정보주체자의 요구에 대하여 공공기관의 장이 행한 처분 또는 부작위로 인하여 권리 또는 이익을 침해 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.<br/>
+                                ☞ 온라인행정심판(<a href="http://www.simpan.go.kr" rel="noopener noreferrer" target="_blank">www.simpan.go.kr</a>)의 전화번호 안내 참조</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- 13. 개인정보 관리수준진단 결과 -->
+                <h4 id="terms_li_13" class="terms_ic_13">개인정보 관리수준진단 결과</h4>
+                <ul>
+                    <li>
+                        <div class="d-flex"><div>①</div>재단은 정보주체의 개인정보를 안전하게 관리하기 위해 「개인정보 보호법」 제11조에 따라 매년 개인정보보호위원회에서 실시하는 &ldquo;공공기관 개인정보 관리수준진단&rdquo;을 받고 있습니다.</div>
+                    </li>
+                    <li>
+                        <div class="d-flex"><div>②</div>재단은 &lsquo;2022년도 개인정보 관리수준진단 평가에서 &rsquo;A&lsquo; 등급을 획득하였습니다.</div>
+                    </li>
+                    <li>
+                        <div class="d-flex"><div>③</div>재단은 접속기록 관리시스템의 지속적인 도입 등을 통해 개인정보 유출방지를 위해 노력하고 있습니다.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bl_gridBtns" th:unless="${#lists.size(content) > 1}">
+                <div class="bl_gridBtns_md">
+                    <a class="btn_type2" href="/terms/privacy-policy">이전으로</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+            navigation(6,0);
+        }
+        /* ]]> */
+    </script>
+</th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page" id="popPreview">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li>
+                            <a id="tabLink1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink2" href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li>
+                            <a id="tabLink3" href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li>
+                            <a id="tabLink4" href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <div class="d-flex justify-content-between">
+                            <div class="preview_lft">
+                                <div class="subject_name">
+                                    과목명: <span>과목명입니다.</span>
+                                </div>
+                                <div class="chapter_name">
+                                    차시명: <span>장 제목1</span>
+                                </div>
+                                <div class="verse_list">
+                                    <ul>
+                                        <li>
+                                            <a href="">1. 절 제목1</a>
+                                        </li>
+                                        <li>
+                                            <a href="">2. 절 제목2</a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="">3. 절 제목3</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="preview_rgt">
+                                <div class="video_wrap">
+                                    비디오 영역 (임시)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                makeTabLink(nowId)
+            }
+            function makeTabLink(id){
+                document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/e-learning/main/'+id);
+                document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/e-learning/list/'+id);
+                document.getElementById('tabLink3').setAttribute('href','/mypage/education-state/e-learning/exam/'+id);
+                document.getElementById('tabLink4').setAttribute('href','/mypage/education-state/e-learning/archive/'+id);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

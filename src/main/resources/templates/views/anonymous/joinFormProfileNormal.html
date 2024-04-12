@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="join_step">
+                    <div class="step step1">
+                        <span>01</span>
+                        <span>약관동의</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step2">
+                        <span>02</span>
+                        <span>본인인증</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step3 active">
+                        <span>03</span>
+                        <span>회원정보 입력</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step4">
+                        <span>04</span>
+                        <span>회원가입 완료</span>
+                    </div>
+                </div>
+                <div class="page_title hp_show_tb hp_show_mo">회원가입</div>
+                <form id="createUserForm" name="createUserForm" method="POST" action="/anonymous/user/create">
+                    <!-- 회원유형 radio 버튼 -->
+                    <div class="cont_title">
+                        회원유형
+                        <div class="cont_reference"><span class="essential">*</span>언론인연수 및 교원연수 참여를 원하시는 분은 각각 “언론인” 및 “교원” 회원유형을 선택해주시기 바랍니다.</div>
+                    </div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box align-items-center">
+                            <div class="common_label"><span class="essential">*</span>회원유형</div>
+                            <div class="radio_box">
+                                <input id="schoolteacher" type="radio" name="membership_type" checked >
+                                <label for="schoolteacher">
+                                    <span></span>
+                                    교원
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="student" type="radio" name="membership_type" >
+                                <label for="student">
+                                    <span></span>
+                                    학생
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="parents" type="radio" name="membership_type" >
+                                <label for="parents">
+                                    <span></span>
+                                    학부모
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="normal" type="radio" name="membership_type" >
+                                <label for="normal">
+                                    <span></span>
+                                    일반인
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 개인정보 -->
+                    <div class="cont_title">개인정보</div>
+                    <div class="common_input_wrap">
+                        <!-- 본인인증 수행시 자동입력 정보(수정 불가) -->
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="userName"><span class="essential">*</span>이름</label>
+                            </div>
+                            <input type="text" name="userName" id="userName" class="common_input form_input" th:value="${userName}" readonly>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="birthDay"><span class="essential">*</span>생년월일</label>
+                            </div>
+                            <input type="text" name="birthDay" id="birthDay" class="common_input form_input" th:value="${birthDate}" readonly>
+                        </div>
+                        <div class="common_input_box align-items-center">
+                            <div class="common_label">
+                                <span class="essential">*</span>성별
+                            </div>
+                            <div>
+                                <div class="radio_box">
+                                    <input id="male" type="radio" name="gender" th:checked="${gender == '1' ? true : false}" disabled>
+                                    <label for="male">
+                                        <span></span>
+                                        남성
+                                    </label>
+                                </div>
+                                <div class="radio_box">
+                                    <input id="female" type="radio" name="gender" th:checked="${gender != '1' ? true : false}" disabled>
+                                    <label for="female">
+                                        <span></span>
+                                        여성
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="userId"><span class="essential">*</span>아이디</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div class="d-flex">
+                                    <input type="text" name="userId" id="userId" class="common_input form_input" maxlength="12" th:value="${content?.userId}">
+                                    <a class="btn_type1 btn_md btn_gray" onclick="idCheck()">중복체크</a>
+                                </div>
+                                <p class="input_text"><span class="essential">*</span>영문자 또는 영문자와 숫자의 조합으로 6~12자까지 조합, 한글, 특수문자, 띄어쓰기 등을 포함할 수 없음</p>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="password"><span class="essential">*</span>비밀번호</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <input type="password" name="password" id="password" class="common_input form_input" >
+                                <p class="input_text"><span class="essential">*</span>8자리 이상 25자리 이하 영문, 숫자, 특수문자 중 3가지 이상으로 조합</p>
+                                <p class="input_text mt-0"><span class="essential">*</span>허용된 특수문자 : ~!@#$%^&*(){}[]&lt;&gt;?</p>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="password2"><span class="essential">*</span>비밀번호 확인</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <input type="password" name="password2" id="password2" class="common_input form_input" >
+                                <p class="input_text"><span class="essential">*</span>8자리 이상 25자리 이하 영문, 숫자, 특수문자 중 3가지 이상으로 조합</p>
+                                <p class="input_text mt-0"><span class="essential">*</span>허용된 특수문자 : ~!@#$%^&*(){}[]&lt;&gt;?</p>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="phone"><span class="essential">*</span>휴대폰번호</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <input type="tel" name="phone" id="phone" class="common_input form_input" th:value="${userPhone}" readonly>
+                                <p class="input_text"><span class="essential">*</span>휴대폰번호는 하이픈(-)을 제외한 숫자만 입력 ex. 01012345678</p>
+                                <div class="radio_box_bottom">
+                                    <div class="radio_box">
+                                        <input id="tel_y" type="radio" name="tel_reception" checked="" >
+                                        <label for="tel_y">
+                                            <span></span>
+                                            수신
+                                        </label>
+                                    </div>
+                                    <div class="radio_box">
+                                        <input id="tel_n" type="radio" name="tel_reception" >
+                                        <label for="tel_n">
+                                            <span></span>
+                                            수신거부
+                                        </label>
+                                    </div>
+                                    <p class="input_text mt-0"><span class="essential">*</span>수신거부로 설정해도 학습독려 및 수업진도관련 안내 메세지는 발송됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="common_input_box">
+                            <div class="common_label">
+                                <label for="email"><span class="essential">*</span>이메일</label>
+                            </div>
+                            <div class="d-flex flex-column hp_md_w100p">
+                                <div class="email">
+                                    <input type="text" name="email" id="email" class="common_input" >
+                                    <div class="blank">@</div>
+                                    <input type="text" name="email" id="email2" class="common_input" >
+                                    <select class="common_select" name="email" id="email3" data-list="emailList"></select>
+                                    <label for="email2" class="hidden_label">이메일2</label>
+                                    <label for="email3" class="hidden_label">이메일 선택</label>
+                                </div>
+                                <div class="radio_box_bottom">
+                                    <div class="radio_box">
+                                        <input id="email_y" type="radio" name="email_reception" checked="" >
+                                        <label for="email_y">
+                                            <span></span>
+                                            수신
+                                        </label>
+                                    </div>
+                                    <div class="radio_box">
+                                        <input id="email_n" type="radio" name="email_reception" >
+                                        <label for="email_n">
+                                            <span></span>
+                                            수신거부
+                                        </label>
+                                    </div>
+                                    <p class="input_text mt-0"><span class="essential">*</span>수신거부로 설정해도 학습독려 및 수업진도관련 안내 메세지는 발송됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 소속정보 - 일반(교원, 학생) -->
+                    <div class="schoolteacher_chk">
+                        <div class="cont_title flex-row justify-content-between align-items-center">
+                            소속정보
+                            <div class="btn_type3 btn_register" onclick="registerOrg(1)">학교 등록신청</div>
+                        </div>
+                        <div class="common_input_wrap">
+                            <div class="common_input_box bizLicenseNumberBox">
+                                <div class="common_label">
+                                    <label for="personalNeisNo"><span class="essential">*</span>NEIS 개인 번호</label>
+                                    <div class="chk_box" style="display: block !important;">
+                                        <input id="personalNeisType" type="checkbox" onchange="school_youth(this)">
+                                        <label for="personalNeisType">
+                                            <span></span>유치원 교사
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="bizLicenseNumber" class="d-flex flex-column hp_md_w100p">
+                                    <div class="company_number">
+                                        <input id="personalNeisNo" type="text" class="common_input form_input">
+                                    </div>
+                                    <p class="input_text school"><span class="essential">*</span>입력 예시: A123456789(영문 대문자 1자리+숫자 9자리)</p>
+                                    <p class="input_text youth"><span class="essential">*</span>입력 예시: A12B345678(영문 대문자 1자리+숫자 2자리+영문 대문자 1자리+숫자 6자리)</p>
+                                    <p class="input_text mt-0"><span class="essential">*</span>NEIS 개인번호 확인경로: NEIS > 나의 메뉴 > 인사기록 > 기본사항 > 근무사항 > 개인번호 확인</p>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="organizationName"><span class="essential">*</span>학교명</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div class="d-flex">
+                                        <input type="text" id="organizationName" class="common_input form_input" disabled >
+                                        <div class="btn_type1  btn_md btn_gray" onclick="findOrganization()">찾아보기</div>
+                                    </div>
+                                    <p class="input_text"><span class="essential">*</span>학교 검색이 안될 경우, “기타”로 등록후에 학교 등록 신청을 해주시기 바랍니다.</p>
+                                    <input type="hidden" id="organizationCode" class="common_input form_input">
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="organizationZipCode">학교 주소</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div class="d-flex">
+                                        <input type="text" id="organizationZipCode" class="common_input form_input" disabled>
+                                    </div>
+                                    <input type="text" id="organizationAddress1" class="common_input form_input_lg" disabled >
+                                    <input type="text" id="organizationAddress2" class="common_input form_input_lg" disabled >
+                                    <label for="organizationAddress1" class="hidden_label">직장주소</label>
+                                    <label for="organizationAddress2" class="hidden_label">직장주소 상세</label>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="organizationTelNumber1">학교 전화번호</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="schoolTel" class="phone">
+                                        <input id="organizationTelNumber1" name="organizationTelNumber1" type="text" maxlength="3" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <input id="organizationTelNumber2" name="organizationTelNumber2" type="text" maxlength="4" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <input id="organizationTelNumber3" name="organizationTelNumber3" type="text" maxlength="4" class="common_input" disabled >
+                                        <label for="organizationTelNumber2" class="hidden_label">기관 전화번호 중간번호</label>
+                                        <label for="organizationTelNumber3" class="hidden_label">기관 전화번호 마지막번호</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="organizationFaxNumber1">팩스번호</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="schoolFax" class="fax">
+                                        <input id="organizationFaxNumber1" name="organizationFaxNumber1" type="text" maxlength="3" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <input id="organizationFaxNumber2" name="organizationFaxNumber2" type="text" maxlength="4" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <input id="organizationFaxNumber3" name="organizationFaxNumber3" type="text" maxlength="4" class="common_input" disabled >
+                                        <label for="organizationFaxNumber2" class="hidden_label">기관 팩스번호 중간번호</label>
+                                        <label for="organizationFaxNumber3" class="hidden_label">기관 팩스번호 마지막번호</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 보호자 정보 - 일반(학생) -->
+                    <!-- 보호자 정보 삭제 요청 반영 (230106) -->
+                    <div class="student_chk" style="display: none">
+                        <div class="cont_title">보호자 정보</div>
+                        <div class="common_input_wrap">
+                            <!-- 본인인증 수행시 자동입력 정보(수정 불가) -->
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="NOK_userName"><span class="essential">*</span>이름</label>
+                                </div>
+                                <input type="text" name="NOK_userName" id="NOK_userName" class="common_input form_input" value="홍길동" >
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="NOK_birthDay"><span class="essential">*</span>생년월일</label>
+                                </div>
+                                <input type="text" id="NOK_birthDay" class="common_input form_input" value="1960-09-01" >
+                            </div>
+                            <div class="common_input_box align-items-center">
+                                <div class="common_label">
+                                    <label for="NOK_male"><span class="essential">*</span>성별</label>
+                                </div>
+                                <div>
+                                    <div class="radio_box">
+                                        <input id="NOK_male" type="radio" name="NOK_gender" checked="" >
+                                        <label for="NOK_male">
+                                            <span></span>
+                                            남성
+                                        </label>
+                                    </div>
+                                    <div class="radio_box">
+                                        <input id="NOK_female" type="radio" name="NOK_gender" >
+                                        <label for="NOK_female">
+                                            <span></span>
+                                            여성
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <button id="createUserButton" name="createUserButton" type="button" class="btn_type1 btn_lg btn_red" onclick="go()">가입하기</button>
+                        </div>
+                    </div>
+
+                    <div class="cont_title">
+                        권한신청(선택)
+                    </div>
+                    <div class="guide_text mb-2">
+                        - 공모사업 신청을 위한 권한이 필요한 경우 아래 회원 권한을 선택해주시기 바랍니다.<br>
+                        - 공모사업 신청이 아닐 경우 별도의 권한이 필요하지 않습니다.(교사연수, 자료이동 등)
+                    </div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box align-items-center">
+                            <div class="common_label">
+                                <label for="school_admin">회원권한 신청</label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="school_admin" type="radio" name="membership_rights" >
+                                <label for="school_admin">
+                                    <span></span>
+                                    사업참여자(학교담당자)
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="agency_admin" type="radio" name="membership_rights" >
+                                <label for="agency_admin">
+                                    <span></span>
+                                    사업참여자(기관담당자)
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="media_instructor" type="radio" name="membership_rights" >
+                                <label for="media_instructor">
+                                    <span></span>
+                                    한국언론진흥재단 미디어강사
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            /**
+             * 학교 등록 신청 폼 주소 찾기
+             */
+            function findAddressAddSchool() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var addr = ''; // 주소 변수
+                        var extraAddr = ''; // 참고항목 변수
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                        if (data.userSelectedType === 'R') {
+                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                extraAddr += data.bname;
+                            }
+                            // 건물명이 있고, 공동주택일 경우 추가한다.
+                            if (data.buildingName !== '' && data.apartment === 'Y') {
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if (extraAddr !== '') {
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                        }
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('add_organizationZipCode').value = data.zonecode;
+                        document.getElementById("add_organizationAddress1").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("add_organizationAddress2").focus();
+                    }
+                }).open();
+            }
+
+            var isMgTarget = false;
+            var isIdCheck = false;
+            var checkId;
+            var params = {}
+            var organizationCode;
+
+            function onLoadSubmit() {
+                domainWriteChk();
+                $("#email3").change(function() {
+                    if ($(this).val()) {
+                        document.querySelector("#email2").value = $(this).children("option:selected").text();
+                    } else {
+                        document.querySelector("#email2").value = null;
+                    }
+                    domainWriteChk();
+                })
+
+                let _tempContent = [[ ${content} ]];
+                if(_tempContent) {
+                    isMgTarget = true;
+                    document.querySelector("#userId").setAttribute("readonly", "true");
+                    document.querySelector("#createUserForm > div:nth-child(4) > div:nth-child(4) > div.d-flex.flex-column.hp_md_w100p > div > a").setAttribute("style", "visibility: hidden;");
+                    isIdCheck = true;
+                    checkId = _tempContent.userId;
+
+                    //이메일 세팅
+                    let email1 = document.querySelector('#email');
+                    let email2 = document.querySelector('#email2');
+                    let emailType = document.querySelector('#email3');
+                    let tmp = _tempContent.email.split("@");
+                    let tmpChk = false;
+                    if( tmp.length == 2){
+                        email1.value = tmp[0];
+                        email2.value = tmp[1];
+                        email1.disabled = true;
+                        email2.disabled = true;
+                        for(let i=0;emailType.options.length > i;i++){
+                            if( emailType.options.value == email2.value ){
+                                emailType.options.selected = true;
+                                tmpChk = true;
+                            }
+                        }
+                        if( emailType.options[0] )emailType.options[0].selected = true;
+                        emailType.style.display = "none";
+                    }
+
+                    if(_tempContent.organizationInfo){
+                        selectMediaCompanyInfo(_tempContent.organizationInfo);
+                    }
+                    if( document.getElementById("department") && _tempContent.department ){
+                        document.getElementById("department").value=_tempContent.department;
+                    }
+                    if( document.getElementById("rank") && _tempContent.rank ){
+                        document.getElementById("rank").value=_tempContent.rank;
+                    }
+                    if( document.getElementById("position") && _tempContent.position ){
+                        document.getElementById("position").value=_tempContent.position;
+                    }
+
+
+                    $("#auth_request_wrap").hide();
+                    $(document.forms[0].membership_rights).attr("disabled", true);
+                    let roleGroup = _tempContent.roleGroup;
+                    switch (roleGroup){
+                        case "SCHOOL":
+                            document.getElementById("mediaCompany_admin").checked= true;
+                            break;
+                        case "AGENCY":
+                            document.getElementById("agency_admin").checked= true;
+                            break;
+                        case "INSTR":
+                            document.getElementById("media_instructor").checked= true;
+                            break;
+                    }
+                }
+            }
+
+            // 아이디 찾기 중복체크 alert
+            function idCheck() {
+                if(!document.querySelector('#userId').value) { alert("ID를 입력해주세요."); return; }
+                let regExp = CommonUtil.RegExp.Id;
+                let str = document.querySelector('#userId').value;
+                if( isMgTarget == false ){
+                    if (str.length < 6) {
+                        alert('아이디 형식이 올바르지 않습니다.'); return false;
+                    } else {
+                        if(!(regExp.test(str))) {
+                            alert('아이디 형식이 올바르지 않습니다.'); return false;
+                        }
+                    }
+                }
+
+                $.ajax({ //jquery ajax
+                    type:"get", //get방식으로 가져오기
+                    url:"/api/user/check/" + document.querySelector('#userId').value, //값을 가져올 경로
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        alert('사용 가능한 아이디입니다.');
+                        isIdCheck = true;
+                        checkId = document.querySelector('#userId').value;
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('아이디를 검사하는 과정에서 오류가 발생하였습니다.');
+                        }
+                        isIdCheck = false;
+                    }
+                })
+            }
+
+            // 미입력된 필수 정보가 있을 경우 alert
+            function requiredChk() {
+                /** 이전 데이터 초기화 전 필수 데이터 미리 셋팅 */
+                const roleGroup = params.roleGroup;
+                /** 회원 타입 이동 간 이전 데이터가 셋팅되어 있을 수 있으므로 초기화 */
+                params={}; params.roleGroup = roleGroup;
+                /** 중복 ID 체크 여부 */
+                if(!isIdCheck) {
+                    alert('ID 중복확인이 필요하거나 사용할 수 없는 ID 입니다.'); return false;
+                }
+                /** 사용가능 ID 체크 결과와 현재 셋팅 ID 확인 */
+                if(checkId !== document.querySelector('#userId').value) {
+                    alert('ID가 변조되었습니다.'); return false;
+                }
+                /** 비밀번호 동일 여부 확인 */
+                if(!(document.querySelector('#password').value === document.querySelector('#password2').value)) {
+                    alert('비밀번호와 비밀번호확인이 일치하지 않습니다.'); return false;
+                }
+                /** 비밀번호 유효성 검증 */
+                let regPass = CommonUtil.RegExp.Password;
+                if(!regPass.test(document.querySelector('#password').value)) {
+                    alert('비밀번호가 유효하지 않습니다.'); return false;
+                }
+                /**
+                 * 아이디
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 입력
+                 */
+                if(!document.querySelector('#userId').value) { alert('아이디는 필수입니다.'); return false; }
+                else if( isMgTarget == false && !CommonUtil.RegExp.Id.test(document.querySelector('#userId').value)) { alert('아이디가 유효하지 않습니다.'); return false; }
+                else { params.userId = document.querySelector('#userId').value }
+                /** 비밀번호 */
+                if(!document.querySelector('#password').value) { alert('비밀번호는 필수입니다.'); return false; }
+                else { params.password = document.querySelector('#password').value }
+                /** 사용자 명 */
+                if(!document.querySelector('#userName').value) { alert('이름은 필수입니다.'); return false; }
+                else { params.userName = document.querySelector('#userName').value }
+                /**
+                 * 사용자 생년월일
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 입력
+                 */
+                if(!document.querySelector('#birthDay').value) { alert('생년월일은 필수입니다.'); return false; }
+                else { if(8 !== document.querySelector('#birthDay').value.replaceAll('-', '').length
+                    || !/^[0-9]+$/.test(document.querySelector('#birthDay').value.replaceAll('-', ''))) { alert('유효하지 않은 생년월일입니다.'); return false; }
+                else params.birthDay = document.querySelector('#birthDay').value.replaceAll('-', '');
+                }
+                /** 사용자 연락처 */
+                if(!document.querySelector('#phone').value) { alert('연락처는 필수입니다.'); return false; }
+                else { if(3 > document.querySelector('#phone').value.replaceAll('-', '').length
+                    || document.querySelector('#phone').value.replaceAll('-', '').length > 11
+                    || !/^[0-9]+$/.test(document.querySelector('#phone').value.replaceAll('-', ''))) { alert('유효하지 않은 연락처입니다.'); return false; }
+                else params.phone = document.querySelector('#phone').value.replaceAll('-', '');
+                }
+                /** SMS 수신 동의 여부 */
+                params.isSmsAgree = !!document.querySelector('#tel_y').checked;
+                /** 이메일 주소 */
+                if(!document.querySelector('#email').value || !document.querySelector('#email2').value) { alert('이메일 주소는 필수입니다.'); return false; }
+                else {
+                    let emailChk = CommonUtil.RegExp.Email;
+                    if(emailChk.test(document.querySelector('#email').value+"@"+document.querySelector('#email2').value)) {
+                        params.email = document.querySelector('#email').value+"@"+document.querySelector('#email2').value;
+                    } else { alert('유효하지 않은 이메일입니다.'); return false; }
+                }
+                /** EMAIL 수신 동의 여부 */
+                params.isEmailAgree = !!document.querySelector('#email_y').checked;
+                /**
+                 * 사용자 성별
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 선택
+                 */
+                if(document.querySelector('#male').checked) { params.gender = 1; }
+                else { params.gender = 2; }
+
+                if($('#schoolteacher')[0].checked) {
+                    /** 소속 기관 명 */
+                    if(!document.querySelector('#organizationName').value) { alert('소속 기관 명은 필수입니다.'); return false; }
+                    else {
+                        params.organizationName = document.querySelector('#organizationName').value;
+                        params.organizationCode = document.querySelector('#organizationCode').value;
+                    }
+
+                    let regNeisNo = /[A-Za-z]{1}[0-9]{9}/
+                    let regYouthNeisNo = /[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{6}/
+                    if ($("#personalNeisNo").val() &&
+                        typeof $("#personalNeisNo").val() !== 'undefined' &&
+                        $("#personalNeisNo").val() !== null &&
+                        $("#personalNeisNo").val().length == 10
+                    ) {
+                        if(($('#personalNeisType').is(':checked') && !regYouthNeisNo.test($("#personalNeisNo").val())) ||
+                            (!$('#personalNeisType').is(':checked') && !regNeisNo.test($("#personalNeisNo").val()))) {
+                            alert('NEIS 개인 번호 형식이 일치하지 않습니다.')
+                            return false;
+                        } else {
+                            params.personalNeisNo = document.querySelector('#personalNeisNo').value
+                        }
+                    } else {
+                        alert('NEIS 개인 번호를 입력해주세요.')
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // 회원 유형별 form 노출
+            const radio_btn = document.querySelectorAll('input[type=radio]');
+            const schoolteacher = document.getElementById('schoolteacher');
+            const schoolteacher_chk = document.querySelector('.schoolteacher_chk');
+            const student = document.getElementById('student');
+            const parents = document.getElementById('parents');
+            const normal = document.getElementById('normal');
+
+            // 소속정보 노출 여부 체크 / 권한신청 radio버튼 제어
+            function affiliationInfoChk() {
+                // 교원, 학생일 때 소속정보 노출
+                if (schoolteacher.checked) {
+                    // 1. 교원 - 소속 정보
+                    schoolteacher_chk.style.display = 'block';
+                    $('.bizLicenseNumberBox').css('display', 'flex');
+                    params.roleGroup = "TEACHER";
+
+                    //권한신청 - 사업참여자(학교담당자), 미디어강사
+                    document.getElementById('school_admin').removeAttribute('disabled');
+                    document.getElementById('agency_admin').setAttribute('disabled','disabled');
+                    document.getElementById('media_instructor').removeAttribute('disabled');
+                } else if (student.checked) {
+                    schoolteacher_chk.style.display = 'block';
+                    // 소속정보 - 나이스번호 삭제
+                    $('.bizLicenseNumberBox').hide();
+                    params.roleGroup = "STUDENT";
+
+                    //권한신청 불가
+                    document.getElementById('school_admin').setAttribute('disabled','disabled');
+                    document.getElementById('agency_admin').setAttribute('disabled','disabled');
+                    document.getElementById('media_instructor').setAttribute('disabled','disabled');
+                    document.getElementById('school_admin').checked = false;
+                    document.getElementById('agency_admin').checked = false;
+                    document.getElementById('media_instructor').checked = false;
+                } else if (parents.checked) {
+                    // 3. 학부모
+                    schoolteacher_chk.style.display = 'none';
+                    params.roleGroup = "PARENTS";
+
+                    //권한신청 불가
+                    document.getElementById('school_admin').setAttribute('disabled','disabled');
+                    document.getElementById('agency_admin').setAttribute('disabled','disabled');
+                    document.getElementById('media_instructor').setAttribute('disabled','disabled');
+                    document.getElementById('school_admin').checked = false;
+                    document.getElementById('agency_admin').checked = false;
+                    document.getElementById('media_instructor').checked = false;
+                } else if (normal.checked) {
+                    // 4. 일반인
+                    schoolteacher_chk.style.display = 'none';
+                    params.roleGroup = "GENERAL";
+
+                    //권한신청 - 사업참여자(학교담당자), 사업참여자(기관담당자), 미디어강사
+                    document.getElementById('school_admin').removeAttribute('disabled');
+                    document.getElementById('agency_admin').removeAttribute('disabled');
+                    document.getElementById('media_instructor').removeAttribute('disabled');
+                }
+            }
+            affiliationInfoChk();
+
+            radio_btn.forEach((btn, idx) => {
+                if (btn.name === 'membership_type') {
+                    btn.addEventListener('click', function () {
+                        affiliationInfoChk();
+                    });
+                }
+            });
+
+            // 사업 참여 권한 신청별 페이지 이동
+            const school_admin = document.getElementById('school_admin');
+            const agency_admin = document.getElementById('agency_admin');
+            const media_instructor = document.getElementById('media_instructor');
+            let bizAuthority;
+
+            radio_btn.forEach((btn, idx) => {
+                if (btn.name === 'membership_rights') {
+                    btn.addEventListener('click', function () {
+                        if (school_admin.checked) {
+                            // 1. 사업참여자_학교
+                            bizAuthority = "SCHOOL";
+                        } else if (agency_admin.checked) {
+                            // 2. 사업참여자_기관
+                            bizAuthority = "AGENCY";
+                        } else if (media_instructor.checked) {
+                            // 3. 사업참여자_미디어강사
+                            bizAuthority = "INSTR";
+                        }
+                    });
+                }
+            });
+
+            async function findOrganization() { /* 학교 찾기 */
+                let code = await CommonUI.searchMediaCompany(3);
+                if (code) {
+                    selectMediaCompanyInfo(code);
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            function createSchoolInfoOpen() {
+                $("#popSchoolRegistration input").val('');
+                $("#popSchoolRegistration").openModal();
+            }
+
+            function createSchoolInfo() { /* 학교 등록 신청 */
+                var subParams = {};
+                subParams.organizationName = document.querySelector('#createSchoolForm > tr:nth-child(1) > td > input').value.split(' ').join('');
+                subParams.organizationZipCode = document.getElementById("add_organizationZipCode").value;
+                subParams.organizationAddress1 = document.getElementById("add_organizationAddress1").value
+                subParams.organizationAddress2 = document.getElementById("add_organizationAddress2").value
+                subParams.homepage = document.getElementById('homePage_pop').value;
+
+                if($("#add_schoolTel > select").length>0){
+                    let companyTelS = $("#add_schoolTel > select");
+                    let companyTel = $("#add_schoolTel > input");
+                    subParams.organizationTelNumber = companyTelS.eq(0).val()+companyTel.eq(0).val()+companyTel.eq(1).val();
+
+                }else{
+                    let companyTel = $("#add_schoolTel > input");
+                    subParams.organizationTelNumber = companyTel.eq(0).val()+companyTel.eq(1).val()+companyTel.eq(2).val();
+                }
+
+                if($("#add_schoolFax > select").length>0){
+                    let companyFaxS = $("#add_schoolFax > select");
+                    let companyFax = $("#add_schoolFax > input");
+                    subParams.organizationFaxNumber = companyFaxS.eq(0).val()+companyFax.eq(0).val()+companyFax.eq(1).val();
+
+                }else{
+                    let companyFax = $("#add_schoolFax > input");
+                    subParams.organizationFaxNumber = companyFax.eq(0).val()+companyFax.eq(1).val()+companyFax.eq(2).val();
+                }
+                subParams.organizationType = "3" //1: 매체사, 2: 기관, 3: 학교
+
+                /** 학교 등록 */
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/school/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(subParams),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        /** 기관 코드 셋팅 */
+                        organizationCode = data.organizationCode;
+                        /** 기관 등록 요청 데이터 표출 */
+                        document.querySelector('#organizationName').value = data.organizationName;
+                        document.querySelector('#organizationCode').value = data.organizationCode;
+
+                        document.querySelector('#organizationZipCode').value = data.organizationZipCode;
+                        document.querySelector('#organizationAddress1').value = data.organizationAddress1;
+                        document.querySelector('#organizationAddress2').value = data.organizationAddress2;
+
+                        let convertPhoneNum = data.organizationTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
+                        let convertPhoneNum1 = convertPhoneNum.split('-')[0];
+                        let convertPhoneNum2 = convertPhoneNum.split('-')[1];
+                        let convertPhoneNum3 = convertPhoneNum.split('-')[2];
+                        document.querySelector('#organizationTelNumber1').value = convertPhoneNum1;
+                        document.querySelector('#organizationTelNumber2').value = convertPhoneNum2;
+                        document.querySelector('#organizationTelNumber3').value = convertPhoneNum3;
+
+                        let convertFaxeNum = data.organizationFaxNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
+                        let convertFaxeNum1 = convertFaxeNum.split('-')[0];
+                        let convertFaxeNum2 = convertFaxeNum.split('-')[1];
+                        let convertFaxeNum3 = convertFaxeNum.split('-')[2];
+                        document.querySelector('#organizationFaxNumber1').value = convertFaxeNum1;
+                        document.querySelector('#organizationFaxNumber2').value = convertFaxeNum2;
+                        document.querySelector('#organizationFaxNumber3').value = convertFaxeNum3;
+                        /** 기관 등록 팝업창 close 처리 */
+                        $("#popSchoolRegistration").closeModal();
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('학교를 등록하는 과정에서 오류가 발생하였습니다.');
+                        }
+                    }
+                })
+            }
+
+            /* 매체사/학교/기관 등록신청 */
+            async function registerOrg(registerType){
+                let orgItem = await CommonUI.registerOrg(registerType);
+                if(orgItem){
+                    registerOrgInfo(orgItem);
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            function go() {
+                /** 필수 값 체크 */
+                if(!requiredChk()) return;
+
+                if([[ ${content} ]]) {
+                    params.migrationFlag = "C";
+                    params.password = null;
+                    /** 마이그레이션 전용(회원 정보 생성이 아닌 업데이트) */
+                    $.ajax({ //jquery ajax
+                        type: "PUT", //http method
+                        url: "/api/user/update", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        dataType: "json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        data: JSON.stringify(params),
+                        success : function(data){
+                            params.password = document.querySelector('#password').value;
+                            $.ajax({ //jquery ajax
+                                type: "PUT", //http method
+                                url: "/api/user/change-password", //값을 가져올 경로
+                                headers: {'Content-Type': 'application/json'},
+                                dataType: "json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                                data: JSON.stringify(params),
+                                success : function(res){
+                                    location.href = '/user/join/result'
+                                },
+                                error : function(e1){
+                                    if(e1 && e1.responseJSON && e1.responseJSON.resultMessage){
+                                        alert(e1.responseJSON.resultMessage);
+                                    }else{
+                                        alert('비밀번호를 변경하는 과정에서 오류가 발생하였습니다.');
+                                    }
+                                }
+                            });
+                        },
+                        error : function(e2){
+                            if(e2 && e2.responseJSON && e2.responseJSON.resultMessage){
+                                alert(e2.responseJSON.resultMessage);
+                            }else{
+                                alert('사용자 정보를 수정하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    });
+                } else {
+                    /** 회원 가입 호출 */
+                    $.ajax({ //jquery ajax
+                        type:"post", //http method
+                        url:"/api/user/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(params),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            /** 회원 가입 성공 */
+                            if(bizAuthority) { /** 사업 참여 권한 신청 */
+                            alert('회원 가입이 완료되었습니다.\n권한 신청으로 이동합니다.');
+                                location.href = '/user/authority/' + data.userId + "?bizAuthority=" + bizAuthority;
+                            } else { /** 회원 가입 성공 페이지 */
+                            location.href = '/user/join/result'
+                            }
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('회원가입하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+            }
+
+            school_youth($('#personalNeisType'))
+            function school_youth(chk) {
+                if ($(chk).is(':checked')) {
+                    $('.school').hide()
+                    $('.youth').show()
+                } else {
+                    $('.school').show()
+                    $('.youth').hide()
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

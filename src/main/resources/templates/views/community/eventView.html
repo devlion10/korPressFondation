@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">이벤트/설문</div>
+                    </div>
+
+                    <div class="bl_title_right">
+                        <div class="bl_title_sns">
+                            <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                            <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                            <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                            <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                            <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx != null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" th:text="${content[param.selectIdx[0]].title}">(한국언론진흥재단X정준희의 방과후 해시태그) 가짜 뉴스 새로운 정의는 트럼프로부터? [정준희의 방과 후 해시태그 7회]</div>
+                    </div>
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt class="hp_show">기간</dt>
+                            <dd>
+                                <span th:text="${#strings.substring(content[param.selectIdx[0]].startDT, 0, 10)}">2022.07.01</span> ~ <span th:text="${#strings.substring(content[param.selectIdx[0]].endDT, 0, 10)}">2022.07.30</span>
+                                <i class="el_ico">
+                                    <span th:if="${content[param.selectIdx[0]].status=='1'}" class="el_chip3">진행</span>
+                                    <span th:if="${content[param.selectIdx[0]].status=='0'}" class="el_chip3 el_chip3__end">마감</span>
+                                </i>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont" th:text="${content[param.selectIdx[0]].contents}">
+                        수강관련 문의내용 구구절절
+                        <br>
+                        수강문의 드립니다.
+                        <br>
+                        답변 부탁드립니다.
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx == null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" data-binding-key="title" th:text="${content[0].title}">(한국언론진흥재단X정준희의 방과후 해시태그) 가짜 뉴스 새로운 정의는 트럼프로부터? [정준희의 방과 후 해시태그 7회]</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt class="hp_show">기간</dt>
+                            <dd>
+                                <span data-binding-key="startDT" th:text="${#strings.substring(content[0].startDT, 0, 10)}">2022.07.01</span> ~ <span data-binding-key="endDT" th:text="${#strings.substring(content[0].endDT, 0, 10)}">2022.07.30</span>
+                                <i class="el_ico" data-binding-key="status"></i>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="bl_boardView_cont" data-binding-key="contents">수강관련 문의내용 구구절절</div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/communication/event?size=8">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,5);
+
+                let urlLink = window.location.href;
+                let viewNum = urlLink.split('/');
+                viewNum = viewNum[viewNum.length - 1];
+
+                let CONT = [[ ${content} ]];
+                let url = new URL(window.location.href);
+                let selectIdx = url.searchParams;
+                selectIdx = selectIdx.get('selectIdx');
+                if(selectIdx === null){
+                    (function(){
+                        let dataset = [[ ${content} ]];
+                        let item = _.find(dataset, {'sequenceNo': parseInt(viewNum)});
+                        if( item ){
+                            for(var key in item){
+                                let target = $("[data-binding-key='"+key+"']");
+                                if (key == "status") {
+                                    if (item.status == "1") {
+                                        target.append('<span class="el_chip3">진행</span>');
+                                    } else {
+                                        target.append('<span class="el_chip3 el_chip3__end">마감</span>');
+                                    }
+                                } else if (key == "startDT") {
+                                    target.text(item.startDT.substring(0,10))
+                                } else if (key == "endDT") {
+                                    target.text(item.endDT.substring(0,10))
+                                } else {
+                                    target.html(item[key]);
+                                }
+                            }
+                            if( item.top !== true){
+
+                            }
+                        }
+                    })();
+                } else {
+                    $('#contents').html(CONT[selectIdx].contents);
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

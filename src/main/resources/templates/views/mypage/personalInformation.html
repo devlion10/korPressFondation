@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">개인정보 관리</div>
+                    </div>
+                    <div class="card">
+                        <div class="form_box">
+                            <div class="title"><label for="checkPw">비밀번호를 정확하게 입력해주세요.</label></div>
+                            <input type="password" class="common_input2" id="checkPw">
+                            <div class="guide_text mt-2">※ 8자리 이상 25자리 이하 영문, 숫자, 특수문자 중 3가지 이상으로 조합</div>
+                            <div class="guide_text">※ 허용된 특수문자 : ~!@#$%^&*(){}[]&lt;&gt;?</div>
+                            <div class="btn_type1 btn_blue" onclick="pwCheck()">확인</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                let AUTH = [[ ${#authentication} ]];
+
+                /* <![CDATA[ */
+                document.querySelector('#checkPw').addEventListener('keyup', (e)=>{
+                    if (e.keyCode === 13) {
+                        // code for enter
+                        pwCheck();
+                    }
+                });
+
+                function pwCheck(){
+                    let user_auth = [[ ${#authentication} ]];
+
+                    if($('.common_input2').val() == ''){
+                        alert('비밀번호를 입력해주세요.')
+                    } else {
+                        // api 비교 후 성공하면 이동시키기
+                        $.ajax({ //jquery ajax
+                            type: "POST", //http method
+                            url: "/api/user/check-password", //값을 가져올 경로
+                            headers: {'Content-Type': 'application/json'},
+                            dataType: "json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                            data:JSON.stringify({
+                                "userId": user_auth.principal.userId,
+                                "password": $('#checkPw').val()
+                            }),
+                            success : function(res){
+                                if(res.resultCode == '0000'){
+                                    location.href='/user/write';
+                                } else {
+                                    alert('비밀번호가 일치하지 않습니다.')
+                                }
+                            },
+                            error : function(e){
+                                alert('조회 중 에러가 발생했습니다.');
+                            }
+                        });
+                    }
+                }
+
+                function onLoadSubmit() {
+                    console.log('content: ', [[ ${content} ]] )
+                    navigation(0,6);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

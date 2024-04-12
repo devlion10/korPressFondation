@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+<!-- POPUP : 강의평가 -->
+<div class="pop_page">
+    <div class="pop_primary">
+        <div class="pop_head">
+            <h1 class="tit">강의평가</h1>
+        </div>
+        <div class="pop_cont hp_h715" th:if="${content!=null}">
+            <div class="el_lv3heading mt-0">교육 과정 만족도 (총 문항수: <span th:text="${#lists.size(content[0].evaluateMaster.evaluateQuestionList)}">13</span>개)</div>
+
+            <div class="exam_questions" th:each="item,stat:${content[0].evaluateMaster.evaluateQuestionList}">
+                <div class="exam_questions__item hp_mh100p">
+                    <div class="exam_questions__title">
+                        <span th:text="${item.evaluateQuestionMaster.questionTitle}"></span>
+                    </div>
+                    <div class="hp_ml15">
+                        <div class="exam_questions__box" th:if="${!#strings.isEmpty(item.evaluateQuestionMaster.questionContents)}" th:text="${item.evaluateQuestionMaster.questionContents}"></div>
+                        <!-- 단일선택 -->
+                        <div class="exam_questions__cont" th:if="${item.evaluateQuestionMaster.questionType == '1'}">
+                            <div class="radio_box" th:each="item2:${item.evaluateQuestionMaster.questionItemList}">
+                                <input th:id="${item2.questionItemSerialNo}" th:value="${item2.questionItemSerialNo}" type="radio" th:name="${item2.questionSerialNo}">
+                                <label th:for="${item2.questionItemSerialNo}">
+                                    <span></span>
+                                    <p th:text="${item2.questionItemValue}"></p>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 다중선택 -->
+                        <div class="exam_questions__cont" th:if="${item.evaluateQuestionMaster.questionType == '2'}">
+                            <div class="chk_box" th:each="item2:${item.evaluateQuestionMaster.questionItemList}">
+                                <input th:id="${item2.questionItemSerialNo}" th:value="${item2.questionItemSerialNo}" type="checkbox" th:name="${item2.questionSerialNo}">
+                                <label th:for="${item2.questionItemSerialNo}">
+                                    <span></span>
+                                    <p th:text="${item2.questionItemValue}"></p>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 단답형 -->
+                        <div class="exam_questions__cont" th:if="${item.evaluateQuestionMaster.questionType == '3'}">
+                            <input class="common_input w100" th:id="${item.questionSerialNo}">
+                        </div>
+                        <!-- 서술형 -->
+                        <div class="exam_questions__cont" th:if="${item.evaluateQuestionMaster.questionType == '4'}">
+                            <textarea class="common_input" rows="5" th:id="${item.questionSerialNo}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exam_questions" th:if="${content[0].evaluateMaster.isUsableOtherComments}">
+                <div class="exam_questions__item hp_mh100p">
+                    <div class="exam_questions__title">기타의견</div>
+                    <div class="hp_ml15">
+                        <!-- 기타의견 -->
+                        <div class="exam_questions__cont">
+                            <input class="common_input w100" id="answerComments">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bl_gridBtns">
+                <div class="bl_gridBtns_md">
+                    <div class="btn_type1 btn_gray" onclick="parent.window.closePop()">취소하기</div>
+                    <div class="btn_type1 btn_blue" onclick="sendEval()">등록하기</div>
+                </div>
+            </div>
+        </div>
+        <div class="pop_cont hp_h715" th:unless="${content!=null}">
+            <div class="el_lv3heading mt-0">정보가 없습니다.</div>
+        </div>
+
+        <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+    </div>
+</div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const CONT = [[ ${content} ]];
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                console.log('content: ', [[ ${content} ]] )
+            }
+
+            function sendEval(){
+                let params = {
+                    "applicationNo": window.location.pathname.split('/')[window.location.pathname.split('/').length-1],
+                    "answerComments": null,
+                    "answerEvaluateInfo": []
+                }
+                // 문항 + 답변
+                for(let i=0; i<CONT[0].evaluateMaster.evaluateQuestionList.length; i++){
+                    let tempData = {
+                        'questionSerialNo' : CONT[0].evaluateMaster.evaluateQuestionList[i].questionSerialNo,
+                        'questionItemSerialNo' : []
+                    }
+                    let tempSerialNo = CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionSerialNo;
+                    if (CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType != '0') {
+                        tempData.questionItemSerialNo.push('(0)')
+                    } else if(CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '1'){
+                        // 단일
+                        tempData.questionItemSerialNo.push($(`input[name='${tempSerialNo}']:checked`).val());
+                    } else if(CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '2'){
+                        // 다중
+                        let len = $(`input[name='${tempSerialNo}']:checked`).length;
+                        let checkArr = [];
+                        if(len > 1){
+                            $(`input[name='${tempSerialNo}']:checked`).each(function(e){
+                                let value = $(this).val();
+                                checkArr.push(value);
+                            })
+                        }
+                        tempData.questionItemSerialNo = checkArr;
+                    } else if(CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '3'){
+                        // 단답
+                        tempData.questionItemSerialNo.push(document.getElementById(tempSerialNo).value)
+                    } else if(CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '4'){
+                        // 서술
+                        tempData.questionItemSerialNo.push(document.getElementById(tempSerialNo).value)
+                    }
+                    params.answerEvaluateInfo.push(tempData)
+                }
+
+                // 기타의견
+                if(CONT[0].evaluateMaster.isUsableOtherComments){
+                    params.answerComments = document.getElementById('answerComments').value;
+                }
+                $.ajax({
+                    type:"post",
+                    url: '/api/mypage/education-state/evaluate/submit',
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(params),
+                    dataType:"json",
+                    success: function(data){
+                        alert('강의평가 등록이 완료되었습니다.');
+                        parent.window.closePop();
+                    },
+                    error: function (e){
+                        console.log(e)
+                    }
+                })
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

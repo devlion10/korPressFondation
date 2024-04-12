@@ -1,0 +1,7 @@
+/* Regular */
+@font-face {
+    font-family: 'ChosunGs';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../assets/fonts/ChosunGs.ttf) format('truetype');
+}

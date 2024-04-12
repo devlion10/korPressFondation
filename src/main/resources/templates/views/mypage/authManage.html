@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">마이페이지</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">권한신청</div>
+                        <div class="bl_title_subtitle">
+                            <span class="essential">*</span>사업 참여를 위한 권한이 필요하실 경우, 아래의 회원 권한 신청서를 작성하여 주시기 바랍니다.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="common_input_wrap hp_md_common_input_wrap">
+                    <div class="common_input_box align-items-center">
+                        <div class="common_label">
+                                <span class="essential">*</span>회원권한 신청
+                        </div>
+                        <div class="radio_box">
+                            <input id="school_admin" type="radio" name="membership_rights" >
+                            <label for="school_admin">
+                                <span></span>
+                                사업참여자(학교담당자)
+                            </label>
+                        </div>
+                        <div class="radio_box">
+                            <input id="agency_admin" type="radio" name="membership_rights" >
+                            <label for="agency_admin">
+                                <span></span>
+                                사업참여자(기관담당자)
+                            </label>
+                        </div>
+                        <div class="radio_box">
+                            <input id="media_instructor" type="radio" name="membership_rights" >
+                            <label for="media_instructor">
+                                <span></span>
+                                한국언론진흥재단 미디어강사
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="createUserForm" name="createUserForm" method="POST" action="/anonymous/user/create">
+                    <!-- 1. 사업참여자_학교, 2. 사업참여자_기관 -->
+                    <div class="school_admin_chk" style="display: none">
+                        <div class="cont_title">
+                            <span id="changeTargetTitle">학교/기관 정보</span>
+                            <div id="registerBtn" class="btn_type3 btn_register" onclick="registerOrg(registerType)">매체사/학교/기관 등록신청</div>
+                        </div>
+                        <div class="common_input_wrap">
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span><span id="changeTarget1">학교/기관명</span></div>
+                                <div class="d-flex hp_md_w100p">
+                                    <label for="organizationName" class="hidden_label">기관명</label>
+                                    <input id="organizationName" type="text" class="common_input form_input" readonly >
+                                    <div class="btn_type1 btn_md btn_gray" id="btnFindOrg" onclick="findOrganization()">찾아보기</div>
+                                </div>
+                                <input id="organizationCode" type="hidden" class="common_input form_input" th:value="${content.organizationCode}">
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="p1_1"><span class="essential">*</span>대표전화</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="schoolTel" class="phone">
+                                        <label for="p1_1" class="hidden_label">대표전화</label>
+                                        <input type="text" id="p1_1" maxlength="3" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <label for="p1_2" class="hidden_label">대표전화</label>
+                                        <input type="text" id="p1_2" maxlength="4" class="common_input" disabled >
+                                        <div class="blank">-</div>
+                                        <label for="p1_3" class="hidden_label">대표전화</label>
+                                        <input type="text" id="p1_3" maxlength="4" class="common_input" disabled >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="representative"><span id="changeTarget2">교장/기관장</span></label>
+                                </div>
+                                <input type="text" maxlength="20" onchange="maxCheck(this)" id="representative" class="common_input form_input" >
+                            </div>
+                            <div id="bizLicenseNumberWrap" class="common_input_box">
+                                <div class="common_label">
+                                    <label for="bizLicenseNumberInput"><span class="essential">*</span>사업자등록번호</label>
+                                </div>
+                                <div id="bizLicenseNumber" onchange="maxCheck(this)" class="d-flex flex-column hp_md_w100p">
+                                    <div class="company_number">
+                                        <input type="text" id="bizLicenseNumberInput" class="common_input form_input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box class_and_studentNum">
+                                <div class="common_label">
+                                    <label for="learningCount"><span class="essential">*</span>학급수/학생수</label>
+                                </div>
+                                <div class="d-flex align-items-center hp_md_w100p">
+                                    <label for="learningCount" class="hidden_label">학급</label>
+                                    <input type="text" id="learningCount" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" class="common_input" >
+                                    <div class="blank">학급 /</div>
+                                    <label for="numberStudents" class="hidden_label">명</label>
+                                    <input type="text" id="numberStudents" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" class="common_input" >
+                                    <div class="blank">명</div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="organizationZipCode"><span class="essential">*</span><span id="changeTarget3">학교/기관 주소</span></label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div class="d-flex">
+                                        <input type="text" id="organizationZipCode" class="common_input form_input" disabled >
+                                        <div class="btn_type1 btn_md btn_gray" id="find-address" onclick="addrSearch()">우편번호</div>
+                                    </div>
+                                    <input type="text" id="organizationAddress1" class="common_input form_input_lg" disabled >
+                                    <input type="text" id="organizationAddress2" class="common_input form_input_lg" disabled >
+                                    <label for="organizationAddress1" class="hidden_label">주소</label>
+                                    <label for="organizationAddress2" class="hidden_label">주소 상세</label>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="homepage">홈페이지</label>
+                                </div>
+                                <input maxlength="100" onchange="maxCheck(this)" type="text" id="homepage" class="common_input form_input_md" >
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="p2_1">팩스번호</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="schoolFax" class="fax">
+                                        <input type="text" id="p2_1" maxlength="3" class="common_input" >
+                                        <div class="blank">-</div>
+                                        <input type="text" id="p2_2" maxlength="4" class="common_input" >
+                                        <div class="blank">-</div>
+                                        <input type="text" id="p2_3" maxlength="4" class="common_input" >
+                                        <label for="p2_1" class="hidden_label">팩스1</label>
+                                        <label for="p2_2" class="hidden_label">팩스2</label>
+                                        <label for="p2_3" class="hidden_label">팩스3</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="changeTargetTitle2" class="cont_title">담당자(교사) 정보</div>
+                        <div class="common_input_wrap">
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="rank"><span class="essential">*</span>직위</label>
+                                </div>
+                                <input type="text" maxlength="20" onchange="maxCheck(this)" id="rank" class="common_input form_input" >
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="charge"><span class="essential">*</span><span id="changeTarget4">담당과목/담당업무</span></label>
+                                </div>
+                                <input type="text" id="charge" maxlength="25" onchange="maxCheck(this)" class="common_input form_input" placeholder="한글, 한글/숫자 혼용 25자 제한" >
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
+                                    <label for="p3_1"><span class="essential">*</span>직통전화</label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="chargeTelNumber" class="phone">
+                                        <select id="p3_1" class="common_select" data-list="telList"></select>
+                                        <div class="blank">-</div>
+                                        <input id="p3_2" type="text" maxlength="4" class="common_input" >
+                                        <div class="blank">-</div>
+                                        <input id="p3_3" type="text" maxlength="4" class="common_input" >
+                                        <label for="p3_2" class="hidden_label">직통전화1</label>
+                                        <label for="p3_3" class="hidden_label">직통전화2</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn_box">
+                            <button id="userBizButton" name="userBizButton" type="button" class="btn_type1 btn_lg btn_blue" onclick="go()">권한 신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 3. 사업참여자_미디어강사 -->
+                    <div class="media_instructor_chk" style="display: none">
+                        <div class="cont_title">강사정보</div>
+                        <div class="common_input_wrap">
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>사진</div>
+                                <div class="profile_img"></div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="pictureFileUpload" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                        <input id="p4_1" th:if="${instrAuth==null}" type="text" class="common_input bl_upload_path js_path" data-not_null="true" data-alert_name="사진" readonly >
+                                        <input id="p4_1"th:unless="${instrAuth==null}" th:value="${(instrAuth.pictureFilePath)?:'-'}"  type="text" class="common_input bl_upload_path js_path" data-not_null="true" data-alert_name="사진" readonly >
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <input id="pictureFileProfile" type="file" data-upload="image" data-target=".profile_img" name="file" accept=".pdf, .gif, .jpg, .png" class="bl_upload_file js_file" >
+                                    </div>
+                                    <p class="input_text"><span class="essential">*</span>파일형식 pdf, jpg, png, gif / 5MB 미만</p>
+
+                                    <label for="p4_1" class="hidden_label">사진</label>
+                                    <label for="pictureFileProfile" class="hidden_label">사진</label>
+
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>서명/도장</div>
+                                <div class="stamp_img"></div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div id="signFileUpload" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                        <input id="p4_2" th:if="${instrAuth==null}" type="text" class="common_input bl_upload_path js_path" data-not_null="true" data-alert_name="서명/도장 이미지" readonly >
+                                        <input id="p4_2" th:unless="${instrAuth==null}" th:value="${(instrAuth.signFilePath)?:'-'}" type="text" class="common_input bl_upload_path js_path" data-not_null="true" data-alert_name="서명/도장 이미지" readonly >
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <input id="pictureFileStamp" type="file" name="file" data-upload="image" data-target=".stamp_img" accept=".pdf, .gif, .jpg, .png" class="bl_upload_file js_file" >
+                                    </div>
+                                    <p class="input_text"><span class="essential">*</span>파일형식 pdf, jpg, png, gif / 5MB 미만</p>
+
+                                    <label for="p4_2" class="hidden_label">서명</label>
+                                    <label for="pictureFileStamp" class="hidden_label">서명</label>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>자택주소</div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div class="d-flex">
+                                        <input type="text" id="zipCode" class="common_input form_input" disabled >
+                                        <div class="btn_type1 btn_md btn_gray" id="find-address-lecturer" onclick="addrSearch('media')">우편번호</div>
+                                    </div>
+                                    <input type="text" id="address1" class="common_input form_input_lg" disabled >
+                                    <input type="text" id="address2" class="common_input form_input_lg" disabled >
+
+                                    <label for="zipCode" class="hidden_label">자택주소 우편번호</label>
+                                    <label for="address1" class="hidden_label">자택주소</label>
+                                    <label for="address2" class="hidden_label">자택주소 상세</label>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>강의가능 지역</div>
+                                <div class="w100 text-end">
+                                    <div class="common_table_wrap">
+                                        <div id="region" style="text-align: left;">
+                                            <div style="float: left; width: 25%;">
+                                                <label for="p6_1" class="hidden_label">대표전화</label>
+                                                <select id="p6_1" class="common_select regionList" onchange="selectedArea(this)" data-list="regionList" data-not_null="true" data-alert_name="강의가능 지역"></select>
+                                            </div>
+                                            <div style="float: left; width: 25%;">
+                                                <label for="p6_2" class="hidden_label">대표전화</label>
+                                                <select id="p6_2" class="common_select regionList" onchange="selectedArea(this)" data-list="regionList" data-not_null="true" data-alert_name="강의가능 지역"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>최종학력</div>
+                                <div class="common_table">
+                                    <div class="table_row">
+                                        <div class="table_cont">
+                                            <div>졸업년도</div>
+                                            <div>
+                                                <input maxlength="4" th:if="${instrAuth==null}" id="graduationYear" type="text" class="common_input" data-not_null="true" data-alert_name="졸업년도" placeholder="2020" >
+                                                <input maxlength="4" th:unless="${instrAuth==null}" th:value="${instrAuth.graduationYear}" id="graduationYear" type="text" class="common_input" data-not_null="true" data-alert_name="졸업년도" placeholder="2020" >
+                                                <label for="graduationYear" class="hidden_label">졸업년도</label>
+                                            </div>
+                                        </div>
+                                        <div class="table_cont">
+                                            <div>학교명</div>
+                                            <div>
+                                                <input maxlength="50" onchange="maxCheck(this)" th:if="${instrAuth==null}" id="graduationSchool" type="text" class="common_input" data-not_null="true" data-alert_name="학교명">
+                                                <input maxlength="50" onchange="maxCheck(this)" th:unless="${instrAuth==null}" th:value="${instrAuth.graduationSchool}" id="graduationSchool" type="text" class="common_input" data-not_null="true" data-alert_name="학교명">
+                                                <label for="graduationSchool" class="hidden_label">학교명</label>
+                                            </div>
+                                        </div>
+                                        <div class="table_cont">
+                                            <div>전공</div>
+                                            <div>
+                                                <input maxlength="50" onchange="maxCheck(this)" th:if="${instrAuth==null}" id="major" type="text" class="common_input" data-not_null="true" data-alert_name="전공">
+                                                <input maxlength="50" onchange="maxCheck(this)" th:unless="${instrAuth==null}" th:value="${instrAuth.major}" id="major" type="text" class="common_input" data-not_null="true" data-alert_name="전공">
+                                                <label for="major" class="hidden_label">전공</label>
+                                            </div>
+                                        </div>
+                                        <div class="table_cont">
+                                            <div>학위</div>
+                                            <div>
+                                                <input maxlength="50" onchange="maxCheck(this)" th:if="${instrAuth==null}"  id="degree" type="text" class="common_input" data-not_null="true" data-alert_name="학위">
+                                                <input maxlength="50" onchange="maxCheck(this)" th:unless="${instrAuth==null}" th:value="${instrAuth.degree}" id="degree" type="text" class="common_input" data-not_null="true" data-alert_name="학위">
+                                                <label for="degree" class="hidden_label">학위</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>강의주요 내용</div>
+                                <textarea th:if="${instrAuth==null}" class="common_input" name="comments" id="comments" cols="30" rows="10"></textarea>
+                                <textarea th:unless="${instrAuth==null}" th:utext="${instrAuth.comments}" class="common_input" name="comments" id="comments" cols="30" rows="10"></textarea>
+                                <label for="comments" class="hidden_label">강의주요 내용</label>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>주요이력</div>
+                                <div class="w100 text-end">
+                                    <div class="common_table_wrap">
+                                        <a onclick="addRecord(this)" id="addRecord" class="btn_type3 btn_add">이력추가</a>
+                                        <div id="addRecordTable" class="common_table">
+                                            <div class="table_row antecedents">
+                                                <div class="table_cont" style="flex: 1">
+                                                    <div>기간</div>
+                                                    <div><input id="p7_1" maxlength="50" onchange="maxCheck(this)" type="text" class="common_input year" data-not_null="true" data-alert_name="주요이력의 기간" placeholder="2020~2022" ></div>
+                                                    <label for="p7_1" class="hidden_label">기간</label>
+                                                </div>
+                                                <div class="table_cont" style="flex: 2">
+                                                    <div>기관</div>
+                                                    <div><input id="p7_2" maxlength="100" onchange="maxCheck(this)" type="text" class="common_input organization orgR" data-not_null="true" data-alert_name="주요이력의 기관" ></div>
+                                                    <label for="p7_2" class="hidden_label">기간</label>
+                                                </div>
+                                                <div class="table_cont" style="flex: 3">
+                                                    <div>내용</div>
+                                                    <div><input id="p7_3" maxlength="500" onchange="maxCheck(this)" type="text" class="common_input comments" data-not_null="true" data-alert_name="주요이력의 내용"></div>
+                                                    <label for="p7_3" class="hidden_label">기간</label>
+                                                </div>
+                                                <div class="table_cont table_cont_del">
+                                                    <div>삭제</div>
+                                                    <div><a href="javascript:void(0);" class="btn_type3 btn_del" onclick="removeList(this);">삭제</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>자격증</div>
+                                <div class="w100 text-end">
+                                    <div class="common_table_wrap">
+                                        <a href="javascript:void(0);" id="addCertificate" class="btn_type3 btn_add" onclick="addList(this)">자격증추가</a>
+                                        <div id="addCertificateTable" class="common_table">
+                                            <div class="table_row certificate">
+                                                <div class="table_cont">
+                                                    <div>취득일자</div>
+                                                    <div><input id="p8_1" type="text" class="el_datePicker common_input certificateDate" data-not_null="true" data-alert_name="자격증 취득일자"></div>
+                                                    <label for="p8_1" class="hidden_label">취득일자</label>
+                                                </div>
+                                                <div class="table_cont">
+                                                    <div>자격증</div>
+                                                    <div><input id="p8_2" maxlength="100" onchange="maxCheck(this)" type="text" class="common_input certificateName" data-not_null="true" data-alert_name="자격증 이름"></div>
+                                                    <label for="p8_2" class="hidden_label">자격증</label>
+                                                </div>
+                                                <div class="table_cont">
+                                                    <div>자격번호</div>
+                                                    <div><input id="p8_3" maxlength="50" onchange="maxCheck(this)" type="text" class="common_input certificateNo" data-not_null="true" data-alert_name="자격증의 자격번호"></div>
+                                                    <label for="p8_3" class="hidden_label">자격번호</label>
+                                                </div>
+                                                <div class="table_cont">
+                                                    <div>발급기관</div>
+                                                    <div><input id="p8_4" maxlength="100" onchange="maxCheck(this)" type="text" class="common_input organization orgC" data-not_null="true" data-alert_name="자격증 발급기관"></div>
+                                                    <label for="p8_4" class="hidden_label">발급기관</label>
+                                                </div>
+                                                <div class="table_cont table_cont_del">
+                                                    <div>삭제</div>
+                                                    <div><a href="javascript:void(0);" class="btn_type3 btn_del" onclick="removeList(this);">삭제</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label"><span class="essential">*</span>계좌</div>
+                                <div class="d-flex flex-wrap hp_md_w100p">
+                                    <input id="p9_1" type="text" class="common_input" th:value="${#authentication.name}" disabled >
+                                    <select th:if="${instrAuth==null}"  class="common_select" data-list="bankList" id="bank"></select>
+                                    <select th:unless="${instrAuth==null}" class="common_select" data-list="bankList" id="bank"></select>
+                                    <input maxlength="50" onchange="maxCheck(this)" th:if="${instrAuth==null}" type="text" class="common_input" id="accountNo" placeholder="계좌번호" >
+                                    <input maxlength="50" onchange="maxCheck(this)" th:unless="${instrAuth==null}" th:value="${instrAuth.accountNo}" type="text" class="common_input" id="accountNo" placeholder="계좌번호" >
+                                    <label for="p9_1" class="hidden_label">계좌 명</label>
+                                    <label for="bank" class="hidden_label">은행</label>
+                                    <label for="accountNo" class="hidden_label">계좌 번호</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn_box">
+                            <button th:if="${instrAuth==null}" name="userBizButton" type="button" class="btn_type1 btn_lg btn_blue" onclick="go2()">권한 신청</button>
+                            <button th:if="${instrAuth!=null && instrAuth.bizAuthorityApprovalState=='1'}"  name="userBizButton" type="button" class="btn_type1 btn_lg btn_lightgray" disabled>권한 신청 중</button>
+                            <button th:if="${instrAuth!=null && instrAuth.bizAuthorityApprovalState=='2'}"  name="userBizButton" type="button" class="btn_type1 btn_lg btn_blue" onclick="went2()">권한 해제</button>
+                            <button th:if="${instrAuth!=null && instrAuth.bizAuthorityApprovalState=='3'}"  name="userBizButton" type="button" class="btn_type1 btn_lg btn_lightgray" disabled>권한 해제 중</button>
+                            <button th:if="${instrAuth!=null && instrAuth.bizAuthorityApprovalState=='4'}"  name="userBizButton" type="button" class="btn_type1 btn_lg btn_blue" onclick="go2()">권한 신청</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            var params = {};
+            var cont = [[ ${content} ]];
+            var organization = [[ ${content.organizationInfo} ]];
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(0,4);
+
+                if ($(".certificateDate").val() == null) {
+                    $(".certificateDate").each(function(idx,el){
+                        let getToday=dateFormat(new Date());
+                        $(el).datepicker("option", "maxDate", getToday);
+                    })
+                }
+
+                /* 1~2. 사업참여자 ---------- */
+                if(organization) { /** 회원 가입 당시 기관 정보를 입력하였을 경우 */
+                    /** 기관 등록 요청 데이터 표출 */
+                    document.querySelector('#organizationName').value = organization.organizationName;
+                    if( organization.bizLicenseNumber ){
+                        bizLicenseNumSet(organization.bizLicenseNumber); /* 사업자번호 / 나이스번호 셋팅 */
+                    }
+                    addressSet(organization.organizationZipCode, organization.organizationAddress1, organization.organizationAddress2); /* 주소 셋팅 */
+                    if( organization.organizationTelNumber ) telNumSet(organization.organizationTelNumber); /* 전화번호 셋팅 */
+                    if( organization.organizationFaxNumber ) faxNumSet(organization.organizationFaxNumber); /* 팩스번호 셋팅 */
+                    if( organization.organizationHomepage ) faxNumSet(organization.organizationHomepage); /* 홈페이지 셋팅 */
+
+
+                    if(organization.representative) {
+                        /** 대표자 존재할 경우 셋팅 */
+                        const representative = organization.representative;
+                        document.querySelector('#representative').value = representative;
+                    }
+
+                    if(organization.learningCount) {
+                        /** 학급수 존재할 경우 셋팅 */
+                        const learningCount = organization.learningCount;
+                        document.querySelector('#learningCount').value = learningCount;
+                    }
+
+                    if(organization.numberStudents) {
+                        /** 학생수 존재할 경우 셋팅 */
+                        const numberStudents = organization.numberStudents;
+                        document.querySelector('#numberStudents').value = numberStudents;
+                    }
+
+                    if(organization.rank) {
+                        /** 직위 존재할 경우 셋팅 */
+                        const rank = organization.rank;
+                        document.querySelector('#rank').value = rank;
+                    }
+
+                    if(organization.charge) {
+                        /** 담당과목 존재할 경우 셋팅 */
+                        const charge = organization.charge;
+                        document.querySelector('#charge').value = charge;
+                    }
+
+                    if(organization.chargeTelNumber) {
+                        /** 직통전화 존재할 경우 셋팅 */
+                        const chargeTelNumber = organization.chargeTelNumber;
+                        if( chargeTelNumber ){
+                            if(chargeTelNumber.substr(0,2).match("02") && (chargeTelNumber.length === 9 || chargeTelNumber.length === 10)) {
+                                document.querySelector('#chargeTelNumber > select').value = chargeTelNumber.substr(0,2);
+                                if(chargeTelNumber.length === 9){
+                                    document.querySelector('#chargeTelNumber > input:nth-child(3)').value = chargeTelNumber.substr(2,3);
+                                    document.querySelector('#chargeTelNumber > input:nth-child(5)').value = chargeTelNumber.substr(5,4);
+                                }else{
+                                    document.querySelector('#chargeTelNumber > input:nth-child(3)').value = chargeTelNumber.substr(2,4);
+                                    document.querySelector('#chargeTelNumber > input:nth-child(5)').value = chargeTelNumber.substr(6,4);
+                                }
+                            } else {
+                                let convertTelNum = chargeTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
+                                if(convertTelNum && convertTelNum.indexOf('-')>0){
+                                    document.querySelector('#chargeTelNumber > select').value = convertTelNum.split('-')[0];
+                                    document.querySelector('#chargeTelNumber > input:nth-child(3)').value = convertTelNum.split('-')[1];
+                                    document.querySelector('#chargeTelNumber > input:nth-child(5)').value = convertTelNum.split('-')[2];
+                                }
+                            }
+                        }
+                    }
+
+                    if(organization.bizAuthorityApprovalState && organization.bizAuthorityApprovalState != "") {
+                        /** 사업 권한 상태 존재할 경우 셋팅 */
+                        const bizAuthorityApprovalState = organization.bizAuthorityApprovalState;
+
+                        if( bizAuthorityApprovalState === "1" || bizAuthorityApprovalState === "2" || bizAuthorityApprovalState === "3"){
+                            $("#find-address").hide();
+                            $("#btnFindOrg").hide();
+                            $('.content_join input').each( function() {
+                                $( this ).attr("disabled", true); //설정
+                            });
+                            $('.content_join select').each( function() {
+                                $( this ).attr("disabled", true); //설정
+                            });
+                        }
+                        if(bizAuthorityApprovalState === "1") {
+                            document.querySelector('[name=userBizButton]').setAttribute("onclick", "alert('권한 신청 중 입니다.')");
+                            document.querySelector('[name=userBizButton]').innerText = "권한 신청 중";
+                        } else if(bizAuthorityApprovalState === "2") {
+                            document.querySelector('[name=userBizButton]').setAttribute("class", "btn_type1 btn_lg btn_red");
+                            document.querySelector('[name=userBizButton]').setAttribute("onclick", "went()");
+                            document.querySelector('[name=userBizButton]').innerText = "권한 해제 신청";
+                        } else if(bizAuthorityApprovalState === "3") {
+                            document.querySelector('[name=userBizButton]').setAttribute("class", "btn_type1 btn_lg btn_red");
+                            document.querySelector('[name=userBizButton]').setAttribute("onclick", "alert('권한 해제 신청 중 입니다.')");
+                            document.querySelector('[name=userBizButton]').innerText = "권한 해제 신청 중";
+                        } else {
+                            alert('반려된 내역입니다. 내용 수정과 기관 재검색을 진행하시면 재신청이 가능합니다.');
+                        }
+                    }
+                    params = organization;  /** 기존 데이터로 초기 셋팅 */
+                }
+                params.userId = [[ ${content.userId} ]];
+
+                /* 3. 미디어강사 ---------- */
+                let pictureFileTarget = document.querySelector('#pictureFileUpload > input.bl_upload_file.js_file');
+                pictureFileTarget.addEventListener('change', pictureFileUpload);
+
+                let signFileTarget = document.querySelector('#signFileUpload > input.bl_upload_file.js_file');
+                signFileTarget.addEventListener('change', signFileUpload);
+            }
+
+            // 권한신청별 페이지 이동
+            const radio_btn = document.querySelectorAll('input[type=radio]');
+            const school_admin = document.getElementById('school_admin');
+            const agency_admin = document.getElementById('agency_admin');
+            const media_instructor = document.getElementById('media_instructor');
+            const school_admin_chk = document.querySelector('.school_admin_chk');
+            const class_and_studentNum = document.querySelector('.class_and_studentNum');
+            const media_instructor_chk = document.querySelector('.media_instructor_chk');
+            let type = ''; //학교/기관 타입 구분(학교/기관명 찾기 팝업에 필요)
+            let registerType = ''; //학교/기관 타입 구분(매체사/학교/기관명 등록신청 팝업에 필요)
+
+            const bizLicenseNumberWrap = document.getElementById('bizLicenseNumberWrap'); //사업자등록번호
+            const changeTargetTitle = document.getElementById('changeTargetTitle'); // 학교/기관 정보
+            const changeTargetTitle2 = document.getElementById('changeTargetTitle2'); // 교사/담당자 정보
+            const changeTarget1 = document.getElementById('changeTarget1'); // 학교/기관명
+            const changeTarget2 = document.getElementById('changeTarget2'); // 교장/기관장
+            const changeTarget3 = document.getElementById('changeTarget3'); // 학교/기관 주소
+            const changeTarget4 = document.getElementById('changeTarget4'); // 담당과목/담당업무
+            const registerBtn = document.getElementById('registerBtn'); // 매체사/학교/기관 등록신청
+            radio_btn.forEach((btn, idx) => {
+                if (btn.name == 'membership_rights') {
+                    btn.addEventListener('click', function () {
+                        school_admin_chk.style.display = 'none';
+                        media_instructor_chk.style.display = 'none';
+
+                        if (school_admin.checked) {
+                            // 1. 사업참여자_학교
+                            type = 3;
+                            registerType = 1;
+                            school_admin_chk.style.display = 'block';
+                            class_and_studentNum.style.display = 'flex';
+                            bizLicenseNumberWrap.style.display = 'none';
+                            changeTargetTitle.innerText='학교 정보';
+                            changeTargetTitle2.innerText='교사 정보';
+                            changeTarget1.innerText='학교명';
+                            changeTarget2.innerText='교장';
+                            changeTarget3.innerText='학교 주소';
+                            changeTarget4.innerText='담당과목';
+                            registerBtn.innerText="학교 등록신청";
+                        } else if (agency_admin.checked) {
+                            // 2. 사업참여자_기관
+                            type = null;
+                            registerType = 2;
+                            school_admin_chk.style.display = 'block';
+                            class_and_studentNum.style.display = 'none';
+                            bizLicenseNumberWrap.style.display = 'flex';
+                            changeTargetTitle.innerText='기관 정보';
+                            changeTargetTitle2.innerText='담당자 정보';
+                            changeTarget1.innerText='기관명';
+                            changeTarget2.innerText='기관장';
+                            changeTarget3.innerText='기관 주소';
+                            changeTarget4.innerText='담당업무';
+                            registerBtn.innerText="매체사/기관 등록신청";
+                        } else if (media_instructor.checked) {
+                            // 3. 사업참여자_미디어강사
+                            media_instructor_chk.style.display = 'block';
+                        }
+                    });
+                }
+            });
+
+            // 권한 데이터 있을 경우
+            if (cont.organizationInfo && cont.organizationInfo.bizAuthority != null && cont.organizationInfo.bizAuthority === "SCHOOL") {
+                type = 3;
+                registerType = 1;
+                school_admin.checked = true;
+                agency_admin.disabled = true;
+                media_instructor.disabled = true;
+                school_admin_chk.style.display = 'block';
+                class_and_studentNum.style.display = 'flex';
+                bizLicenseNumberWrap.style.display = 'none';
+                changeTargetTitle.innerText='학교 정보';
+                changeTargetTitle2.innerText='교사 정보';
+                changeTarget1.innerText='학교명';
+                changeTarget2.innerText='교장';
+                changeTarget3.innerText='학교 주소';
+                changeTarget4.innerText='담당과목';
+                registerBtn.innerText="학교 등록신청";
+            } else if (cont.organizationInfo && cont.organizationInfo.bizAuthority != null && cont.organizationInfo.bizAuthority === "AGENCY") {
+                type = null;
+                registerType = 2;
+                agency_admin.checked = true;
+                school_admin.disabled = true;
+                media_instructor.disabled = true;
+                school_admin_chk.style.display = 'block';
+                class_and_studentNum.style.display = 'none';
+                bizLicenseNumberWrap.style.display = 'flex';
+                changeTargetTitle.innerText='기관 정보';
+                changeTargetTitle2.innerText='담당자 정보';
+                changeTarget1.innerText='기관명';
+                changeTarget2.innerText='기관장';
+                changeTarget3.innerText='기관 주소';
+                changeTarget4.innerText='담당업무';
+                registerBtn.innerText="매체사/기관 등록신청";
+            } else if (cont.organizationInfo && cont.organizationInfo.bizAuthority != null && cont.organizationInfo.bizAuthority === "INSTR") {
+                media_instructor.checked = true;
+                school_admin.disabled = true;
+                agency_admin.disabled = true;
+                media_instructor_chk.style.display = 'block';
+            }
+
+
+
+            /* 1~2. 사업참여자 ---------- */
+            /* 매체사/학교/기관 찾아보기 */
+            async function findOrganization() {
+                let orgItem = await CommonUI.searchMediaCompany(type);
+                if (orgItem) {
+                    selectMediaCompanyInfo(orgItem);
+                    document.getElementById("organizationCode").value = orgItem.organizationCode;
+                    document.getElementById("organizationName").value = orgItem.organizationName;
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            /* 매체사/학교/기관 등록신청 */
+            async function registerOrg(registerType){
+                let orgItem = await CommonUI.registerOrg(registerType);
+                if(orgItem){
+                    registerOrgInfo(orgItem);
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+            }
+
+            // 미입력된 필수 정보가 있을 경우 alert
+            function requiredChk() {
+                /**
+                 * 아이디
+                 * 위변조 가능성이 있으므로 본인인증 후 들어온 파라미터로 재요청할 것...
+                 * 폼 데이터로 절대 셋팅하지 말 것...
+                 * 개발 단계에서만 직접 입력
+                 */
+                if(!params.userId) { alert('잘못된 접근입니다.'); return false; }
+                /** 소속 기관 명 */
+                if(!document.querySelector('#organizationName').value) { alert('소속 기관 명은 필수입니다.'); return false; }
+                else { params.organizationName = document.querySelector('#organizationName').value }
+
+                if( agency_admin.checked != true ){
+                    /** 학습 수 */
+                    if(!document.querySelector('#learningCount').value) { alert('학급 수는 필수입니다.'); return false; }
+                    else { params.learningCount = document.querySelector('#learningCount').value }
+                    /** 학생 수 */
+                    if(!document.querySelector('#numberStudents').value) { alert('학생 수는 필수입니다.'); return false; }
+                    else { params.numberStudents = document.querySelector('#numberStudents').value }
+                }
+                /** 대표전화 */
+                params.organizationTelNumber = document.querySelector('#schoolTel > input:nth-child(2)').value
+                    + document.querySelector('#schoolTel > input:nth-child(5)').value
+                    + document.querySelector('#schoolTel > input:nth-child(8)').value;
+                /** 팩스번호 */
+                params.organizationFaxNumber = document.querySelector('#schoolFax > input:nth-child(1)').value
+                    + document.querySelector('#schoolFax > input:nth-child(3)').value
+                    + document.querySelector('#schoolFax > input:nth-child(5)').value;
+                /** 대표자 */
+                params.representative = document.querySelector('#representative').value;
+                /** 우편번호 */
+                params.organizationZipCode = document.querySelector('#organizationZipCode').value;
+                /** 주소 1 */
+                params.organizationAddress1 = document.querySelector('#organizationAddress1').value;
+                /** 주소 2 */
+                params.organizationAddress2 = document.querySelector('#organizationAddress2').value;
+                /** 홈페이지 */
+                params.homepage = document.querySelector('#homepage').value;
+                /** 직위 */
+                if(!document.querySelector('#rank').value) { alert('직위는 필수입니다.'); return false; }
+                else { params.rank = document.querySelector('#rank').value }
+                /** 담당 */
+                if(!document.querySelector('#charge').value) { alert('담당(과목/콘텐츠)는 필수입니다.'); return false; }
+                else { params.charge = document.querySelector('#charge').value }
+                /** 담당자 연락처 */
+                if(!$('#chargeTelNumber > select > option:selected')[0].innerText
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                    || !document.querySelector('#chargeTelNumber > input:nth-child(5)').value) {
+                    alert('직통전화는 필수입니다.'); return false;
+                } else {
+                    params.chargeTelNumber = $('#chargeTelNumber > select > option:selected')[0].innerText
+                        + document.querySelector('#chargeTelNumber > input:nth-child(3)').value
+                        + document.querySelector('#chargeTelNumber > input:nth-child(5)').value;
+                    if(params.chargeTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]{3,4})([0-9]{4})/, "$1-$2-$3").indexOf('-') == -1){
+                        alert('유효하지 않은 전화번호입니다. 담당자 직통전화 번호를 다시 확인해 주세요!'); return false;
+                    }
+                }
+
+                return true;
+            }
+
+            function go() { /** 사업 권한 신청 */
+                params.bizAuthority = agency_admin.checked == true ? "AGENCY": "SCHOOL";
+                params.organizationCode = globalOrgCode ? globalOrgCode : document.getElementById("organizationCode").value;
+                /** 필수 값 체크 */
+                if(!requiredChk()) return;
+
+                /** 회원 가입 호출 */
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/authority/organization/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(params),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        /** 사업 참여 권한 신청 성공 */
+                        location.reload();
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('권한 신청하는 과정에서 오류가 발생하였습니다.');
+                        }
+                    }
+                })
+            }
+
+            function went() { /** 사업 권한 해제 신청 */
+                if(confirm("해제 신청을 하시겠습니까?") == true) {
+                    /** 필수 값 체크 */
+                    if(!requiredChk()) return;
+                    /** 회원 가입 호출 */
+                    $.ajax({ //jquery ajax
+                        type:"post", //http method
+                        url:"/api/user/authority/organization/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(params),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            /** 사업 참여 권한 신청 성공 */
+                            location.reload();
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('권한 해제 신청하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+            }
+
+
+
+            /* 3. 미디어강사 ---------- */
+            var instr = [[ ${instrAuth} ]];
+            if(instr&& instr!=null){
+
+                let profileImg = new Image();
+                profileImg.src = "/api/common/upload/download?attachFilePath="+instr.pictureFilePath;
+                profileImg.setAttribute('alt', '프로필 이미지');
+                $(".profile_img").css({"background": "none", "display": "flex", "justify-content": "center", "align-items": "center"}).append(profileImg);
+
+                let signImg = new Image();
+                signImg.src = "/api/common/upload/download?attachFilePath="+instr.signFilePath;
+                signImg.setAttribute('alt', '서명 이미지');
+                $(".stamp_img").css({"background": "none", "display": "flex", "justify-content": "center", "align-items": "center"}).append(signImg);
+
+                $("#addRecord").hide();
+                $("#addCertificate").hide();
+                $(".table_cont_del").hide();
+
+                setTimeout(function(){
+                    $("#bank option[value="+instr.bank+"]").attr("selected", true);
+                    $("#bank").attr("disabled",true);
+                    let region = JSON.parse(instr.region);
+                    $(".regionList").eq(0).val(region[0]).attr("disabled",true);
+                    $(".regionList").eq(1).val(region[1]).attr("disabled",true);
+                },250);
+
+                $("#find-address-lecturer").hide();
+                media_instructor.checked = true;
+                school_admin_chk.style.display = 'none';
+                media_instructor_chk.style.display = 'block';
+
+                $('.content_join input').add('.content_join input .content_join').add('.content_join textarea').each( function() {
+                    $( this ).attr("disabled", true); //설정
+                });
+                let certificate = JSON.parse(instr.certificate?instr.certificate:'[]');
+                let antecedents = JSON.parse(instr.antecedents?instr.antecedents:'[]');
+
+                certificate.forEach(function (item,index){
+                    if(index>0){
+                        $("#addCertificate").trigger("click");
+                    }
+                })
+                antecedents.forEach(function (item,index){
+                    if(index>0){
+                        $("#addRecord").trigger("click");
+                    }
+                })
+            }
+            if(instr){
+                let region = JSON.parse(instr.region?instr.region:'[]');
+                let certificate = JSON.parse(instr.certificate?instr.certificate:'[]');
+                let antecedents = JSON.parse(instr.antecedents?instr.antecedents:'[]');
+                let regSelect =$(".regionList");
+                let cDate=$('.certificateDate');
+                let cNo=$('.certificateNo');
+                let cName=$('.certificateName');
+                let orgC=$('.orgC');
+                let year=$('.year');
+                let orgR=$('.orgR');
+                let comments=$('.comments');
+
+                certificate.forEach(function (item,index){
+                    let cYear = item.date.substring(0, 4);
+                    let cMonth = item.date.substring(4, 6);
+                    let cDay = item.date.substring(6, 8);
+                    let cDateSet = cYear + '-' + cMonth + '-' + cDay;
+                    $(cDate[index]).val(cDateSet)
+                    $(cName[index]).val(item.certificateName)
+                    $(cNo[index]).val(item.certificateNo)
+                    $(orgC[index]).val(item.organization)
+                })
+                antecedents.forEach(function (item,index){
+                    $(year[index]).val(item.year)
+                    $(orgR[index]).val(item.organization)
+                    $(comments[index]).val(item.comments)
+                })
+                region.forEach(function(item, index) {
+                    $(regSelect[index]).val(item)
+                });
+
+                $("#zipCode").val(instr.userZipCode);
+                $("#address1").val(instr.userAddress1);
+                $("#address2").val(instr.userAddress2);
+
+                $('.table_cont_del').each((index, item)=>{
+                    $(item).remove();
+                })
+            }
+            if(instr && instr.bizAuthorityApprovalState=='2'){
+                setTimeout(function (){
+                    $('input').each( function() {
+                        $( this ).attr("disabled", true); //설정
+                    });
+                    $('select').each( function() {
+                        $( this ).attr("disabled", true); //설정
+                    });
+                },100)
+            }
+
+            function pictureFileUpload() {
+                let fileTarget = document.querySelector('#pictureFileUpload > input.bl_upload_file.js_file');
+                let fileName = fileTarget.files[0].name;
+                let uploadName = document.querySelector('#pictureFileUpload > input.common_input.bl_upload_path.js_path');
+                uploadName.value = fileName;
+            }
+
+            function signFileUpload() {
+                let fileTarget = document.querySelector('#signFileUpload > input.bl_upload_file.js_file');
+                let fileName = fileTarget.files[0].name;
+                let uploadName = document.querySelector('#signFileUpload > input.common_input.bl_upload_path.js_path');
+                uploadName.value = fileName;
+            }
+
+            const removeList = (delBtn) => {
+                let table = delBtn.parentElement.parentElement.parentElement.parentElement;
+                let btnList = table.querySelectorAll('.btn_del');
+                // 테이블 맨 첫번째 리스트 삭제할 때 다음 리스트 th 클레스 추가
+                let firstList = table.querySelector('.table_row:first-child');
+                if (delBtn == firstList.querySelector('.btn_del')) {
+                    let nextList = delBtn.parentElement.parentElement.parentElement.nextElementSibling;
+                    if (nextList != null) {
+                        let thList = nextList.querySelectorAll('.table_cont > div:first-child');
+                        thList.forEach((th) => {
+                            th.classList.remove('hp_md_show');
+                        });
+                    }
+                }
+                if (btnList.length === 1) { // 삭제 버튼 1개일 때(테이블 리스트 1개일 때)
+                    return;
+                }
+                // 클릭한 리스트 삭제
+                delBtn.parentElement.parentElement.parentElement.remove();
+            }
+
+            function addArea() {
+                document.querySelector('#region').innerHTML = document.querySelector('#region').innerHTML +`
+                <div style="float: left; width: 25%;">
+                    <select class="common_select regionList" onchange="selectedArea(this)" data-list="regionList" data-not_null="true" data-alert_name="강의가능 지역"><option value="지역">지역</option><option value="서울">서울</option><option value="세종">세종</option><option value="경남">경남</option><option value="인천">인천</option><option value="대전">대전</option><option value="부산">부산</option><option value="대구">대구</option><option value="울산">울산</option><option value="광주">광주</option><option value="경기">경기</option><option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option><option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option><option value="제주">제주</option><option value="해외">해외</option></select>
+                    <a href="javascript:void(0);" class="btn_type3 btn_del" onclick="removeArea(this);">삭제</a>
+                </div>
+                `
+
+            }
+
+            function selectedArea(region) {
+                region.options[region.selectedIndex].setAttribute('selected', true);
+            }
+
+            /**
+             * 자격중 Row 동적 생성
+             * @returns {*}
+             */
+            function makeScheduleTr(cloneTarget){
+                cloneTarget = cloneTarget ? cloneTarget : $(`
+
+                    <div class="table_row certificate">
+                        <div class="table_cont">
+                            <div class="hp_md_show">취득일자</div>
+                            <div><input type="text" class="el_datePicker common_input certificateDate" data-not_null="true" data-alert_name="자격증 취득일자"></div>
+                        </div>
+                        <div class="table_cont">
+                            <div class="hp_md_show">자격증</div>
+                            <div><input type="text" maxlength="100" onchange="maxCheck(this)" class="common_input certificateName" data-not_null="true" data-alert_name="자격증 이름"></div>
+                        </div>
+                        <div class="table_cont">
+                            <div class="hp_md_show">자격번호</div>
+                            <div><input type="text" maxlength="50" onchange="maxCheck(this)" class="common_input certificateNo" data-not_null="true" data-alert_name="자격증의 자격번호"></div>
+                        </div>
+                        <div class="table_cont">
+                            <div class="hp_md_show">발급기관</div>
+                           <div><input type="text" maxlength="50" onchange="maxCheck(this)" class="common_input organization orgC" data-not_null="true" data-alert_name="자격증 발급기관"></div>
+                        </div>
+                        <div class="table_cont table_cont_del">
+                            <div class="hp_md_show">삭제</div>
+                            <div><a href="javascript:void(0);" class="btn_type3 btn_del" onclick="removeList(this);">삭제</a></div>
+                        </div>
+                    </div>
+                `);
+                cloneTarget.find(".el_datePicker").each(function(idx,el){
+                    CommonUI.datePicker(el);
+                    let getToday=dateFormat(new Date());
+                    $(el).datepicker("option", "maxDate", getToday);
+                })
+                return cloneTarget[0];
+            }
+            function dateFormat(date) {
+                let dateFormat2 = date.getFullYear() +
+                    '-' + ( (date.getMonth()+1) < 9 ? "0" + (date.getMonth()+1) : (date.getMonth()+1) )+
+                    '-' + ( (date.getDate()) < 9 ? "0" + (date.getDate()) : (date.getDate()) );
+                return dateFormat2;
+            }
+
+            function makeRecordTr(cloneTarget){
+                cloneTarget = cloneTarget ? cloneTarget : $(`
+                <div class="table_row antecedents">
+                    <div class="table_cont" style="flex: 1">
+                        <div class="hp_md_show">년도</div>
+                        <div><input type="text" maxlength="50" onchange="maxCheck(this)"  class="common_input year" data-not_null="true" data-alert_name="주요이력의 연도"></div>
+                    </div>
+                    <div class="table_cont" style="flex: 2">
+                        <div class="hp_md_show">기관</div>
+                        <div><input type="text" maxlength="100" onchange="maxCheck(this)"  class="common_input organization orgR" data-not_null="true" data-alert_name="주요이력의 기관"></div>
+                    </div>
+                    <div class="table_cont" style="flex: 3">
+                        <div class="hp_md_show">내용</div>
+                        <div><input type="text" maxlength="500" onchange="maxCheck(this)" class="common_input comments" data-not_null="true" data-alert_name="주요이력의 내용"></div>
+                    </div>
+                    <div class="table_cont table_cont_del">
+                        <div class="hp_md_show">삭제</div>
+                        <div><a href="javascript:void(0);" class="btn_type3 btn_del" onclick="removeList(this);">삭제</a></div>
+                    </div>
+                </div>
+                `);
+                return cloneTarget[0];
+            }
+
+            /**
+             * 수업시간표 Row 생성
+             * @param addBtn
+             */
+            function addRecord(addBtn) {
+                // node 선택
+                let cloneDiv = addBtn ? addBtn.nextElementSibling : $("#addRecordTable");
+
+                // 노드 복사하기 (deep copy)
+                let newDiv = makeRecordTr();
+
+                // input 값 초기화
+                let input = newDiv.querySelectorAll('input');
+                input.forEach(item => {
+                    item.value = '';
+                })
+
+                // select 값 초기화
+                let select = newDiv.querySelectorAll('select');
+                select.forEach(item => {
+                    for (let i = 0; i < item.options.length; i++) {
+                        item.options[i].removeAttribute('selected');
+                    }
+                    if( item.options.length ){
+                        item.options[0].setAttribute('selected', true);
+                    }
+                })
+                if(instr){
+                    input.forEach(item => {
+                        $(item).attr('disabled', true)
+                    })
+                }
+                if( addBtn ){
+                    cloneDiv.append(newDiv);
+                }else{
+                    $("#addRecordTable").append(newDiv);
+                }
+            }
+            function addList(addBtn) {
+                // node 선택
+                let cloneDiv = addBtn ? addBtn.nextElementSibling : $("#addCertificateTable");
+
+                // 노드 복사하기 (deep copy)
+                let newDiv = makeScheduleTr();
+
+                // input 값 초기화
+                let input = newDiv.querySelectorAll('input');
+                input.forEach(item => {
+                    item.value = '';
+                })
+
+                // select 값 초기화
+                let select = newDiv.querySelectorAll('select');
+                select.forEach(item => {
+                    for (let i = 0; i < item.options.length; i++) {
+                        item.options[i].removeAttribute('selected');
+                    }
+                    if( item.options.length ){
+                        item.options[0].setAttribute('selected', true);
+                    }
+                })
+                if( addBtn ){
+                    cloneDiv.append(newDiv);
+                }else{
+                    $("#addCertificateTable").append(newDiv);
+                }
+            }
+
+            function removeArea(region) {
+                //해당 선택 옵션 삭제
+                if(!(document.querySelector('#region').childElementCount === 1)) {
+                    region.parentElement.remove();
+                }
+            }
+
+            function getFormData(){
+                let data ={};
+                data.region = []  //강의 가능 지역
+                data.antecedents = [] //주요이력
+                data.certificate = [] //자격증
+                let temp = {}
+                $(".regionList").each(function (index, item){
+                    data.region.push($(item).val());
+                })
+                $(".antecedents").each(function (index, item){
+                    temp ={}
+                    temp.year = $(item).find(".year").val();
+                    temp.organization = $(item).find(".organization").val();
+                    temp.comments = $(item).find(".comments").val();
+                    data.antecedents.push(temp)
+                })
+                $(".certificate").each(function (index, item){
+                    temp ={}
+                    temp.date = $(item).find(".certificateDate").val();
+                    temp.certificateName = $(item).find(".certificateName").val();
+                    temp.certificateNo = $(item).find(".certificateNo").val();
+                    temp.organization = $(item).find(".organization").val();
+                    data.certificate.push(temp)
+                })
+                data.userZipCode=$("#zipCode").val();
+                data.userAddress1=$("#address1").val();
+                data.userAddress2=$("#address2").val();
+
+                data.userId = params.userId;
+                data.businessAuthorityApprovalState = "1";
+                data.graduationYear=$("#graduationYear").val();
+                data.graduationSchool=$("#graduationSchool").val();
+                data.major=$("#major").val();
+                data.degree=$("#degree").val();
+                data.comments=$("#comments").val();
+                data.bank=$("#bank").val();
+                data.accountNo=$("#accountNo").val();
+                return data;
+            }
+
+            function go2() { /** 사업 권한 신청 */
+                /** 필수 값 체크 */
+                if(nullCheck()){
+                /** 회원 가입 호출 */
+                let data = getFormData();
+                data.bizAuthority = "INSTR";
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/user/authority/individual/create", //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(data),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data) {   //요청 성공시 실행될 메서드
+                        /** 사업 참여 권한 신청 성공 */
+                        var form = new FormData();
+                        form.append("pictureFile", document.querySelector('#pictureFileUpload > input.bl_upload_file.js_file').files[0]);
+                        form.append("signFile", document.querySelector('#signFileUpload > input.bl_upload_file.js_file').files[0]);
+                        $.ajax({
+                            type:"put", //http method
+                            url:"/api/user/authority/individual/upload/" + params.userId, //값을 가져올 경로
+                            processData : false,
+                            contentType : false,
+                            data: form,
+                            success: function(subData) {   //요청 성공시 실행될 메서드
+                                /** 사업 참여 권한 신청 성공 */
+                                alert("미디어강사 권한 신청에 성공했습니다.")
+                                location.reload();
+                            }, error: function(e) {
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert('권한 신청하는 과정에서 오류가 발생하였습니다.');
+                                }
+                            }
+                        })
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage);
+                        }else{
+                            alert('권한 신청하는 과정에서 오류가 발생하였습니다.');
+                        }
+                    }
+                })
+
+                }
+            }
+
+
+            function went2() { /** 사업 권한 신청 */
+                if(confirm("정말로 미디어 강사 권한을 해제 하시겠습니까?") == true) {
+                    /** 필수 값 체크 */
+                    let data =instr;
+                    data.region = JSON.parse(instr.region?instr.region:'[]');
+                    data.certificate = JSON.parse(instr.certificate?instr.certificate:'[]');
+                    data.antecedents = JSON.parse(instr.antecedents?instr.antecedents:'[]');
+                    data.businessAuthorityApprovalState = "3";
+                    data.sequenceNo = 0
+
+                    $.ajax({ //jquery ajax
+                        type:"post", //http method
+                        url:"/api/user/authority/individual/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(data),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data) {   //요청 성공시 실행될 메서드
+                            alert("미디어강사 권한 해제를 신청했습니다.")
+                            location.reload();
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('권한 해제하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+            }
+
+            function addrSearch(type) {
+                var width = 500; //팝업의 너비
+                var height = 600; //팝업의 높이
+                new daum.Postcode({
+                    width: width, //생성자에 크기 값을 명시적으로 지정해야 합니다.
+                    height: height,
+                    oncomplete: function(data) {
+                        var zonecode = data.zonecode; // 우편번호 변수
+                        var addr = ''; // 주소 변수
+                        var addr2 = '';
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                            if (data.buildingName != '') {
+                                addr2 = data.buildingName;
+                            }
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        if (type != 'media') {
+                            document.getElementById('organizationZipCode').value = zonecode;
+                            document.getElementById("organizationAddress1").value = addr;
+                            if (addr2 != '') {
+                                document.getElementById("organizationAddress1").value += ' (' + addr2 + ')';
+                            }
+                            document.getElementById("organizationAddress2").value = '';
+                            if (document.getElementById("organizationAddress2").getAttribute("readonly") != null) {
+                                document.getElementById("organizationAddress2").removeAttribute('readonly');
+                            }
+                            if (document.getElementById("organizationAddress2").getAttribute("disabled") != null) {
+                                document.getElementById("organizationAddress2").removeAttribute('disabled');
+                            }
+                        } else if (type == 'media') {
+                            document.getElementById('zipCode').value = zonecode;
+                            document.getElementById("address1").value = addr;
+                            if (addr2 != '') {
+                                document.getElementById("address1").value += ' (' + addr2 + ')';
+                            }
+                            document.getElementById("address2").value = '';
+                            if (document.getElementById("address2").getAttribute("readonly") != null) {
+                                document.getElementById("address2").removeAttribute('readonly');
+                            }
+                            if (document.getElementById("address2").getAttribute("disabled") != null) {
+                                document.getElementById("address2").removeAttribute('disabled');
+                            }
+                        }
+                    }
+                }).open({
+                    left: (window.screen.width / 2) - (width / 2),
+                    top: (window.screen.height / 2) - (height / 2)
+                });
+            }
+
+            function generalFileUploadImage(el){
+                el = el instanceof jQuery ? el[0] : el;
+                let options = {
+                    target : el.dataset.target,
+                    wrap : undefined
+                }
+                let previewImage;
+                if( document.querySelector(options.target).tagName != "IMG" ){
+                    options.wrap = document.querySelector(options.target);
+                    previewImage = new Image();
+                }else{
+                    previewImage = document.querySelector(options.target)
+                }
+
+                el.addEventListener("change", function(e){
+                    if (e.target.files && e.target.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                            previewImage.onload = function(){
+                                if( options.wrap ) {
+                                    let ratio = previewImage.width/previewImage.height > 1 ? "가로" : "세로";
+                                    $(options.wrap).css({
+                                        "background" : "none",
+                                        "display": "flex",
+                                        "justify-content": "center",
+                                    });
+                                    $(previewImage).css({
+                                        "max-width" : "100%",
+                                        "max-height" : "100%",
+                                        "object-fit" : ratio == "가로" ? "contain" : "cover"
+                                    })
+                                    $(options.wrap).html(previewImage);
+                                }
+                            }
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+                    } else {
+                        previewImage.style.display = "none";
+                    }
+                });
+            }
+
+            //파일 미리 보기 컴포넌트
+            let fileImageProfile = new CommonUI.fileUploadImage("#pictureFileProfile");
+            let fileImageStamp = new CommonUI.fileUploadImage("#pictureFileStamp");
+            /* ]]> */
+        </script>
+    </th:block>
+
+
+</div>
+</body>
+</html>

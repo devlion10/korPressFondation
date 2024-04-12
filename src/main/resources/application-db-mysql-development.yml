@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(BlW9vZTTniBGSzaJqBrxdn5GOIk6tZKFDjamb6qY2Cm1mIXWLvsSWOtRlYTlBZd5tJY4XgU/wIZXirR8ahzTKXz2K6X3FQYb)
+    username: ENC(oXEvPigiKZhpjN7/YEelLQ==)
+    password: ENC(ghuKRmV55B/lPx7pQLqntX+ya7KkxLKj)
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      connection-test-query: select 1
+#JPA
+  jpa:
+    hibernate: 
+      ddl-auto: none
+    show-sql: false
+#Jasypt
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

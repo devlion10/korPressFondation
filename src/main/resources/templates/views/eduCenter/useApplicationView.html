@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual7.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">연수원 소개</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">교육장 사용신청</div>
+                    </div>
+
+                    <div class="bl_title_right">
+                        <div class="bl_title_sns">
+                            <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                            <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                            <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                            <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                            <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" th:text="${content[0].title}">수강 문의 드립니다!</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd id="userName" th:text="${content[0].aplyUserNm}"></dd>
+                            <dt>작성일</dt>
+                            <dd id="createDateTime" th:text="${content[0].createDateTime}"></dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        <div th:text="${content[0].contents}"></div>
+
+                        <div class="bl_boardView_file" th:if="${content[0].attachFilePath != null}">
+                            <a class="btn_type5 btn_file" th:href="@{${content[param.selectIdx[0]].attachFilePath}}">
+                                <span th:text="${content[0].attachFilePath.split('/')[content[param.selectIdx[0]].attachFilePath.split('/').length -1]}"></span>
+                                <span>[123MB]</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/edu-center/apply">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(5,3);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

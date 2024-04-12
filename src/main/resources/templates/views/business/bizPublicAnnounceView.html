@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content" th:each="content: ${content}">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">공모사업</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                                <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                                <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                                <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                                <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : TITLE -->
+                    <div class="bl_boardTitle">
+                        <em class="bl_boardTitle_deck hp_brown" th:if="${content.bizPbancCtgr == 0}">미디어교육</em>
+                        <em class="bl_boardTitle_deck hp_main" th:if="${content.bizPbancCtgr == 1}">언론인연수</em>
+                        <em class="bl_boardTitle_deck hp_purple" th:if="${content.bizPbancCtgr == 2}">미디어지원</em>
+                        <h4 class="bl_boardTitle_tit" th:text="${content.bizPbancNm}"></h4>
+                    </div><!-- BOARD : TITLE -->
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">접수기간</th>
+                                <td class="bizPbancRcptEnd" th:text="${content.bizPbancRcptBgng}+' ~ '+${content.bizPbancRcptEnd}">/td>
+                            </tr>
+                            <tr>
+                                <th scope="row">사업기간</th>
+                                <td  th:text="${content.bizPbancSprtBgng}+' ~ '+${content.bizPbancSprtEnd}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">지원내용</th>
+                                <td th:utext="${content.bizPbancCn}"></td>
+                            </tr>
+                            <!--                            타입 0-->
+                            <tr th:if="${(content.bizPbancType == 0) && (content.bizPbancTmpl0 != null)}" >
+                                <th scope="row">지원대상</th>
+                                <td>
+                                   <span th:each="item: ${content.bizPbancTmpl0.bizPbancTmpl0Trgts}">
+                                       <span class="tmpl0_trgts" th:if="${item == 0}">언론인</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 1}">교원(일반)</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 2}">일반(학생)</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 3}">일반(학부모)</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 4}">일반(일반인)</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 5}">기관담당자</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 6}">학교담당자</span>
+                                       <span class="tmpl0_trgts" th:if="${item == 7}">미디어강사</span>
+                                   </span>
+                                </td>
+                            </tr>
+                            <div th:if="${(content.bizPbancType == 0) && (content.bizPbancTmpl0 != null)}" >
+                                <tr th:each="item: ${content.bizPbancTmpl0.bizPbancTmpl0Items}">
+                                    <th scope="row" th:text="${item.bizPbancTmpl0ItemNm}"></th>
+                                    <td th:text="${item.bizPbancTmpl0ItemCn}">타입 0</td>
+                                </tr>
+                            </div>
+
+                            <!--                            타입 1-->
+                            <tr th:if="${(content.bizPbancType == 1) && (content.bizPbancTmpl1 != null)}">
+                                <th scope="row">지원대상</th>
+                                <td>
+                                    <span th:each="item: ${content.bizPbancTmpl1.bizPbancTmpl1Trgts}">
+                                       <span class="tmpl1_trgts" th:if="${item == 0}">유아</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 1}">초등학생</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 2}">중학생</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 3}">고등학생</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 4}">성인</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 5}">학부모</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 6}">노년층</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 7}">정보취약계층(장애인, 다문화 등)</span>
+                                       <span class="tmpl1_trgts" th:if="${item == 8}">북한이탈주민</span>
+                                   </span>
+                                </td>
+                            </tr>
+                            <!--                            타입 2-->
+                            <tr th:if="${(content.bizPbancType == 2) && (content.bizPbancTmpl2 != null)}">
+                                <th scope="row">운영구분</th>
+                                <td>
+                                    <div>
+                                        <span>1학기 사용여부 - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl2Smst1UseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">1학기 최대시간 - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl2Smst1MaxHr}"></span></span>
+                                    </div>
+                                    <div>
+                                        <span>2학기 사용여부  - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl2Smst2UseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">2학기 최대시간  - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl2Smst2MaxHr}"></span></span>
+                                    </div>
+                                    <div>
+                                        <span>연간 사용여부  - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl21YearUseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">연간 최대시간  - <span th:text="${content.bizPbancTmpl2.bizPbancTmpl21YearMaxHr}"></span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--                            타입 3-->
+                            <tr th:if="${(content.bizPbancType == 3) && (content.bizPbancTmpl3 != null)}">
+                                <th scope="row">운영구분</th>
+                                <td>
+                                    <div>
+                                        <span>자유학기제 사용여부 - <span th:text="${content.bizPbancTmpl3.bizPbancTmpl3FrdmSmstUseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">자유학기제 최대시간 - <span th:text="${content.bizPbancTmpl3.bizPbancTmpl3FrdmSmstMaxHr}"></span></span>
+                                    </div>
+                                    <div>
+                                        <span>자유학년제 사용여부  - <span th:text="${content.bizPbancTmpl3.bizPbancTmpl3FrdmGrdUseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">자유학년제 최대시간  - <span th:text="${content.bizPbancTmpl3.bizPbancTmpl3FrdmGrdMaxHr}"></span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--                            타입 4-->
+                            <tr th:if="${(content.bizPbancType == 4) && (content.bizPbancTmpl4 != null)}">
+                                <th scope="row">운영구분</th>
+                                <td>
+                                    <div>
+                                        <span>자유학기제 사용여부 - <span th:text="${content.bizPbancTmpl4.bizPbancTmpl4FrdmSmstUseYn==1 ? '사용':'미사용'}"></span></span>
+                                        <span class="ps-3">자유학기제 최대시간 - <span th:text="${content.bizPbancTmpl4.bizPbancTmpl4FrdmSmstMaxHr}"></span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">담당자</th>
+                                <td th:text="${content.bizPbancPicTel}"></td>
+                            </tr>
+                            <tr th:if="${#lists.size(content.fileMasters)}">
+                                <th scope="row">첨부파일</th>
+                                <td>
+                                    <div th:each="file : ${content.fileMasters}">
+                                        <a class="btn_type5 btn_file download_ajax" th:href="@{/api/common/upload/download(attachFilePath=${file.filePath})}">
+                                            <span th:text="${file.originalFileName}"></span>
+                                            <span>[<span class="fileSize" th:text="${file.fileSize}"></span>]</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md" >
+                            <th:block th:if="${content.bizPbancType!=5}">
+                                <a class="btn_type1 btn_blue bizPbancStts"  data-control="modal" data-handler="popApply"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 1) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')}"
+                                >신청하기</a>
+
+                                <a class="btn_type1 btn_blue bizPbancStts" th:href="@{/business/pbanc/apply/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 0) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.bizAuth != null) && (#authentication.principal.bizAuth != 'INSTR')}"
+                                >신청하기</a>
+
+                                <!-- 이미 신청한 경우 -->
+                                <a class="btn_type1 btn_lightgray" disabled style="pointer-events: none"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied != null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.bizAuth != null)}"
+                                >신청완료</a>
+
+                                <!-- 접수 기간이 종료된 경우 -->
+                                <a class="btn_type1 btn_blue" disabled
+                                   th:if="${(content.bizPbancStts == 1) && (content.bizPbancRsltNo != null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.bizAuth != null)}"
+                                   th:href="@{/business/pbanc/result/{id}(id=${content.bizPbancNo})}"
+                                >선정결과</a>
+                            </th:block>
+                            <th:block th:if="${content.bizPbancType==5}">
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 1) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')}"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts" th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 0) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.bizAuth != null) }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts" th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 2) && (#authentication.principal != 'anonymousUser') && (((#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')) || (#authentication.principal.roleGroup != 'JOURNALIST'))}"
+                                >신청하기</a>
+
+                                <!-- 이미 신청한 경우 -->
+                                <a class="btn_type1 btn_lightgray" href="/mypage/bizapply"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied != null) && (#authentication.principal != 'anonymousUser')}"
+                                >신청완료</a>
+
+                            </th:block>
+
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/business/pbanc">목록</a>
+                        </div>
+                    </div>
+                    <div class="qr_wrap">
+                        <img th:src="@{/assets/images/bizQR.png}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 신청하기 -->
+        <div class="pop_wrapper ui-modal" id="popApply">
+            <div class="pop_wrap pop_secondary hp_mw500">
+                <div class="pop_head">
+                    <h1 class="tit">참가신청서</h1>
+                </div>
+                <div class="pop_cont">
+                    <p class="mb-3">신청을 원하시는 분은 신청서를 제출하여 주시기 바랍니다.</p>
+
+                    <div class="bl_uploadGrid">
+                        <div class="bl_upload js_upload hp_lg_w462">
+                            <label class="hidden_label" for="filename"> </label>
+                            <input id="filename" type="text" class="common_input bl_upload_path js_path" readonly>
+                            <label for="org_apply" class="btn_type1 btn_md btn_gray bl_upload_btn">파일선택</label>
+                            <input id="org_apply" type="file" name="file" class="bl_upload_file js_file">
+                        </div>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_md btn_blue" id="apply_btn">등록</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="pop_close pop-close">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            let tmpl0 = $(".tmpl0_trgts");
+            let tmpl1 = $(".tmpl1_trgts");
+            if(tmpl0.length>0){
+                for(let i =0; i<tmpl0.length-1; i++){
+                    tmpl0[i].innerText = tmpl0[i].innerText+", ";
+                }
+            }else if(tmpl1.length>0){
+                for(let i =0; i<tmpl1.length-1; i++){
+                    tmpl1[i].innerText = tmpl1[i].innerText+", ";
+                }
+
+            }
+
+            let endDate = $(".bizPbancRcptEnd").text().split('~ ')[1]
+            let now = new Date();
+            now.setUTCHours(now.getUTCHours()+9);
+            let toDay = now.toJSON().split('T')[0];
+            if(toDay>endDate){
+                $(".bizPbancStts").text("모집마감");
+                $(".bizPbancStts").addClass("btn_lightgray");
+                $(".bizPbancStts").removeAttr("href");
+                $(".bizPbancStts").attr("disabled", "true");
+            }
+
+            function fileSizeConvert(){
+                for(let i=0; i<CONT[0].fileMasters.length; i++){
+                    const fileSizeRander = document.querySelectorAll('.fileSize');
+                    fileSizeRander[i].innerText = formatBytes(CONT[0].fileMasters[i].fileSize);
+                }
+            }
+
+            $("#apply_btn").bind("click", function (e){
+                e.preventDefault();
+                let params = getFormData();
+                let files  = $("#org_apply")[0].files.length;
+                if(files==1){
+                    $.ajax({
+                        type: "post", //http method
+                        url: "/api/business/journalist/aply/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(params),
+                        dataType: "json",
+                        success: function(data) {
+                            let form = new FormData();
+                            form.append( "attachFile", $("#org_apply")[0].files[0] );
+                            $.ajax({
+                                type:"put", //http method
+                                url:`/api/business/journalist/aply/upload/${data.sequenceNo}`, //값을 가져올 경로
+                                processData : false,
+                                contentType : false,
+                                data: form,
+                                success: function(data) {   //요청 성공시 실행될 메서드
+                                    alert("신청서가 등록되었습니다.");
+                                    window.location.reload();
+                                }, error: function(e) {
+                                    console.log(e);
+                                    if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                        alert(e.responseJSON.resultMessage);
+                                    }else{
+                                        alert('사업 신청하는 과정에서 오류가 발생하였습니다.');
+                                    }
+                                }
+                            })
+                        },
+                        error: function(data) {console.log(data)}
+                    })
+                }else{
+                    alert("신청서 파일을 등록해 주세요.")
+                }
+            })
+            /* <![CDATA[ */
+            let CONT =  [[ ${content} ]];
+
+            if(CONT[0].bizPbancSlctnMeth==1 && CONT[0].orgAplyCnt >= CONT[0].bizPbancMaxInst){
+                $(".bizPbancStts").attr("href", "");
+                $(".bizPbancStts").text("선착순마감");
+                $(".bizPbancStts").addClass("btn_lightgray");
+                $(".bizPbancStts").removeAttr("href");
+                $(".bizPbancStts").attr("disabled", "true");
+            }
+            function getFormData(){
+                let params={};
+                params.bizAplyFile = "-";
+                params.bizAplyFileSize = 10;
+                params.bizPbancNo = CONT[0].bizPbancNo;
+                params.sequenceNo = 1;
+                params.bizAplyType = "journalist"; // 임시 값
+                params.bizAplyUserID = [[ ${#authentication} ]].principal.userId;
+                return params
+            }
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(2,0,0);
+                fileSizeConvert()
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

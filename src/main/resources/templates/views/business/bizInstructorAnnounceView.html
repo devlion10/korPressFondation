@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content" th:each="content: ${content[0]}">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사모집</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                                <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                                <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                                <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                                <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : TITLE -->
+                    <div class="bl_boardTitle">
+                        <em class="bl_boardTitle_deck hp_brown" th:if="${content.bizInstrPbancStts == 2}">추가모집</em>
+                        <em class="bl_boardTitle_deck hp_main" th:unless="${content.bizInstrPbancStts == 2}"></em>
+                        <h4 class="bl_boardTitle_tit" th:text="${content.bizInstrNm}"></h4>
+                    </div><!-- BOARD : TITLE -->
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">모집기간</th>
+                                <td th:text="${content.bizInstrRcptBgng}+' ~ '+${content.bizInstrRcptEnd}">/td>
+                            </tr>
+                            <tr>
+                                <th scope="row">모집지역</th>
+                                <td th:text="${content.bizOrgAplyRgn}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">최대 지원 가능 기관 수</th>
+                                <td th:text="${content.bizInstrMaxInst}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">모집 공고 내용</th>
+                                <td th:text="${content.bizInstrCn}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">첨부파일</th>
+                                <td>
+                                    <th:block th:if="${content.bizInstrFile!=null}">
+                                        <a class="btn_type5 btn_file download_ajax" id="instrFile" th:href="@{/api/business/instructor/download(attachFilePath=${content.bizInstrFile})}" th:text="${content.bizInstrFileOrigin != null ? content.bizInstrFileOrigin : content.bizInstrFile.split('/')[content.bizInstrFile.split('/').length-1]}"></a>
+                                        <div th:if="${content.bizInstrFileDscr!=''&&content.bizInstrFileDscr!=null}" class="guide_text" th:text="${'※ '+content.bizInstrFileDscr}">파일 설명</div>
+                                    </th:block>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" onclick="window.history.back()">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(2,0,1);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

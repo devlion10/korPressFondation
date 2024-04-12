@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">마이페이지</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <!-- 221005 : SNS 영역 수정 -->
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <!-- 신청중인 과정, 학습중인 과정, 학습종료 과정 -->
+                        <div class="page_title">신청중인 과정</div>
+                    </div>
+
+                    <div class="bl_title_right">
+                        <div class="bl_title_sns">
+                            <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                            <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                            <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                            <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                            <div class="btn_sns btn_star" th:onclick="snsShare('copy')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject">수강 문의 드립니다!</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd>홍길동</dd>
+                            <dt>작성일</dt>
+                            <dd>2022.08.18</dd>
+                            <dt class="hp_show">조회수</dt><!-- 221005 : 모바일 보완 -->
+                            <dd>12</dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        수강관련 문의내용 구구절절
+                        <br>
+                        수강문의 드립니다.
+                        <br>
+                        답변 부탁드립니다.
+
+                        <div class="bl_boardView_file">
+                            <a class="btn_type5 btn_file" href="">한국언론진흥재단 뉴스리터러시 SBS 캠페인스팟_30sec.mp4 [29.15 MB]</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION : PAGER -->
+                <div class="bl_navPager">
+                    <dl class="bl_navPager_div bl_navPager_div__empty">
+                        <dt>
+                            이전글
+                        </dt>
+                        <dd>
+                            이전글이 없습니다.
+                        </dd>
+                    </dl>
+
+                    <dl class="bl_navPager_div">
+                        <dt>
+                            다음글
+                        </dt>
+                        <dd>
+                            <a href="/mypage/education-state/view">
+                                <span class="hp_ellipsis">2022학년도 특성화고교졸업자 동일계열 기준학과 조견표 및 제출양식 2022학년도 특성화고교졸업자 동일계열 기준학과 조견표 및 제출양식 2022학년도 특성화고교졸업자 동일계열 기준학과 조견표 및 제출양식 2022학년도 특성화고교졸업자 동일계열 기준학과 조견표 및 제출양식</span>
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <!-- 신청중인 과정, 학습중인 과정, 학습종료 과정 -->
+                        <a class="btn_type2" href="/mypage/education-state/apply">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(0,3,0);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li class="is_active">
+                            <a id="tabLink1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink2" href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li>
+                            <a id="tabLink3" href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li>
+                            <a id="tabLink4" href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭1] MAIN -->
+                        <div class="bl_tab_item js_tab_item">
+                            <div class="bl_borderBox">
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="cal"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">학습기간</strong>
+                                            <p class="bl_borderBox__txt">
+                                                <span th:text="${#strings.substring(content[0].operationBeginDateTime, 0 ,10)}">2022.08.06</span> ~
+                                                <span th:text="${#strings.substring(content[0].operationEndDateTime, 0 , 10)}">2022.09.05</span>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">잔여 학습일</strong>
+                                            <p id="leftDate" class="bl_borderBox__txt"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="chkList"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">나의 진도율</strong>
+                                            <div class="bl_progress">
+                                                <progress th:value="${content[0].progressRate}" min="0" max="100" class="el_progress progress_my"></progress>
+                                                <div class="bl_progress_txt">
+                                                    <span th:text="${#numbers.formatInteger(content[0].progressRate,0,'COMMA')}"></span>%
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">권장 진도율</strong>
+                                            <div class="bl_progress">
+                                                <progress th:value="${content[0].educationPlan.curriculumMaster.progressRateOfEnd}" min="0" max="100" class="el_progress progress_recommend"></progress>
+                                                <div class="bl_progress_txt">
+                                                    <span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.progressRateOfEnd,0,'COMMA')}"></span>%
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- GRID : BUTTON -->
+                            <div class="bl_gridBtns hp_mt20">
+                                <div class="bl_gridBtns_md">
+                                    <a id='startStudy' class="btn_type1 btn_red">학습시작</a>
+                                </div>
+                            </div>
+
+                            <!-- COMPONENT : SCROLL -->
+                            <div class="bl_scroll bl_scroll__hor">
+                                <!-- COMPONENT : TABLE -->
+                                <table class="bl_table border_none">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">구분</th>
+                                            <th scope="col">비중</th>
+                                            <th scope="col">수료기준</th>
+                                            <th scope="col">나의점수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>진도</td>
+                                            <td><span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.progressRateOfEnd,0,'COMMA')}"></span>%</td>
+                                            <td><span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.progressScoreOfEnd,0,'COMMA')}"></span>점</td>
+                                            <td><span th:text="${#numbers.formatInteger(content[0].progressRate,0,'COMMA')}"></span>점</td>
+                                        </tr>
+                                        <tr th:if="${content[0].educationPlan.curriculumMaster.isExam}">
+                                            <td>시험</td>
+                                            <td><span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.examRateOfEnd,0,'COMMA')}"></span>%</td>
+                                            <td><span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.examScoreOfEnd,0,'COMMA')}"></span>점</td>
+                                            <td>
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore == null}">미응시</span>
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore != null}">
+                                                    <span th:text="${#numbers.formatInteger(content[0].examScore,0,'COMMA')}"></span>
+                                                    <span>점</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>총점</td>
+                                            <td><span th:text="${content[0].educationPlan.curriculumMaster.progressRateOfEnd + content[0].educationPlan.curriculumMaster.examRateOfEnd}"></span>%</td>
+                                            <td>
+                                                <!-- 시험이 아예 없을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam == false}" th:text="${(content[0].educationPlan.curriculumMaster.progressScoreOfEnd) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100}"></span>
+                                                <!-- 시험이 있지만 응시하지 않았을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore == null}" th:text="${(content[0].educationPlan.curriculumMaster.progressScoreOfEnd) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100}"></span>
+                                                <!-- 시험이 있고 응시도 했을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore != null}" th:text="${((content[0].educationPlan.curriculumMaster.progressScoreOfEnd) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100) + ((content[0].educationPlan.curriculumMaster.examScoreOfEnd) * content[0].educationPlan.curriculumMaster.examRateOfEnd / 100)}"></span>
+                                                <span>점</span>
+
+                                            </td>
+                                            <td th:if="${content[0].educationPlan.curriculumMaster.isExam == false}">
+                                                <!-- 시험이 아예 없을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam == false}" th:text="${(content[0].progressRate) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100}"></span>
+                                                <!-- 시험이 있지만 응시하지 않았을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore == null}" th:text="${(content[0].progressRate) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100}"></span>
+                                                <!-- 시험이 있고 응시도 했을 때 -->
+                                                <span th:if="${content[0].educationPlan.curriculumMaster.isExam && content[0].examScore != null}" th:text="${((content[0].progressRate) * (content[0].educationPlan.curriculumMaster.progressRateOfEnd) / 100) + ((content[0].examScore) * content[0].educationPlan.curriculumMaster.examRateOfEnd / 100)}"></span>
+                                                <span>점</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="hp_mt20">
+                                <ul class="bl_list2__star--sm text-end">
+                                    <li>수료기준 : 진도
+                                        <span th:text="${content[0].educationPlan.curriculumMaster.progressScoreOfEnd}">100</span>
+                                        % 이상, 시험
+                                        <span th:text="${content[0].educationPlan.curriculumMaster.examScoreOfEnd}">0</span>
+                                        점 이상 시 수료가 가능합니다.
+                                    </li>
+                                    <li>총점은 진도와 시험 점수에서 비중을 적용한 값의 합산입니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            let CONT = [[ ${content} ]]
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                makeTabLink(nowId);
+                leftDate();
+            }
+            function makeTabLink(id){
+                document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/e-learning/main/'+id);
+                document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/e-learning/list/'+id);
+                document.getElementById('startStudy').setAttribute('href','/mypage/education-state/e-learning/list/'+id);
+                document.getElementById('tabLink3').setAttribute('href','/mypage/education-state/e-learning/exam/'+id);
+                document.getElementById('tabLink4').setAttribute('href','/mypage/education-state/e-learning/archive/'+id);
+            }
+            function leftDate(){
+                let endDate = new Date(CONT[0].operationEndDateTime.substring(0, 10));
+                let today = new Date();
+                const diffMSec = endDate.getTime() - today.getTime();
+                const diffDate = diffMSec / (24 * 60 * 60 * 1000);
+                document.getElementById('leftDate').innerText = Math.ceil(diffDate) + '일'
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

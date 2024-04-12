@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li class="is_active">
+                            <a id="tabLink1" href="/mypage/education-state/lecture/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink2" href="/mypage/education-state/lecture/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭1] MAIN -->
+                        <div class="bl_tab_item js_tab_item">
+                            <div class="bl_borderBox">
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="cal"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">학습기간</strong>
+                                            <p class="bl_borderBox__txt">
+                                                <span th:text="${#strings.substring(content[0].educationPlan.operationBeginDateTime, 0 ,10)}">2022.08.06</span> ~
+                                                <span th:text="${#strings.substring(content[0].educationPlan.operationEndDateTime, 0 , 10)}">2022.09.05</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- COMPONENT : TABLE -->
+                            <table class="bl_table border_none hp_mt30">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">결과보고</th>
+                                        <th scope="col">제출여부</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span th:if="${!(content[0].educationPlan.curriculumMaster.isResult)}">해당없음</span>
+                                            <span th:if="${(content[0].educationPlan.curriculumMaster.isResult) && (content[0].assignmentPath == null)}">미제출</span>
+                                            <span th:if="${content[0].assignmentPath != null}" th:text="${content[0].assignmentPath}">결과보고서_홍길동.hwp</span>
+                                        </td>
+                                        <td>
+                                            <span th:if="${!(content[0].educationPlan.curriculumMaster.isResult)}">-</span>
+                                            <div class="btn_type1 btn_sm btn_blue" th:if="${(content[0].educationPlan.curriculumMaster.isResult) && (content[0].assignmentPath == null)}" th:onclick="fileSubmit( [[${content[0].applicationNo}]] )">제출하기</div>
+                                            <span th:if="${content[0].assignmentPath != null}">
+                                                <span>제출완료</span>(<span th:text="${#strings.substring(content[0].assigmentFileSubmitDateTime,0 ,10)}"></span>)
+                                                <div class="btn_type1 btn_sm btn_blue" style="margin-left:10px" th:onclick="fileSubmit( [[${content[0].applicationNo}]] )">수정하기</div>
+                                            </span>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <div style="margin-top: 30px" id="fileUploadArea">
+                                <div id="div_file" class="bl_upload js_upload hp_md_w100p" style="width: 100%">
+                                    <input th:if="${content[0].assignmentPath == null}" type="text" class="common_input bl_upload_path js_path" readonly="">
+                                    <input th:unless="${content[0].assignmentPath == null}" th:value="${content[0].assignmentPath}" type="text" class="common_input bl_upload_path js_path" readonly="">
+                                    <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                    <input id="map_file" type="file" name="file" class="bl_upload_file js_file">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/lecture/main/'+nowId);
+                document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/lecture/archive/'+nowId);
+            }
+
+            function fileSubmit(id){
+                if($("#map_file")[0].files.length>0){
+                    var form = new FormData();
+                    form.append( "attachFile", document.querySelector('#map_file').files[0] );
+                    $.ajax({
+                        type:"put", //http method
+                        url: `/api/mypage/education-state/assignment/submit/${id}`,
+                        processData : false,
+                        contentType : false,
+                        data: form,
+                        success: function(subData) {   //요청 성공시 실행될 메서드
+                            alert('제출을 완료했습니다.');
+                            parent.window.closePop();
+                        }, error: function(e) {
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('매체사를 등록하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    });
+                } else {
+                    alert("하단에서 제출할 파일을 변경 후 재시도 하세요.")
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

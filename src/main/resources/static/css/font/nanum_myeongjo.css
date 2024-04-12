@@ -1,0 +1,23 @@
+/* Regular */
+@font-face {
+    font-family: NanumMyeongjo;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../assets/fonts/Nanum_Myeongjo/NanumMyeongjo-Regular.ttf) format('truetype');
+}
+
+/* Bold */
+@font-face {
+    font-family: NanumMyeongjo;
+    font-style: normal;
+    font-weight: 700;
+    src: url(../../assets/fonts/Nanum_Myeongjo/NanumMyeongjo-Bold.ttf) format('truetype');
+}
+
+/* Extra Bold */
+@font-face {
+    font-family: NanumMyeongjo;
+    font-style: normal;
+    font-weight: 800;
+    src: url(../../assets/fonts/Roboto/NanumMyeongjo-ExtraBold.ttf) format('truetype');
+}

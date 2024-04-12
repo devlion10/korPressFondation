@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">마이페이지</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">학습중인 과정</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_ctg">카테고리</div>
+                        <div class="bl_board_type">유형</div>
+                        <div class="bl_board_subject">과정명</div>
+                        <div class="bl_board_dateRange">학습기간</div>
+                        <div class="bl_board_attend">진도율</div>
+                        <div class="bl_board_exam">시험</div>
+                        <div class="bl_board_lecture">강의실</div>
+                    </div>
+
+                    <div class="bl_board_body">
+                        <div class="bl_board_unit" th:each="item, stat:${content}">
+                            <th:block th:switch="${item.educationPlan.curriculumMaster.categoryCode}">
+                                <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                    <div class="bl_board_ctg" th:each="categoryCode : ${commonCode.subCode}"
+                                          th:if="${categoryCode.code == item.educationPlan.curriculumMaster.categoryCode}"
+                                          th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></div>
+                                </th:block>
+                            </th:block>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '1'}">화상교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '2'}">집합교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">이러닝교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '4'}">화상교육 + 집합교육</div>
+                            <a th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}" style="overflow: auto; white-space: pre-wrap;" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</span>
+                            </a>
+                            <a th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}" th:href="@{/education/application/lecture/view/{id}(id=${item.educationPlanCode})}" style="overflow: auto; white-space: pre-wrap;" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</span>
+                            </a>
+                            <div class="bl_board_dateRange hp_md_ord51">
+                                <span class="bl_board_label hp_md_show">학습기간</span>
+                                <span>
+                                    <span th:text="${#strings.substring(item.operationBeginDateTime, 0 , 10)}">2022-09-13</span> ~
+                                    <span th:text="${#strings.substring(item.operationEndDateTime, 0 , 10)}">2022-09-30</span>
+                                </span>
+                            </div>
+                            <div class="bl_board_attend hp_md_ord52 bl_board_md_label">
+                                <span class="bl_board_label hp_md_show">진도율</span>
+                                <span th:if="${(item.progressRate == null) && (item.educationPlan.curriculumMaster.educationType != '2')}">-</span>
+                                <span th:if="${(item.progressRate != null) && (item.educationPlan.curriculumMaster.educationType != '2')}">
+                                    <span th:text="${#numbers.formatInteger(item.progressRate,0,'COMMA')}"></span>
+                                    <span>%</span>
+                                </span>
+                                <span th:if="${item.educationPlan.curriculumMaster.educationType == '2'}">
+                                    <a>
+                                        <span th:text="${#lists.size(item.curriculumApplicationLectureList)}">1</span>/
+                                        <span th:text="${#lists.size(item.educationPlan.lectureMasterList)}">4</span>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="bl_board_exam hp_md_ord53 bl_board_md_label">
+                                <span class="bl_board_label hp_md_show">시험</span>
+                                <span th:if="${item.educationPlan.curriculumMaster.isExam == false}">-</span>
+                                <span th:if="${item.educationPlan.curriculumMaster.isExam && item.examScore == null}">미응시</span>
+                                <span th:if="${item.educationPlan.curriculumMaster.isExam && item.examScore != null}">
+                                    <span th:text="${item.examScore}"></span>
+                                    <span>점</span>
+                                </span>
+                            </div>
+                            <div class="bl_board_lecture hp_md_ord54 bl_board_alignEnd">
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')">강의실</a>
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '1' || item.setEducationType == '1'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-lecture/main','forPopLecture')">강의실</a>
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '2' || item.setEducationType == '2'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/lecture/main','forPopLecture')">강의실</a>
+                            </div>
+                        </div>
+                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                            <div class="bl_card_empty">등록된 강의가 없습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP : 강의실 -->
+    <div class="iframe_wrap">
+        <iframe title="강의실" id="forPopLecture" src="about:blank" style="width:100%;height:813px;"></iframe>
+    </div>
+    
+    <!-- POPUP : 진도율 -->
+    <div class="pop_wrapper ui-modal" id="popAttend">
+        <div class="pop_wrap pop_secondary hp_mw500">
+            <div class="pop_cont">
+                <!-- COMPONENT : TABLE -->
+                <table class="bl_table">
+                    <caption>목록</caption>
+                    <colgroup>
+                        <col >
+                        <col style="width:30%" >
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="row">교육기간</th>
+                            <th scope="row">출석</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2022.08.01 ~ 2022.08.31</td>
+                            <td>
+                                <a class="btn_type1 btn_sm btn_blue" href="#none">출석</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2022.08.01 ~ 2022.08.31</td>
+                            <td>
+                                <a class="btn_type1 btn_sm btn_lightgray" href="#none">출석</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(0,3,1);
+                pagination([[ ${pageable} ]], false);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

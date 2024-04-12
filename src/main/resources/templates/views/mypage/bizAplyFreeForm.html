@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">사업 신청서</div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <thead></thead>
+                            <tbody id="applyDefaultInfo">
+                            <tr>
+                                <th scope="row">
+                                    사업명
+                                </th>
+                                <td colspan="3" th:text="${content[0].bizPbancMaster.bizPbancNm}">
+                                    미디어교육 평생교실new
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizAplyUserNm">신청자명</label>
+                                </th>
+                                <td>
+                                    <input id="bizAplyUserNm" type="text" class="common_input" th:value="${content[0].bizAplyUserNm}" disabled>
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required" th:if="${content[0].lmsUser.organizationInfo != null}">*</span>
+                                    <label for="orgName">소속기관</label>
+                                </th>
+                                <td>
+                                    <input th:if="${content[0].lmsUser.organizationInfo != null}" id="orgName" type="text" class="common_input" th:value="${content[0].orgName}" disabled>
+                                    <input th:if="${content[0].lmsUser.organizationInfo == null}" id="orgName" type="text" class="common_input" th:value="${content[0].orgName}" placeholder="소속">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required" th:if="${content[0].lmsUser.organizationInfo != null}">*</span>
+                                    <label for="bizAplyUserDptm">부서</label>
+                                </th>
+                                <td>
+                                    <input id="bizAplyUserDptm" type="text" class="common_input" th:value="${content[0].bizAplyUserDptm}" placeholder="부서">
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required" th:if="${content[0].lmsUser.organizationInfo != null}">*</span>
+                                    <label for="bizAplyUserJbgd">직위</label>
+                                </th>
+                                <td>
+                                    <input id="bizAplyUserJbgd" type="text" class="common_input" th:value="${content[0].bizAplyUserJbgd}"  placeholder="직위" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizAplyUserTelno">전화번호</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="common_input" id="bizAplyUserTelno" th:value="${content[0].bizAplyUserTelno}" data-not_null="true" data-alert_name="전화번호" data-reg_type="number" >
+                                </td>
+                                <th scope="row">
+                                    <span class="el_required">*</span>
+                                    <label for="bizAplyUserEml">이메일</label>
+                                </th>
+                                <td>
+                                    <input id="bizAplyUserEml" type="text" class="common_input" data-not_null="true" data-alert_name="이메일" data-reg_type="email"  placeholder="test@test.com" th:value="${content[0].bizAplyUserEml}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table name="tmpl5">
+                            <caption>신청서 작성</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr name='tmpl5' th:each="item, stat :${content[0].bizAplyDtls}" th:class="${item.bizPbancTmpl5!=null && item.bizPbancTmpl5.bizPbancTmpl5Notnull=='Y'?'tmpl5_required':''}"
+                                th:attr="data-type=${item.bizPbancTmpl5.bizPbancTmpl5Type}">
+                                <th:block th:if="${item.bizPbancTmpl5!=null}">
+                                    <th scope="row">
+                                        <span th:if="${item.bizPbancTmpl5.bizPbancTmpl5Notnull == 'Y'}" class="el_required">*</span>
+                                        <label th:for="${'tmpl5_'+stat.index}" th:text="${item.bizPbancTmpl5.bizPbancTmpl5Name}">항목이름</label>
+                                        <input th:value="${item.bizPbancTmpl5.bizPbancTmpl5No}" class="" type="hidden">
+                                    </th>
+                                    <td colspan="3">
+                                        <!--단답형-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='1'}">
+                                            <input th:id="${'tmpl5_'+stat.index}" class="common_input form_input_lg tmpl5_required" th:value="${item.bizAplyDtlCont}" type="text">
+                                        </th:block>
+                                        <!--서술형-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='2'}">
+                                            <textarea cols="30" rows="10" class="common_input tmpl5_required" th:id="${'tmpl5_'+stat.index}" th:text="${item.bizAplyDtlCont}"></textarea>
+                                        </th:block>
+                                        <!--단일선택-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='3'}">
+                                            <select  class="common_select tmpl5_required"  th:id="${'tmpl5_'+stat.index}" th:attr="data-slct=${item.bizPbancTmpl5.bizPbancTmpl5TypeSlct}" th:value="${item.bizAplyDtlCont}">
+                                            </select>
+                                        </th:block>
+                                        <!--다중선택(체크박스)-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='6'}">
+                                            <div class="checkbox-group" th:attr="data-slct=${item.bizPbancTmpl5.bizPbancTmpl5TypeSlct}" th:value="${item.bizAplyDtlCont}">
+                                            </div>
+                                        </th:block>
+                                        <!--날짜-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='4'}">
+                                            <input type="text" th:id="${'tmpl5_'+stat.index}" class="el_datePicker common_input tmpl5_required" th:value="${item.bizAplyDtlCont}">
+                                        </th:block>
+                                        <!--파일-->
+                                        <th:block th:if="${item.bizPbancTmpl5.bizPbancTmpl5Type=='5'}">
+                                            <div class="d-flex">
+                                                <div class="bl_uploadGrid">
+                                                    <div class="bl_upload js_upload hp_lg_w462">
+                                                        <label class="hidden_label" th:for="${'tmpl5_name_'+stat.index}"> </label>
+                                                        <label class="hidden_label" th:for="${'tmpl5_'+stat.index}"> </label>
+                                                        <input th:id="${'tmpl5_name_'+stat.index}" type="text" class="common_input bl_upload_path js_path tmpl5_required" th:value="${item.bizAplyDtlCont != null && item.bizAplyDtlCont != '0' ? item.bizAplyDtlCont : null}" readonly>
+                                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일선택</label>
+                                                        <input th:id="${'tmpl5_'+stat.index}" onchange="changeFileSn(this)" type="file" name="file" class="bl_upload_file js_file">
+                                                        <input type="hidden" class="common_input bl_upload_path js_path tmpl5_required" th:value="${item.bizAplyDtlFile!=null ? item.bizAplyDtlFile.fileSn : 0}">
+                                                    </div>
+                                                </div>
+                                                <a th:if="${item.bizAplyDtlFile !=null}" class="btn_type1 btn_md btn_blue" th:href="@{/api/business/journalist/aply/dtl/download(attachFilePath=${item.bizAplyDtlFile.filePath})}">다운로드</a>
+                                            </div>
+                                        </th:block>
+                                        <div th:if="${item.bizPbancTmpl5.bizPbancTmpl5Etc!=null}" th:text="${'※ '+item.bizPbancTmpl5.bizPbancTmpl5Etc}" class="guide_text">※ 작성안내</div>
+                                    </td>
+                                </th:block>
+                                <th:block th:if="${item.bizPbancTmpl5==null}">
+                                    <th scope="row">
+                                        삭제된 항목
+                                    </th>
+                                    <td colspan="3">
+                                        <span th:text="${item.bizAplyDtlCont}"></span>
+                                    </td>
+                                </th:block>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <th:block th:if="${content[0].bizPbancTmpl5!=null}">
+                        <div class="mt-5">추가 작성 항목</div>
+                        <div class="bl_boardWrite bl_boardWrite__gray">
+                            <table name="tmpl5">
+                                <caption>신청서 작성</caption>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <thead></thead>
+                                <tbody id="bizPbancTmpl5">
+                                <tr th:each="item, stat :${content[0].bizPbancTmpl5}" th:class="${item.bizPbancTmpl5Notnull=='Y'?'tmpl5_required':''}" th:attr="data-type=${item.bizPbancTmpl5Type}">
+                                    <th scope="row">
+                                        <span th:if="${item.bizPbancTmpl5Notnull == 'Y'}" class="el_required">*</span>
+                                        <label th:for="${'tmpl5_add_'+stat.index}" th:text="${item.bizPbancTmpl5Name}">항목이름</label>
+                                        <input th:value="${item.bizPbancTmpl5No}" class="" type="hidden">
+                                    </th>
+                                    <td colspan="3">
+                                        <!--단답형-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='1'}">
+                                            <input th:id="${'tmpl5_add_'+stat.index}" class="common_input form_input_lg tmpl5_required" type="text">
+                                        </th:block>
+                                        <!--서술형-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='2'}">
+                                            <textarea cols="30" rows="10" class="common_input tmpl5_required" th:id="${'tmpl5_add_'+stat.index}"></textarea>
+                                        </th:block>
+                                        <!--단일선택-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='3'}">
+                                            <select  class="common_select tmpl5_required" th:id="${'tmpl5_add_'+stat.index}" th:attr="data-slct=${item.bizPbancTmpl5TypeSlct}" >
+                                            </select>
+                                        </th:block>
+                                        <!--다중선택(체크박스)-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='6'}">
+                                            <div class="checkbox-group" th:attr="data-slct=${item.bizPbancTmpl5TypeSlct}" >
+                                            </div>
+                                        </th:block>
+                                        <!--날짜-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='4'}">
+                                            <input type="text" th:id="${'tmpl5_add_'+stat.index}" class="el_datePicker common_input tmpl5_required">
+                                        </th:block>
+                                        <!--파일-->
+                                        <th:block th:if="${item.bizPbancTmpl5Type=='5'}">
+                                            <div class="bl_uploadGrid">
+                                                <div class="bl_upload js_upload hp_lg_w462">
+                                                    <label class="hidden_label" th:for="${'tmpl5_add_name_'+stat.index}"> </label>
+                                                    <label class="hidden_label" th:for="${'tmpl5_add_'+stat.index}"> </label>
+                                                    <input th:id="${'tmpl5_add_name_'+stat.index}" type="text" class="common_input bl_upload_path js_path tmpl5_required" readonly>
+                                                    <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일선택</label>
+                                                    <input th:id="${'tmpl5_add_'+stat.index}" type="file" name="file" class="bl_upload_file js_file">
+                                                    <input th:if="${item.bizAplyDtlFile!=null}" type="hidden" class="common_input bl_upload_path js_path tmpl5_required" value="0">
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                        <div th:if="${item.bizPbancTmpl5Etc!=null}" th:text="${'※ '+item.bizPbancTmpl5Etc}" class="guide_text">※ 작성안내</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+
+                    <div th:if="${content[0].bizAplyStts==7 || content[0].bizAplyStts==9}" class="mt-5">결과보고서 제출
+                            <span class="guide_text">※ 미디어 강사 지원 신청서의 경우 제출하지 않아도 됩니다(정확한 사항은 사업공고 참고).</span>
+                        </div>
+                        <div th:if="${content[0].bizAplyStts==7 || content[0].bizAplyStts==9}" class="bl_boardWrite bl_boardWrite__gray">
+                            <table id="bizAplyFileTable">
+                                <caption>신청서 작성</caption>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <thead></thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        <label>결과보고서</label>
+                                    </th>
+                                    <td colspan="3">
+
+                                        <div class="d-flex gap-2">
+                                            <div class="bl_uploadGrid">
+                                                <div class="bl_upload js_upload hp_lg_w462">
+                                                    <label class="hidden_label" for="filename"> </label>
+                                                    <label class="hidden_label" for="bizAplyFile"> </label>
+                                                    <input id="filename" th:value="${content[0].bizAplyFileOrigin!=null?content[0].bizAplyFileOrigin:''}" type="text" class="common_input bl_upload_path js_path tmpl5_required" readonly>
+                                                    <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일선택</label>
+                                                    <input id="bizAplyFile" type="file" name="file" class="bl_upload_file js_file">
+                                                </div>
+                                            </div>
+                                            <a  class="btn_type1 btn_md btn_blue" th:if="${content[0].bizAplyFile!=null}" th:href="@{/api/common/upload/download(attachFilePath=${content[0].bizAplyFile})}">다운로드</a>
+                                            <div id="submitFileBtn" th:if="${content[0].bizAplyStts==7}" class="btn_type1 btn_md btn_darkblue" onclick="submitFile()">제출하기</div>
+                                        </div>
+                                        <div class="guide_text">※ 결과보고서가 여러 파일인 경우 하나의 zip 파일로 압축해 주세요.</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!-- 저장시 세션 오류 안내용 -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <div id="timeoutGuide" class="guide_text"></div>
+                        </div>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <button id="createBtn" class="btn_type1 btn_blue" onclick="update()" th:if="${content[0].bizAplyStts == 1}">수정하기</button>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/bizapply">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 강사등록 -->
+        <div class="iframe_wrap">
+            <iframe title="강사등록" id="addInstructor" src="about:blank" style="width:100%"></iframe>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+
+                $(".ui-datepicker-calendar").append(`<caption>날짜선택용</caption>`)
+
+                // 저장시 세션 오류 안내용...
+                setTimeout(function (){
+                    alert('일정 시간 페이지 이동이 없으면 자동 로그아웃됩니다. 페이지 최상단 좌측 meca 로고를 우클릭->새창으로 열기 하여 새로운 창에서 로그인 한 후에, 원래 페이지로 돌아와서 임시저장/제출을 진행해 주세요.');
+                    $("#timeoutGuide").text("일정 시간 페이지 이동이 없으면 자동 로그아웃됩니다. 페이지 최상단 좌측 meca 로고를 우클릭->새창으로 열기 하여 새로운 창에서 로그인 한 후에, 원래 페이지로 돌아와서 임시저장/제출을 진행해 주세요.")
+                },1000*60*55)
+
+
+                function changeFileSn(input){
+                    $(input).next().val(0);
+                }
+
+                function submitFile(){
+                    $("#submitFileBtn").attr("disabled", true);
+                    $("#submitFileBtn").addClass("bg-secondary");
+
+                    if($("#bizAplyFile").val() && $("#bizAplyFile").val()!=''){
+                        let formData = new FormData();
+                        let CONT = getContent()
+                        formData.append('attachFile', $("#bizAplyFile")[0].files[0]);
+
+                        $.ajax({
+                            type: "PUT",
+                            contentType: false,               // * 중요 *
+                            processData: false,               // * 중요 *
+                            enctype : 'multipart/form-data',  // * 중요 *
+                            url:`/api/business/journalist/aply/upload/${CONT[0].sequenceNo}`,
+                            data : formData,
+                            success: function (data){
+                                alert('결과보고서 제출에 성공하였습니다.')
+                                window.location.reload();
+                            },
+                            error: function (e){
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert('결과보고서 제출하는 과정에서 오류가 발생하였습니다.');
+                                }
+
+                                setTimeout(function (){
+                                    $("#saveBtn").removeAttr("disabled");
+                                    $("#saveBtn").removeClass("btn_lightgray");
+                                    $("#createBtn").removeAttr("disabled");
+                                    $("#createBtn").removeClass("btn_lightgray");
+                                }, 5000)
+                            }
+                        })
+
+                    }else{
+                        alert('결과보고서로 업로드할 파일을 선택해 주세요!')
+                        setTimeout(function (){
+                            $("#submitFileBtn").removeAttr("disabled");
+                            $("#submitFileBtn").removeClass("bg-secondary");
+                        }, 5000)
+                    }
+                }
+                function update(){
+                    $("#createBtn").attr("disabled", true);
+                    $("#createBtn").addClass("btn_lightgray");
+
+                    if(nullCheck() && checkTmpl5()){
+                        let params = getFormData();
+                        sendApply(params);
+                    }else{
+                        setTimeout(function (){
+                            $("#createBtn").removeAttr("disabled");
+                            $("#createBtn").removeClass("btn_lightgray");
+                        }, 5000)
+                    }
+                }
+                function checkTmpl5(){
+                    let result = true;
+                    $("#bizPbancTmpl5 tr.tmpl5_required").each((index, item)=>{
+                        let type= Number($(item).attr("data-type"));
+                        if(result){
+                            if(type == 6){
+                                if($(item).find("input[type=checkbox]:checked").length==0){
+                                    result=false;
+                                    let text = $(item).find("th label").text();
+                                    if(text&& text!="") alert(`${text} 항목을 1개 이상 선택해 주세요.`);
+                                    else alert(`누락된 항목이 있습니다. * 표시가 된 항목은 필수입니다.`);
+                                }
+                            }else if(type == 5){
+                                if(!$(item).find(".tmpl5_required").val() || $(item).find(".tmpl5_required").val()=='0'){
+                                    result=false;
+                                    let text = $(item).find("th label").text();
+                                    if(text && text!="") alert(`${text} 항목은 필수입니다.`);
+                                    else alert(`누락된 항목이 있습니다. * 표시가 된 항목은 필수입니다.`);
+                                }
+                            }else{
+                                if(!$(item).find(".tmpl5_required").val() || $(item).find(".tmpl5_required").val()==''){
+                                    result=false;
+                                    let text = $(item).find("th label").text();
+                                    if(text && text!="") alert(`${text} 항목은 필수입니다.`);
+                                    else alert(`누락된 항목이 있습니다. * 표시가 된 항목은 필수입니다.`);
+                                }
+                            }
+                        }
+                    })
+                    return result;
+                }
+
+                function sendApply(params){
+                    let formData = new FormData();
+                    formData.append('aply', new Blob([JSON.stringify(params)], {type : "application/json"}));
+
+                    for(let i=0; i<$('input[type=file]').length; i++){
+                        formData.append('file', $('input[type=file]')[i].files[0]);
+                    }
+
+                    $.ajax({
+                        type: "PUT",
+                        contentType: false,               // * 중요 *
+                        processData: false,               // * 중요 *
+                        enctype : 'multipart/form-data',  // * 중요 *
+                        url: "/api/business/organization/aply/5/update",
+                        data : formData,
+                        success: function (data){
+                            alert('사업신청 수정에 성공하였습니다. 마이페이지 사업신청내역에서 확인 가능합니다.')
+                            window.location.reload();
+                        },
+                        error: function (e){
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('사업신청서를 저장하는 과정에서 오류가 발생하였습니다.');
+                            }
+
+                            setTimeout(function (){
+                                $("#saveBtn").removeAttr("disabled");
+                                $("#saveBtn").removeClass("btn_lightgray");
+                                $("#createBtn").removeAttr("disabled");
+                                $("#createBtn").removeClass("btn_lightgray");
+                            }, 5000)
+                        }
+                    })
+                }
+                /* <![CDATA[ */
+                function getDtlData(sequenceNo){
+                    let itemArray = [];
+                    let temp = {}
+                    let type= 0;
+                    $("table[name=tmpl5] tr").each(function (index, item){
+                        let counts = $("table[name=tmpl5] tr").length
+
+                        temp={sequenceNo : sequenceNo};
+                        temp.bizPbancTmpl5No = Number($(item).find("input[type=hidden]").val());
+                        type = $(item).attr("data-type");
+                        if(type == 6){
+                            let str = [];
+                            $(item).find("input[type=checkbox]:checked").each((idx, i)=>{
+                                str.push($(i).attr("value"));
+                            })
+                            temp.bizAplyDtlCont=str.toString();
+                        }else if(type==5){
+                            if (Number($(item).find("td input[type=hidden]").val()) || Number($(item).find("td input[type=hidden]").val()) != 0) {
+                                temp.fileSn = Number($(item).find("td input[type=hidden]").val());
+                                temp.bizAplyDtlCont = $(item).find("td input[type=text]").val();
+                            } else {
+                                if ($(item).find("#tmpl5_name_" + index).val() || $(item).find("#tmpl5_add_name_" + index-counts).val()) {
+                                    temp.bizAplyDtlCont = $(item).find("#tmpl5_name_" + index).val()
+                                    temp.fileSn = 0;
+                                } else {
+                                    temp.bizAplyDtlCont = '0'
+                                }
+                            }
+                        }else if(type == 3){
+                            temp.bizAplyDtlCont = $(item).find("select.tmpl5_required").val();
+                        }else{
+                            temp.bizAplyDtlCont = $(item).find("td .tmpl5_required").val();
+                        }
+                        itemArray.push(temp)
+                    })
+                    return itemArray;
+                }
+
+                function getContent(){
+                    let CONT =  [[ ${content} ]];
+                    return CONT;
+                }
+
+                function getFormData(){
+                    let CONT =  getContent();
+                    let params = {};
+                    params.bizAplyDtl=getDtlData(CONT[0].sequenceNo?CONT[0].sequenceNo:null);
+                    $("#applyDefaultInfo input").each((index, item)=>{
+                        params[$(item).attr("id")] = $(item).val();
+                    })
+                    params.bizAplyType = "free";
+                    params.bizPbancNo = CONT[0].bizPbancNo;
+                    params.bizAplyStts = 1;
+
+                    params.sequenceNo = CONT[0].sequenceNo;
+                    params.orgCd=CONT[0].orgCd?CONT[0].orgCd : null;
+                    params.bizAplyUserID= CONT[0].bizAplyUserID ;
+                    return params;
+                }
+
+
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,1);
+                    let CONT = [[ ${content} ]]
+
+                    // 작성된 항목에 셀렉트 박스 체크박스 렌더링
+                    $("table tr[name=tmpl5] select").each((index, item)=>{
+                        let opt=$(item).attr("data-slct").split("|");
+                        let v = $(item).attr("value");
+                        if(opt && opt.length>0){
+                            for(let i=0 ; i<opt.length;i++){
+                                $(item).append(`<option value="${opt[i]}"  ${opt[i]==v? 'selected' :''}>${opt[i]}</option>`);
+                            }
+                        }else{
+                            $(item).append(`<option value="-">-</option>`);
+                        }
+                    })
+                    $("table tr[name=tmpl5] div.checkbox-group").each((index, item)=>{
+                        let opt=$(item).attr("data-slct").split("|");
+                        let v = $(item).attr("value");
+                        if(opt && opt.length>0){
+                            for(let i=0 ; i<opt.length;i++){
+                                $(item).append(`<div class="chk_box item_chk"><input id="tmpl-checkbox-${index}-${i}" type="checkbox" name="checkbox-group" value="${opt[i]}"
+                                ${v.includes(opt[i])? 'checked' :''}> <label for="tmpl-checkbox-${index}-${i}"><span></span>${opt[i]}</label></div>`);
+
+                            }
+                        }else{
+                            $(item).append(`<span>선택항목이 없습니다.</span>`);
+                        }
+                    })
+
+                    // 미작성 항목에 셀렉트 박스 체크박스 렌더링
+                    $("table #bizPbancTmpl5 select").each((index, item)=>{
+                        let opt=$(item).attr("data-slct").split("|");
+                        if(opt && opt.length>0){
+                            for(let i=0 ; i<opt.length;i++){
+                                $(item).append(`<option value="${opt[i]}">${opt[i]}</option>`);
+                            }
+                        }else{
+                            $(item).append(`<option value="-">-</option>`);
+                        }
+                    })
+                    $("table #bizPbancTmpl5 div.checkbox-group").each((index, item)=>{
+                        let opt=$(item).attr("data-slct").split("|");
+                        if(opt && opt.length>0){
+                            for(let i=0 ; i<opt.length;i++){
+                                $(item).append(`<div class="chk_box item_chk"><input id="tmpl-checkbox-add-${index}-${i}" type="checkbox" name="checkbox-group" value="${opt[i]}" >
+                                <label for="tmpl-checkbox-add-${index}-${i}"><span></span>${opt[i]}</label></div>`);
+                            }
+                        }else{
+                            $(item).append(`<span>선택항목이 없습니다.</span>`);
+                        }
+                    })
+
+                    let date = new Date();
+                    date.setHours(date.getHours()+9);
+                    date = date.toISOString().split("T")[0];
+
+                    if(CONT[0].bizAplyStts != 1 || (CONT[0].bizPbancMaster.bizPbancRcptEnd<date)){
+                        $("table input").attr("disabled", true)
+                        $("table textarea").attr("disabled", true)
+                        $("table select").attr("disabled", true)
+                        $("#createBtn").remove();
+                    }
+                    if(CONT[0].bizAplyStts == 1){
+                        $("#bizAplyFileTable input").attr("disabled", true);
+                        $("#bizAplyFileTable tr").on('click',function (){alert('승인 상태로 변경된 다음에 결과보고서 제출이 가능합니다.')})
+                    }
+                    if(CONT[0].bizAplyStts == 7){
+                        $("#bizAplyFileTable input").removeAttr("disabled");
+                    }
+                }
+
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

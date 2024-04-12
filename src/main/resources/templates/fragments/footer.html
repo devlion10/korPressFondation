@@ -1,0 +1,54 @@
+<!-- FOOTER -->
+<footer th:fragment="footer" class="footer">
+    <div class="footer_topArea">
+        <div class="ly_grid hp_spaceBetween">
+            <ul class="footer_nav">
+                <li>
+                    <a href="/terms/privacy-policy">
+                        <strong>개인정보처리방침</strong>
+                    </a>
+                </li>
+                <li>
+                    <a href="/terms/of-use">이용약관</a>
+                </li>
+            </ul>
+
+            <div class="footer_famsite">
+                <strong>관련사이트 바로가기</strong>
+                <label for="relation_site" style="display:none;">관련사이트 바로가기</label>
+                <select name="relation_site" id="relation_site" onchange="footChange(this.value)">
+                    <option value="">관련사이트 바로가기</option>
+                    <option value="http://www.kpf.or.kr">한국언론진흥재단</option>
+                    <option value="https://enie.forme.or.kr">e-NIE</option>
+                    <option value="https://dadoc.or.kr/">다독다독</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer_bottomArea">
+        <div class="ly_grid hp_spaceBetween">
+            <div class="footer_infos">
+                <address>서울특별시 중구 정동길 21-15 정동빌딩 2층 미디어교육원</address>
+                <p class="footer_breadcrumb">
+                    <span>대표 : 김효재</span>
+                    <span>사업자등록번호 : 104-82-11163</span>
+                </p>
+                <p class="footer_breadcrumb">
+                    <span class="footer_breadcrumb_tel">대표전화번호</span>
+                    <span class="footer_breadcrumb_tel">(언론인연수팀) : 02-2001-7212~7219,7221</span>
+                    <span class="footer_breadcrumb_tel">(미디어교육팀) : 02-2001-7232~7239,7243</span>
+                </p>
+
+                <p class="footer_copyright">Copyright &copy; 2022 KOREA PRESS FOUNDATION. <br>ALL RIGHTS RESERVED</p>
+            </div>
+
+            <div class="footer_logo"><img th:src="@{/assets/images/logo_footer.png}" alt="한국언론진흥재단" ></div>
+        </div>
+    </div>
+    <script>
+        function footChange(val){
+            if(val !== ''){ location.href = val }
+        }
+    </script>
+</footer>

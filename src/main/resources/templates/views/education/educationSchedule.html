@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<link rel="stylesheet" href="../../../static/css/fullcalendar/customCalendar.css">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual3.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">교육신청</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_edu">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="page_title">교육일정</div>
+                </div>
+
+                <div class="cal_header" style="justify-content: flex-end">
+                    <div class="cal_label_box">
+                        <div class="cal_label label--head_office"><span></span>본사</div>
+                        <div class="cal_label label--sejong_daejeon_office"><span></span>세종대전지사</div>
+                        <div class="cal_label label--busan_office"><span></span>부산지사</div>
+                        <div class="cal_label label--gwangju_office"><span></span>광주지사</div>
+                        <div class="cal_label label--daegu_office"><span></span>대구지사</div>
+                    </div>
+                </div>
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/app/js/libs/jquery.mtz.monthpicker.js}"></script>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const CONT = [[ ${content} ]]
+            let EVENT = [];
+
+            CONT.forEach( item => {
+                // 해당 일정의 시작 날짜
+                const startDate = item.operationBeginDateTime.split(" ")[0]; // 22-10-20
+                // 해당 일정의 종료 날짜
+                const endDate = item.operationEndDateTime.split(" ")[0]; // 22-12-20
+
+                let tmpClass = [];
+                tmpClass.push(item.province)
+                switch (item.province){
+                case 'HEAD':
+                    tmpClass.push('label--head_office');
+                    break;
+                case 'SEDA':
+                    tmpClass.push('label--sejong_daejeon_office');
+                    break;
+                case 'BU':
+                    tmpClass.push('label--busan_office');
+                    break;
+                case 'GW':
+                    tmpClass.push('label--gwangju_office');
+                    break;
+                case 'DA':
+                    tmpClass.push('label--daegu_office');
+                    break;
+                case null:
+                    tmpClass.push('label--e_learning');
+                    break;
+                }
+
+                if(item.curriculumMaster.educationType !== '3'){
+                    let _date = new Date(endDate);
+                    let __endYear = _date.getFullYear();
+                    let __endMonth = _date.getMonth()+1;
+                    let __endDay = _date.getDate()+1;
+                    let __endDate = __endYear+'-'+(("00"+__endMonth.toString()).slice(-2))+"-"+(("00"+__endDay.toString()).slice(-2));
+
+                    let tmpEvent = {};
+                    tmpEvent.title = item.curriculumMaster.curriculumName;
+                    tmpEvent.start = startDate;
+                    tmpEvent.end = __endDate;
+                    tmpEvent.classNames = tmpClass;
+                    if(item.curriculumMaster.educationType === '3'){
+                        // 이러닝
+                        tmpEvent.url = '/education/application/e-learning/view/'+item.educationPlanCode;
+                    } else {
+                        // 화상집합교육
+                        tmpEvent.url = '/education/application/lecture/view/'+item.educationPlanCode;
+                    }
+                    EVENT.push(tmpEvent);
+                }
+            })
+
+            const urlParam = new URL(location.href).searchParams;
+            const nowParam = urlParam.get('yearAndMonth');
+            if(nowParam == null){
+                const now = new Date();
+                year = now.getFullYear();
+                month = now.getMonth() + 1;
+            } else {
+                year = nowParam.split('-')[0];
+                month = parseInt(nowParam.split('-')[1]);
+            }
+            if(month > 0 && month < 10){
+                month = "0"+month;
+            }
+            const makeYMD = year + '-' + month + '-01';
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: '',
+                        center: 'customPrevBtn,title,customNextBtn',
+                        right: ''
+                    },
+                    initialDate: makeYMD,
+                    customButtons: {
+                        customPrevBtn: {
+                            text: '<',
+                            click: function() {
+                                const urlParam = new URL(location.href).searchParams;
+                                const nowParam = urlParam.get('yearAndMonth');
+                                if (nowParam == null) {
+                                    const now = new Date();
+                                    year = now.getFullYear();
+                                    month = now.getMonth() + 1;
+                                } else {
+                                    year = nowParam.split('-')[0];
+                                    month = parseInt(nowParam.split('-')[1]);
+                                }
+                                month--;
+                                if (month < 1) {
+                                    year--;
+                                    month = 12
+                                }
+                                if(month > 0 && month < 10){
+                                    month = "0"+month;
+                                }
+                                const makeYM = year + '-' + month;
+                                location.href = window.location.pathname + "?yearAndMonth=" + makeYM;
+                            }
+                        },
+                        customNextBtn: {
+                            text: '>',
+                            click: function() {
+                                const urlParam = new URL(location.href).searchParams;
+                                const nowParam = urlParam.get('yearAndMonth');
+                                if(nowParam == null){
+                                    const now = new Date();
+                                    year = now.getFullYear();
+                                    month = now.getMonth() + 1;
+                                } else {
+                                    year = nowParam.split('-')[0];
+                                    month = parseInt(nowParam.split('-')[1]);
+                                }
+                                month++;
+                                if( month > 12 ){
+                                    year++;
+                                    month = 1
+                                }
+                                if(month > 0 && month < 10){
+                                    month = "0"+month;
+                                }
+                                const makeYM = year+'-'+month;
+                                location.href= window.location.pathname + "?yearAndMonth="+makeYM;                            }
+                        }
+                    },
+                    locale: "ko",
+                    titleFormat: function (date){
+                        const urlParam = new URL(location.href).searchParams;
+                        const nowParam = urlParam.get('yearAndMonth');
+                        if(nowParam == null){
+                            year = date.date.year;
+                            month = date.date.month + 1;
+                        } else {
+                            year = nowParam.split('-')[0];
+                            month = nowParam.split('-')[1];
+                        }
+                        return year + ". " + month;
+                    },
+                    events: EVENT
+                });
+                calendar.render();
+
+                // 지사 정보 tooltip
+                let eventEl = $('.fc-daygrid-event');
+                eventEl.each(function (idx, item) {
+                    if (item.classList.contains('HEAD')) {
+                        item.setAttribute('title', '본사');
+                    } else if (item.classList.contains('SEDA')) {
+                        item.setAttribute('title', '세종대전지사');
+                    } else if (item.classList.contains('BU')) {
+                        item.setAttribute('title', '부산지사');
+                    } else if (item.classList.contains('GW')) {
+                        item.setAttribute('title', '광주지사');
+                    } else if (item.classList.contains('DA')) {
+                        item.setAttribute('title', '대구지사');
+                    }
+                })
+                eventEl.tooltip();
+            });
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(1,0);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

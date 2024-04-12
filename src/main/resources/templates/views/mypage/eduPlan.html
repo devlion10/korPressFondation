@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">수업지도안</div>
+                        </div>
+                    </div>
+
+                    <div class="sch_box">
+                        <label for="classGuideType" class="hidden_label">라벨</label>
+                        <select id="classGuideType" class="common_select2 hp_lg_show">
+                            <!-- 확인 필요 -->
+                            <option value="0">구분</option>
+                            <option value="1">교사 교안</option>
+                            <option value="2">학부모 교안</option>
+                            <option value="3">기타 교안</option>
+                        </select>
+
+                        <label for="containTextType" class="hidden_label">라벨</label>
+                        <select id="containTextType" class="common_select2">
+                            <option value="1">제목+내용</option>
+                            <option value="2">제목</option>
+                            <option value="3">내용</option>
+                        </select>
+
+                        <label for="containText" class="hidden_label">라벨</label>
+                        <input id="containText" class="common_input2 form_input_md" >
+                        <button th:onclick="searchPlan()" type="button" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+
+                    <!-- BOARD : LIST -->
+                    <div class="bl_board">
+                        <div class="bl_board_head">
+                            <div class="bl_board_ctg">구분</div>
+                            <div class="bl_board_subject">제목</div>
+                            <div class="bl_board_date">작성일</div>
+                            <div class="bl_board_state">상태</div>
+                        </div>
+
+                        <div class="bl_board_body">
+                            <div class="bl_board_unit" th:each="item: ${content}">
+                                <div class="bl_board_ctg">
+                                    <span th:if="${item.classGuideType == '1'}">교사 교안</span>
+                                    <span th:if="${item.classGuideType == '2'}">학부모 교안</span>
+                                    <span th:if="${item.classGuideType == '3'}">기타 교안</span>
+                                </div>
+                                <a th:href="@{/mypage/class-guide/view/{id}(id=${item.classGuideCode})}" class="bl_board_subject">
+                                    <span class="hp_ellipsis" th:text="${item.title}"></span>
+                                    <i th:if="${item.guideFileList != null || item.activityFileList != null || item.answerFileList != null || item.nieFileList != null}" class="el_ico"><img th:src="@{/assets/images/icons/file_icon.png}" alt="첨부파일"></i>
+                                </a>
+                                <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime,0,10)}"></div>
+                                <div class="bl_board_state">
+                                    <span class="btn_type4 btn_gray" th:if="${(item.classGuideApplyStatus == '0') && (item.classGuideApprovalStatus == '0')}">임시저장</span>
+                                    <span class="btn_type4" th:if="${(item.classGuideApplyStatus == '1') && (item.classGuideApprovalStatus == '0')}">제출(미승인)</span>
+                                    <span class="btn_type4 btn_green" th:if="${(item.classGuideApplyStatus == '1') && (item.classGuideApprovalStatus == '1')}">승인</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                function searchPlan(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    let gtype =$("#classGuideType").val();
+                    if(name){
+                        searchQuery.containText = name
+                        searchQuery.containTextType = type
+                    }
+                    if(gtype && gtype!="0"){
+                        searchQuery.classGuideType=gtype;
+                    }
+                    searchJson(searchQuery)
+                }
+                /* <![CDATA[ */
+                function onLoadSubmit(){
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], true, '글작성')
+                    navigation(0,5);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

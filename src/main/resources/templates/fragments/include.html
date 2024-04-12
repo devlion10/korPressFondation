@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <th:block th:fragment="include">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <meta content="한국언론진흥재단" name="keywords">
+        <title>한국언론진흥재단 미디어아카데미</title>
+        <link rel="icon" th:href="@{/assets/favicon/favicon-32x32.png}">
+        <!-- CSS -->
+        <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/css/custom/global.css}" rel="stylesheet">
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/css/fullcalendar/main.min.css}" rel="stylesheet">
+        <link th:href="@{/css/fullcalendar/customCalendar.css}" rel="stylesheet">
+
+        <!-- JS -->
+        <script th:src="@{/app/js/libs/underscore-min.js}"></script>
+        <script th:src="@{/app/js/libs/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/app/js/libs/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/app/js/libs/jquery-ui.min.js}"></script>
+        <script th:src="@{/app/js/libs/slick.min.js}"></script>
+        <script th:src="@{/app/js/libs/iscroll.js}"></script>
+        <script th:src="@{/app/js/libs/jsTree.js}"></script>
+        <script th:src="@{/app/js/base.js}"></script>
+        <script th:src="@{/app/js/module-ui.js}"></script>
+        <script th:src="@{/app/js/layout.js}"></script>
+        <script th:src="@{/app/js/file.js}"></script>
+        <script th:src="@{/app/js/pagination.js}"></script>
+        <script th:src="@{/app/js/navigation.js}"></script>
+        <script th:src="@{/app/js/schBox.js}"></script>
+        <script th:src="@{/app/js/preNextCont.js}"></script>
+        <script th:src="@{/app/js/snsShare.js}"></script>
+        <script th:src="@{/app/js/checkbox.js}"></script>
+        <script th:src="@{/app/js/common.js}"></script>
+        <script th:src="@{/app/js/popup.js}"></script>
+        <script th:src="@{/app/js/selectbox.js}"></script>
+        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=cfaff7730b3450d561bfcc5b4a9ffd33"></script>
+        <script th:src="@{/app/js/data.json}"></script>
+        <script th:src="@{/app/js/libs/fullcalendar/main.js}"></script>
+        <script th:src="@{/app/js/libs/fullcalendar/locales-all.min.js}"></script>
+        <script th:src="@{/app/js/download.js}"></script>
+        <script th:src="@{/app/js/search.js}"></script>
+        <script th:src="@{/app/js/idPwCheck.js}"></script>
+        <script th:src="@{/app/js/nullcheck.js?20230407}"></script>
+        <script th:src="@{/app/js/viewCnt.js}"></script>
+        <script th:src="@{/app/js/libs/html2canvas.js}"></script>
+        <script th:src="@{/app/js/libs/jspdf.min.js}"></script>
+        <script th:src="@{/app/js/convertToHtml.js}"></script>
+        <script th:src="@{/app/js/editorWidthController.js}"></script>
+        <script th:src="@{/app/js/session-timer.js}"></script>
+
+        <!-- fontawesome -->
+        <script th:src="@{/app/js/libs/fontawesome-free/all.js}"></script>
+
+        <!-- 주소 -->
+        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=cfaff7730b3450d561bfcc5b4a9ffd33&libraries=services"></script>
+        <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+        <!-- 이미지 맵 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.min.js"></script>
+
+        <script>
+            let checkList = [];
+        </script>
+        <script th:inline="javascript">
+            const globalEmailList = ['naver.com','daum.net','hanmail.net','gmail.com','nate.com','hotmail.com'];
+        </script>
+        <script th:if="${#authentication.principal != 'anonymousUser'}">
+            authTimer();
+        </script>
+    </th:block>
+</html>

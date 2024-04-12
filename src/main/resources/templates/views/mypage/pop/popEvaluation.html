@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <div th:if="${authError == null}">
+        <!-- POPUP : 상호평가 -->
+        <div class="pop_page">
+            <div class="pop_primary">
+                <div class="pop_head">
+                    <h1 class="tit">
+                        상호평가
+                    </h1>
+                </div>
+                <div class="pop_cont hp_h715">
+                    <div class="exam_questions">
+                        <div class="exam_questions__item">
+                            <div class="exam_questions__num">문제 5번</div>
+                            <div class="exam_questions__title">다음 중 주요 방한시장의 이해로 올바르지 않은 것은 무엇인가?</div>
+                            <div class="exam_questions__cont">
+                                <div class="radio_box">
+                                    <input id="q1" type="radio" name="questions">
+                                    <label for="q1">
+                                        <span></span>
+                                        선택항목 1번
+                                    </label>
+                                </div>
+                                <div class="radio_box">
+                                    <input id="q2" type="radio" name="questions">
+                                    <label for="q2">
+                                        <span></span>
+                                        선택항목 2번
+                                    </label>
+                                </div>
+                                <div class="radio_box">
+                                    <input id="q3" type="radio" name="questions">
+                                    <label for="q3">
+                                        <span></span>
+                                        선택항목 3번
+                                    </label>
+                                </div>
+                                <div class="radio_box">
+                                    <input id="q4" type="radio" name="questions">
+                                    <label for="q4">
+                                        <span></span>
+                                        선택항목 4번
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_gridBtns">
+                            <div class="bl_gridBtns_md">
+                                <div class="btn_type2" onclick="examSubmint()">답안제출</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+</div>
+</body>
+</html>

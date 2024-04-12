@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../../assets/images/top_visual6.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">자주하는 질문</div>
+
+                <form action="./top-qna" method="get">
+                    <div class="sch_box">
+                        <label class="hidden_label" for="containTextType">검색 구분</label>
+                        <select id="containTextType" name="containTextType" class="common_select2">
+                            <option value="1">제목+내용</option>
+                            <option value="2">제목</option>
+                            <option value="3">내용</option>
+                        </select>
+                        <label class="hidden_label" for="containText">검색 구분</label>
+                        <input id="containText" name="containText" class="common_input2 form_input_md" >
+                        <button type="submit" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+                </form>
+
+                <div class="accordion" id="faq_list">
+                    <div class="accordion-item" th:each="content: ${content}">
+                        <h2 class="accordion-header" th:id="${'faq_'+content.sequenceNo}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="${'#answer_'+content.sequenceNo}" th:aria-controls="${'answer_'+content.sequenceNo}">
+                                <span class="q_icon"></span>
+                                <span th:text="${content.question}"></span>
+                            </button>
+                        </h2>
+                        <div th:id="${'answer_'+content.sequenceNo}" class="accordion-collapse collapse" th:aria-labelledby="${'faq_'+content.sequenceNo}" data-bs-parent="#faq_list">
+                            <div class="accordion-body">
+                                <span class="answer_icon"></span>
+                                <span th:utext="${content.answer}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false);
+                navigation(4,1);
+                schBox();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

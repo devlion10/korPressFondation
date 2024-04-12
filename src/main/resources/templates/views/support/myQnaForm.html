@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual6.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">1:1 문의</div>
+                    </div>
+                </div>
+
+                <div th:if="${content eq null}">
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite">
+                        <table>
+                            <caption>1:1문의 글내용 작성하기</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">작성자</th>
+                                <td th:text="${#authentication.name}+'('+${#authentication.principal.userId}+')'">홍길동(hong1234)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="el_required">*</span><label for="qnaType">구분</label></th>
+                                <td>
+                                    <select class="common_select hp_lg_w132 hp_md_w100p" id="qnaType" name="qnaType">
+                                        <option th:value="'0'" selected>전체</option>
+                                        <option th:value="'1'" th:text="'공모/자격문의'"></option>
+                                        <option th:value="'2'" th:text="'교육문의'"></option>
+                                        <option th:value="'3'" th:text="'사이트 이용문의'"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="el_required">*</span><label for="reqTitle">제목</label></th>
+                                <td>
+                                    <input type="text" class="common_input hp_w100p" id="reqTitle" name="reqTitle" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="el_required">*</span><label for="reqContents">내용</label></th>
+                                <td>
+                                    <textarea class="common_input hp_w100p" cols="30" rows="10" id="reqContents" name="reqContents"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="file1_f">첨부파일</label></th>
+                                <td>
+                                    <div class="bl_upload js_upload hp_lg_w462 hp_md_w100p" id="reqAttachFilePath">
+                                        <label for="file1" class="hidden_label">파일</label>
+                                        <input type="text" id="file1" class="common_input bl_upload_path js_path" readonly >
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <input type="file" id="file1_f" name="file" class="bl_upload_file js_file" >
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <button class="btn_type1 btn_blue" th:onclick="writeForm()">등록하기</button>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/service-center/my-qna">목록</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:unless="${content eq null}">
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite" th:each="content: ${content}">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">작성자</th>
+                                <td th:text="${#authentication.name}+'('+${content.registUserId}+')'">홍길동(hong1234)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="qnaType">구분</label></th>
+                                <td>
+                                    <select class="common_select hp_lg_w132 hp_md_w100p" id="qnaType" name="qnaType" data-not_null="true" data-alert_name="구분" th:value="${content.qnaType}">>
+                                        <option th:value="'0'" th:selected="${content.qnaType} == 0">전체</option>
+                                        <option th:value="'1'" th:text="'공모/자격문의'" th:selected="${content.qnaType} == 1"></option>
+                                        <option th:value="'2'" th:text="'교육문의'" th:selected="${content.qnaType} == 2"></option>
+                                        <option th:value="'3'" th:text="'사이트 이용문의'" th:selected="${content.qnaType} == 3"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="reqTitle">제목</label></th>
+                                <td>
+                                    <input type="text" class="common_input hp_w100p" id="reqTitle" name="reqTitle" data-not_null="true" data-alert_name="제목" th:value="${content.reqTitle}" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="reqContents">내용</label></th>
+                                <td>
+                                    <textarea class="common_input hp_w100p" cols="30" rows="10" id="reqContents" name="reqContents" data-not_null="true" data-alert_name="문의 내용" th:text="${content.reqContents}"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">첨부파일</th>
+                                <td>
+                                    <div class="bl_upload js_upload hp_lg_w462 hp_md_w100p" id="reqAttachFilePath">
+                                        <label for="file1" class="hidden_label">파일</label>
+                                        <input id="file1" type="text" class="common_input bl_upload_path js_path" readonly th:value="${content.reqAttachFilePath}">
+                                        <label for="file1_1" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <input id="file1_1" type="file" name="file" class="bl_upload_file js_file">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <button class="btn_type1 btn_blue" th:onclick="writeForm()">수정하기</button>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/service-center/my-qna">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(4,2);
+            }
+            /* ]]> */
+        </script>
+
+        <script th:inline="javascript" th:if="${content eq null}">
+            function writeForm() {
+                var qnaType = document.getElementById("qnaType").value;
+                var reqTitle = document.getElementById("reqTitle").value;
+                var reqContents = document.getElementById("reqContents").value;
+
+                var data = {};
+                data.qnaType = qnaType;
+                data.reqTitle = reqTitle;
+                data.reqContents = reqContents;
+                data.sequenceNo=0;
+                if(nullCheck()){
+                    $.ajax({
+                        type: "POST",
+                        headers: {'Content-Type' : 'application/json'},
+                        url: "/api/service-center/my-qna/create",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        success: function(response) {
+                            sequenceNo = response.sequenceNo;
+                            filename = document.querySelector('#reqAttachFilePath > input.bl_upload_path.js_path').value;
+
+                            if (filename != '') {
+                                var form = new FormData();
+                                form.append("attachFile", document.querySelector('#reqAttachFilePath > input.bl_upload_file.js_file').files[0]);
+                                $.ajax({
+                                    type: "PUT",
+                                    url: "/api/service-center/my-qna/upload/" + sequenceNo,
+                                    processData : false,
+                                    contentType : false,
+                                    data: form,
+                                    success: function(response) {
+                                        location.href = '/service-center/my-qna/view/' + sequenceNo;
+                                    },
+                                    error: function(e) {
+                                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                            alert(e.responseJSON.resultMessage);
+                                        }else{
+                                            alert('첨부파일을 업로드하는 과정에서 오류가 발생하였습니다.');
+                                        }
+                                    }
+                                })
+                            } else {
+                                location.href = '/service-center/my-qna/view/' + sequenceNo;
+                            }
+                        },
+                        error: function(e) {
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('문의를 등록하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+            }
+        </script>
+
+        <script th:inline="javascript" th:unless="${content eq null}">
+            /* <![CDATA[ */
+            function writeForm() {
+                var sequenceNo = [[ ${content[0].sequenceNo} ]];
+                var qnaType = document.getElementById("qnaType").value;
+                var reqTitle = document.getElementById("reqTitle").value;
+                var reqContents = document.getElementById("reqContents").value;
+                var qnaState = [[ ${content[0].qnaState} ]];
+                var createDateTime = [[ ${content[0].createDateTime} ]];
+                var registUserId = [[ ${content[0].registUserId} ]];
+                var reqAttachFilePath = [[ ${content[0].reqAttachFilePath} ]];
+
+                var data = {};
+                data.sequenceNo = sequenceNo;
+                data.qnaType = qnaType;
+                data.reqTitle = reqTitle;
+                data.reqContents = reqContents;
+                data.qnaState = qnaState;
+                data.createDateTime = createDateTime;
+                data.registUserId = registUserId;
+
+                if(nullCheck()){
+                    $.ajax({
+                        type: "PUT",
+                        headers: {'Content-Type' : 'application/json'},
+                        url: "/api/service-center/my-qna/update",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        success: function() {
+                            var form = new FormData();
+                            filename = document.querySelector('#reqAttachFilePath > input.bl_upload_path.js_path').value;
+
+                            if (filename != '' && !reqAttachFilePath || (reqAttachFilePath != null && !filename.includes(reqAttachFilePath))) {
+                                form.append("attachFile", document.querySelector('#reqAttachFilePath > input.bl_upload_file.js_file').files[0]);
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: "/api/service-center/my-qna/upload/" + sequenceNo,
+                                    processData: false,
+                                    contentType: false,
+                                    data: form,
+                                    success: function (response) {
+                                        location.href = '/service-center/my-qna/view/' + sequenceNo;
+                                    },
+                                    error: function (e) {
+                                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                            alert(e.responseJSON.resultMessage);
+                                        }else{
+                                            alert('첨부파일을 업로드하는 과정에서 오류가 발생하였습니다.');
+                                        }
+                                    }
+                                })
+                            } else {
+                                location.href = '/service-center/my-qna/view/' + sequenceNo;
+                            }
+
+                        },
+                        error: function(e) {
+                            if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                alert(e.responseJSON.resultMessage);
+                            }else{
+                                alert('문의를 수정하는 과정에서 오류가 발생하였습니다.');
+                            }
+                        }
+                    })
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

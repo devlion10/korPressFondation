@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+
+<div layout:fragment="pop">
+    <!-- POPUP : 사용자 검색 -->
+    <div id="__EduPopup">
+        <div class="video">
+            <iframe id="launcherContentIframe" src=""></iframe>
+        </div>
+        <div class="controller" style="display:none;">
+            <div onclick="prevSection()">이전</div>
+            <div onclick="nextSection()">다음</div>
+            <div onclick="completeSection()">수강완료</div>
+        </div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const MODE_ANNOYMOUS = "MODE_ANNOYMOUS";
+            const MODE_LMSUSER = "MODE_LMSUSER";
+            let CONT_MODE = "";
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+
+                let CONT = null;
+                if( location.href.includes("education/e-learning") ){
+                    CONT = [[ ${content} ]];
+                    CONT_MODE = MODE_ANNOYMOUS;
+                }else if( location.href.includes("/mypage/education-state/e-learning/list") ){
+                    CONT = [[ ${content} ]][0];
+                    CONT_MODE = MODE_LMSUSER;
+                }else{
+                    alert('정상적인 접근방법이 아닙니다.');
+                    window.close();
+                    return;
+                }
+
+                if(CONT){
+                    window.initial(CONT,CONT_MODE);
+                }else{
+                    alert('정보를 불러오지 못했습니다.');
+                    if(opener) opener.close();
+                }
+            }
+
+
+            /**
+             * [2023-02-13] MECA LMS
+             * LMS Luncher Contoller
+             */
+            (function(instance){
+                //런쳐 변수
+                let lmsLuncher = {};
+                //기본 옵션
+                let _defaultOption = {};
+                //현재 오픈된 모드
+                lmsLuncher.nowMode = null;
+                //원본 데이터
+                lmsLuncher.dataSet = null;
+                //콘텐츠 Code
+                lmsLuncher.contentCode = null;
+                //콘텐츠 iFrame Dom
+                lmsLuncher.contentView = null;
+                //콘텐츠 URL
+                lmsLuncher.contentUrl = null
+                //기본 옵션값 정의
+                lmsLuncher.options = Object.assign({},_defaultOption);
+                //현재 어플리케이션(과정) 아이디
+                lmsLuncher.nowApplicationId = undefined;
+                //현재 챕터(장) 코드
+                lmsLuncher.nowChapterCode = undefined;
+                //현재 섹션(절) 코드
+                lmsLuncher.nowSectionCode = undefined;
+                //초기화 여부
+                lmsLuncher.isInit = false;
+                //완료 여부
+                lmsLuncher.isComplete = false;
+                //현재 재생 여부
+                lmsLuncher.isPlay = false;
+                //바인딩 데이터
+                lmsLuncher.data;
+                //콘텐츠 비디오
+                lmsLuncher.video = null;
+                //비디오 길이
+                lmsLuncher.videoDuration = NaN;
+
+                /**
+                 * 섹션 Object를 반환
+                 * @param {String} sectionCode
+                 * @returns
+                 */
+                function _findNowSection(sectionCode){
+                    let result;
+                    return result;
+                }
+
+                function _initialize(){
+                    if(!lmsLuncher.contentView) lmsLuncher.contentView = document.getElementById("launcherContentIframe");
+                }
+
+                /**
+                 * iFrame에 콘텐츠를 세팅한다
+                 * @private
+                 */
+                function _renderContent(){
+                    if( CONT_MODE == MODE_LMSUSER){
+                        lmsLuncher.contentLink = lmsLuncher.dataSet.chapterApplicationSectionList[lmsLuncher.nowIdx].sectionMaster.link;
+                    }else{
+                        lmsLuncher.contentLink = lmsLuncher.dataSet.chapterMaster.sectionMasterList[lmsLuncher.nowIdx].link;
+                    }
+                    lmsLuncher.contentUrl = `/Contents/${lmsLuncher.contentCode}/${lmsLuncher.contentLink}`;
+                    if( lmsLuncher.contentView ) {
+                        lmsLuncher.contentView.onload = function(){
+                            $(lmsLuncher.contentView.contentDocument).ready(function(){
+                                console.warn("콘텐츠 준비가 완료되었습니다.");
+                                lmsLuncher.video = lmsLuncher.contentView.contentDocument.querySelector("video");
+                                if( lmsLuncher.video ){
+                                    console.warn("Video가 있습니다");
+                                    lmsLuncher.video.addEventListener("loadedmetadata", function() {
+                                        console.warn("Video길이를 갱신합니다.", lmsLuncher.video.duration);
+                                        lmsLuncher.videoDuration = lmsLuncher.video.duration;
+                                    });
+                                    lmsLuncher.video.addEventListener("ended", function(){
+                                        console.info("콘텐츠 재생이 끝났습니다. 차시 정보를 업데이트 합니다.");
+                                        if(lmsLuncher.nowIdx === (lmsLuncher.endIdx-1)) _completeContent(100);
+                                    });
+
+                                    lmsLuncher.video.addEventListener("timeupdate", function(e){
+                                        console.info("timeupdate",e , this);
+                                    });
+                                }
+                            });
+                        }
+                        lmsLuncher.contentView.setAttribute('src', lmsLuncher.contentUrl);
+                    }
+                }
+
+                /**
+                 * 현재 index에 맞는 정보를 저장한다.
+                 * @private
+                 */
+                function _setNowIndexDataSet(){
+                    lmsLuncher.contentCode = lmsLuncher.dataSet.contentsCode;
+                    lmsLuncher.endIdx = lmsLuncher.dataSet.chapterApplicationSectionList.length;
+                    lmsLuncher.applicationNo = lmsLuncher.dataSet.applicationNo;
+                    lmsLuncher.chapterCode = lmsLuncher.dataSet.chapterCode;
+                    lmsLuncher.sectionCode = lmsLuncher.dataSet.chapterApplicationSectionList[lmsLuncher.nowIdx].sectionCode;
+                }
+
+                function _completeContent(forceRate){
+                    if([[ ${applicationNo} ]] !== null && CONT_MODE == MODE_LMSUSER ){
+                        if (forceRate != null) {
+                            let params = {}
+                            params.applicationNo = lmsLuncher.applicationNo;
+                            params.chapterCode = lmsLuncher.chapterCode;
+                            params.sectionCode = lmsLuncher.sectionCode;
+                            params.sectionProgressRate = 100;
+
+                            $.ajax({ //jquery ajax
+                                type:"put", //http method
+                                url:"/api/mypage/education-state/chapter/section/complete", //값을 가져올 경로
+                                headers: {'Content-Type': 'application/json'},
+                                data: JSON.stringify(params),
+                                dataType:"json",
+                                success: function(data){
+                                    try{
+                                        lmsLuncher.isComplete = true;
+                                        lmsLuncher.dataSet.chapterApplicationSectionList[lmsLuncher.nowIdx].isComplete = true;
+                                        // 마지막 페이지일떄만 작동
+                                        if(lmsLuncher.nowIdx === (lmsLuncher.endIdx-1)){
+                                            let allCheck = [];
+                                            // 전체를 클리어 했는지를 확인 할 수 있는 배열 만들기
+                                            for(let i=0; i<lmsLuncher.dataSet.chapterApplicationSectionList.length; i++){
+                                                allCheck.push(lmsLuncher.dataSet.chapterApplicationSectionList[i].isComplete);
+                                            }
+                                            if(allCheck.includes(false) && allCheck.length > 0){
+                                                let falseIdx='';
+                                                for(let i=0; i<allCheck.length; i++){
+                                                    if(allCheck[i] === false){
+                                                        falseIdx = falseIdx + (i+1) + ','
+                                                    }
+                                                }
+                                                alert('아직 수료되지 않은 페이지가 있습니다.\n'+falseIdx.substring(0,-1));
+                                            } else {
+                                                alert('해당 차시의 교육을 마쳤습니다.')
+                                            }
+                                        }else if((lmsLuncher.endIdx-1) > lmsLuncher.nowIdx && confirm('다음 절을 수강하시겠습니까?')){
+                                            //들어야할 차시가 더 있을 시에 다음으로
+                                            instance.fn_next_page();
+                                        }
+                                        // 부모창 갱신
+                                        if( opener && opener.pageReload && typeof opener.pageReload == "function" ) opener.pageReload();
+                                    }catch(e){
+                                        console.log(e)
+                                        alert('콘텐츠 저장하는데 오류가 발생했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.');
+                                    }
+                                },
+                                error: function(e){		 //요청 실패시 에러 확인을 위함
+                                    console.log(e)
+                                    alert(`차시 진도율을 저장하는데 오류가 발생했습니다.(${e})`);
+                                }
+                            })
+                        }
+                    } else {
+                        console.log('비로그인 상태입니다.');
+                        if(lmsLuncher.nowIdx === (lmsLuncher.endIdx-1)){
+                            // 마지막 페이지일 경우
+                            alert('해당 차시의 교육을 마쳤습니다.')
+                        } else if((lmsLuncher.endIdx-1) > lmsLuncher.nowIdx){
+                            if(forceRate == undefined && confirm('다음 절을 수강하시겠습니까?')){
+                                //들어야할 차시가 더 있을 시에 다음으로
+                                instance.fn_next_page();
+                            }
+                        }
+                    }
+                }
+
+                /**
+                 * 현재 진도율을 저장
+                 * @param saveTime
+                 * @private
+                 */
+                function _saveMidProgress(saveTime){
+                    if([[ ${applicationNo} ]] !== null && CONT_MODE == MODE_LMSUSER ){
+                        console.warn("[ EXEC:_saveMidProgress() ] _saveMidProgress 갱신합니다.", saveTime);
+                        let time = parseInt(saveTime);
+                        if(
+                            lmsLuncher.videoDuration && typeof lmsLuncher.videoDuration == "number" && lmsLuncher.videoDuration > 0 &&
+                            saveTime && typeof time == "number" && time > 0
+                        ){
+                            let rate = Math.round((time / lmsLuncher.videoDuration) * 100);
+                            if(rate >= 95) rate = 100; // 95이상이면 진도율 100%로 보정(비디오별 Ended 이벤트가 발생하지 않는 이슈가 있어 조정 필요)
+                            else if(0 > rate) rate = 0;
+
+                            //진도율보다 낮으면 무시
+                            if( lmsLuncher.dataSet.chapterApplicationSectionList[lmsLuncher.nowIdx].progressRate > rate ){
+                            }else{
+                                if(rate >= 95){
+                                    _completeContent(100);
+                                } else {
+                                    let params = {};
+                                    params.applicationNo = lmsLuncher.applicationNo;
+                                    params.chapterCode = lmsLuncher.chapterCode;
+                                    params.sectionCode = lmsLuncher.sectionCode;
+                                    params.sectionProgressRate = rate;
+
+                                    $.ajax({ //jquery ajax
+                                        type: "put", //http method
+                                        url: "/api/mypage/education-state/chapter/section/complete", //값을 가져올 경로
+                                        headers: {'Content-Type': 'application/json'},
+                                        data: JSON.stringify(params),
+                                        dataType: "json",
+                                        success: function (data) {
+                                            console.info(`[SECTION 진행률을 저장했습니다]`, rate);
+                                        },
+                                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                                            alert(`차시 진도율을 저장하는데 오류가 발생했습니다.`);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        console.log('비로그인 상태 입니다.')
+                    }
+                }
+                /**
+                 * 진도저장
+                 */
+                instance.fn_save_progress = function(){
+                    console.info('[진도저장]', arguments);
+                }
+
+                /**
+                 * 섹션 중간 저장
+                 * @param {Float} saveTime
+                 */
+                instance.fn_save_mid_progress = function(saveTime){
+                    console.info('[섹션 중간 저장]', arguments);
+                    _saveMidProgress(saveTime);
+                }
+
+                /**
+                 * 현재 페이지가 완료되었는지 확인 여부
+                 */
+                instance.fn_is_completed_page = function(){
+                    console.info('[진도저장]', arguments);
+                }
+
+                /**
+                 * 이전페이지
+                 */
+                instance.fn_prev_page = function(){
+                    console.info('[이전페이지(절)]', arguments);
+                    if(lmsLuncher.nowIdx === 0){
+                        alert('이전 페이지가 없습니다.')
+                    } else {
+                        lmsLuncher.nowIdx--;
+                        _renderContent();
+                    }
+                }
+
+                /**
+                 * 다음페이지
+                 */
+                instance.fn_next_page = function(){
+                    console.info('[다음페이지(절)]', arguments);
+                    if(lmsLuncher.nowIdx === (lmsLuncher.endIdx-1)){
+                        alert('다음 페이지가 없습니다.')
+                    } else {
+                        lmsLuncher.nowIdx++;
+                        _setNowIndexDataSet();
+                        _renderContent();
+                    }
+                }
+
+                /**
+                 * 페이지이동
+                 */
+                instance.fn_move_to_page = function(paragraph){
+                    console.info('[페이지이동(절)]', arguments);
+                };
+
+                /**
+                 * 전체화면 열기
+                 */
+                instance.fn_full_screen = function(){
+                    console.info('[전체화면 ON]', arguments);
+                };
+
+                /**
+                 * 전체화면 닫기
+                 */
+                instance.fn_full_screen_close = function(){
+                    console.info('[전체화면 닫기]', arguments);
+                };
+
+
+                instance.fn_alert = function(msg, callback){
+                    console.info('[전체화면 닫기]', arguments);
+                    if(msg) alert(msg);
+                    callback && typeof callback == "function" && callback();
+                };
+
+                /**
+                 * 영상시작시간 가져오기
+                 * @returns {Number} 영상시작시간
+                 */
+                instance.getStartTime = function(){
+                    console.warn('[ EXEC:getStartTime ] 시작시간을 반환합니다.', lmsLuncher.video);
+                    if( lmsLuncher.video && CONT_MODE == MODE_LMSUSER){
+                        lmsLuncher.video.addEventListener("loadedmetadata", function(){
+                            let videoDuration = lmsLuncher.video.duration;
+                            let _tempRate = lmsLuncher.dataSet.chapterApplicationSectionList[lmsLuncher.nowIdx].progressRate;
+                            let _currentTime = videoDuration * (_tempRate/100);
+                            if ( _currentTime > 10 ){
+                                setTimeout(function(){
+                                    if(confirm('이어보시겠습니까?')) lmsLuncher.video.currentTime = _currentTime;
+                                }, 200);
+
+                            }
+                        });
+                    }
+                    return 0;
+                }
+
+                /**
+                 * 비동기로 video의 duration을 가져온다
+                 * @param videoElement
+                 * @returns {Promise<unknown>}
+                 */
+                async function getAsyncVideoDuration(videoElement){
+                    if( videoElement){
+                        return new Promise(function(resolve, reject){
+                            try{
+                                videoElement.addEventListener("loadedmetadata", function(){
+                                    resolve( videoElement.duration );
+                                });
+                                videoElement.addEventListener("error", function(){
+                                    resolve( 0 );
+                                });
+                            }catch(e){
+                                resolve(0);
+                            }
+                        });
+                    }else{
+                        return 0;
+                    }
+                }
+
+                /**
+                 * 런처 초기화
+                 * @param {Object} options
+                 */
+                instance.initial = function(dataSet,mode, options={}){
+                    try{
+                        lmsLuncher = Object.assign(lmsLuncher.options, options);
+                        lmsLuncher.nowMode = mode;
+                        lmsLuncher.dataSet = dataSet;
+                        lmsLuncher.nowIdx = 0;
+                        if( mode == MODE_LMSUSER){
+                            lmsLuncher.nowIdx = _initializeCalcNowIndex(dataSet.chapterApplicationSectionList);
+                            _setNowIndexDataSet();
+                        }else{
+                            let dataOrm = _.find( dataSet, { chapterCode : [[ ${chapterCode}]]});
+                            lmsLuncher.dataSet = dataOrm;
+                            lmsLuncher.contentCode = dataOrm.contentsCode;
+                            lmsLuncher.endIdx = dataOrm.chapterMaster.sectionMasterList.length;
+                            lmsLuncher.chapterCode = dataOrm.chapterCode;
+                            lmsLuncher.sectionCode = dataOrm.chapterMaster.sectionMasterList[lmsLuncher.nowIdx].sectionCode;
+                        }
+                    }catch(e){
+                        console.log(e)
+                        alert('정보를 불러오는데 오류가 발생했습니다.');
+                        window.close();
+                    }
+                    function _initializeCalcNowIndex(sectionMasterList){
+                        let resultIndex = 0;
+                        sectionMasterList.length && sectionMasterList.forEach(function(sectionMaster){
+                            if( sectionMaster.isComplete ) resultIndex++;
+                        });
+                        if (sectionMasterList.length == resultIndex) {
+                            return resultIndex - 1;
+                        } else {
+                            return resultIndex;
+                        }
+                    }
+                    _initialize();
+                    _renderContent();
+                }
+            })(window);
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

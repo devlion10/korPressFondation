@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <link href="/css/carousel.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <meta content="한국언론진흥재단" name="keywords" >
+    <title>한국언론진흥재단 미디어아카데미</title>
+    <link rel="icon" th:href="@{/assets/favicon/favicon-32x32.png}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div sec:authorize="isAuthenticated()">
+        <div class="container">
+            <div class="carousel-caption text">
+                <h1 style="margin-bottom: 1.25rem; color: cadetblue;">월별 교육 일정</h1>
+                <fieldset>
+                    <div class="bd-example-snippet bd-code-snippet">
+                        <div id="mainDiv"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div sec:authorize="!isAuthenticated()">
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                alert('준비중입니다.');
+                window.history.back();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

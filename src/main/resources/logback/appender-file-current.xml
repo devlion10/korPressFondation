@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included scan="false" scanPeriod="2 seconds">
+
+	<springProfile name="!production">
+		<!-- FILE_CURRENT: 이번프로세스의 로그를 한개의 파일에 기록 (append mode 아님. 로컬이나 개발계에서만 사용필요) -->
+		<appender name="FILE_CURRENT" class="ch.qos.logback.core.FileAppender">
+			<file>${LOG_FILE}.CURRENT.log</file>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+				<charset>${LOG_CHARSET}</charset>
+			</encoder>
+			<append>false</append>
+		</appender>
+
+	</springProfile>
+
+</included>

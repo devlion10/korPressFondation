@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강사지원문의</div>
+                        </div>
+                    </div>
+
+                    <div class="sch_box">
+                        <label for="bizOrgAplyRgn" class="hidden_label">지역</label>
+                        <select id="bizOrgAplyRgn" class="common_select2" data-list="regionList"></select>
+
+                        <label for="containTextType" class="hidden_label">검색구분</label>
+                        <select id="containTextType" class="common_select2">
+                            <option value="1">전체</option>
+                            <option value="2">사업명</option>
+                            <option value="3">기관명</option>
+                        </select>
+
+                        <label for="containText" class="hidden_label">검색어</label>
+                        <input id="containText" class="common_input2 form_input_md" >
+                        <button onclick="searchQna()" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+
+                    <!-- BOARD : LIST -->
+                    <div class="bl_board">
+                        <div class="bl_board_head">
+                            <div class="bl_board_no">번호</div>
+                            <div class="bl_board_region">지역</div>
+                            <div class="bl_board_corp">기관</div>
+                            <div class="bl_board_subject">사업명</div>
+                            <div class="bl_board_question">질문</div>
+                            <div class="bl_board_state bl_board_state_sm">상태</div>
+                        </div>
+
+                        <div class="bl_board_body">
+                            <div class="bl_board_unit" th:each = "item,stat:${content}">
+                                <div class="bl_board_no" th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}">1</div>
+                                <div class="bl_board_region hp_lg_show" th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">
+                                    서울
+                                </div>
+                                <div class="bl_board_corp hp_lg_show" th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">
+                                    케이브레인
+                                </div>
+                                <a th:href="@{/mypage/instructor-state/qna/view/{id}(id=${item.bizInstrQstnNo})}" class="bl_board_subject">
+                                    <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">수업주제 내용이 뿌려집니다</span>
+                                </a>
+                                <div class="bl_board_question hp_md_ord51" th:text="${item.bizInstrQstnCn}">질문영역의 컨텐츠가 확인되지 않아서 임의로 지정합니다. 컨텐츠 확인후 재조정 필요합니다.</div>
+                                <div class="bl_board_state bl_board_state_sm">
+                                    <span class="btn_type4 btn_blue" th:if="${item.bizInstrQstnStts == 2}">답변완료</span>
+                                    <span class="btn_type4" th:if="${item.bizInstrQstnStts == 1}">처리중</span>
+                                    <span class="btn_type4 btn_red" th:if="${item.bizInstrQstnStts == 0}">미확인</span>
+                                </div>
+                            </div>
+                            <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                                <div class="bl_card_empty">등록된 사업이 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                function searchQna(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    let rgn = $("#bizOrgAplyRgn").val();
+                    if(name){
+                        searchQuery.containText = name
+                        if(type){
+                            searchQuery.containTextType = type
+                        }
+                    }
+                    if(rgn && rgn!="지역"){
+                        searchQuery.bizOrgAplyRgn = rgn
+                    }
+                    searchJson(searchQuery)
+
+                }
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], true, '글작성')
+                    navigation(0,2,2);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

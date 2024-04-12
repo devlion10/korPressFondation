@@ -1,0 +1,290 @@
+<!-- HEADER -->
+<script src="../../static/app/js/navigation.js"></script>
+<header th:fragment="header" class="header">
+    <div class="gnb gnb__main">
+        <div class="ly_grid">
+            <h1 class="header_logo">
+                <a href="/"><img th:src="@{/assets/images/logo.png}" alt="한국언론진흥재단"></a>
+            </h1>
+
+            <div class="header_util">
+                <div sec:authorize="!isAuthenticated()">
+                    <a href="/login" class="header_btn">로그인</a>
+                    <a href="/user/join" class="header_btn">회원가입</a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a href="/logout" class="header_btn">로그아웃</a>
+                    <span id="session_time"></span>
+                </div>
+            </div>
+
+            <ul class="gnb_navLg">
+                <li class="gnb_navCate1">
+                    <a href="/user" th:if="${#authentication.principal != 'anonymousUser'}">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="gnb_navMd" th:if="${#authentication.principal != 'anonymousUser'}">
+                        <th:block th:if="${#authentication.principal.bizAuth != null}">
+                            <th:block th:if="${#authentication.principal.bizAuth != 'INSTR'}">
+                                <li>
+                                    <a href="/mypage/business-state">사업참여현황</a>
+                                </li>
+                            </th:block>
+                            <th:block th:unless="${#authentication.principal.bizAuth != 'INSTR'}">
+                                <li>
+                                    <a href="/mypage/instructor-state/lecture">강사참여현황</a>
+                                </li>
+                            </th:block>
+                        </th:block>
+                        <li>
+                            <a href="/mypage/bizapply">사업신청내역</a>
+                        </li>
+                        <li>
+                            <a href="/mypage/education-state">교육/수료현황</a>
+                        </li>
+                        <li th:if="${#authentication.principal.roleGroup != 'JOURNALIST'}">
+                            <a href="/user/auth-manage">권한신청</a>
+                        </li>
+                        <li th:if="${#authentication.principal.tutor == 'Y'}">
+                            <a href="/mypage/class-guide">수업지도안 작성</a>
+                        </li>
+                        <li>
+                            <a href="/user">개인정보관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate2">
+                    <a href="/education/schedule">
+                        <span>교육신청</span>
+                    </a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/education/schedule">교육일정</a>
+                        </li>
+                        <li>
+                            <a href="/education/application/lecture">화상/집합교육</a>
+                        </li>
+                        <li>
+                            <a href="/education/application/e-learning">이러닝교육</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate3">
+                    <a href="/business/pbanc">
+                        <span>공모/자격</span>
+                    </a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/business/pbanc">공모사업</a>
+                        </li>
+                        <li>
+                            <a href="/business/qualification">미디어교육사</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate4">
+                    <a href="/communication/edu-suggestion">
+                        <span>참여/소통</span>
+                    </a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/communication/edu-suggestion">교육주제제안</a>
+                        </li>
+                        <li>
+                            <a href="/communication/review">교육후기방</a>
+                        </li>
+                        <li>
+                            <a href="/communication/archive/class-guide">자료실</a>
+                        </li>
+                        <li>
+                            <a href="/communication/link/news">뉴스알고</a>
+                        </li>
+                        <li>
+                            <a href="/communication/link/e-nie">e-NIE</a>
+                        </li>
+                        <li>
+                            <a href="/communication/event?size=8">이벤트/설문</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate5">
+                    <a href="/service-center/notice">
+                        <span>고객센터</span>
+                    </a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/service-center/notice">공지사항</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/top-qna">자주하는 질문</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/my-qna">1:1 문의</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/remote">원격지원서비스</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate6">
+                    <a href="/edu-center/introduce">
+                        <span>연수원 소개</span>
+                    </a>
+                    <ul class="gnb_navMd">
+                        <li style="font-size: 15px!important;">
+                            <a href="/edu-center/introduce">미디어교육원 소개</a>
+                        </li>
+                        <li>
+                            <a href="/edu-center/introduce/introduce">사업소개</a>
+                        </li>
+                        <li>
+                            <a href="/edu-center/press">행사소개</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="/search" class="gnb_btnSearch"><img th:src="@{/assets/images/icons/gnb_search.png}" alt="검색"></a>
+            <button type="button" class="gnb_btnMenu"><img th:src="@{/assets/images/icons/gnb_menu.png}" alt="전체메뉴" ></button>
+            <button type="button" class="gnb_btnClose"><img th:src="@{/assets/images/icons/gnd_close__black.png}" alt="닫기" ></button>
+        </div>
+    </div>
+
+    <div class="gnd">
+        <a href="/search" class="gnd_btnSearch"><img th:src="@{/assets/images/icons/gnb_search.png}" alt="검색"></a>
+        <button type="button" class="gnd_btnMenu"><img th:src="@{/assets/images/icons/gnd_menu.png}" alt="메뉴"></button>
+
+        <div class="gnd_panel">
+            <div sec:authorize="!isAuthenticated()">
+                <div class="gnd_header">
+                    <a href="/login" class="header_btn">로그인</a>
+                    <a href="/user/join" class="header_btn">회원가입</a>
+                </div>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <div class="gnd_header">
+                    <div class="gnd_account" th:text="${#authentication.principal.name}"> <strong>홍길동</strong>님 </div>
+                    <div id="session_time_m" class="ms-2"></div>
+                    <a href="/logout" class="header_btn">로그아웃</a>
+                </div>
+            </div>
+
+            <ul class="gnb_navLg">
+                <li class="gnb_navCate1">
+                    <a href="javascript: void(0)" th:if="${#authentication.principal != 'anonymousUser'}">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="gnb_navMd" th:if="${#authentication.principal != 'anonymousUser'}">
+                        <th:block th:if="${#authentication.principal.bizAuth != null}">
+                            <th:block th:if="${#authentication.principal.bizAuth != 'INSTR'}">
+                                <li>
+                                    <a href="/mypage/business-state">사업참여현황</a>
+                                </li>
+                            </th:block>
+                            <th:block th:unless="${#authentication.principal.bizAuth != 'INSTR'}">
+                                <li>
+                                    <a href="/mypage/instructor-state/lecture">강사참여현황</a>
+                                </li>
+                            </th:block>
+                        </th:block>
+                        <li>
+                            <a href="/mypage/bizapply">사업신청내역</a>
+                        </li>
+                        <li>
+                            <a href="/mypage/education-state">교육/수료현황</a>
+                        </li>
+                        <li th:if="${#authentication.principal.roleGroup != 'JOURNALIST'}">
+                            <a href="/user/auth-manage">권한신청</a>
+                        </li>
+                        <li th:if="${#authentication.principal.tutor == 'Y'}">
+                            <a href="/mypage/class-guide">수업지도안 작성</a>
+                        </li>
+                        <li>
+                            <a href="/user">개인정보관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate2">
+                    <a href="javascript: void(0)">교육신청</a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/education/schedule">교육일정</a>
+                        </li>
+                        <li>
+                            <a href="/education/application/lecture">화상/집합교육</a>
+                        </li>
+                        <li>
+                            <a href="/education/application/e-learning">이러닝교육</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate3">
+                    <a href="javascript: void(0)">공모/자격</a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/business/pbanc">공모사업</a>
+                        </li>
+                        <li>
+                            <a href="/business/qualification">미디어교육사</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate4">
+                    <a href="javascript: void(0)">참여/소통</a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/communication/edu-suggestion">교육주제제안</a>
+                        </li>
+                        <li>
+                            <a href="/communication/review">교육후기방</a>
+                        </li>
+                        <li>
+                            <a href="/communication/archive/class-guide">자료실</a>
+                        </li>
+                        <li>
+                            <a href="/communication/link/news">뉴스알고</a>
+                        </li>
+                        <li>
+                            <a href="/communication/link/e-nie">e-NIE</a>
+                        </li>
+                        <li>
+                            <a href="/communication/event?size=8">이벤트/설문</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate5">
+                    <a href="javascript: void(0)">고객센터</a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/service-center/notice">공지사항</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/top-qna">자주하는 질문</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/my-qna">1:1 문의</a>
+                        </li>
+                        <li>
+                            <a href="/service-center/remote">원격지원서비스</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb_navCate6">
+                    <a href="javascript: void(0)">연수원 소개</a>
+                    <ul class="gnb_navMd">
+                        <li>
+                            <a href="/edu-center/introduce">미디어교육원 소개</a>
+                        </li>
+                        <li>
+                            <a href="/edu-center/introduce/introduce">사업소개</a>
+                        </li>
+                        <li>
+                            <a href="/edu-center/press">행사소개</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <button type="button" class="gnd_btnClose"><img th:src="@{/assets/images/icons/gnd_close.png}" alt="닫기"></button>
+        </div>
+    </div>
+</header>

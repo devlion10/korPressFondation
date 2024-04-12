@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">미디어리터러시</div>
+                    </div>
+                </div>
+
+                <div class="sch_box sch_box_wrap">
+                    <label for="containTextType" class="hidden_label">검색구분</label>
+                    <select id="containTextType" name="containTextType" class="common_select2">
+                        <option value="1">제목+내용</option>
+                        <option value="2">제목</option>
+                        <option value="3">내용</option>
+                    </select>
+                    <label for="containText" class="hidden_label">검색어</label>
+                    <input id="containText" name="containText" class="common_input2 form_input_md">
+
+                    <a class="btn_type1 btn_blue" href="javascript:void(0);" onclick="searchPublication()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</a>
+                    <a class="btn_type1 btn_gray" href="/communication/archive/publication">초기화</a>
+                </div>
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOARD : CARD -->
+                <ul class="bl_gridCard2" th:if="${!#lists.isEmpty(content)}">
+                    <li th:each="item, stat: ${content}">
+                        <a th:href="@{/communication/archive/publication/view/{id}(id=${item.sequenceNo})}">
+                            <p class="bl_card2_thumb">
+                                <span th:if="${#strings.isEmpty(item.thumbFilePath)}">등록된 이미지가 없습니다.</span>
+                                <img th:unless="${#strings.isEmpty(item.thumbFilePath)}" th:src="@{/Public{path}(path=${content[stat.index].thumbFilePath})}" th:alt="${item.title}">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject" style="display: -webkit-box;
+                                    overflow: hidden;
+                                    margin-top: 13px;
+                                    margin-bottom: 2px;
+                                    max-height: 48px;
+                                    text-overflow: ellipsis;
+                                    font-size: 16px;
+                                    -webkit-box-orient: vertical;
+                                    -webkit-line-clamp: 2;">
+                                    <strong>
+                                        <i th:if="${item.isNew}" class="el_ico"><img th:src="@{/assets/images/icons/new.png}" alt="새글"></i>
+                                        <span th:text="${item.title}">(한국언론진흥재단X정준희의 방과후 해시태그) 가짜 뉴스 새로운 정의는 트럼프 가짜 뉴스 새로운 정의는 트럼프</span>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date" th:text="${#strings.substring(item.createDateTime,0,10)}">2022.07.01</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li th:if="${#lists.isEmpty(content)}" class="bl_card_empty">등록된 게시글이 없습니다.</li>
+                </ul>
+                <div th:unless="${!#lists.isEmpty(content)}">조회된 내역이 없습니다.</div>
+
+                <div th:if="${!#lists.isEmpty(content)}" class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function searchPublication(){
+                let searchQuery = {}
+                let name = $("#containText").val();
+                let type = $("#containTextType").val();
+                if(name){
+                    searchQuery.containText = name
+                    if(type){
+                        searchQuery.containTextType = type
+                    }
+                }
+                searchJson(searchQuery)
+            }
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,2,2);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

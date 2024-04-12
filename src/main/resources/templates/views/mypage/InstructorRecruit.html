@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="page_title">강사모집</div>
+
+                    <!-- 컴포넌트 : 탭 -->
+                    <div class="bl_tab2 js_tab">
+                        <ul class="bl_tab2_menu">
+                            <li class="is_active">
+                                <a href="/mypage/instructor-state/recruit">지원중인 사업</a>
+                            </li>
+                            <li>
+                                <a href="/mypage/instructor-state/recruit/result">지원완료 사업</a>
+                            </li>
+                        </ul>
+
+                        <div class="bl_tab2_body js_tab_contents hp_mt60">
+                            <!-- 지원중인 사업 -->
+                            <div class="bl_tab2_item js_tab_item">
+                                <!-- BOARD : CONTROLLER -->
+                                <div class="bl_boardCtrls">
+                                    <div class="bl_boardCtrls_lft">
+                                        <p class="bl_boardCtrls_total">
+                                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- BOARD : LIST -->
+                                <div class="bl_board">
+                                    <div class="bl_board_head">
+                                        <div class="bl_board_no">순위</div>
+                                        <div class="bl_board_ctg">지역</div>
+                                        <div class="bl_board_ctg">기관</div>
+                                        <div class="bl_board_subject">사업명</div>
+                                        <div class="bl_board_dateRange bl_board_dateRange_sm">교육기간</div>
+                                        <div class="bl_board_dateRange bl_board_dateRange_sm">모집기간</div>
+                                        <div class="bl_board_ctg">지원순위</div>
+                                        <div class="bl_board_state bl_board_state_sm">상태</div>
+                                        <div class="bl_board_state bl_board_state_sm">취소</div>
+                                    </div>
+
+                                    <div class="bl_board_body">
+                                        <div class="bl_board_unit" th:each="item, stat:${content}">
+                                            <input type="hidden" class="board_index" th:value="${stat.index}">
+                                            <div class="bl_board_no board_order bizInstrAplyCndtOrdr" th:text="${item.bizInstrAplyCndtOrdr}">1</div>
+                                            <div class="bl_board_ctg" th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">서울</div>
+                                            <div class="bl_board_ctg" th:if="${item.bizOrganizationAply != null && item.bizOrganizationAply.organizationInfo != null}" th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">케이브레인</div>
+                                            <div class="bl_board_ctg" th:unless="${item.bizOrganizationAply != null && item.bizOrganizationAply.organizationInfo != null}">-</div>
+                                            <a th:href="@{/business/instructor/view/{id}/{code}(id=${item.bizInstructorPbanc.sequenceNo}, code=${item.bizOrgAplyNo})}" class="bl_board_subject">
+                                                <span class="hp_ellipsis" th:if="${item.bizPbancMaster != null}" th:text="${item.bizPbancMaster.bizPbancNm}">미디어교육 평생교실 8기</span>
+                                                <span class="hp_ellipsis" th:unless="${item.bizPbancMaster != null}">예시 사업명</span>
+                                            </a>
+                                            <div class="bl_board_dateRange bl_board_dateRange_sm hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">교육기간</span>
+                                                <span th:if="${item.bizOrganizationAply != null}">
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanBgng}">2022-06-02</span> ~
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-06-02</span>
+                                                </span>
+                                                <span th:unless="${item.bizOrganizationAply != null}">
+                                                    <span>0000-06-02</span> ~ <span>0000-06-02</span>
+                                                </span>
+                                            </div>
+                                            <div class="bl_board_dateRange bl_board_dateRange_sm hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">모집기간</span>
+                                                <span th:if="${item.bizInstructorPbanc != null}">
+                                                    <span th:text="${item.bizInstructorPbanc.bizInstrRcptBgng}">2022-06-02</span> ~
+                                                    <span th:text="${item.bizInstructorPbanc.bizInstrRcptEnd}">2022-06-02</span>
+                                                </span>
+                                                <span th:unless="${item.bizInstructorPbanc != null}">
+                                                    <span>0000-06-02</span> ~ <span>0000-06-02</span>
+                                                </span>
+                                            </div>
+                                            <div class="bl_board_ctg">
+                                                <a class="up-btn">▲</a>
+                                                <a class="down-btn">▼</a>
+                                            </div>
+                                            <div class="bl_board_state bl_board_state_sm">
+                                                <span class="btn_type4 btn_gray" th:if="${item.bizInstrAplyStts == 0}">임시저장</span>
+                                                <span class="btn_type4" th:if="${item.bizInstrAplyStts == 1}">접수</span>
+                                            </div>
+
+                                            <div class="bl_board_state bl_board_state_sm">
+                                                <button class="btn_type4 btn_blue" th:if="${item.bizInstrAplyStts == 0||item.bizInstrAplyStts == 1}" th:data-aplyno="${item.bizInstrAplyNo}" th:onclick="cancelRecruit(this.getAttribute('data-aplyno'))">지원취소</button>
+                                            </div>
+                                        </div>
+                                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                                            <div class="bl_card_empty">등록된 사업이 없습니다.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="common_input_box mt-5" th:if="${not #lists.isEmpty(content)}">
+                                    <div class="common_label flex-none me-5">
+                                        <label for="bizInstrAplyCmnt">비고</label>
+                                    </div>
+                                    <div class="d-flex flex-fill">
+                                        <textarea rows="5" id="bizInstrAplyCmnt" class="common_input form_input_lg"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                let checkOrdr=false;
+                function changeOrdr(){
+                    checkOrdr=true;
+                    $(".board_order").each(function (index,item){
+                        $(item).text(index+1);
+                    })
+                }
+                $(".down-btn").bind("click", function (){
+                    const $tr = $(this).parent().parent();
+                    $tr.next().after($tr);
+                    changeOrdr();
+                })
+
+                $(".up-btn").bind("click", function (){
+                    const $tr = $(this).parent().parent();
+                    $tr.prev().before($tr);
+                    changeOrdr();
+                })
+
+                function checkEndDate(params){
+                    let now = new Date();
+                    now.setUTCHours(now.getUTCHours()+9);
+                    let toDay = now.toJSON().split('T')[0];
+
+                    let result =true;
+                    for(let p of params){
+                        if(toDay>p.bizInstructorPbanc.bizInstrRcptEnd){
+                            result = false;
+                            alert(`${p.bizOrganizationAply.organizationInfo.organizationName}의 강사 모집기간이 종료되었습니다. 모집기간이 종료된 강사지원은 취소하고 다시 지원해 주세요.`);
+                        }
+                    }
+                    return result;
+                }
+
+                function aply(){
+                    if(checkOrdr){
+                        let params = getFormData();
+                        /** 정렬코드 추가 */
+                        params = params.sort(function (a, b) {
+                            return a.bizInstrAplyCndtOrdr - b.bizInstrAplyCndtOrdr;
+                        })
+
+                        if(checkEndDate(params)){
+                            $.ajax({
+                                type: "put",
+                                headers: {'Content-Type' : 'application/json'},
+                                url: "/api/business/instructor/aply/updates",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (res){
+                                    if((res.includes(null))){
+                                        alert('강사모집 지원 수를 초과한 건의 신청서 제출을 제외한 우선순위 수정 및 최종지원이 완료되었습니다.');
+                                        window.location.href = '/mypage/instructor-state/recruit/result'
+                                    }else{
+                                        alert("최종지원에 성공했습니다.")
+                                        window.location.href='/mypage/instructor-state/recruit/result'
+                                    }
+                                },
+                                error: function (e){
+                                    alert(e.responseJSON.resultMessage)
+                                }
+                            })
+                        }
+                    }else{
+                        alert('지원순위를 선택하지 않았습니다. 지원순위의 화살표 버튼을 눌러서 정렬하면 지원순위가 자동으로 지정됩니다.');
+                    }
+
+                }
+                /* <![CDATA[ */
+                function getFormData(){
+                    let CONT =  [[ ${content} ]];
+                    let params = CONT;
+                    let comment = $('#bizInstrAplyCmnt').val();
+                    let itemIndex;
+                    $(".bl_board_unit").each(function (index, item){
+                        itemIndex = $(item).find(".board_index").val();
+                        if(itemIndex){
+                            params[itemIndex].bizInstrAplyCndtOrdr =  $(item).find(".board_order").text()? parseInt($(item).find(".board_order").text()) : 1;
+                        }
+                        params[itemIndex].bizInstrAplyStts =1;
+                        params[itemIndex].bizInstrAplyCmnt=comment;
+                    })
+                    return params;
+                }
+
+                // 무조건 리스트 크기 30 되도록
+                let searchParams = new URLSearchParams(window.location.search);
+                let size = searchParams.get("size");
+                if (size != 30) {
+                    searchJson({size:30})
+                }
+
+                //우선순위 정렬 주석처리
+                let n = $('.bizInstrAplyCndtOrdr').length;
+                let ord, nexord;
+                for (let i=n-1; i>0; i--) {
+                    for (let j=0; j<i; j++) {
+                        ord=parseInt($('.bizInstrAplyCndtOrdr')[j].innerText);
+                        nexord=parseInt($('.bizInstrAplyCndtOrdr')[j+1].innerText);
+                        if (ord > nexord) {
+                            moveDown($('.bizInstrAplyCndtOrdr')[j])
+                        }
+                    }
+                }
+                //아래행과 위치변경
+                function moveDown(el){
+                    let $tr = $(el).parent();
+                    $tr.next().after($tr);
+                }
+
+
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], true, '최종지원', true);
+                    navigation(0,2,0);
+
+                    if( [[ ${content} ]] && ![[ ${content} ]].length ){
+                        $(".bl_paginate_rgt").hide();
+                    }
+                }
+
+                /**
+                 * 공고모집 취소
+                 * @param seq
+                 */
+                function cancelRecruit(seq){
+                    if(seq == undefined) return alert('정상적인 접근이 아닙니다.');
+                    if(confirm('지원내용을 취소 하시겠습니까?')){
+                        let params = getFormData();
+                        params = _.find(params, { bizInstrAplyNo:seq});
+                        $.ajax({
+                            type: "delete",
+                            headers: {'Content-Type' : 'application/json'},
+                            url: "/api/business/instructor/aply/delete/"+seq,
+                            data: JSON.stringify(params),
+                            dataType: "json",
+                            success: function (res){
+                                alert("지원을 취소하셨습니다.")
+                                window.location.reload();
+                            },
+                            error: function (e){
+                                alert("지원내용을 취소하지 못하였습니다. 다시 시도해주세요.")
+                            }
+                        })
+                    }
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

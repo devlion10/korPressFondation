@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual3.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">교육신청</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <div class="blocking">
+            <div>
+                <span class="spinner-border" role="status" aria-hidden="true"></span>
+                <div class="blocking-text">신청 정보 생성 중 입니다.</div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">이러닝교육</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW3 -->
+                <div class="bl_boardView3">
+                    <div class="bl_boardView3_head">
+                        <p class="bl_boardView3_subject">
+                            <strong th:text="${content[0].curriculumMaster.curriculumName}"></strong>
+                        </p>
+                    </div>
+                    <div class="bl_boardView3_body">
+                        <div class="bl_boardView3_article">
+                            <div class="bl_boardView3_thumb">
+                                <img th:if="${(content[0].thumbnailFilePath != null) && (content[0].thumbnailFilePath != '')}"
+                                     th:src="@{/Public} + ${content[0].thumbnailFilePath}"
+                                     alt="">
+                                <img th:unless="${(content[0].thumbnailFilePath != null) && (content[0].thumbnailFilePath != '')}"
+                                     th:src="@{/assets/images/@tmp/main_video.jpg}" alt="">
+                            </div>
+
+                            <div class="bl_boardView3_details">
+                                <div class="bl_boardView3_info">
+                                    <dl class="bl_defList2">
+                                        <dt>신청기간</dt>
+                                        <th:block th:if="${content[0].applyBeginDateTime ne null}">
+                                            <dd th:text="${#strings.substring(content[0].applyBeginDateTime, 0, 10)} + ' ~ ' + ${#strings.substring(content[0].applyEndDateTime, 0, 10)}">
+                                        </th:block>
+                                        <th:block th:unless="${content[0].applyBeginDateTime ne null}">
+                                            <dd>상시</dd>
+                                        </th:block>
+                                    </dl>
+                                    <dl class="bl_defList2">
+                                        <dt>교육기간</dt>
+                                        <dd th:text="${#strings.substring(content[0].operationBeginDateTime, 0, 10)} + ' ~ ' + ${#strings.substring(content[0].operationEndDateTime, 0, 10)}">
+                                    </dl>
+                                    <dl class="bl_defList2">
+                                        <dt>교육시간</dt>
+                                        <dd th:text="${not #strings.isEmpty(content[0].curriculumMaster.educationPerHour)}
+                                            ? ${content[0].curriculumMaster.educationPerHour} + '시간' : 0 + '시간'">
+                                        </dd>
+                                    </dl>
+                                    <dl class="bl_defList2">
+                                        <dt>정원</dt>
+                                        <dd th:text="${not #strings.isEmpty(content[0].numberOfPeople)}
+                                            ? ${content[0].numberOfPeople} + '명' : 0 + '명'">
+                                        </dd>
+                                    </dl>
+                                    <dl class="bl_defList2">
+                                        <dt>교육장소</dt>
+                                        <dd th:text="${not #strings.isEmpty(content[0].educationPlace)}
+                                            ? ${content[0].educationPlace} : '지정 장소 없음'">
+                                        </dd>
+                                    </dl>
+                                    <dl class="bl_defList2">
+                                        <dt>담당자</dt>
+                                        <dd th:text="${not #strings.isEmpty(content[0].picTel) ? content[0].picTel : ''}"></dd>
+                                    </dl>
+                                </div>
+
+                                <div class="bl_boardView3_btns" th:unless="${(#authentication.principal == 'anonymousUser')}">
+                                    <div
+                                        th:if="${
+                                            ((#authentication.principal.roleGroup == 'SUPER')) ||
+                                            (
+                                                (content[0].curriculumMaster.educationTarget == '1') ||
+                                                ((content[0].curriculumMaster.educationTarget == '2') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')) ||
+                                                ((content[0].curriculumMaster.educationTarget == '3') && (#authentication.principal.roleGroup == 'TEACHER')) ||
+                                                ((content[0].curriculumMaster.educationTarget == '4') && (#authentication.principal.roleGroup == 'STUDENT')) ||
+                                                ((content[0].curriculumMaster.educationTarget == '5') && (#authentication.principal.roleGroup == 'PARENTS')) ||
+                                                (content[0].curriculumMaster.educationTarget == '6')
+                                            )
+                                        }"
+                                    >
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '1'}">신청불가</div>
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '2'}">신청마감</div>
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '4'}">신청완료</div>
+                                        <a id="applyBtn" class="btn_type1 btn_lg btn_red" href="#popEnrolment" data-control="modal"
+                                           data-handler="popEnrolment" th:if="${content[0].availableApplicationType == '3'}">수강신청하기</a>
+                                    </div>
+                                </div>
+                                <div class="bl_boardView3_btns" th:if="${(#authentication.principal == 'anonymousUser')}">
+                                    <div th:if="${(content[0].curriculumMaster.educationTarget == '6')}">
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '1'}">신청불가</div>
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '2'}">신청마감</div>
+                                        <div class="btn_type1 btn_lg btn_lightgray"  th:if="${content[0].availableApplicationType == '4'}">신청완료</div>
+                                        <a class="btn_type1 btn_lg btn_red" href="#popEnrolment2" data-control="modal"
+                                           data-handler="popEnrolment2" th:if="${content[0].availableApplicationType == '3'}">비로그인 학습하기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : WRITE -->
+                <div class="bl_boardWrite bl_boardWrite__gray">
+                    <table>
+                        <caption>교육내용</caption>
+                        <colgroup>
+                            <col class="hp_lg_w150">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th scope="row">교육목표</th>
+                            <td th:text="${not #strings.isEmpty(content[0].curriculumMaster.educationGoal)}
+                                            ? ${content[0].curriculumMaster.educationGoal} : ''">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">교육대상</th>
+                            <td class="bl_board3_ctg" th:switch="${content[0].curriculumMaster.educationTarget}">
+                                <span th:case="'1'">일반인</span>
+                                <span th:case="'2'">언론인</span>
+                                <span th:case="'3'">교원</span>
+                                <span th:case="'4'">학생</span>
+                                <span th:case="'5'">학부모</span>
+                                <span th:case="*">미정의 교육</span>
+                                <p class="color_gray fz-m" th:if="${not #strings.isEmpty(content[0].curriculumMaster.educationTargetDescription)}" th:text="${content[0].curriculumMaster.educationTargetDescription}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">교육내용</th>
+                            <td th:text="${not #strings.isEmpty(content[0].curriculumMaster.educationContent)}
+                                            ? ${content[0].curriculumMaster.educationContent} : ''">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">수료기준</th>
+                            <td>
+                                <!-- TABLE 2 -->
+                                <table class="bl_table2">
+                                    <caption>수료기준</caption>
+                                    <colgroup>
+                                        <col class="hp_wAuto">
+                                        <col class="hp_wAuto">
+                                        <col class="hp_wAuto">
+                                        <col class="hp_wAuto">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">구분</th>
+                                        <th scope="col">진도</th>
+                                        <th scope="col">시험</th>
+                                        <th scope="col">총점</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">배점비율</th>
+                                        <td th:text="|${not #strings.isEmpty(content[0].curriculumMaster.progressRateOfEnd) ? content[0].curriculumMaster.progressRateOfEnd : '0'}%|"></td>
+                                        <td th:text="|${not #strings.isEmpty(content[0].curriculumMaster.examRateOfEnd) ? content[0].curriculumMaster.examRateOfEnd : '0'}%|"></td>
+                                        <td>100.0%</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">수료기준</th>
+                                        <td th:text="|${not #strings.isEmpty(content[0].curriculumMaster.progressScoreOfEnd) ? content[0].curriculumMaster.progressScoreOfEnd : '0'}점|"></td>
+                                        <td th:text="|${not #strings.isEmpty(content[0].curriculumMaster.examScoreOfEnd) ? content[0].curriculumMaster.examScoreOfEnd : '0'}점|"></td>
+                                        <td th:text="|${not #strings.isEmpty(content[0].curriculumMaster.totalScore) ? content[0].curriculumMaster.totalScore : '0'}점|"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">목차(차시)</th>
+                            <td>
+                                <!-- COMPONENT : SCROLL -->
+                                <div class="bl_scroll bl_scroll__hor">
+                                    <!-- TABLE -->
+                                    <table class="bl_table">
+                                        <caption>차시 내용</caption>
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">순번</th>
+                                            <th scope="col" class="text-center">차시명</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody th:each="item, stat: ${content[0].curriculumMaster.curriculumContentsList[0].contentsMaster.contentsChapterList}">
+                                        <tr>
+                                            <td class="td-content-wrap" th:text="${item.chapterMaster.chapterName}"></td>
+                                            <td class="td-content-wrap" th:text="${item.chapterMaster.chapterTitle}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- COMPONENT : SCROLL -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">첨부파일</th>
+                            <td>
+                                <div th:if="${#lists.size(content[0].fileMasters)}" th:each="file : ${content[0].fileMasters}">
+                                    <a class="btn_type5 btn_file download_ajax" th:href="@{/api/common/upload/download(attachFilePath=${file.filePath})}">
+                                        <span th:text="${file.originalFileName}"></span>
+                                        <span>[<span class="fileSize" th:text="${file.fileSize}"></span>]</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div th:if="${content[0].curriculumMaster.curriculumCollaborationList.size > 0}">
+                    <h4 class="el_lv2heading">연계과정</h4>
+                    <!-- BOARD : SLIDER -->
+                    <div class="bl_boardSlider">
+                        <!-- 슬라이드 이미지 영역 -->
+                        <div class="bl_boardSlider slider" id="cardSlider">
+                            <div th:each="item, stat: ${content[0].curriculumMaster.curriculumCollaborationList[0].educationPlanList}">
+                                <a th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}">
+                                    <p class="bl_boardSlider_thumb">
+                                        <img th:if="${(item.thumbnailFilePath != null) && (item.thumbnailFilePath != '')}"
+                                             th:src="@{/Public} + ${item.thumbnailFilePath}"
+                                             alt="">
+                                        <img th:unless="${(item.thumbnailFilePath != null) && (item.thumbnailFilePath != '')}"
+                                             th:src="@{/assets/images/@tmp/main_video.jpg}" alt="">
+                                    </p>
+                                    <p class="bl_boardSlider_subject" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <strong class="hp_ellipsis"
+                                                th:text="${item.curriculumMaster.curriculumName}">[집합] 과정명이 뿌려집니다</strong>
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/education/application/e-learning">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP : 수강신청하기 -->
+    <div class="pop_wrapper ui-modal" id="popEnrolment">
+        <div class="pop_wrap pop_secondary hp_mw500">
+            <div class="pop_cont">
+                수강신청 하시겠습니까?
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_md btn_blue pop-close" onclick="educationApply()">확인</a>
+                        <a class="btn_type1 btn_md btn_red pop-close" href="">취소</a>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <!-- POPUP : 수강신청 완료 -->
+    <div class="pop_wrapper ui-modal" id="popEnrolmentResult">
+        <div class="pop_wrap pop_secondary hp_mw500">
+            <div class="pop_cont">
+                <p class="pop_tit">수강신청 완료!</p>
+                <p class="pop_txt">마이페이지에서 학습이 가능합니다.</p>
+
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_md btn_blue" href="" onclick="">확인</a>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <!-- POPUP : 비로그인 학습하기 -->
+    <div class="pop_wrapper ui-modal" id="popEnrolment2">
+        <div class="pop_wrap pop_secondary hp_mw500">
+            <div class="pop_cont">
+                <div class="pop_txt">
+                    비로그인 학습은 학습이력 저장 및 수료증을<br>제공하지 않습니다.<br><br>
+                    수료증이 필요한 경우 로그인 후 수강신청하여<br>학습을 진행하시기 바랍니다.
+                </div>
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_md btn_blue" href="/login">로그인하기</a>
+                        <div class="btn_type1 btn_md btn_red" data-control="modal" data-handler="popCurriculumChapterList" onclick="notLoginStudy()">학습하기</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <!-- POPUP : 과정 차시 목록 -->
+    <div class="pop_wrapper ui-modal" id="popCurriculumChapterList">
+        <div class="pop_wrap pop_secondary" style="max-width: 1000px">
+            <div class="pop_cont">
+                <div class="curriculum_name">
+                    <span class="tit">과정명</span>
+                    <span id="study_title">과정명이 들어갑니다.</span>
+                </div>
+                <div class="text-end color_red hp_mt30">※ 비로그인 학습은 학습이력 기록 및 수료증을 제공하지 않습니다.</div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board mt-3">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">차시</div>
+                        <div class="bl_board_subject">차시명</div>
+                        <div class="bl_board_btn bl_board_btn_lg">학습</div>
+                    </div>
+
+                    <div class="bl_board_body" id="study_list">
+                        <div class="bl_board_unit">
+                            <div class="bl_board_no">1</div>
+                            <div class="bl_board_subject">차시명이 들어갑니다.</div>
+                            <div class="bl_board_btn bl_board_btn_lg">
+                                <div class="btn_type1 btn_md btn_blue">학습하기</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <div class="btn_type2 pop-close">닫기</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const commonCode = [[ ${commonCode} ]];
+            const params = {};
+            let CONT = [[ ${content} ]];
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]])
+                navigation(1,2);
+                fileSizeConvert();
+            }
+
+            /** 첨부파일 크기 계산 */
+            function fileSizeConvert(){
+                for(let i=0; i<CONT[0].fileMasters.length; i++){
+                    const fileSizeRander = document.querySelectorAll('.fileSize');
+                    fileSizeRander[i].innerText = formatBytes(CONT[0].fileMasters[i].fileSize);
+                }
+            }
+
+            function notLoginStudy(){
+                $('#popEnrolment2').closeModal();
+
+                $.ajax({ //jquery ajax
+                    type: "PUT", //http method
+                    url: '/api/education/update-view-count/'+CONT[0].curriculumCode,
+                    headers: {'Content-Type': 'application/json'},
+                    success: function (data) {
+                    },
+                    error: function(e) {
+                        console.log('조회수를 증가하는 과정에서 에러가 발생했습니다.')
+                    }
+                })
+
+                $('#study_title').text(CONT[0].curriculumMaster.curriculumName);
+                $('#study_list').html('');
+                CONT[0].curriculumMaster.curriculumContentsList[0].contentsMaster.contentsChapterList.forEach((item, index) => {
+                    $('#study_list').append(`
+                        <div class="bl_board_unit">
+                            <div class="bl_board_no">${index +1}</div>
+                            <div class="bl_board_subject">${item.chapterMaster.chapterTitle}</div>
+                            <div class="bl_board_btn bl_board_btn_lg">
+                                <div class="btn_type1 btn_md btn_blue" onclick="viewContents2('${item.chapterCode}', ${CONT[0].curriculumMaster.curriculumContentsList[0].contentsMaster.width}, ${CONT[0].curriculumMaster.curriculumContentsList[0].contentsMaster.height})">학습하기</div>
+                            </div>
+                        </div>
+                    `)
+                })
+            }
+
+            function viewContents2(item, width, height){
+                window.open(`/education/e-learning/${item} `, "_blank", `toolbar=yes,scrollbars=yes,resizable=yes,width=${width},height=${height}`);
+            }
+
+            /** 교육 신청 */
+            function educationApply() {
+                $(".blocking").show();
+                $("#applyBtn").attr("data-handler",null)
+                $("#applyBtn").removeClass("btn_red")
+                $("#applyBtn").addClass("btn_lightgray")
+                $("#applyBtn").text("")
+                $("#applyBtn").append(`
+                    <div>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span> 신청진행 중</span>
+                    </div>`);
+
+                params.educationPlanCode = [[ ${content}]][0].educationPlanCode;
+
+                const form = new FormData();
+                form.append("requestObject", new Blob([JSON.stringify(params)], {type: "application/json"}));
+
+                $.ajax({ //jquery ajax
+                    type: "post", //http method
+                    url: "/api/education/application/create", //값을 가져올 경로
+                    enctype: "multipart/form-data", //form data 설정
+                    processData: false,
+                    contentType: false,
+                    data: form,
+                    success: function (result) {   //요청 성공시 실행될 메서드
+                        if(result == "redirect:/login") {
+                            alert("로그인이 필요한 서비스 입니다.");
+                        } else {
+                            if (CONT[0].curriculumMaster.applyApprovalType == '2') {
+                                alert("수강신청 완료되었습니다. \n승인 여부 마이페이지에서 확인해 주세요.");
+                                $(".blocking").hide();
+                            } else {
+                                alert("수강신청 완료되었습니다. \n[마이페이지-교육현황-학습중인과정] 에서 신청내역을 확인하세요.");
+                                $(".blocking").hide();
+                            }
+                            window.location.reload();
+                        }
+                    },
+                    error: function (e) {		 //요청 실패시 에러 확인을 위함
+                        $(".blocking").hide();
+                        $("#applyBtn").attr("data-handler","popEnrolment")
+                        $("#applyBtn").removeClass("btn_lightgray")
+                        $("#applyBtn").addClass("btn_red")
+                        $("#applyBtn").text("수강신청하기")
+
+                        if(e && e.responseJSON && e.responseJSON.resultMessage){
+                            alert(e.responseJSON.resultMessage)
+                        } else {
+                            alert('새로고침하여 결과를 확인해주시고, 신청되지 않은 경우 담당자에게 문의해주세요.');
+                        }
+                        window.location.reload();
+                    }
+                })
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual7.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">연수원 소개</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <h4 class="el_lv1heading hp_ta_center">미디어교육원 소개</h4>
+                <p class="el_lv1Deck">미디어교육원은 언론인과 미디어 교·강사, 국민을 위한 저널리즘 전문역량 강화교육, 미디어 리터러시 교육을 제공하는<br class="hp_lg_show">
+                    <strong>국내 유일의 언론인 전문 교육 기관(1965 ~ )</strong>이자 교육부 인가 <strong>국내 1호 미디어교육 종합교육연수원</strong>입니다. </p>
+                <p class="hp_ta_center hp_mt80 hp_thumbFit "><img th:src="@{/assets/images/subpage_eduCenter/img_introduceTop.png}" class="hp_md_w100p" alt=""></p>
+
+                <h5 class="el_lv2heading hp_mt80">오시는길</h5>
+                <div class="bl_map">
+                    <div id="map" style="width: 100%; height: 400px"></div>
+                    <div class="bl_formMap" style="z-index: 100">
+                        <span class="bl_formMap_icon"><img th:src="@{/assets/images/subpage_eduCenter/icon_map_spot.png}" alt=""></span>
+                        <label class="bl_inpTxt2"><span class="bl_inpTxt2_label">출발지</span> <input type="text" class="w___100" id="startPlace"></label>
+                        <span class="bl_formMap_seperator"><img th:src="@{/assets/images/subpage_eduCenter/icon_map_arr.png}" alt=""></span>
+                        <label class="bl_inpTxt2"><span class="bl_inpTxt2_label">도착지</span> <input type="text" class="w___100" readonly value="한국언론진흥재단 미디어교육원"></label>
+                        <button
+                            class="btn_type1 btn_blue btn_md"
+                            onclick="getDirections()"
+                        >길찾기</button>
+                    </div>
+                </div>
+
+                <div class="bl_gridMap">
+                    <div class="bl_mapDesc">
+                        <div class="bl_mapDesc_icon">
+                            <img th:src="@{/assets/images/subpage_eduCenter/icon_map_metro.png}" alt="">
+                        </div>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>5호선 서대문역 5번 출구 이용 시 도보 9분</li>
+                            <li>1ㆍ2호선 시청역 12번 출구 이용 시 도보 11분</li>
+                        </ul>
+                    </div>
+
+                    <div class="bl_mapDesc">
+                        <div class="bl_mapDesc_icon">
+                            <img th:src="@{/assets/images/subpage_eduCenter/icon_map_bus.png}" alt="">
+                        </div>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>
+                                서울역사박물관, 경희궁앞(01-008) 이용 시 도보 4분
+                                <p class="bl_list2_note">160, 260, 270, 271A, 271B, 273, 370, 721, N26(심야)</p>
+                            </li>
+                            <li>
+                                서대문역사거리, 농협중앙회 (02-281) 이용 시 도보 9분
+                                <p class="bl_list2_note">470, 702A, 702B, 705, 720, 741, 7019, 790, N37(심야)</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h5 class="el_lv2heading hp_mt80">미디어교육원 안내도</h5>
+                <div class="bl_map hp_thumbFit"><img th:src="@{/assets/images/subpage_eduCenter/img_map_corp.png}" alt=""></div>
+                <ol class="bl_boxCardList2">
+                    <li>
+                        <strong class="bl_boxCardList2_tit">강의실 &lt;이음&gt;</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 20명</li>
+                            <li>시설: 빔 프로젝터, 스크린, 음향장비</li>
+                            <li>용도: 언론인 및 미디어교육 교사·강사 연수</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">디지털 랩</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 33명</li>
+                            <li>시설: 빔 프로젝터, 스크린, 음향장비, 컴퓨터</li>
+                            <li>용도: 디지털 콘텐츠 제작 관련 강의 및 실습</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">공유사무실 &lt;도란&gt;</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 10명</li>
+                            <li>시설: 3D프린터, 그래픽 컴퓨터</li>
+                            <li>용도: 프로젝트형 과제, 연구, 학습 공간</li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <strong class="bl_boxCardList2_tit">연구교수부</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>용도: 저널리즘·미디어리터러시 연구 개발</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">미디어창작실</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>시설: 빔 프로젝터, 스크린</li>
+                            <li>용도: 메이커 스페이스(교구 제작 등), 기획 전시 등</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">크리에이터 스튜디오</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>시설: 방음부스, 카메라, 오디오 인터페이스 세트, LED조명, 블루스크린, 노트북</li>
+                            <li>용도: 영상 촬영, 녹음 및 편집, 라이브 방송	</li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <strong class="bl_boxCardList2_tit">강의실 &lt;누리&gt;</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 40명</li>
+                            <li>시설: 빔 프로젝터, 스크린, 음향장비</li>
+                            <li>용도: 언론인 및 미디어교육 교사·강사 연수</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">강의실 &lt;가온&gt;</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 50명</li>
+                            <li>시설: 빔 프로젝터, 스크린, 음향장비</li>
+                            <li>용도: 언론인 및 미디어교육 교사·강사 연수,토크 콘서트 등 행사</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">언론인연수 및 미디어교육 연혁</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>언론인연수와 미디어교육의 과거와 현재 설명</li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <strong class="bl_boxCardList2_tit">언론인 소장품·유품 전시</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>언론인이 남긴 의미 있는 소장품·유품 전시</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong class="bl_boxCardList2_tit">저널리즘 카페</strong>
+                        <ul class="bl_list2 bl_list2__dot">
+                            <li>정원: 20명</li>
+                            <li>시설: 프레젠테이션용 TV, 커피머신</li>
+                            <li>용도: 언론인, 교사, 미디어교육 강사 연구 및 학습 모임 공간</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(5,0,0);
+
+                var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                    mapOption = {
+                        center: new kakao.maps.LatLng(37.5676811, 126.9709035), // 지도의 중심좌표
+                        draggable: false, // 지도를 생성할때 지도 이동 및 확대/축소를 막으려면 draggable: false 옵션을 추가하세요
+                        level: 3 // 지도의 확대 레벨
+                    };
+
+                var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+                // 마커가 표시될 위치입니다
+                var markerPosition  = new kakao.maps.LatLng(37.5676811, 126.9709035);
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition
+                });
+
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+            }
+
+            function getDirections(){
+                let start = document.querySelector("#startPlace").value;
+                let link = `https://map.kakao.com/?eName=한국언론진흥재단+미디어교육원&sName=${start}`
+
+                window.open(link);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

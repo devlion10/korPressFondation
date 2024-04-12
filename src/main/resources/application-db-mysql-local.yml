@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+      # 상용 암호화
+    url: ENC(EgvJm8ZzW7UjW5HPMIJfTBOtUQdDTVoOLy4mTJ1k/Ox3kfY5trE8L03aVI1VBSHk5TJ80rXVUVsS8L9UtzxSIM/r8vjTo9qLd/9IDAXcNnTciYIynSFlFaRLQsLmLMKqcSe8bI+6OhQ=)
+    username: ENC(B6QU6cCp1Lyh8KTf8rbZOA==)
+    password: ENC(VyhYiz5kVotO9eZb9rV7wxbWYBZxb9Yw)
+    # 상용 접속 정보
+#    url: jdbc:mysql://db-18q25-kr1.vpc-pub-cdb.gov-ntruss.com:3306/kpf_meca?characterEncoding=UTF-8
+#    username: kbrainc
+#    password: kbrainc1!
+
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      connection-test-query: select 1
+#JPA
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+#Jasypt
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

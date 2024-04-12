@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<script src="../../../static/app/js/navigation.js"></script>
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../../assets/images/top_visual6.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content" th:each="content: ${content}">
+            <div class="ly_grid">
+                <div class="page_title">1:1 문의</div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" th:text="${content.reqTitle}"></div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd th:text="${content.registUserId}"></dd>
+                            <dt>작성일</dt>
+                            <dd th:text="${content.createDateTime}"></dd>
+                            <dt>구분</dt>
+                            <dd>
+                                <span th:if="${content.qnaType == '0'}">전체</span>
+                                <span th:if="${content.qnaType == '1'}">공모/자격문의</span>
+                                <span th:if="${content.qnaType == '2'}">교육문의</span>
+                                <span th:if="${content.qnaType == '3'}">사이트 이용문의</span>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        <div id='reqContents'>내용</div>
+
+                        <div class="bl_boardView_file" th:if="${content.reqAttachFilePath != null}">
+                            <a class="btn_type5 btn_file download_ajax" th:href="@{/api/service-center/my-qna/download(attachFilePath=${content.reqAttachFilePath}, fileType='req')}">
+                                <span th:text="${content.reqFileOrigin != null ? content.reqFileOrigin : content.reqAttachFilePath.split('/')[content.reqAttachFilePath.split('/').length -1]}"></span>
+                                <span>[<span id="reqFileSize"></span>]</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOX : ANSWER -->
+                <div class="bl_boxAnswer" th:if="${content.qnaState == '3'}">
+                    <div class="bl_boxAnswer_state">
+                        <i class="el_chip el_chip__success">
+                            <span th:if="${content.qnaState == '1'}">미확인</span>
+                            <span th:if="${content.qnaState == '2'}">처리중</span>
+                            <span th:if="${content.qnaState == '3'}">답변 완료</span>
+                        </i>
+                    </div>
+
+                    <div class="bl_boxAnswer_viewer">
+                        <div class="bl_boxAnswer_head">
+                            <div class="bl_boxAnswer_subject" th:text="${content.resTitle}">답변 제목</div>
+                            <div class="bl_boardInfo">
+                                <dl>
+                                    <dt>작성자</dt>
+                                    <dd>관리자</dd>
+                                    <dt>작성일</dt>
+                                    <dd th:text="${content.updateDateTime}">작성일</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="bl_boxAnswer_cont">
+                            <div id="resContents"></div>
+                            <div class="bl_boxAnswer_file" th:if="${content.resAttachFilePath != null}">
+                                <a class="btn_type5 btn_file download_ajax" th:href="@{/api/service-center/my-qna/download(attachFilePath=${content.resAttachFilePath}, fileType='res')}">
+                                    <span th:text="${content.resFileOrigin != null ? content.resFileOrigin : content.resAttachFilePath.split('/')[content.resAttachFilePath.split('/').length -1]}"></span>
+                                    <span>[<span id="resFileSize"></span>]</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <button class="btn_type1 btn_gray" th:onclick="deleteBtn([[${content.sequenceNo}]])">삭제하기</button>
+                        <a class="btn_type1 btn_blue" th:if="${content.qnaState == '1'}" th:href="@{'/service-center/my-qna/write/'+${content.sequenceNo}}">수정하기</a>
+                    </div>
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/service-center/my-qna">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(4,2);
+
+                const CONT = [[ ${content} ]];
+                if( [[ ${content[0].registUserId} ]] !== [[ ${#authentication.principal.userId} ]]){
+                    alert("유효한 접근이 아닙니다.");
+                    window.history.back();
+                }
+
+                // for content
+                (CONT[0].reqContents !== null) ? (document.getElementById('reqContents')).innerHTML = convertToHtml(CONT[0].reqContents) : '';
+                (CONT[0].resContents !== null) ? (document.getElementById('resContents')).innerHTML = convertToHtml(CONT[0].resContents) : '';
+                // for fileSize
+                (CONT[0].reqFileSize !== null) ? (document.getElementById('reqFileSize').innerText = formatBytes(CONT[0].reqFileSize)) : '';
+                (CONT[0].resFileSize !== null) ? (document.getElementById('resFileSize').innerText = formatBytes(CONT[0].resFileSize)) : '';
+            }
+
+            function erase(){
+                var qnaType = document.getElementById("qnaType").value;
+                var reqTitle = document.getElementById("reqTitle").value;
+                var reqContents = document.getElementById("reqContents").value;
+                var reqAttachFilePath = document.getElementById("reqAttachFilePath").value;
+                var obj = {};
+
+                if (a <= 0) {
+                    obj["qnaType"] = qnaType;
+                    obj["reqTitle"] = reqTitle;
+                    obj["reqContents"] = reqContents;
+                    obj["reqAttachFilePath"] = reqAttachFilePath;
+
+                    $.ajax({
+                        type : "POST",
+                        contentType : "application/json",
+                        url : "/api/service-center/my-qna/create",
+                        data : JSON.stringify(obj),
+                        dataType : "json",
+                        cache : false,
+                        timeout : 600000,
+                        success : function (data) {
+                            window.location.href = "/service-center/my-qna";
+                        },
+                        error : function (e) {
+                            console.log("등록에 실패하였습니다. 관리자에게 문의해주세요.");
+                        }
+                    });
+                } else {
+                    obj["sequenceNo"] = [[ ${content[0].sequenceNo} ]];
+                    obj["qnaType"] = qnaType;
+                    obj["reqTitle"] = reqTitle;
+                    obj["reqContents"] = reqContents;
+                    obj["reqAttachFilePath"] = reqAttachFilePath;
+
+                    $.ajax({
+                        type : "PUT",
+                        contentType : "application/json",
+                        url : "/api/service-center/my-qna/update",
+                        data : JSON.stringify(obj),
+                        dataType : "json",
+                        cache : false,
+                        timeout : 600000,
+                        success : function (data) {
+                            window.location.href = "/service-center/my-qna";
+                        },
+                        error : function (e) {
+                            console.log("수정에 실패하였습니다. 관리자에게 문의해 세요.");
+                        }
+                    });
+                }
+            }
+
+            function deleteBtn(no) {
+                if(confirm('1:1 문의를 삭제 하시겠습니까?')){
+                    $.ajax({
+                        type: "delete",
+                        headers: {'Content-Type' : 'application/json'},
+                        url: "/api/service-center/my-qna/delete/"+no,
+                        dataType: "json",
+                        success: function (res){
+                            alert("1:1 문의를 삭제하였습니다.")
+                            window.location.href = "/service-center/my-qna";
+                        },
+                        error: function (err){
+                            alert("1:1 문의를 삭제하지 못하였습니다. 다시 시도해주세요.")
+                        }
+                    })
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">수업지도안</div>
+                        </div>
+
+                        <div class="bl_title_right">
+                            <div class="bl_title_sns">
+                                <a class="btn_type3 btn_url" onclick="copyUrl()">URL복사</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">작성자</th>
+                                <td th:text="${content[0].userName}"></td>
+                            </tr>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">차시</th>
+                                <td th:text="${content[0].classGuideRound}"></td>
+                            </tr>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">대상</th>
+                                <td>
+                                    <span th:text="${content[0].target}"></span>
+                                    <span th:if="${content[0].classGuideType == '2'}" th:text="${content[0].targetGrade}"></span>
+                                </td>
+                            </tr>
+                            <!-- type 1 / type 2,3 -->
+                            <tr>
+                                <th scope="row">
+                                    <span th:if="${content[0].classGuideType == '1'}">주제</span>
+                                    <span th:if="${content[0].classGuideType == '2' || content[0].classGuideType == '3'}">활동명</span>
+                                </th>
+                                <td th:text="${content[0].title}"></td>
+                            </tr>
+                            <!-- type 1 -->
+                            <tr th:if="${content[0].classGuideType == '1'}">
+                                <th scope="row">학습영역</th>
+                                <td th:text="${content[0].learningArea}"></td>
+                            </tr>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">학습목표</th>
+                                <td th:text="${content[0].learningGoal}"></td>
+                            </tr>
+                            <!-- type 1 -->
+                            <tr th:if="${content[0].classGuideType == '1'}">
+                                <th scope="row">학습자료</th>
+                                <td th:text="${content[0].learningMaterial}"></td>
+                            </tr>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">E-nie여부</th>
+                                <td th:text="${content[0].eNIEYn}"></td>
+                            </tr>
+                            <!-- type 1,2,3 -->
+                            <tr>
+                                <th scope="row">해쉬태그</th>
+                                <td th:text="${#strings.replace(content[0].hashTag, ',', ' ')}"></td>
+                            </tr>
+                            <!-- type 2,3 -->
+                            <tr th:if="${content[0].classGuideType == '2' || content[0].classGuideType == '3'}">
+                                <th scope="row">이렇게 활동해요</th>
+                                <td th:text="${content[0].learningArea}"></td>
+                            </tr>
+                            <!-- type 2,3 -->
+                            <tr th:if="${content[0].classGuideType == '2' || content[0].classGuideType == '3'}">
+                                <th scope="row">도움말</th>
+                                <td th:text="${content[0].learningHelp}"></td>
+                            </tr>
+                            <!-- type 1 -->
+                            <tr th:if="${content[0].classGuideType == '1'}">
+                                <th scope="row">관련교과</th>
+                                <td>
+                                    <div th:each = "item : ${content[0].classSubjectList}" th:text="${item.codeInfo}"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div th:if="${content[0].classGuideType == '1'}">
+                        <h3 class="el_lv2heading">교수 / 학습활동</h3>
+
+                        <!-- BOARD : WRITE -->
+                        <div style="margin-bottom: 10px">문제파악(5분)</div>
+                        <div class="bl_boardWrite bl_boardWrite__gray" style="margin-bottom: 20px">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">동기유발</th>
+                                    <td th:text="${content[0].realizeMotivation}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td th:text="${content[0].realizeMotivationNote}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">문제확인/목표제시</th>
+                                    <td th:text="${content[0].realizePractice}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td th:text="${content[0].realizePracticeNote}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- BOARD : WRITE -->
+                        <div style="margin-bottom: 10px">문제해결(30분)</div>
+                        <div class="bl_boardWrite bl_boardWrite__gray" style="margin-bottom: 20px">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td th:text="${content[0].solutionNote}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">기사읽고 생각 넓히기</th>
+                                    <td th:text="${content[0].solutionThink}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- BOARD : WRITE -->
+                        <div style="margin-bottom: 10px">정리(5분)</div>
+                        <div class="bl_boardWrite bl_boardWrite__gray">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">마무리</th>
+                                    <td th:text="${content[0].arrangementSummary}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td th:text="${content[0].arrangementNote}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">도움말</th>
+                                    <td th:text="${content[0].arrangementHelp}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="el_lv2heading">수업지도안 첨부</h3>
+                        <div class="bl_boardWrite bl_boardWrite__gray">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w236" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr th:if="${content[0].classGuideFilePath != null}">
+                                    <th scope="row">
+                                        <span th:if="${content[0].classGuideType == '1'}">수업지도안</span>
+                                        <span th:unless="${content[0].classGuideType == '1'}">길라잡이</span>
+                                    </th>
+                                    <td>
+                                        <ul th:if="${(content != null) && content[0].guideFileList != null}">
+                                            <li th:each="item, index : ${content[0].guideFileList}">
+                                                <a class="btn_type5 btn_file" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                            </li>
+                                        </ul>
+                                        <ul th:unless="${(content != null) && (content[0].guideFileList != null)}"></ul>
+                                    </td>
+                                </tr>
+                                <tr th:if="${content[0].activitiesFilePath != null}">
+                                    <th scope="row">활동지</th>
+                                    <td>
+                                        <ul th:if="${(content != null) && content[0].activityFileList != null}">
+                                            <li th:each="item, index : ${content[0].activityFileList}">
+                                                <a class="btn_type5 btn_file" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                            </li>
+                                        </ul>
+                                        <ul th:unless="${(content != null) && (content[0].activityFileList != null)}"></ul>
+                                    </td>
+                                </tr>
+                                <tr th:if="${content[0].exampleAnswerFilePath != null}">
+                                    <th scope="row">예시답안</th>
+                                    <td>
+                                        <ul th:if="${(content != null) && content[0].answerFileList != null}">
+                                            <li th:each="item, index : ${content[0].answerFileList}">
+                                                <a class="btn_type5 btn_file" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                            </li>
+                                        </ul>
+                                        <ul th:unless="${(content != null) && (content[0].answerFileList != null)}"></ul>
+                                    </td>
+                                </tr>
+                                <th:block th:if="${content[0].classGuideType == '1'}">
+                                    <tr th:if="${content[0].nieFilePath != null}">
+                                        <th scope="row">10분 NIE</th>
+                                        <td>
+                                            <ul th:if="${(content != null) && content[0].nieFileList != null}">
+                                                <li th:each="item, index : ${content[0].nieFileList}">
+                                                    <a class="btn_type5 btn_file" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                                </li>
+                                            </ul>
+                                            <ul th:unless="${(content != null) && (content[0].nieFileList != null)}"></ul>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_blue" th:href="@{/mypage/class-guide/edit/{id}(id=${content[0].classGuideCode})}">수정하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/class-guide">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        if( [[${authError}]] == null ) {
+            function copyUrl(){
+                let nowUrl = window.location.href;
+                navigator.clipboard.writeText(nowUrl).then(res=>{
+                    alert("현재 주소가 복사되었습니다.");
+                })
+            }
+
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(0,5);
+            }
+            /* ]]> */
+        } else {
+            alert( [[${authError}]] );
+            history.back();
+        }
+    </script>
+</th:block>
+</body>
+</html>

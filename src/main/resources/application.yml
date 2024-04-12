@@ -1,0 +1,30 @@
+#[프로젝트 정보 - actuator info에 노출]
+info:
+  group: "@project.groupId@"
+  artifact: "@project.artifactId@"
+  name: "@project.name@"
+  description: "@project.description@"
+  version: "@project.version@"
+  app:
+    encoding: "@project.build.sourceEncoding@"
+    java:
+      source: "@java.version@"
+      target: "@java.version@"
+  pid:
+    fail-on-write-error: true
+    file: "kpf-lms.pid"
+    
+spring:
+  session:
+    store-type: jdbc
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    resources:
+      add-mappings: false
+
+#  thymeleaf:
+#    prefix: classpath:/templates/views/
+#    suffix: .html

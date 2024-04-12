@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <!-- 이러닝 강의실 -->
+                    <ul class="bl_tab_menu hp_mb40" id="tabGroup1">
+                        <li>
+                            <a id="tabLink1_1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink1_2"  href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li>
+                            <a id="tabLink1_3"  href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink1_4"  href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <!-- 집합 강의실 -->
+                    <ul class="bl_tab_menu hp_mb40" id="tabGroup2">
+                        <li>
+                            <a id="tabLink2_1" href="/mypage/education-state/lecture/main">강의실 홈</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink2_2" href="/mypage/education-state/lecture/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭4] 자료실 -->
+                        <div class="bl_tab_item js_tab_item">
+                            <!-- BOARD : LIST -->
+                            <div class="bl_board">
+                                <div class="bl_board_head">
+                                    <div class="bl_board_no">번호</div>
+                                    <div class="bl_board_subject">제목</div>
+                                    <div class="bl_board_file">첨부파일</div>
+                                    <div class="bl_board_author">작성자</div>
+                                    <div class="bl_board_date">작성일</div>
+                                </div>
+
+                                <div class="bl_board_body">
+                                    <div class="bl_board_unit" th:each="item,stat : ${content[0].educationPlan.curriculumMaster.curriculumReferenceRoomList}">
+                                        <div class="bl_board_no" th:text="${stat.index + 1}"></div>
+                                        <!-- 이러닝 강의실 -->
+                                        <a th:href="@{/mypage/education-state/e-learning/archive/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject __eLearn">
+                                            <span class="hp_ellipsis" th:text="${item.title}">이용 중에 궁금한 점이 있어요~</span>
+                                        </a>
+                                        <!-- 집합 강의실 -->
+                                        <a th:href="@{/mypage/education-state/lecture/archive/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject __lecture">
+                                            <span class="hp_ellipsis" th:text="${item.title}">이용 중에 궁금한 점이 있어요~</span>
+                                        </a>
+                                        <div class="bl_board_file" th:unless="${item.filePath == null}"><i class="el_ico"><img th:src="@{/assets/images/icons/file_icon.png}" alt="첨부파일"></i></div>
+                                        <div class="bl_board_author" th:text="${item.registUserId}">홍길동</div>
+                                        <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime,0 ,10)}">
+                                            2022.08.10
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bl_paginate"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+
+                let type = window.location.pathname.split('/')[window.location.pathname.split('/').length-3]
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+
+                if(type == 'e-learning'){
+                    document.getElementById('tabGroup2').style.display = 'none';
+                    document.getElementById('tabLink1_1').setAttribute('href','/mypage/education-state/e-learning/main/'+nowId);
+                    document.getElementById('tabLink1_2').setAttribute('href','/mypage/education-state/e-learning/list/'+nowId);
+                    document.getElementById('tabLink1_3').setAttribute('href','/mypage/education-state/e-learning/exam/'+nowId);
+                    document.getElementById('tabLink1_4').setAttribute('href','/mypage/education-state/e-learning/archive/'+nowId);
+                    for(let i=0; i<document.querySelectorAll('.__lecture').length; i++){
+                        document.querySelectorAll('.__lecture')[i].style.display = 'none';
+                    }
+                } else if(type == 'e-lecture'){
+                    document.getElementById('tabGroup1').style.display = 'none';
+                    document.getElementById('tabLink2_1').setAttribute('href','/mypage/education-state/e-lecture/main/'+nowId);
+                    document.getElementById('tabLink2_2').setAttribute('href','/mypage/education-state/e-lecture/archive/'+nowId);
+                    for(let i=0; i<document.querySelectorAll('.__eLearn').length; i++){
+                        document.querySelectorAll('.__eLearn')[i].style.display = 'none';
+                    }
+                } else if(type == 'lecture'){
+                    document.getElementById('tabGroup1').style.display = 'none';
+                    document.getElementById('tabLink2_1').setAttribute('href','/mypage/education-state/lecture/main/'+nowId);
+                    document.getElementById('tabLink2_2').setAttribute('href','/mypage/education-state/lecture/archive/'+nowId);
+                    for(let i=0; i<document.querySelectorAll('.__eLearn').length; i++){
+                        document.querySelectorAll('.__eLearn')[i].style.display = 'none';
+                    }
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

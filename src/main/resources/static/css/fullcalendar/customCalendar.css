@@ -1,0 +1,91 @@
+/* 달력 헤더 css */
+.fc .fc-toolbar.fc-header-toolbar{
+    margin-bottom: 24px;
+}
+.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) > div{
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    /*width: 223px;*/
+}
+/* 타이틀 */
+.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) > div > h2{
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    color: var(--color-navy);
+    line-height: 1;
+    margin: 0 20px;
+}
+/* 달력 버튼 */
+.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) > div > button{
+    background: #ffffff;
+    border-color: #ffffff;
+    color: var(--color-navy);
+}
+.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) > div > button > span{
+    font-size: 2em;
+    padding: 0;
+}
+
+/* 요일 지정 칸 */
+.fc-col-header .fc-col-header-cell.fc-day{
+    background: var(--color-navy);
+    height: 60px;
+    border: 0;
+}
+.fc-col-header .fc-col-header-cell.fc-day>.fc-scrollgrid-sync-inner{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fc-col-header .fc-col-header-cell.fc-day a{ color: #ffffff; }
+.fc-col-header .fc-col-header-cell.fc-day.fc-day-sat a{ color: #7bc6ff }
+.fc-col-header .fc-col-header-cell.fc-day.fc-day-sun a{ color:#ff9296 }
+
+/* 날짜 위치 변경*/
+.fc .fc-daygrid-day-top{ flex-direction: row; }
+.fc .fc-daygrid-day-number{
+    /*padding-top: 22px;*/
+    /*padding-left: 24px;*/
+    /*margin-bottom: 27px;*/
+}
+
+/*토요일 일요일 색상 지정*/
+.fc-day-sat > .fc-daygrid-day-frame > .fc-daygrid-day-top > .fc-daygrid-day-number{ color:var(--color-main); }
+.fc-day-sun > .fc-daygrid-day-frame > .fc-daygrid-day-top > .fc-daygrid-day-number{ color:var(--color-red);  }
+/* 오늘 표시 */
+.fc .fc-daygrid-day.fc-day-today{ background: #ccccff; }
+/* 이벤트 */
+.fc-h-event{
+    padding: 0 9px 0 7px;
+    line-height: 28px;
+    border-style: solid;
+    border-width: 0 0 0 4px;
+}
+.fc-h-event .fc-event-main{ color: #1a1e21; }
+.fc-h-event.label--head_office{
+    border-color: var(--label-point-color);
+    background: var(--label-point-color2);
+}
+.fc-h-event.label--sejong_daejeon_office{
+    border-color: var(--label-point-color);
+    background: var(--label-point-color2);
+}.fc-h-event.label--busan_office{
+     border-color: var(--label-point-color);
+     background: var(--label-point-color2);
+ }
+.fc-h-event.label--gwangju_office{
+    border-color: var(--label-point-color);
+    background: var(--label-point-color2);
+}
+.fc-h-event.label--daegu_office{
+    border-color: var(--label-point-color);
+    background: var(--label-point-color2);
+}
+.fc-h-event.label--e_learning{
+    border-color: var(--label-point-color);
+    background: var(--label-point-color2);
+}

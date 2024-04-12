@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">수업지도안</div>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">구분</th>
+                                <td>
+                                    <div class="radio_box">
+                                        <input value="1" id="ctg01" type="radio" name="ctg" checked th:if="${content == null}">
+                                        <input value="1" id="ctg01" type="radio" name="ctg" th:checked="${content[0].classGuideType == '1'}" th:unless="${content == null}" disabled>
+                                        <label for="ctg01">
+                                            <span></span>
+                                            교사용
+                                        </label>
+                                    </div>
+
+                                    <div class="radio_box">
+                                        <input value="2" id="ctg02" type="radio" name="ctg" th:if="${content == null}">
+                                        <input value="2" id="ctg02" type="radio" name="ctg" th:checked="${content[0].classGuideType == '2'}" th:unless="${content == null}" disabled>
+                                        <label for="ctg02">
+                                            <span></span>
+                                            학부모용
+                                        </label>
+                                    </div>
+
+                                    <div class="radio_box">
+                                        <input value="3" id="ctg03" type="radio" name="ctg" th:if="${content == null}">
+                                        <input value="3" id="ctg03" type="radio" name="ctg" th:checked="${content[0].classGuideType == '3'}" th:unless="${content == null}" disabled>
+                                        <label for="ctg03">
+                                            <span></span>
+                                            기타(다문화/유아/일반)
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 1. 교사용 -->
+                    <div class="__tabDisplay professor_chk" style="display: none">
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite mt-40">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 작성자
+                                    </th>
+                                    <td>
+                                        <input type="text" class="common_input hp_w100p" th:if="${content == null}" th:value="${#authentication.name}" disabled>
+                                        <input type="text" class="common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].userName}" disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">차시</th>
+                                    <td>
+                                        <input type="number" class="__classGuideRound common_input hp_w100p" th:if="${content == null}">
+                                        <input type="number" class="__classGuideRound common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].classGuideRound}">
+                                        <p class="guide_text">숫자만 입력하세요.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 대상
+                                    </th>
+                                    <td>
+                                        <select class="__target common_select" th:if="${content == null}">
+                                            <option value="초등학교">초등학교</option>
+                                            <option value="중학교">중학교</option>
+                                            <option value="고등학교">고등학교</option>
+                                            <option value="특성별">특성별</option>
+                                        </select>
+                                        <select class="__target common_select" th:unless="${content == null}">
+                                            <option value="초등학교" th:selected="${content[0].target == '초등학교'}">초등학교</option>
+                                            <option value="중학교" th:selected="${content[0].target == '중학교'}">중학교</option>
+                                            <option value="고등학교" th:selected="${content[0].target == '고등학교'}">고등학교</option>
+                                            <option value="특성별" th:selected="${content[0].target == '특성별'}">특성별</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 주제
+                                    </th>
+                                    <td>
+                                        <input type="text" class="__title common_input hp_w100p" th:if="${content == null}">
+                                        <input type="text" class="__title common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].title}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">학습영역</th>
+                                    <td>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningArea}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">학습목표</th>
+                                    <td>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningGoal}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">학습자료</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__learningMaterial"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningMaterial}" id="__learningMaterial"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">E-nie여부</th>
+                                    <td>
+                                        <select class="__enieyn common_select" th:if="${content == null}">
+                                            <option value="Y">Y</option>
+                                            <option value="N">N</option>
+                                        </select>
+                                        <select class="__enieyn common_select" th:unless="${content == null}">
+                                            <option value="Y" th:selected="${content[0].eNIEYn == 'Y'}">Y</option>
+                                            <option value="N" th:selected="${content[0].eNIEYn == 'N'}">N</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">해쉬태그</th>
+                                    <td>
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:if="${content == null}">
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].hashTag}">
+                                        <p class="guide_text">입력 예(콤마로 구분해주세요.)) #국어,#수학,#과학</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        관련교과
+                                        <div class="btn_type1 btn_xs btn_blue" onclick="openPop('','/mypage/class-subject','popAddSubject')">교과등록</div>
+                                    </th>
+                                    <td>
+                                        <span class="guide_text mb-0" th:if="${content == null}">관련교과를 등록해주세요.</span>
+                                        <ul class="bl_uploadList bl_subject" th:if="${content == null}"></ul>
+                                        <ul class="bl_uploadList bl_subject" th:if="${content != null}">
+                                            <li th:each="item:${content[0].classSubjectList}">
+                                                <span th:text="${item.codeInfo}"></span>
+                                                <button class="btn_type3 btn_del" th:onclick="subjectRemove(this, [[${item.individualCode}]])">삭제</button>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <h4 class="el_lv2heading">교수/학습활동</h4>
+
+                        <!-- BOARD : TITLE -->
+                        <div class="bl_boardTitle2">
+                            <h5 class="el_lv3heading">문제파악(5분)</h5>
+                        </div>
+
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">동기유발</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__realizeMotivation"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].realizeMotivation}" id="__realizeMotivation"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__realizeMotivationNote"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].realizeMotivationNote}" id="__realizeMotivationNote"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">문제확인/목표제시</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__realizePractice"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].realizePractice}" id="__realizePractice"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__realizePracticeNote"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].realizePracticeNote}" id="__realizePracticeNote"></textarea>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- BOARD : TITLE -->
+                        <div class="bl_boardTitle2">
+                            <h5 class="el_lv3heading">문제해결(30분)</h5>
+                        </div>
+
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__solutionNote"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].solutionNote}" id="__solutionNote"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">기사읽고 생각 넓히기</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__solutionThink"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].solutionThink}" id="__solutionThink"></textarea>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- BOARD : TITLE -->
+                        <div class="bl_boardTitle2">
+                            <h5 class="el_lv3heading">정리(5분)</h5>
+                        </div>
+
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">마무리</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__arrangementSummary"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].arrangementSummary}" id="__arrangementSummary"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">유의점/준비물</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__arrangementNote"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].arrangementNote}" id="__arrangementNote"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">도움말</th>
+                                    <td>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}" id="__arrangementHelp"></textarea>
+                                        <textarea class="common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].arrangementHelp}" id="__arrangementHelp"></textarea>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 2. 학부모용 -->
+                    <div class="__tabDisplay parent_chk" style="display: none">
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite mt-40">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 작성자
+                                    </th>
+                                    <td>
+                                        <input type="text" class="common_input hp_w100p" th:if="${content == null}" th:value="${#authentication.name}" disabled>
+                                        <input type="text" class="common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].userName}" disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">차시</th>
+                                    <td>
+                                        <input type="text" class="__classGuideRound common_input hp_w100p" th:if="${content == null}">
+                                        <input type="text" class="__classGuideRound common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].classGuideRound}">
+                                        <p class="guide_text">숫자만 입력하세요.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 대상
+                                    </th>
+                                    <td>
+                                        <select class="__target common_select" th:if="${content == null}" onchange="showValue(this)">
+                                            <option value="초등학교">초등학교</option>
+                                            <option value="중학교">중학교</option>
+                                            <option value="고등학교">고등학교</option>
+                                        </select>
+                                        <select class="__target common_select" th:unless="${content == null}" onchange="showValue(this)">
+                                            <option value="초등학교" th:selected="${content[0].target == '초등학교'}">초등학교</option>
+                                            <option value="중학교" th:selected="${content[0].target == '중학교'}">중학교</option>
+                                            <option value="고등학교" th:selected="${content[0].target == '고등학교'}">고등학교</option>
+                                        </select>
+                                        <div class="common_input_box align-items-center mt-2">
+                                            <div class="chk_box">
+                                                <input id="grade_1" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_1" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '1학년'}" value="1학년">
+                                                <label for="grade_1">
+                                                    <span></span>
+                                                    1학년
+                                                </label>
+                                            </div>
+                                            <div class="chk_box">
+                                                <input id="grade_2" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_2" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '2학년'}" value="2학년">
+                                                <label for="grade_2">
+                                                    <span></span>
+                                                    2학년
+                                                </label>
+                                            </div>
+                                            <div class="chk_box">
+                                                <input id="grade_3" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_3" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '3학년'}" value="3학년">
+                                                <label for="grade_3">
+                                                    <span></span>
+                                                    3학년
+                                                </label>
+                                            </div>
+                                            <div class="chk_box">
+                                                <input id="grade_4" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_4" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '4학년'}" value="4학년">
+                                                <label for="grade_4">
+                                                    <span></span>
+                                                    4학년
+                                                </label>
+                                            </div>
+                                            <div class="chk_box">
+                                                <input id="grade_5" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_5" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '5학년'}" value="5학년">
+                                                <label for="grade_5">
+                                                    <span></span>
+                                                    5학년
+                                                </label>
+                                            </div>
+                                            <div class="chk_box">
+                                                <input id="grade_6" type="checkbox" th:if="${content == null}">
+                                                <input id="grade_6" type="checkbox" th:unless="${content == null}" th:checked="${content[0].targetGrade == '6학년'}" value="6학년">
+                                                <label for="grade_6">
+                                                    <span></span>
+                                                    6학년
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 활동명
+                                    </th>
+                                    <td>
+                                        <input type="text" class="__title common_input hp_w100p" th:if="${content == null}" >
+                                        <input type="text" class="__title common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].title}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">학습목표</th>
+                                    <td>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningGoal}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">이렇게 활동해요</th>
+                                    <td>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningArea}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">도움말</th>
+                                    <td>
+                                        <textarea class="__learningHelp common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningHelp common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningHelp}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">E-nie여부</th>
+                                    <td>
+                                        <select class="__enieyn common_select" th:if="${content == null}">
+                                            <option value="Y">Y</option>
+                                            <option value="N">N</option>
+                                        </select>
+                                        <select class="__enieyn common_select" th:unless="${content == null}">
+                                            <option value="Y" th:selected="${content[0].eNIEYn == 'Y'}">Y</option>
+                                            <option value="N" th:selected="${content[0].eNIEYn == 'N'}">N</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">해쉬태그</th>
+                                    <td>
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:if="${content == null}" >
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].hashTag}">
+                                        <p class="guide_text">입력 예(콤마로 구분해주세요.)) #국어,#수학,#과학</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 3. 기타 -->
+                    <div class="__tabDisplay etc_chk" style="display: none">
+                        <!-- BOARD : WRITE -->
+                        <div class="bl_boardWrite mt-40">
+                            <table>
+                                <colgroup>
+                                    <col class="hp_lg_w150" >
+                                    <col >
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 작성자
+                                    </th>
+                                    <td>
+                                        <input type="text" class="common_input hp_w100p" th:if="${content == null}" th:value="${#authentication.name}" disabled>
+                                        <input type="text" class="common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].userName}" disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">차시</th>
+                                    <td>
+                                        <input type="text" class="__classGuideRound common_input hp_w100p" th:if="${content == null}">
+                                        <input type="text" class="__classGuideRound common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].classGuideRound}">
+                                        <p class="guide_text">숫자만 입력하세요.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        대상
+                                    </th>
+                                    <td>
+                                        <select class="__target common_select" th:if="${content == null}">
+                                            <option value="다문화">다문화</option>
+                                            <option value="유아">유아</option>
+                                            <option value="일반">일반</option>
+                                        </select>
+                                        <select class="__target common_select" th:unless="${content == null}">
+                                            <option value="다문화" th:selected="${content[0].target == '다문화'}">다문화</option>
+                                            <option value="유아" th:selected="${content[0].target == '유아'}">유아</option>
+                                            <option value="일반" th:selected="${content[0].target == '일반'}">일반</option>
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <span class="el_required">*</span> 활동명
+                                    </th>
+                                    <td>
+                                        <input type="text" class="__title common_input hp_w100p" th:if="${content == null}" >
+                                        <input type="text" class="__title common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].title}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">학습목표</th>
+                                    <td>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningGoal common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningGoal}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">이렇게 활동해요</th>
+                                    <td>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningArea common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningArea}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">도움말</th>
+                                    <td>
+                                        <textarea class="__learningHelp common_input hp_w100p" name="" cols="30" rows="2" th:if="${content == null}"></textarea>
+                                        <textarea class="__learningHelp common_input hp_w100p" name="" cols="30" rows="2" th:unless="${content == null}" th:text="${content[0].learningHelp}"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">E-nie여부</th>
+                                    <td>
+                                        <select class="__enieyn common_select" th:if="${content == null}">
+                                            <option value="Y">Y</option>
+                                            <option value="N">N</option>
+                                        </select>
+                                        <select class="__enieyn common_select" th:unless="${content == null}">
+                                            <option value="Y" th:selected="${content[0].eNIEYn == 'Y'}">Y</option>
+                                            <option value="N" th:selected="${content[0].eNIEYn == 'N'}">N</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">해쉬태그</th>
+                                    <td>
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:if="${content == null}" >
+                                        <input type="text" class="__hashTag common_input hp_w100p" th:unless="${content == null}" th:value="${content[0].hashTag}">
+                                        <p class="guide_text">입력 예(콤마로 구분해주세요.) #국어,#수학,#과학</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 파일 공통 -->
+                    <div class="bl_boardTitle2">
+                        <h5 class="el_lv3heading">수업지도안 첨부</h5>
+                    </div>
+                    <div class="bl_boardWrite">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody id="fileWrap">
+                            <tr>
+                                <th scope="row">수업지도안</th>
+                                <td>
+                                    <div class="bl_uploadGrid2Wrap">
+                                        <div>
+                                            <div class="bl_uploadGrid2">
+                                                <div class="bl_upload hp_lg_w462">
+                                                    <input type="text" class="common_input bl_upload_path js_path" value="선택된 파일 없음" >
+                                                    <label for="guideFile" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                                    <input type="file" name="guideFile" id="guideFile" class="bl_upload_file js_file" multiple>
+                                                </div>
+                                            </div>
+                                            <p class="bl_uploadNote">여러 파일 선택 가능, 파일용량 : 20MB 미만</p>
+                                        </div>
+
+                                        <div class="bl_uploadList__scroll hp_w100p" th:if="${(content != null) && content[0].guideFileList != null}">
+                                            <ul class="bl_uploadList">
+                                                <li th:each="item, index : ${content[0].guideFileList}">
+                                                    <a class="js_path" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                                    <div class="bl_uploadList_rgt">
+                                                        <span class="font_roboto file_size" th:text="${item.fileSize}">5KB</span>
+                                                        <a class="del_btn" th:onclick="deleteItem([[${item.sequenceNo}]])" th:value="${item.sequenceNo}">
+                                                            <i class="fas fa-times color_red"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div th:unless="${(content != null) && (content[0].guideFileList != null)}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">활동지</th>
+                                <td>
+                                    <div class="bl_uploadGrid2Wrap">
+                                        <div>
+                                            <div class="bl_uploadGrid2">
+                                                <div class="bl_upload hp_lg_w462">
+                                                    <input type="text" class="common_input bl_upload_path js_path" value="선택된 파일 없음" >
+                                                    <label for="activityFile" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                                    <input type="file" name="activityFile" id="activityFile" class="bl_upload_file js_file" multiple>
+                                                </div>
+                                            </div>
+                                            <p class="bl_uploadNote">여러 파일 선택 가능, 파일용량 : 20MB 미만</p>
+                                        </div>
+
+                                        <div class="bl_uploadList__scroll hp_w100p" th:if="${(content != null) && content[0].activityFileList != null}">
+                                            <ul class="bl_uploadList">
+                                                <li th:each="item, index : ${content[0].activityFileList}">
+                                                    <a class="js_path" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                                    <div class="bl_uploadList_rgt">
+                                                        <span class="font_roboto file_size" th:text="${item.fileSize}">5KB</span>
+                                                        <a class="del_btn" th:onclick="deleteItem([[${item.sequenceNo}]])" th:value="${item.sequenceNo}">
+                                                            <i class="fas fa-times color_red"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div th:unless="${(content != null) && (content[0].activityFileList != null)}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">예시답안</th>
+                                <td>
+                                    <div class="bl_uploadGrid2Wrap">
+                                        <div>
+                                            <div class="bl_uploadGrid2">
+                                                <div class="bl_upload hp_lg_w462">
+                                                    <input type="text" class="common_input bl_upload_path js_path" value="선택된 파일 없음" >
+                                                    <label for="answerFile" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                                    <input type="file" name="answerFile" id="answerFile" class="bl_upload_file js_file" multiple>
+                                                </div>
+                                            </div>
+                                            <p class="bl_uploadNote">여러 파일 선택 가능, 파일용량 : 20MB 미만</p>
+                                        </div>
+
+                                        <div class="bl_uploadList__scroll hp_w100p" th:if="${(content != null) && content[0].answerFileList != null}">
+                                            <ul class="bl_uploadList">
+                                                <li th:each="item, index : ${content[0].answerFileList}">
+                                                    <a class="js_path" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                                    <div class="bl_uploadList_rgt">
+                                                        <span class="font_roboto file_size" th:text="${item.fileSize}">5KB</span>
+                                                        <a class="del_btn" th:onclick="deleteItem([[${item.sequenceNo}]])" th:value="${item.sequenceNo}">
+                                                            <i class="fas fa-times color_red"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div th:unless="${(content != null) && (content[0].answerFileList != null)}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10분 NIE</th>
+                                <td>
+                                    <div class="bl_uploadGrid2Wrap">
+                                        <div>
+                                            <div class="bl_uploadGrid2">
+                                                <div class="bl_upload hp_lg_w462">
+                                                    <input type="text" class="common_input bl_upload_path js_path" value="선택된 파일 없음" >
+                                                    <label for="nieFile" class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                                    <input type="file" name="nieFile" id="nieFile" class="bl_upload_file js_file" multiple>
+                                                </div>
+                                            </div>
+                                            <p class="bl_uploadNote">여러 파일 선택 가능, 파일용량 : 20MB 미만</p>
+                                        </div>
+
+                                        <div class="bl_uploadList__scroll hp_w100p" th:if="${(content != null) && content[0].nieFileList != null}">
+                                            <ul class="bl_uploadList">
+                                                <li th:each="item, index : ${content[0].nieFileList}">
+                                                    <a class="js_path" th:href="@{/api/mypage/class-guide/download(attachFilePath=${item.filePath})}" th:text="${item.originalFileName}"></a>
+                                                    <div class="bl_uploadList_rgt">
+                                                        <span class="font_roboto file_size" th:text="${item.fileSize}">5KB</span>
+                                                        <a class="del_btn" th:onclick="deleteItem([[${item.sequenceNo}]])" th:value="${item.sequenceNo}">
+                                                            <i class="fas fa-times color_red"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div th:unless="${(content != null) && (content[0].nieFileList != null)}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 파일 공통 -->
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <div th:if="${(content != null) && (content[0].classGuideApprovalStatus != '1')}" class="btn_type1 btn_gray" onclick="deleteCont()">삭제하기</div>
+                            <div th:if="${content == null}" class="btn_type1 btn_lightgray" onclick="save('0')">임시저장</div>
+                            <div th:if="${content == null}" class="btn_type1 btn_blue" onclick="save('1')">제출하기</div>
+                            <div th:if="${content != null}" class="btn_type1 btn_lightgray" onclick="save('0')">임시저장</div>
+                            <div th:if="${content != null}" class="btn_type1 btn_blue" onclick="save('1')">수정하기</div>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/class-guide">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="iframe_wrap">
+            <iframe id="popAddSubject" src="about:blank" width="100%"></iframe>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+    <script th:inline="javascript">
+        //파일첨부API2
+        $(".file_delete").bind("click", function (e){
+            e.preventDefault();
+            let url = $(this).attr("href")
+            if(confirm("정말로 파일을 삭제하시겠습니까?")){
+                $.ajax({
+                    type: "delete", //http method
+                    url: url, //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    dataType: "json",
+                    success: function(data) {
+                        alert("삭제되었습니다.")
+                        window.location.reload();
+                    },
+                    error: function(e) {
+                        alert("오류가 발생했습니다.")
+                        window.location.reload();
+                    }
+                })
+                $(this).parent().parent().remove();
+            }
+        })
+
+        let fileSize = $(".file_size");
+        for (var item of fileSize) {
+            if(Math.floor(item.innerText / 1024)>1024){
+                let temp = Math.floor(item.innerText / 1024);
+                temp = parseFloat(temp);
+                temp = parseFloat(temp / 1024);
+                temp = temp.toFixed(2);
+                $(item).text(temp+"MB")
+            }else{
+                $(item).text(Math.floor(item.innerText / 1024)+"KB")
+            }
+        };
+
+        if( [[${authError}]] == null ) {
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(0,5);
+                gradeRander();
+            }
+
+            function deleteCont(){
+                const CONT = [[ ${content} ]]
+                $.ajax({ //jquery ajax
+                    type:"delete", //http method
+                    url:"/api/mypage/class-guide/delete/"+CONT[0].classGuideCode, //값을 가져올 경로
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(CONT[0]),
+                    success: function(data){   //요청 성공시 실행될 메서드
+                        alert('해당 게시글을 삭제 했습니다.')
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        alert('삭제에 실패했습니다.')
+                    }
+                })
+            }
+
+            let tabNum;
+            function save(type){
+                const CONT = [[ ${content} ]]
+                let param = {
+                    "activitiesFilePath": "",
+                    "activitiesFileSize": 0,
+                    "arrangementHelp": "",
+                    "arrangementNote": "",
+                    "arrangementSummary": "",
+                    "classGuideApplyStatus": "",
+                    "classGuideApprovalStatus": "",
+                    "classGuideCode": "",
+                    "classGuideFilePath": "",
+                    "classGuideFileSize": 0,
+                    "classGuideRound": 0,
+                    "classGuideType": "",
+                    "enieyn": "",
+                    "exampleAnswerFilePath": "",
+                    "exampleAnswerFileSize": 0,
+                    "hashTag": "",
+                    "learningArea": "",
+                    "learningGoal": "",
+                    "learningHelp": "",
+                    "learningMaterial": "",
+                    "nieFilePath": "",
+                    "nieFileSize": 0,
+                    "realizeMotivation": "",
+                    "realizeMotivationNote": "",
+                    "realizePractice": "",
+                    "realizePracticeNote": "",
+                    "referenceSubject": null,
+                    "solutionNote": "",
+                    "solutionThink": "",
+                    "target": "",
+                    "targetGrade": "",
+                    "title": ""
+                };
+                // type1, 2, 3
+                // 구분
+                param.classGuideType = document.querySelector('input[name="ctg"]:checked').value;
+                // E-NIE 여부
+                param.enieyn = document.querySelectorAll('.__enieyn')[tabNum].value;
+                // 대상
+                param.target = document.querySelectorAll('.__target')[tabNum].value;
+                // 주제 & 활동명
+                param.title = document.querySelectorAll('.__title')[tabNum].value;
+                // 해시태그
+                param.hashTag = document.querySelectorAll('.__hashTag')[tabNum].value;
+                // 차수
+                param.classGuideRound = document.querySelectorAll('.__classGuideRound')[tabNum].value;
+                // 학습 영역 & 이렇게 활동해요
+                param.learningArea = document.querySelectorAll('.__learningArea')[tabNum].value;
+                // 학습 목표
+                param.learningGoal = document.querySelectorAll('.__learningGoal')[tabNum].value;
+
+                // type1
+                // 정리_도움말
+                (document.getElementById('__arrangementHelp') !== null) && (param.arrangementHelp = document.getElementById('__arrangementHelp').value);
+                // 정리_유의점/준비물
+                (document.getElementById('__arrangementNote') !== null) && (param.arrangementNote = document.getElementById('__arrangementNote').value);
+                // 정리_마무리
+                (document.getElementById('__arrangementSummary') !== null) && (param.arrangementSummary = document.getElementById('__arrangementSummary').value);
+                // 학습자료
+                (document.getElementById('__learningMaterial') !== null) && (param.learningMaterial = document.getElementById('__learningMaterial').value);
+                // 문제 파악_동기유발
+                (document.getElementById('__realizeMotivation') !== null) && (param.realizeMotivation = document.getElementById('__realizeMotivation').value);
+                // 문제 파악_동기유발_유의점/준비물
+                (document.getElementById('__realizeMotivationNote') !== null) && (param.realizeMotivationNote = document.getElementById('__realizeMotivationNote').value);
+                // 문제 파악_문제확인/목표제시
+                (document.getElementById('__realizePractice') !== null) && (param.realizePractice = document.getElementById('__realizePractice').value);
+                // 문제 파악_문제확인/목표제시_유의점/준비물
+                (document.getElementById('__realizePracticeNote') !== null) && (param.realizePracticeNote = document.getElementById('__realizePracticeNote').value);
+                // 문제해결_유의점 / 준비물
+                (document.getElementById('__solutionNote') !== null) && (param.solutionNote = document.getElementById('__solutionNote').value);
+                // 문제해결_기사읽고 생각 넓히기
+                (document.getElementById('__solutionThink') !== null) && (param.solutionThink = document.getElementById('__solutionThink').value);
+                // 관련 과목
+                (subjectList.length > 0) && (param.referenceSubject = subjectList.join(','));
+
+                // type2,3
+                // 학습 도움말
+                if(document.querySelector('input[name="ctg"]:checked').value == '2' || document.querySelector('input[name="ctg"]:checked').value == '3'){
+                    param.learningHelp = document.querySelectorAll('.__learningHelp')[tabNum-1].value
+                }
+
+                // type 2
+                // 대상 학년
+                if(document.querySelector('input[name="ctg"]:checked').value == '2'){
+                    let grade = ''
+                    if(document.getElementById('grade_1').checked){ grade += '1학년,' }
+                    if(document.getElementById('grade_2').checked){ grade += '2학년,' }
+                    if(document.getElementById('grade_3').checked){ grade += '3학년,' }
+                    if(document.getElementById('grade_4').checked){ grade += '4학년,' }
+                    if(document.getElementById('grade_5').checked){ grade += '5학년,' }
+                    if(document.getElementById('grade_6').checked){ grade += '6학년,' }
+                    grade = grade.slice(0,-1);
+                    param.targetGrade = grade;
+                }
+
+                // 추가 값
+                param.classGuideApplyStatus = type;
+                param.classGuideApprovalStatus = '0';
+
+                if( CONT == null ){
+                    // 생성
+                    $.ajax({ //jquery ajax
+                        type:"post", //http method
+                        url:"/api/mypage/class-guide/create", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(param),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function(data){   //요청 성공시 실행될 메서드
+                            if($('#guideFile')[0].files.length>0 || ($("#activityFile")[0].files.length>0) || ($("#answerFile")[0].files.length>0) || ($("#nieFile")[0].files.length>0)){
+                                if($('#guideFile')[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#guideFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#guideFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${data.classGuideCode}/TEACH`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#activityFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#activityFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#activityFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${data.classGuideCode}/ACTIVITY`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#answerFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#answerFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#answerFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${data.classGuideCode}/ANSWER`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#nieFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#nieFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#nieFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${data.classGuideCode}/NIE`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                            }
+                            alert('등록이 완료되었습니다.');
+                            location.href = '/mypage/class-guide/view/'+data.classGuideCode;
+                        },
+                        error: function(e){		 //요청 실패시 에러 확인을 위함
+                            alert('등록 중 오류가 발생했습니다.')
+                        }
+                    })
+                } else {
+                    param.classGuideCode = CONT[0].classGuideCode;
+                    // 수정
+                    $.ajax({
+                        type:"put", //http method
+                        url:"/api/mypage/class-guide/update", //값을 가져올 경로
+                        headers: {'Content-Type': 'application/json'},
+                        data: JSON.stringify(param),
+                        dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                        success: function (data){
+                            if($('#guideFile')[0].files.length>0 || ($("#activityFile")[0].files.length>0) || ($("#answerFile")[0].files.length>0) || ($("#nieFile")[0].files.length>0)){
+                                if($('#guideFile')[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#guideFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#guideFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${param.classGuideCode}/TEACH`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#activityFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#activityFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#activityFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${param.classGuideCode}/ACTIVITY`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#answerFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#answerFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#answerFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${param.classGuideCode}/ANSWER`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                                if($("#nieFile")[0].files.length>0){
+                                    const fileDatas = new FormData();
+                                    for (var i = 0; i < $("#nieFile")[0].files.length; i++) {
+                                        fileDatas.append("attachFile", $("#nieFile")[0].files[i]);
+                                    }
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/mypage/class-guide/uploads/${param.classGuideCode}/NIE`, //값을 가져올 경로
+                                        processData : false,
+                                        contentType : false,
+                                        data: fileDatas,
+                                        success: function(subData) {
+                                        }, error: function(e) {
+                                            alert("첨부파일 등록 중 오류가 발생했습니다.");
+                                            location.href = '/mypage/class-guide';
+                                        }
+                                    })
+                                }
+                            }
+                            alert('수정이 완료되었습니다.');
+                            location.href = '/mypage/class-guide/view/'+param.classGuideCode;
+                        },
+                        error: function (){
+                            alert('수정 중 오류가 발생했습니다.')
+                        }
+                    })
+                }
+            }
+
+            // 구분별 폼 노출
+            const radio_btn = document.querySelectorAll('input[type=radio]');
+
+            const ctg01 = document.getElementById('ctg01');
+            const ctg02 = document.getElementById('ctg02');
+            const ctg03 = document.getElementById('ctg03');
+            const professor_chk = document.querySelector('.professor_chk');
+            const parent_chk = document.querySelector('.parent_chk');
+            const etc_chk = document.querySelector('.etc_chk');
+
+            // 파일 4종
+            const file1 = document.getElementById('classGuideFile')
+            const file2 = document.getElementById('activitiesFile')
+            const file3 = document.getElementById('exampleAnswerFile')
+            const file4 = document.getElementById('nieFile')
+
+            function ctgChk() {
+                if (ctg01.checked) {
+                    //교사용
+                    professor_chk.style.display = 'block';
+                    // 4개가 보여지고 첫번째 행의 목록 글자는 수업지도안
+                    $('#fileWrap tr').eq(0).children('th').text('수업지도안');
+                    $('#fileWrap tr').eq(3).css('display','table-row');
+                    tabNum = 0;
+                } else if (ctg02.checked) {
+                    //학부모용
+                    parent_chk.style.display = 'block';
+                    // 3개가 보여지고 첫번째 행의 목록 글자는 길라잡이
+                    $('#fileWrap tr').eq(0).children('th').text('길라잡이');
+                    $('#fileWrap tr').eq(3).css('display','none');
+                    tabNum = 1;
+                } else if (ctg03.checked) {
+                    //기타
+                    etc_chk.style.display = 'block';
+                    // 3개가 보여지고 첫번째 행의 목록 글자는 길라잡이
+                    $('#fileWrap tr').eq(0).children('th').text('길라잡이');
+                    $('#fileWrap tr').eq(3).css('display','none');
+                    tabNum = 2;
+                }
+            }
+            ctgChk();
+
+            radio_btn.forEach((btn, idx) => {
+                if (btn.name == 'ctg') {
+                    btn.addEventListener('click', function () {
+                        professor_chk.style.display = 'none';
+                        parent_chk.style.display = 'none';
+                        etc_chk.style.display = 'none';
+
+                        ctgChk();
+                    });
+                }
+            });
+
+            // 초등학교, 고등학교 셀렉트박스 선택시 체크박스 노출
+            function showValue(target){
+                // 선택한 option의 text 값
+                const option = target.options[target.selectedIndex].text;
+                const chk_box = document.querySelectorAll('.common_input_box .chk_box');
+
+                // 체크된 항목 초기화
+                for (let i = 0; i < chk_box.length; i++) {
+                    chk_box[i].children[0].checked = false;
+                }
+
+                if (option == '초등학교') {
+                    for (let i = 0; i < chk_box.length; i++) {
+                        chk_box[i].style.display = 'block';
+                    }
+                }
+                if (option == '중학교') {
+                    for (let i = 0; i < 3; i++) {
+                        chk_box[i].style.display = 'block';
+                    }
+                    for (let i = 3; i < chk_box.length; i++) {
+                        chk_box[i].style.display = 'none';
+                    }
+                }
+                if (option == '고등학교') {
+                    for (let i = 0; i < 3; i++) {
+                        chk_box[i].style.display = 'block';
+                    }
+                    for (let i = 3; i < chk_box.length; i++) {
+                        chk_box[i].style.display = 'none';
+                    }
+                }
+            }
+
+            // 학년 랜더링
+            function gradeRander(){
+                const CONT = [[ ${content} ]];
+                if(CONT != null && CONT[0].targetGrade != null && CONT[0].targetGrade != ""){
+                    const gradeArr = CONT[0].targetGrade.splist(',');
+                    if(gradeArr.includes('1학년')){
+                        document.getElementById('grade_1').setAttribute('checked','checked')
+                    } else if(gradeArr.includes('2학년')){
+                        document.getElementById('grade_2').setAttribute('checked','checked')
+                    } else if(gradeArr.includes('3학년')){
+                        document.getElementById('grade_3').setAttribute('checked','checked')
+                    } else if(gradeArr.includes('4학년')){
+                        document.getElementById('grade_4').setAttribute('checked','checked')
+                    } else if(gradeArr.includes('5학년')){
+                        document.getElementById('grade_5').setAttribute('checked','checked')
+                    } else if(gradeArr.includes('6학년')){
+                        document.getElementById('grade_6').setAttribute('checked','checked')
+                    }
+                }
+            }
+
+            /* 교과 등록 */
+            let subjectList = []; //팝업에서 등록한 교과 목록
+            if([[ ${content} ]] != null){
+                if ([[ ${content} ]][0].classSubjectList != null) {
+                    for(let i=0; i< [[ ${content} ]][0].classSubjectList.length; i++){
+                        subjectList.push([[ ${content} ]][0].classSubjectList[i].individualCode);
+                    }
+                }
+            }
+            // 메시지 수신 받는 eventListener 등록
+            window.addEventListener( 'message', receiveMsgFromChild );
+
+            // 자식으로부터 메시지 수신
+            function receiveMsgFromChild( e ) {
+                if (Array.isArray(e.data)) {
+                    for (let i = 0; i < e.data.length; i++) {
+                        if (Array.isArray(subjectList) && subjectList.length === 0) { // 리스트 빈 배열일 때
+                            $('.bl_uploadList.bl_subject').prev().hide();
+
+                            subjectList.push(e.data[i].id);
+                            $('.bl_uploadList.bl_subject').append(`
+                                    <li>
+                                        <span>`+e.data[i].text+`</span>
+                                        <button class="btn_type3 btn_del" onclick="subjectRemove(this, '`+e.data[i].id+`')">삭제</button>
+                                    </li>
+                                `);
+                        } else {
+                            // id값 비교 후 배열에 추가(중복 방지)
+                            if (subjectList.filter((subject) => { return subject == e.data[i].id }).length < 1) {
+                                subjectList.push(e.data[i].id);
+                                $('.bl_uploadList.bl_subject').append(`
+                                        <li>
+                                            <span>`+e.data[i].text+`</span>
+                                            <button class="btn_type3 btn_del" onclick="subjectRemove(this, '`+e.data[i].id+`')">삭제</button>
+                                        </li>
+                                    `);
+                            } else {
+                                alert(e.data[i].text + '은 등록된 교과입니다.');
+                            }
+                        }
+                    }
+                }
+            }
+
+            function subjectRemove(this_,id) {
+                this_.parentElement.remove();
+
+                if ($('.bl_uploadList.bl_subject > li').length == 0) { // 리스트 빈 배열일 때
+                    $('.bl_uploadList.bl_subject').prev().show();
+                }
+
+                // 교과 목록 리스트에서 선택한 id 값을 가진 객체 삭제
+                subjectList.forEach((item, index)=> {
+                    if(item === id) {
+                        subjectList.splice(index, 1);
+                    }
+                });
+            }
+            /* ]]> */
+        } else {
+            alert( [[${authError}]] );
+            history.back();
+        }
+
+        function deleteItem(seq) {
+            if (confirm("파일을 삭제하시겠습니까?")) {
+                $.ajax({
+                    type:"delete", //http method
+                    headers: {'Content-Type': 'application/json'},
+                    url:`/api/mypage/class-guide/upload/delete/`+seq, //값을 가져올 경로
+                    success: function(subData) {
+                        location.reload();
+                    }, error: function(e) {
+                        alert("첨부파일 삭제 중 오류가 발생했습니다.");
+                    }
+                })
+            }
+        }
+    </script>
+    </th:block>
+</div>
+</body>
+</html>

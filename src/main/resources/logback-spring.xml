@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="2 seconds" debug="false">
+	<!-- spring boot의 원래 logback 초기화는 base.xml에서 이뤄짐 -->
+	<!-- <include resource="org/springframework/boot/logging/logback/base.xml"/> -->
+
+	<!-- spring boot의 기본설정은 org/springframework/boot/logging/logback/default.xml -->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<!-- spring 속성: logback 출력패턴등에서 ${springAppName}로 로깅에 출력가능 -->
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	<springProperty scope="context" name="serverProfile" source="spring.profiles.active"/>
+
+	<!-- JMX 설정 -->
+    <jmxConfigurator/>
+
+	<!-- 프로젝트의 logback 정책 설정 -->
+	<include resource="logback/defaults.xml"/>
+
+	<!-- 프로파일별 정책 설정 -->
+	<springProfile name="production">
+		<include resource="logback/logback-production.xml" />
+	</springProfile>
+	<springProfile name="development">
+		<include resource="logback/logback-development.xml" />
+	</springProfile>
+	<springProfile name="local">
+		<include resource="logback/logback-local.xml" />
+	</springProfile>
+
+</configuration>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual4.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">공모/자격</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">공모사업</div>
+                        </div>
+                    </div>
+
+                    <form action="./pbanc" method="get">
+                        <div class="sch_box">
+
+                            <label for="containTextType" class="hidden_label">구분</label>
+                            <select id="containTextType" name="containTextType" class="common_select2">
+                                <option value="1">제목+내용</option>
+                                <option value="2">제목</option>
+                                <option value="3">내용</option>
+                            </select>
+
+                            <label for="containText" class="hidden_label">검색어</label>
+                            <input id="containText" name="containText" class="common_input2 form_input_md" placeholder="검색어를 입력해주세요." >
+                            <button type="submit" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                        </div>
+                    </form>
+
+                    <!-- BOARD : LIST -->
+                    <div class="bl_board">
+                        <div class="bl_board_head">
+                            <div class="bl_board_ctg">구분</div>
+                            <div class="bl_board_subjectGroup">사업명</div>
+                            <div class="bl_board_dateRange">지원기간</div>
+                            <div class="bl_board_dateRange">접수기간</div>
+                            <div class="bl_board_state hp_lg_fb120">진행상태</div>
+                        </div>
+
+                        <div class="bl_board_body">
+                            <div class="bl_board_unit" th:each="item: ${content}">
+                                <div class="bl_board_ctg hp_md_ord2">
+                                    <div th:if="${item.bizPbancCtgr == 0}" class="el_ctg hp_brown text-center">
+                                        <div><img th:if="${item.isTop=='Y'}" th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
+                                        <div>미디어교육</div>
+                                    </div>
+                                    <div th:if="${item.bizPbancCtgr == 1}" class="el_ctg hp_main text-center">
+                                        <div><img th:if="${item.isTop=='Y'}" th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
+                                        <div>언론인연수</div>
+                                    </div>
+                                    <div th:if="${item.bizPbancCtgr == 2}" class="el_ctg hp_purple text-center">
+                                        <div><img th:if="${item.isTop=='Y'}" th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
+                                        <div>미디어지원</div>
+                                    </div>
+                                </div>
+                                <div class="bl_board_subjectGroup">
+                                    <a th:href="@{/business/pbanc/view/{id}(id=${item.bizPbancNo})}" class="bl_board_subject">
+                                        <span class="hp_ellipsis" th:text="${item.bizPbancNm}"></span>
+                                        <i class="el_ico" th:if="${item.isNew}"><img th:src="@{/assets/images/icons/new.png}" alt="새글"></i>
+                                    </a>
+                                    <a th:href="@{/business/pbanc/result/{id}(id=${item.bizPbancNo})}" th:if= "${item.bizPbancRsltNo != null}" class="bl_board_subject bl_board_subject__reply">
+                                        <span class="hp_ellipsis" th:text="${item.bizPbancNm}"></span>
+                                        <i class="el_ico ">
+                                            <span class="el_chip2">선정결과</span>
+                                        </i>
+                                    </a>
+                                </div>
+                                <div class="bl_board_dateRange hp_md_ord53" th:text="${item.bizPbancSprtBgng}+' ~ '+${item.bizPbancSprtEnd}"></div>
+                                <div class="bl_board_dateRange hp_md_ord53 bizPbancRcptEnd" th:text="${item.bizPbancRcptBgng}+' ~ '+${item.bizPbancRcptEnd}"></div>
+                                <div class="bl_board_state hp_md_ord1 hp_lg_fb120">
+                                    <i class="el_chip el_chip__success" th:if="${item.bizPbancStts == 0}">모집중</i>
+                                    <i class="el_chip" th:if="${item.bizPbancStts == 1}">모집마감</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                function searchBizPbanc(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    if(name){
+                        searchQuery.containText = name
+                        if(type){
+                            searchQuery.containTextType = type
+                        }
+                    }
+                    if(searchQuery.containText){
+                        searchJson(searchQuery)
+                    }
+                }
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], false)
+                    navigation(2,0,0);
+
+                    $(".bl_board_unit").each((index, item)=>{
+                        let endDate = $(item).find(".bizPbancRcptEnd").text().split('~ ')[1]
+                        let now = new Date();
+                        now.setUTCHours(now.getUTCHours()+9);
+                        let toDay = now.toJSON().split('T')[0];
+                        if(toDay>endDate){
+                            $(item).find(".el_chip ").text("모집마감");
+                            $(item).find(".el_chip ").removeClass("el_chip__success");
+                        }
+                    })
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

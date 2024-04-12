@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">마이페이지</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">학습종료 과정</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <label for="select_year" class="hidden_label">연도</label>
+                        <select id="select_year" class="common_select2 hp_w120" data-list="yearList" onchange="filter_year(this.value)"></select>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_year">연도</div>
+                        <div class="bl_board_ctg">카테고리</div>
+                        <div class="bl_board_type">유형</div>
+                        <div class="bl_board_subject">과정명</div>
+                        <div class="bl_board_dateRange">복습기간</div>
+                        <div class="bl_board_eduStudy">복습</div>
+                        <div class="bl_board_eduComplete">수료</div>
+                    </div>
+
+                    <div class="bl_board_body">
+                        <div class="bl_board_unit" th:each="item:${content}">
+                            <div class="bl_board_year">
+                                <th:block th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" th:text="${#strings.substring(item.operationBeginDateTime, 0, 4)}"></th:block>
+                                <th:block th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}" th:text="${item.educationPlan.yearOfEducationPlan}"></th:block>
+                            </div>
+                            <th:block th:switch="${item.educationPlan.curriculumMaster.categoryCode}">
+                                <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                    <div class="bl_board_ctg" th:each="categoryCode : ${commonCode.subCode}"
+                                         th:if="${categoryCode.code == item.educationPlan.curriculumMaster.categoryCode}"
+                                         th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></div>
+                                </th:block>
+                            </th:block>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '1'}">화상교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '2'}">집합교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">이러닝교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '4'}">화상교육 + 집합교육</div>
+                            <div class="bl_board_subject" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                <a th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}" style="overflow: auto; white-space: pre-wrap;" class="hp_ellipsis" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</a>
+                            </div>
+                            <div class="bl_board_subject" th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                <a th:href="@{/education/application/lecture/view/{id}(id=${item.educationPlanCode})}" style="overflow: auto; white-space: pre-wrap;" class="hp_ellipsis" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</a>
+                            </div>
+
+                            <div class="bl_board_dateRange hp_md_ord51">
+                                <span class="bl_board_label hp_md_show">복습기간</span>
+                                <th:block th:if="${item.educationPlan.isReview == true && !#strings.isEmpty(item.completeDateTime) && !#strings.isEmpty(item.reviewDateTime)}">
+                                    <span th:text="${#strings.substring(item.completeDateTime, 0, 10)+'~'+#strings.substring(item.reviewDateTime, 0, 10)}"></span>
+                                </th:block>
+                            </div>
+
+                            <div th:if="${item.educationPlan.isReview == true && item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss') && item.isComplete != 'W'}" class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto">
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')">복습</a>
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '2' || item.setEducationType == '2'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/lecture/main','forPopLecture')">복습</a>
+                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '1' || item.setEducationType == '1'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-lecture/main','forPopLecture')">복습</a>
+                            </div>
+                            <div th:unless="${item.educationPlan.isReview == true && item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}" class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto"></div>
+
+                            <div class="bl_board_eduComplete hp_md_ord53">
+                                <th:block th:if="${item.isComplete != null && item.isComplete == 'Y'}">
+                                    <div th:if="${(#lists.size(item.curriculumApplicationEvaluateList) == 0) && (#lists.size(item.educationPlan.curriculumMaster.curriculumEvaluateList) != 0)}" class="btn_type4 btn_red btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/result/eval','forPopLecture')">강의평가</div>
+                                    <div th:if="${((#lists.size(item.curriculumApplicationEvaluateList) != 0) || (#lists.size(item.curriculumApplicationEvaluateList) == 0) && (#lists.size(item.educationPlan.curriculumMaster.curriculumEvaluateList) == 0)) && (item.educationPlan.curriculumMaster.isIssueCertificateOfCompletion)}" class="btn_type4 btn_red btn_underline">
+                                        <span th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                            <span th:onclick="elearning_certi([[${item}]])">수료증</span>
+                                        </span>
+                                        <span th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                        <span th:if="${(item.educationPlan.curriculumMaster.educationTarget == '3')}" th:onclick="teacher_certi([[${item}]])">이수증</span>
+                                        <span th:unless="${(item.educationPlan.curriculumMaster.educationTarget == '3')}" th:onclick="certi([[${item}]])">수료증</span>
+                                    </span>
+                                    </div>
+                                    <div th:if="${((#lists.size(item.curriculumApplicationEvaluateList) != 0) || (#lists.size(item.curriculumApplicationEvaluateList) == 0) && (#lists.size(item.educationPlan.curriculumMaster.curriculumEvaluateList) == 0)) && !(item.educationPlan.curriculumMaster.isIssueCertificateOfCompletion)}" class="btn_type4 btn_green pointer-none">수료</div>
+                                </th:block>
+                                <div th:if="${item.isComplete != null && item.isComplete == 'N'}" class="btn_type4 btn_blue pointer-none">미수료</div>
+                                <div th:if="${item.isComplete != null && item.isComplete == 'W'}" class="btn_type4 btn_gray pointer-none">처리중</div>
+                            </div>
+                        </div>
+                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                            <div class="bl_card_empty">등록된 강의가 없습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP : 강의실(이러닝, 화상) -->
+    <div class="iframe_wrap">
+        <iframe title="강의실" id="forPopLecture" src="about:blank" style="width:100%;height:100%;"></iframe>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                console.log('content: ', [[ ${content} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(0,3,2); // 학습종료 과정
+            }
+            let openWin;
+            function certi(data){
+                window.name = 'parentForm';
+                openWin = window.open('/mypage/education-state/result/certification', 'childForm', 'width=0, height=0')
+                if(openWin){
+                    let sendData = {
+                        name: data.lmsUser.userName,
+                        eduTitle: data.educationPlan.curriculumMaster.curriculumName,
+                        eduStartDate: data.operationBeginDateTime,
+                        eduEndDate: data.operationEndDateTime,
+                        eduCompleteDate: data.completeDateTime
+                    }
+                    if(data.lmsUser.mediaInfo !== null){
+                        sendData.organName = data.lmsUser.mediaInfo.mediaName;
+                    } else {
+                        if(data.lmsUser.organizationInfo === null){
+                            sendData.organName = null;
+                        } else {
+                            sendData.organName = data.lmsUser.organizationInfo.organizationName;
+                        }
+                    }
+                    openWin.sendData = sendData
+                }
+            }
+            let openWin2;
+            function teacher_certi(data){
+                window.name = 'parentForm';
+                openWin2 = window.open('/mypage/education-state/result/certification/teacher', 'childForm', 'width=0, height=0')
+                if(openWin2){
+                    let sendData = {
+                        programCompleteNumber: data.programCompleteNumber,
+                        name: data.lmsUser.userName,
+                        birthDay: data.lmsUser.birthDay,
+                        eduTitle: data.educationPlan.curriculumMaster.curriculumName,
+                        educationTime: data.educationPlan.curriculumMaster.educationPerHour,
+                        eduCreateDate: data.createDateTime,
+                        eduStartDate: data.operationBeginDateTime,
+                        eduEndDate: data.operationEndDateTime,
+                        eduCompleteDate: data.completeDateTime
+                    }
+                    openWin2.sendData = sendData
+                }
+            }
+            let openWin3;
+            function elearning_certi(data){
+                window.name = 'parentForm';
+                openWin3 = window.open('/mypage/education-state/result/certification/e-learning', 'childForm', 'width=0, height=0')
+                if(openWin3){
+                    let sendData = {
+                        name: data.lmsUser.userName,
+                        eduTitle: data.educationPlan.curriculumMaster.curriculumName,
+                        eduStartDate: data.operationBeginDateTime,
+                        eduEndDate: data.operationEndDateTime,
+                        eduCompleteDate: data.completeDateTime,
+                        eduTime: data.educationPlan.curriculumMaster.educationPerHour
+                    }
+                    if(data.lmsUser.mediaInfo !== null){
+                        sendData.organName = data.lmsUser.mediaInfo.mediaName;
+                    } else {
+                        if(data.lmsUser.organizationInfo === null){
+                            sendData.organName = null;
+                        } else {
+                            sendData.organName = data.lmsUser.organizationInfo.organizationName;
+                        }
+                    }
+                    openWin3.sendData = sendData
+                }
+            }
+
+            function filter_year(year) {
+                if (year == 0) {
+                    window.location.replace('/mypage/education-state/result');
+                } else {
+                    window.location.replace('/mypage/education-state/result?year='+year);
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

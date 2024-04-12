@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="page_title">강사신청</div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td th:text="${content[0].bizPbancMaster.bizPbancNm}">미디어교육 평생교실new test</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기관명</th>
+                                <td th:text="${content[0].bizOrganizationAply.organizationInfo.organizationName}">한국언론진흥재단</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">강사명</th>
+                                <td th:text="${content[0].bizInstrAplyInstrNm}">홍길동</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">지원조건</th>
+                                <td>
+                                    <div>지원순위: <span th:text="${content[0].bizInstrAplyCndtOrdr}">1</span></div>
+                                    <div>거리: <span th:text="${content[0].bizInstrAplyCndtDist}">41.0</span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">배정점수</th>
+                                <td th:text="${content[0].bizInstrAplySlctnScr}">0</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">배정조건</th>
+                                <td>
+                                    <span th:text="${content[0].bizInstrAplySlctnCndt}"></span>
+                                    <span th:text="${content[0].bizInstrAplySlctnScr}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">비고</th>
+                                <td>
+                                    <span th:text="${content[0].bizInstrAplyCmnt}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">선정상태</th>
+                                <td th:if="${content[0].bizInstrAplyStts <= 1}">미승인</td>
+                                <td th:if="${content[0].bizInstrAplyStts > 1}">승인</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="javascript:history.back();">뒤로가기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,0);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

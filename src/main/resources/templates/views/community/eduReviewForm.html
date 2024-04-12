@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">교육후기방</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : WRITE -->
+                <div class="bl_boardWrite">
+                    <table>
+                        <colgroup>
+                            <col class="hp_lg_w150" >
+                            <col >
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">제목</th>
+                                <td>
+                                    <input type="text" class="common_input hp_w100p" id="title">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">작성자</th>
+                                <td>
+                                    <span th:text="${#authentication.principal.username}">홍길동</span>
+                                    (<span th:text="${#authentication.principal.userId}">hong1234</span>)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">내용</th>
+                                <td>
+                                    <textarea class="common_input hp_w100p" name="" id="cont" cols="30" rows="10"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <div class="btn_type1 btn_blue" onclick="writeReview()">등록하기</div>
+                    </div>
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/communication/review">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function writeReview(){
+                const params = {
+                    "contents": document.getElementById('cont').value,
+                    "title": document.getElementById('title').value
+                }
+
+                $.ajax({ //jquery ajax
+                    type:"post", //http method
+                    url:"/api/communication/review/create",
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(params),
+                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+                    success: function(data){
+                        alert("등록이 완료되었습니다.")
+                        location.href = '/communication/review/view/'+data.sequenceNo;
+                    },
+                    error: function(e){		 //요청 실패시 에러 확인을 위함
+                        console.log(e)
+                        alert("등록 중 오류가 발생했습니다.")
+                    }
+                })
+            }
+
+            function onLoadSubmit(){
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,1);
+            }
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

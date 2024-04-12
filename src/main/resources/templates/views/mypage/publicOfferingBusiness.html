@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">공모사업</div>
+                        </div>
+                    </div>
+
+                    <!-- 컴포넌트 : 탭 -->
+                    <div class="bl_tab2 js_tab">
+                        <div class="bl_iscroll" id="navTab2">
+                            <div class="hp_md_iscroll">
+                                <ul class="bl_tab2_menu">
+                                    <li>
+                                        <a href="/mypage/business-state/apply">신청내역</a>
+                                    </li>
+                                    <li class="is_active">
+                                        <a href="/mypage/business-state">진행내역</a>
+                                    </li>
+                                    <li>
+                                        <a href="/mypage/business-state/result">종료내역</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button class="bl_tab2_btnPrev" disabled><img th:src="@{/assets/images/icons/tab2_prev.png}" alt="이전"></button>
+                            <button class="bl_tab2_btnNext"><img th:src="@{/assets/images/icons/tab2_next.png}" alt="다음"></button>
+                        </div>
+
+                        <div class="sch_box">
+                            <label for="bizPbancYr" class="hidden_label">년도</label>
+                            <select id="bizPbancYr" class="common_select2" data-list="yearList"></select>
+                            <label for="containText" class="hidden_label">검색어</label>
+                            <input id="containText" class="common_input2 form_input_md" placeholder="사업명을 입력해주세요.">
+                            <button type="button" th:onclick="search()" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                        </div>
+
+                        <div class="bl_tab2_body js_tab_contents hp_mt60">
+                            <!-- 2. 진행중인 사업 -->
+                            <div class="bl_tab2_item js_tab_item">
+                                <!-- BOARD : LIST -->
+                                <div class="bl_board">
+                                    <div class="bl_board_head">
+                                        <div class="bl_board_year">년도</div>
+                                        <div class="bl_board_ctg">구분</div>
+                                        <div class="bl_board_subject">사업공고</div>
+                                        <div class="bl_board_period">교육기간</div>
+                                        <div class="bl_board_btn">변경신청</div>
+                                        <div class="bl_board_btn">강의확인서</div>
+                                        <div class="bl_board_state bl_board_state_sm">강사배정</div>
+                                        <div class="bl_board_state bl_board_state_sm">상호평가</div>
+                                    </div>
+
+                                    <div class="bl_board_body">
+                                        <div class="bl_board_unit" th:each="item,stat:${content}">
+                                            <th:block th:if="${#authentication.principal.userId == item.bizOrgAplyPic}">
+                                                <div class="bl_board_year" th:text="${item.bizPbancMaster.bizPbancYr}">
+                                                    2022
+                                                </div>
+                                                <div class="bl_board_ctg">
+                                                    <span th:if="${item.bizPbancMaster.bizPbancCtgr == 0}">미디어교육</span>
+                                                    <span th:if="${item.bizPbancMaster.bizPbancCtgr == 1}">언론인연수</span>
+                                                </div>
+                                                <a th:href="@{/mypage/business-state/view/{id}(id = ${item.bizOrgAplyNo})}" class="bl_board_subject">
+                                                    <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</span>
+                                                </a>
+                                                <div class="bl_board_period">
+                                                    <span th:text="${item.bizOrgAplyLsnPlanBgng}">2022-06-02</span>~<span th:text="${item.bizOrgAplyLsnPlanEnd}">2022-06-17</span>
+                                                </div>
+                                                <div class="bl_board_btn">
+                                                    <a th:if="${item.bizOrgAplyChgYn == 1}" th:href="@{/mypage/business-state/update/{id}(id=${item.bizOrgAplyNo})}" class="btn_type1 btn_sm btn_red">변경신청</a>
+                                                    <a th:unless="${item.bizOrgAplyChgYn == 1}" class="btn_type1 btn_sm btn_gray" disabled>변경불가</a>
+                                                </div>
+                                                <div class="bl_board_btn">
+                                                    <a th:href="@{/mypage/business-state/confirmation/{id}(id=${item.bizOrgAplyNo})}" class="btn_type1 btn_sm btn_blue">보기</a>
+                                                </div>
+                                                <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                    <a class="asgnmY" href="#popInstructor" data-control="modal" data-handler="popInstructor" th:onclick="'popupMake('+${stat.index}+')'">
+                                                        <span class="btn_type4 btn_blue btn_underline">배정완료</span>
+                                                    </a>
+                                                    <span class="btn_type4 btn_gray asgnmN">배정대기</span>
+                                                </div>
+                                                <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                    <a class="asgnmY" th:if="${item.surveyEnd == null || item.surveyEnd == 0}" th:href="@{/mypage/business-state/survey/{id}(id=${item.bizOrgAplyNo})}">
+                                                        <span class="btn_type4 btn_blue btn_underline">상호평가</span>
+                                                    </a>
+                                                    <span class="btn_type4 btn_gray" th:if="${item.surveyEnd != null && item.surveyEnd == 1}">완료</span>
+                                                </div>
+                                            </th:block>
+                                            <th:block th:unless="${#authentication.principal.userId == item.bizOrgAplyPic}">
+                                                <div class="bl_board_year" th:text="${item.bizPbancMaster.bizPbancYr}">
+                                                    2022
+                                                </div>
+                                                <div class="bl_board_ctg">
+                                                    <span th:if="${item.bizPbancMaster.bizPbancCtgr == 0}">미디어교육</span>
+                                                    <span th:if="${item.bizPbancMaster.bizPbancCtgr == 1}">언론인연수</span>
+                                                </div>
+                                                <a class="bl_board_subject notMyApp">
+                                                    <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</span>
+                                                </a>
+                                                <div class="bl_board_period">
+                                                    <span th:text="${item.bizOrgAplyLsnPlanBgng}">2022-06-02</span>~<span th:text="${item.bizOrgAplyLsnPlanEnd}">2022-06-17</span>
+                                                </div>
+                                                <div class="bl_board_btn">
+                                                    <a th:if="${item.bizOrgAplyChgYn == 1}" class="btn_type1 btn_sm btn_red notMyApp">변경신청</a>
+                                                    <a th:unless="${item.bizOrgAplyChgYn == 1}" class="btn_type1 btn_sm btn_gray notMyApp" disabled>변경불가</a>
+                                                </div>
+                                                <div class="bl_board_btn">
+                                                    <a class="btn_type1 btn_sm btn_blue notMyApp">보기</a>
+                                                </div>
+                                                <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                    <a class="asgnmY" href="#popInstructor" data-control="modal" data-handler="popInstructor" th:onclick="'popupMake('+${stat.index}+')'">
+                                                        <span class="btn_type4 btn_blue btn_underline">배정완료</span>
+                                                    </a>
+                                                    <span class="btn_type4 btn_gray asgnmN">배정대기</span>
+                                                </div>
+                                                <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                    <a class="notMyApp asgnmY" th:if="${item.surveyEnd == null || item.surveyEnd == 0}">
+                                                        <span class="btn_type4 btn_blue btn_underline">상호평가</span>
+                                                    </a>
+                                                    <span class="btn_type4 btn_gray" th:if="${item.surveyEnd != null && item.surveyEnd == 1}">완료</span>
+                                                </div>
+                                            </th:block>
+
+                                        </div>
+                                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                                            <div class="bl_card_empty">등록된 사업이 없습니다.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_paginate" th:unless="${#lists.isEmpty(content)}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP : 강사배정 -->
+        <div class="pop_wrapper ui-modal" id="popInstructor">
+            <div class="pop_wrap pop_secondary hp_mw500">
+                <div class="pop_cont">
+                    <!-- COMPONENT : TABLE -->
+                    <table class="bl_table">
+                        <caption>목록</caption>
+                        <thead>
+                        <tr>
+                            <th style="width:20%" scope="row">회차</th>
+                            <th scope="row">수업일정</th>
+                            <th style="width:20%" scope="row">강사</th>
+                        </tr>
+                        </thead>
+                        <tbody id="__popupRow">
+                        <tr>
+                            <td>1</td>
+                            <td>2022-08-01 ~ 2022-09-01</td>
+                            <td>홍길동</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2022-08-01 ~ 2022-09-01</td>
+                            <td>홍길동</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="pop_close pop-close">닫기</button>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                $(".notMyApp").each((index, item)=>{
+                    $(item).bind('click', function (){
+                        alert('사업 신청 담당자가 아닙니다. 담당자 계정에서 확인해 주세요.')
+                    })
+                })
+                const CONT = [[ ${content} ]];
+                function popupMake(index){
+                    $('#__popupRow').html('');
+                    for(let i=0; i<CONT[index].bizOrganizationAplyDtls.length; i++){
+                        $('#__popupRow').append(`<tr>
+                                                    <td>${i+1}</td>
+                                                    <td>${CONT[index].bizOrganizationAplyDtls[i].bizOrgAplyLsnDtlYmd}</td>
+                                                    <td>${CONT[index].bizOrganizationAplyDtls[i].bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}</td>
+                                                </tr>`)
+                    }
+                }
+                function search(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let year = $("#bizPbancYr").val();
+                    if(name){
+                        searchQuery.containText = name
+                    }
+                    if(year && year!=0){
+                        searchQuery.bizPbancYr = year
+                    }
+                    if(searchQuery.containText || searchQuery.bizPbancYr){
+                        searchJson(searchQuery)
+                    }
+                }
+                function show_hide() {
+                    const CONT = [[ ${content} ]];
+                    if (CONT != null && CONT.length > 0) {
+                        $(".bl_board_unit").each((i, item)=>{
+                            let a = 0;
+                            for (let j=0; j < CONT[i].bizOrganizationAplyDtls.length; j++) {
+                                if (CONT[i].bizOrganizationAplyDtls[j].bizInstructorAsgnms.length > 0) {
+                                    a = a + 1;
+                                }
+                            }
+
+                            if (CONT[i].bizOrganizationAplyDtls.length == a) {
+                                $(item).find('.asgnmY').show();
+                                $(item).find('.asgnmN').hide();
+                            } else {
+                                $(item).find('.asgnmY').hide();
+                                $(item).find('.asgnmN').show();
+                            }
+                        })
+                    }
+                }
+                /* [CDATA[ */
+                show_hide();
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], false)
+                    navigation(0,0,0)
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+
+</div>
+
+</body>
+</html>

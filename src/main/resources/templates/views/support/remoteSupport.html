@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual6.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">원격미디어교육원 관리자 원격지원</div>
+                <div class="card">
+                    <div>
+                        <img th:src="@{/assets/images/subpage_support/card_icon.png}" alt="" >
+                        <div class="text_box">
+                            <p class="card_title">미디어아카데미(KPF 미카) 관리자 원격지원</p>
+                            <p class="card_text">
+                                [고객센터] > [자주묻는 질문]을 통해 해결이 안되거나<br >
+                                전화 상담으로 조치가 어려운 경우,<br >
+                                관리자가 직접 회원님의 PC를 함께 보면서 도움을 드립니다.
+                            </p>
+                        </div>
+                        <a class="btn_type1 btn_blue" target='_blank' href="https://939.co.kr/donald87">원격지원 서비스 바로가기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(4,3);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

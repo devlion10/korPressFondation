@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">뉴스알고</div>
+                <div class="bl_gridIntro">
+                    <div class="bl_gridIntro_details">
+                        <p class="bl_gridIntro_desc">뉴스 알고는 뉴스 배열 알고리즘의 개념과 과정을 이해하고, 이용자가 직접 설정한 가중치로 기사별 점수를 매겨
+                            뉴스 기사를 배열을 직접 실습해볼 수 있는 미디어교육 툴입니다. </p>
+                        <a class="btn_type1 btn_darkblue" href="http://newsalgo.or.kr/" target="_blank">바로가기</a>
+                    </div>
+                    <div class="bl_gridIntro_img hp_lg_MT70">
+                        <img th:src="@{/assets/images/subpage_community/img_newsknows_top.png}" alt="">
+                    </div>
+                </div>
+
+                <ul class="bl_boxCardList bl_boxCardList__step">
+                    <li>
+                        <div class="bl_boxCard">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_newsknows1.png}" alt=""></p>
+                            <dl>
+                                <dt>뉴스 기사 작성</dt>
+                                <dd>
+                                    뉴스 기사 입력하기
+                                    <br>
+                                    기존 뉴스기사 선택
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_newsknows2.png}" alt=""></p>
+                            <dl>
+                                <dt>기사정제 및 분석 </dt>
+                                <dd>
+                                    뉴스 기사 정제/전처리
+                                    <br>
+                                    내용 자연어처리
+                                    <br>
+                                    계랑 요인 추출 및 분석
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_newsknows3.png}" alt=""></p>
+                            <dl>
+                                <dt>작성된 기사 평가 </dt>
+                                <dd>
+                                    뉴스트러스트 알고리즘적용
+                                    <br>
+                                    배열 가중치 적용하기
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bl_boxCard">
+                            <p class="bl_boxCard_icon"><img th:src="@{/assets/images/subpage_community/icon_newsknows4.png}" alt=""></p>
+                            <dl>
+                                <dt>뉴스 기사 배열</dt>
+                                <dd>뉴스 기사 배열 확인하기</dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,3);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

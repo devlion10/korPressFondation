@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="page_title">강의확인서</div>
+                    </div>
+
+                    <div class="cont_title">사업정보</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite" th:each="item: ${content}">
+                        <table>
+                            <caption>사업정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    사업명
+                                </th>
+                                <td th:text="${item.bizPbancMaster.bizPbancNm}">
+                                    미디어교육 평생교실new test
+                                </td>
+                                <th scope="row">
+                                    제출처
+                                </th>
+                                <td th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">
+                                    한국언론진흥재단
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    학교/기관
+                                </th>
+                                <td th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">
+                                    한국언론진흥재단
+                                </td>
+                                <th scope="row">
+                                    담당자명
+                                </th>
+                                <td th:text="${item.bizOrganizationAply.bizOrgAplyPicNm}">
+                                    한국언론진흥재단
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    강사명
+                                </th>
+                                <td th:text="${#authentication.name}">
+                                    한국언론진흥재단
+                                </td>
+                                <th scope="row">
+                                    총 강의시간
+                                </th>
+                                <td th:text="${item.bizOrganizationAply.bizOrgAplyTime}">
+                                    4.0시간
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cont_title">강의시간표</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite">
+                        <table>
+                            <caption>강의시간표</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <th:block th:unless="${#arrays.isEmpty(content[0].bizInstructorIdentifyDtls)}" th:each="item, stat : ${content[0].bizInstructorIdentifyDtls}">
+                                <tr>
+                                    <th scope="row" rowspan="3"><span th:text="${stat.count}"></span>회차</th>
+                                    <th scope="row">
+                                        일시/참여인원
+                                    </th>
+                                    <td class="bl_boardWrite_date">
+                                        <div class="d-flex align-items-center flex-wrap">
+                                            <div>
+                                                <span class="bizOrgAplyLsnDtlYmd" th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd+' '}">2022-07-28(목)</span>
+                                                <span th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlBgngTm+'~'+item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm}">09:00~11:00</span>
+                                                (<span class="bizOrgAplyLsnDtlHr" th:text="${item.bizOrganizationAplyDtl.bizOrgAplyLsnDtlHr}">2</span>시간)
+                                                <input th:id="${'dtlno'+stat.index}" class="bizInstrIdntyDtlNo" type="hidden" th:value="${item.bizInstrIdntyDtlNo}">
+                                                <label th:for="${'dtlno'+stat.index}"></label>
+                                            </div>
+                                            <div class="ms-3">
+                                                <input th:id="${'nope'+stat.index}" type="number" class="common_input w100 bizInstrIdntyDtlNope" th:value="${item.bizInstrIdntyDtlNope}" data-not_null="true" data-alert_name="강의시간표 회차별 인원수">
+                                                <label th:for="${'nope'+stat.index}" class="guide_text">실제 수강한 학생 수를 작성해주세요</label>
+                                            </div>
+                                            <div class="chk_box ms-3">
+                                                <input class="bizOrgAplyDtlNo" th:id="${item.bizOrgAplyDtlNo}" type="checkbox" th:checked="${item.vdoLctYn==1}">
+                                                <label th:for="${item.bizOrgAplyDtlNo}" class="color_red">
+                                                    <span></span>
+                                                    언택트 강의시 체크해 주세요.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">주제</th>
+                                    <td>
+                                        <input onchange="maxCheck(this)" th:id="${'tpic'+stat.index}" type="text" class="common_input w100 bizInstrIdntyDtlTpic" th:value="${item.bizInstrIdntyDtlTpic}" data-not_null="true" data-alert_name="강의시간표 회차별 주제" maxlength="100">
+                                        <label th:for="${'tpic'+stat.index}" class="guide_text">100자 미만으로 작성해주세요</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">내용<br >(200자 이상)</th>
+                                    <td>
+                                        <label th:for="${'cn'+stat.index}" class="hidden_label">강의시간표 회차별 내용</label>
+                                        <textarea th:id="${'cn'+stat.index}" cols="30" rows="10" class="common_input bizInstrIdntyDtlCn" data-not_null="true" data-alert_name="강의시간표 회차별 내용" th:utext="${item.bizInstrIdntyDtlCn}"></textarea>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <th:block th:unless="${#arrays.isEmpty(content[0].bizOrganizationAplyDtls)}" th:each="item, stat : ${content[0].bizOrganizationAplyDtls}">
+                                <tr>
+                                    <th scope="row" rowspan="3"><span th:text="${stat.count}"></span>회차</th>
+                                    <th scope="row">
+                                        일시/수강인원
+                                    </th>
+                                    <td class="bl_boardWrite_date">
+                                        <div class="d-flex align-items-center flex-wrap">
+                                            <div>
+                                                <span class="bizOrgAplyLsnDtlYmd" th:text="${item.bizOrgAplyLsnDtlYmd+' '}">2022-07-28(목)</span>
+                                                <span th:text="${item.bizOrgAplyLsnDtlBgngTm+'~'+item.bizOrgAplyLsnDtlEndTm}">09:00~11:00</span>
+                                                (<span class="bizOrgAplyLsnDtlHr" th:text="${item.bizOrgAplyLsnDtlHr}">2</span>시간)
+                                                <input th:id="${'dtlno'+stat.index}" class="bizInstrIdntyDtlNo" type="hidden" value="0">
+                                                <label th:for="${'dtlno'+stat.index}"></label>
+                                            </div>
+                                            <div class="ms-3">
+                                                <input th:id="${'nope'+stat.index}" type="number" class="common_input w100 bizInstrIdntyDtlNope" th:value="${item.bizOrgAplyLsnDtlNope}" data-not_null="true" data-alert_name="강의시간표 회차별 인원수">
+                                                <label th:for="${'nope'+stat.index}" class="guide_text">실제 수강한 학생 수를 작성해주세요</label>
+                                            </div>
+                                            <div class="chk_box ms-3">
+                                                <input class="bizOrgAplyDtlNo" th:id="${item.bizOrgAplyDtlNo}" type="checkbox" >
+                                                <label th:for="${item.bizOrgAplyDtlNo}" class="color_red">
+                                                    <span></span>
+                                                    언택트 강의시 체크해 주세요.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">주제</th>
+                                    <td>
+                                        <input onchange="maxCheck(this)" th:id="${'tpic'+stat.index}" type="text" class="common_input w100 bizInstrIdntyDtlTpic" th:value="${item.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="강의시간표 회차별 주제" maxlength="100" >
+                                        <label th:for="${'tpic'+stat.index}" class="guide_text">100자 미만으로 작성해주세요</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">내용<br>(200자 이상)</th>
+                                    <td>
+                                        <label th:for="${'cn'+stat.index}" class="hidden_label">강의시간표 회차별 내용</label>
+                                        <textarea th:id="${'cn'+stat.index}" cols="30" rows="10" class="common_input bizInstrIdntyDtlCn" data-not_null="true" data-alert_name="강의시간표 회차별 내용"></textarea>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cont_title">자료첨부</div>
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite">
+                        <table>
+                            <caption>자료첨부</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">수업지도안</th>
+                                <td>
+                                    <p class="guide_text">
+                                        업로드 가능한 파일 확장자 : gif, jpg, png, pdf, hwp, doc, docx, ppt, pptx, xls, xlsx, zip / 파일 용량 : 20MB 미만
+                                    </p>
+                                    <div class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                        <label for="lsnFileName" class="hidden_label">라벨</label>
+                                        <input id="lsnFileName" type="text" class="common_input bl_upload_path js_path" readonly="">
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <label for="bizInstrIdntyLsnFile" class="hidden_label">라벨</label>
+                                        <input id="bizInstrIdntyLsnFile" type="file" name="file" class="bl_upload_file js_file">
+                                    </div>
+                                    <a id="lsnFileDown" class="download_ajax btn_type1 btn_md btn_blue" href="/api/business/instructor/identify/download?attachFilePath=" >다운로드</a>
+                                    <div th:if="${content[0].bizInstrIdntyNo!=null}" id="lsnFileDelete" onclick="deleteFile('lsn')" class="btn_type1 btn_md btn_red" >삭제하기</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">수업자료안</th>
+                                <td>
+                                    <p class="guide_text">
+                                        업로드 가능한 파일 확장자 : gif, jpg, png, pdf, hwp, doc, docx, ppt, pptx, xls, xlsx, zip / 파일 용량 : 20MB 미만
+                                    </p>
+                                    <div class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                        <label for="atchFileName" class="hidden_label">라벨</label>
+                                        <input id="atchFileName" type="text" class="common_input bl_upload_path js_path" readonly="">
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <label for="bizInstrIdntyAtchFile" class="hidden_label">라벨</label>
+                                        <input id="bizInstrIdntyAtchFile" type="file" name="file" class="bl_upload_file js_file">
+                                    </div>
+                                    <a id="atchFileDown" class="download_ajax btn_type1 btn_md btn_blue" href="/api/business/instructor/identify/download?attachFilePath=" >다운로드</a>
+                                    <div th:if="${content[0].bizInstrIdntyNo!=null}" id="atchFileDelete" onclick="deleteFile('atch')" class="btn_type1 btn_md btn_red" >삭제하기</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <th:block th:if="${content[0].bizInstrIdntyNo!=null}">
+                                <a th:if="${content[0].bizInstrIdntyStts == 0 || content[0].bizInstrIdntyStts == 1}" id="removeBtn" class="btn_type1 btn_gray" onclick="remove()">삭제하기</a>
+                            </th:block>
+                            <a id="updateBtn" class="btn_type1 btn_blue" onclick="update()">수정하기</a>
+                            <a id="createBtn" class="btn_type1 btn_blue" onclick="create()">등록하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/instructor-state/lecture">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                let pathName = window.location.pathname;
+                if(pathName.indexOf("write")>0){
+                    $("#updateBtn").remove();
+                    $("#removeBtn").remove();
+                    $("#lsnFileDown").remove();
+                    $("#atchFileDown").remove();
+                    $("#lsnFileDelete").remove();
+                    $("#atchFileDelete").remove();
+                    let cont= getCont();
+                    if(cont[0].bizInstrIdntyNo != null){
+                        alert('이미 강의확인서를 작성하셨습니다.');
+                        window.location.href='/mypage/instructor-state/lecture'
+                    }
+                }else{
+                    $("#createBtn").remove();
+                    let cont= getCont();
+                    if(cont[0].bizInstrIdntyLsnFile){
+                        $("#lsnFileName").val(cont[0].bizInstrIdntyLsnFile)
+                        $("#lsnFileDown").attr('href', $("#lsnFileDown").attr('href')+cont[0].bizInstrIdntyLsnFile+'&fileType=lsn')
+                    }else{
+                        $("#lsnFileDown").remove();
+                        $("#lsnFileDelete").remove();
+                    }
+                    if(cont[0].bizInstrIdntyAtchFile){
+                        $("#atchFileName").val(cont[0].bizInstrIdntyAtchFile)
+                        $("#atchFileDown").attr('href', $("#atchFileDown").attr('href')+cont[0].bizInstrIdntyAtchFile+'&fileType=atch')
+                    }else{
+                        $("#atchFileDown").remove();
+                        $("#atchFileDelete").remove();
+                    }
+                    if(cont[0].bizInstrIdntyStts==2 || cont[0].bizInstrIdntyStts==3|| cont[0].bizInstrIdntyStts==4 ){
+                        alert('승인된 강의확인서는 수정할 수 없습니다.');
+                        window.location.replace('/mypage/instructor-state/lecture');
+                    }
+                }
+                function remove(){
+                    if(confirm('정말로 삭제하시겠습니까? 복구할 수 없습니다.')){
+                        let params = getCont();
+                        $.ajax({
+                            type: "delete",
+                            headers: {'Content-Type': 'application/json'},
+                            url: `/api/business/instructor/identify/delete/${params[0].bizInstrIdntyNo}`,
+                            data: JSON.stringify(params[0]),
+                            dataType: "json",
+                            success: function (data) {
+                                alert("강의확인서를 삭제하였습니다.");
+                                window.location.replace('/mypage/instructor-state/lecture');
+                            }
+                        })
+
+                    }
+                }
+                function deleteFile(type){
+                    if(confirm('정말로 파일을 삭제하시겠습니까?')){
+                        let CONT = getCont();
+                        $.ajax({
+                            type: "DELETE",
+                            headers: {'Content-Type' : 'application/json'},
+                            url: `/api/business/instructor/identify/upload/delete/${CONT[0].bizInstrIdntyNo}/${type}`,
+                            dataType: "json",
+                            success: function (data){
+                                alert("강의확인서 첨부파일을 삭제하였습니다. 새로고침하면 화면에 반영됩니다.");
+                            },
+                            error: function (e){
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert("강의확인서 첨부파일을 삭제하는 과정에서 오류가 발생하였습니다.");
+                                    $("#createBtn").removeClass('btn_gray');
+                                    $("#createBtn").attr('onclick', 'create()');
+                                }
+                            }
+                        })
+                    }
+                }
+
+                function update(){
+                    let params = getFormData();
+                    if(params!=null && nullCheck()){
+                        $.ajax({
+                            type: "put",
+                            headers: {'Content-Type' : 'application/json'},
+                            url: "/api/business/instructor/identify/update",
+                            data: JSON.stringify(params),
+                            dataType: "json",
+                            success: function (data){
+                                let errorFlag=true;
+                                let dtlData =getDtlData(data.bizInstrIdntyNo);
+                                for(let dtl of dtlData){
+                                    if(dtl.bizInstrIdntyDtlNo=="0"){
+                                        $.ajax({
+                                            type: "post",
+                                            headers: {'Content-Type' : 'application/json'},
+                                            url: "/api/business/instructor/identify/dtl/create",
+                                            data: JSON.stringify(dtl),
+                                            dataType: "json",
+                                            async:false,
+                                            error:function (){
+                                                errorFlag=false;
+                                            }
+                                        })
+                                    }else{
+                                        $.ajax({
+                                            type: "put",
+                                            headers: {'Content-Type' : 'application/json'},
+                                            url: "/api/business/instructor/identify/dtl/update",
+                                            data: JSON.stringify(dtl),
+                                            dataType: "json",
+                                            async:false,
+                                            error:function (){
+                                                errorFlag=false;
+                                            }
+                                        })
+                                    }
+                                }
+                                //파일 업로드
+                                if($("#bizInstrIdntyAtchFile")[0].files.length>0){
+                                    let atchFile = new FormData();
+                                    atchFile.append( "attachFile", $("#bizInstrIdntyAtchFile")[0].files[0] );
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/business/instructor/identify/upload/${data.bizInstrIdntyNo}/atch`,
+                                        processData : false,
+                                        contentType : false,
+                                        data: atchFile,
+                                        async:false,
+                                        error:function (){
+                                            errorFlag=false;
+                                        }
+                                    })
+                                }
+                                //파일 업로드
+                                if($("#bizInstrIdntyLsnFile")[0].files.length>0){
+                                    let lsnFile = new FormData();
+                                    lsnFile.append( "attachFile", $("#bizInstrIdntyLsnFile")[0].files[0] );
+                                    $.ajax({
+                                        type:"put", //http method
+                                        url:`/api/business/instructor/identify/upload/${data.bizInstrIdntyNo}/lsn`,
+                                        processData : false,
+                                        contentType : false,
+                                        data: lsnFile,
+                                        async:false,
+                                        error:function (){
+                                            errorFlag=false;
+                                        }
+                                    })
+                                }
+                                if(errorFlag){
+                                    alert("강의확인서를 수정하였습니다.");
+                                    window.location.reload();
+                                }else{
+                                    alert("강의확인서를 수정하였습니다. 작성하는 과정에서 오류가 발생했습니다. 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다.");
+                                }
+                            },
+                            error: function (e){
+                                if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                    alert(e.responseJSON.resultMessage);
+                                }else{
+                                    alert("강의확인서를 작성하는 과정에서 오류가 발생하였습니다.");
+                                }
+                            }
+                        })
+                    }
+                }
+
+                function checkIdentify(param){
+                    return $.ajax({
+                        url:"/api/business/instructor/identify/page" ,
+                        data : param,
+                        async:false
+                    });
+                }
+                function create(){
+                    $("#createBtn").addClass('btn_gray');
+                    $("#createBtn").attr('onclick', '').unbind('click');
+                    let params = getFormData();
+                    if(params!==null){
+                        params.bizInstructorIdentifyDtlApiRequestVOS = getDtlData("test")
+                        let identify = checkIdentify({bizOrgAplyNo : params.bizOrgAplyNo, year:params.bizInstrIdntyYm.slice(0,4), month:params.bizInstrIdntyYm.slice(4,6), userId:[[${#authentication.principal.userId}]]});
+                        if(params.bizInstrIdntyNo !="0"  ){
+                            alert('이미 등록된 강의확인서가 있습니다. 목록으로 돌아가서 수정하기 페이지로 진입해 주세요.');
+                            $(".bl_gridBtns_md").html("<p>현재 화면에서는 재작성이 불가능하며, 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다. <br><small>백업 -> 목록 버튼 클릭 -> 수정하기 버튼 클릭 -> 수정</small></p>");
+                            $("#createBtn").remove();
+                        }else if(identify && identify.responseJSON && identify.responseJSON.empty != true){
+                            alert('이미 등록된 강의확인서가 있습니다. 목록으로 돌아가서 수정하기 페이지로 진입해 주세요.');
+                            $(".bl_gridBtns_md").html("<p>현재 화면에서는 재작성이 불가능하며, 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다. <br><small>백업 -> 목록 버튼 클릭 -> 수정하기 버튼 클릭 -> 수정 </small></p>");
+                            $("#createBtn").remove();
+                        }else if(nullCheck()){
+                            $.ajax({
+                                type: "POST",
+                                headers: {'Content-Type' : 'application/json'},
+                                url: "/api/business/instructor/identify/create_full",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (data){
+                                    let errorFlag=true;
+                                    //파일 업로드
+                                    if($("#bizInstrIdntyAtchFile")[0].files.length>0){
+                                        let atchFile = new FormData();
+                                        atchFile.append( "attachFile", $("#bizInstrIdntyAtchFile")[0].files[0] );
+                                        $.ajax({
+                                            type:"put", //http method
+                                            url:`/api/business/instructor/identify/upload/${data.bizInstrIdntyNo}/atch`,
+                                            processData : false,
+                                            contentType : false,
+                                            data: atchFile,
+                                            async:false,
+                                            error:function (){
+                                                errorFlag=false;
+                                            }
+                                        })
+                                    }
+                                    //파일업로드
+                                    if($("#bizInstrIdntyLsnFile")[0].files.length>0){
+                                        let lsnFile = new FormData();
+                                        lsnFile.append( "attachFile", $("#bizInstrIdntyLsnFile")[0].files[0] );
+                                        $.ajax({
+                                            type:"put", //http method
+                                            url:`/api/business/instructor/identify/upload/${data.bizInstrIdntyNo}/lsn`,
+                                            processData : false,
+                                            contentType : false,
+                                            data: lsnFile,
+                                            async:false,
+                                            error:function (){
+                                                errorFlag=false;
+                                            }
+                                        })
+                                    }
+                                    if(errorFlag){
+                                        alert("강의확인서를 작성하였습니다.");
+                                        window.location.replace('/mypage/instructor-state/lecture');
+                                    }else{
+                                        alert("강의확인서를 작성하는 과정에서 오류가 발생했습니다. 화면을 이동하기 전에 작성한 내용을 저장해두시고 수정 페이지로 이동하여 내용을 확인 해주시기 바랍니다.");
+                                        $("#createBtn").remove();
+                                        $(".bl_gridBtns_md").html("<p>작성하는 과정에서 오류가 발생했습니다. <br> 현재 화면에서는 재작성이 불가능하며, 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다. <br><br> <small>백업 -> 목록 버튼 클릭 -> 수정하기 버튼 클릭 -> 하단 삭제하기 버튼 클릭 -> 목록에서 강의확인서 버튼 클릭 -> 재작성</small></p>")
+                                    }
+                                },
+                                error: function (e){
+                                    if(e && e.responseJSON && e.responseJSON.resultMessage){
+                                        alert(e.responseJSON.resultMessage);
+                                    }else{
+                                        alert("강의확인서를 작성하는 과정에서 오류가 발생하였습니다. 화면을 백업한 다음 목록에서 새로고침하여 다시 작성해 주세요.");
+                                        $("#createBtn").remove();
+                                        $(".bl_gridBtns_md").html("<p>작성하는 과정에서 오류가 발생했습니다. <br> 현재 화면에서는 재작성이 불가능하며, 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다. <br><br> <small>백업 -> 목록 버튼 클릭 -> 수정하기 버튼 클릭 -> 하단 삭제하기 버튼 클릭 -> 목록에서 강의확인서 버튼 클릭 -> 재작성</small></p>")
+                                    }
+                                }
+                            })
+                        }else{
+                            $("#createBtn").removeClass('btn_gray');
+                            $("#createBtn").attr('onclick', 'create()');
+                        }
+                    }
+                }
+                function getDtlData(bizInstrIdntyNo){
+                    let CONT = getCont();
+                    let params = new Array( $(".bl_boardWrite_date").length);
+
+                    $(".bl_boardWrite_date").each((index, item)=>{
+                        let temp ={};
+                        temp.bizInstrIdntyDtlNo =$(item).find(".bizInstrIdntyDtlNo").attr("value");
+                        temp.bizInstrIdntyNo = bizInstrIdntyNo;
+                        temp.bizOrgAplyDtlNo = $(item).find("input:checkbox").attr("id");
+                        temp.vdoLctYn = $(item).find("input:checkbox").is(":checked")?1:0;
+                        temp.bizInstrIdntyFormula=bizInstrIdntyFormula[index];
+                        temp.bizInstrIdntyEtc=bizInstrIdntyEtc[index];
+
+                        temp.bizInstrIdntyDtlNope = $(item).parent().find(".bizInstrIdntyDtlNope").val();
+                        temp.bizInstrIdntyDtlTpic = $(item).parent().next().find(".bizInstrIdntyDtlTpic").val();
+                        temp.bizInstrIdntyDtlCn = $(item).parent().next().next().find(".bizInstrIdntyDtlCn").val();
+
+                        params[index] = temp;
+                    })
+                    return params;
+                }
+                function getFormData(){
+                    let params={};
+                    let CONT = getCont();
+                    if(CONT[0].bizInstrIdntyNo == null ){
+                        params.bizInstrIdntyNo="0";
+                        params.bizInstrIdntyStts=1;
+                    }else{
+                        params=CONT[0];
+                    }
+                    let temp = getAmt();
+                    if(temp==null){
+                        alert('수업 기록을 정리하는 과정에서 오류가 발생하였습니다. 다른 곳에 내용을 저장하고 관리자에게 문의주세요.');
+                        return null;
+                    }else{
+                        params.bizInstrIdntyTime=temp.tempTime;
+                        params.bizInstrIdntyAmt=temp.tempValue;
+                        params.bizOrgAplyNo = CONT[0].bizOrgAplyNo;
+                        if(CONT[0].bizInstrIdntyNo == null ){
+                            params.bizInstrIdntyYm=CONT[0].month.replace("-", "");
+                        }
+                        return params;
+                    }
+                }
+
+                function getAnother(){
+                    return [[${anotherIdentify}]];
+                }
+                let bizInstrIdntyFormula;
+                let bizInstrIdntyEtc;
+                function getAmt(){
+                    let CONT = getCont();
+                    let errorFlag=false;
+                    let another=getAnother();
+                    let clcl = getClclAmt();
+                    let clclDdlnAmt ={};
+                    clclDdlnAmt.defaultValue = clcl;
+                    let distanceAmt = parseInt(getDistAmt());
+                    if(isNaN(distanceAmt)){
+                        alert('거리증빙 데이터를 가져오는 과정에서 오류가 발생하였습니다. 작성한 내용을 저장하고 관리자에게 문의해 주세요.');
+                        errorFlag = true;
+                    }
+                    let dtl = [];
+                    // 시간계산
+                    let dtlHr = [];
+                    // 언택트날짜
+                    let dtlUn = [];
+                    // 수업일
+                    let dtlNo = [];
+                    // 수업시간
+                    let dtlTime = [];
+                    // 인덱스
+                    let dtlIdx = [];
+                    let allDtl = CONT[0].bizInstrIdntyNo==null?CONT[0].bizOrganizationAplyDtls:CONT[0].bizInstructorIdentifyDtls;
+                    let idx =allDtl.length;
+                    for(let i=0 ; i<idx; i++){
+                        if(CONT[0].bizInstrIdntyNo==null){
+                            if(dtlNo.includes(allDtl[i].bizOrgAplyLsnDtlYmd)){
+                                dtlTime[dtlNo.indexOf(allDtl[i].bizOrgAplyLsnDtlYmd)]+=", "+allDtl[i].bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrgAplyLsnDtlEndTm;
+                                dtlHr[dtlNo.indexOf(allDtl[i].bizOrgAplyLsnDtlYmd)]+=allDtl[i].bizOrgAplyLsnDtlHr;
+                            }else if($(".bizOrgAplyDtlNo").eq(i).is(":checked") ){
+                                dtl.push(allDtl[i].bizOrgAplyLsnDtlYmd);
+                                dtlUn.push(allDtl[i].bizOrgAplyLsnDtlYmd);
+                                dtlNo.push(null);
+                                dtlHr.push(allDtl[i].bizOrgAplyLsnDtlHr);
+                                dtlIdx.push(i);
+                                dtlTime.push(allDtl[i].bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrgAplyLsnDtlEndTm);
+                            }else if(!$(".bizOrgAplyDtlNo").eq(i).is(":checked") ){
+                                dtl.push(allDtl[i].bizOrgAplyLsnDtlYmd);
+                                dtlUn.push(null);
+                                dtlNo.push(allDtl[i].bizOrgAplyLsnDtlYmd);
+                                dtlHr.push(allDtl[i].bizOrgAplyLsnDtlHr);
+                                dtlIdx.push(i)
+                                dtlTime.push(allDtl[i].bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrgAplyLsnDtlEndTm);
+                            }
+                        }else{
+                            if(dtlNo.includes(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd)){
+                                dtlTime[dtlNo.indexOf(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd)]+=", "+allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm;
+                                dtlHr[dtlNo.indexOf(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd)]+=allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlHr;
+                            }else if($(".bizOrgAplyDtlNo").eq(i).is(":checked") ){
+                                dtl.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd);
+                                dtlUn.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd);
+                                dtlNo.push(null);
+                                dtlHr.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlHr);
+                                dtlIdx.push(i);
+                                dtlTime.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm);
+                            }else if(!$(".bizOrgAplyDtlNo").eq(i).is(":checked") ){
+                                dtl.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd);
+                                dtlUn.push(null);
+                                dtlNo.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlYmd);
+                                dtlHr.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlHr);
+                                dtlIdx.push(i);
+                                dtlTime.push(allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlBgngTm+"~"+allDtl[i].bizOrganizationAplyDtl.bizOrgAplyLsnDtlEndTm);
+                            }
+                        }
+
+                    }
+
+                    bizInstrIdntyFormula = new Array( $(".bl_boardWrite_date").length).fill(null);
+                    bizInstrIdntyEtc = new Array( $(".bl_boardWrite_date").length).fill(null);
+
+                    let temp = { tempValue : 0, tempTime:0 };
+                    for(let index of dtlIdx){
+                        let tempTime = dtlHr.shift();
+                        let dtlDate = dtl.shift();
+                        // 시간중복 계산
+                        let contentDtlTimeStr = dtlTime.shift();
+                        let contentDtlTime = contentDtlTimeStr.split(", ");
+
+                        if($(".bizOrgAplyDtlNo").eq(index).is(":checked")){
+                            // 언택트 강의
+                            temp.tempValue+=tempTime*clclDdlnAmt.defaultValue;
+                            temp.tempTime+=tempTime;
+                        }else{
+                            try{
+                                // 집합 강의
+                                let result = true;
+                                //가장 먼 학교인지 확인
+                                if(another && dtlDate){
+                                    for(let i =0; i<another.content.length;i++){
+                                        for(let j=0;j<another.content[i].bizOrganizationAplyDtls.length;j++){
+
+                                            // 강의날짜가 중복이라면
+                                            if(another.content[i].bizOrganizationAplyDtls && another.content[i].bizOrganizationAplyDtls[j].bizOrgAplyLsnDtlYmd==dtlDate){
+                                                let contDist = CONT[0].bizInstructorDist.bizDistValue;
+                                                let anotherDist = another.content[i].bizInstructorDist.bizDistValue;
+                                                let anotherAmt = another.content[i].bizInstructorDist.bizDistAmt;
+                                                let contDtl = CONT[0].bizInstrIdntyNo==null?CONT[0].bizOrganizationAplyDtls[index]:CONT[0].bizInstructorIdentifyDtls[index].bizOrganizationAplyDtl;
+                                                let anotherDtl = another.content[i].bizOrganizationAplyDtls[j];
+                                                let contName = CONT[0].bizOrganizationAply.organizationInfo.organizationName;
+                                                let anotherName = another.content[i].bizOrganizationAply.organizationInfo.organizationName;
+
+                                                let anotherPbanc =another.content[i].bizPbancMaster.bizPbancNm;
+
+                                                // 이름 순서 확인용
+                                                let namelist = ['', ''];
+                                                namelist[0] = anotherName;
+                                                namelist[1] = contName;
+                                                namelist.sort();
+
+                                                // 시간중복 계산
+                                                let timeOver = false;
+                                                for(contDtlTime of contentDtlTime){
+                                                    let bgngTm = contDtlTime.split("~")[0]
+                                                    let endTm = contDtlTime.split("~")[1]
+                                                    if((bgngTm<anotherDtl.bizOrgAplyLsnDtlEndTm)&&
+                                                        (endTm>anotherDtl.bizOrgAplyLsnDtlBgngTm)){
+                                                        timeOver = true;
+                                                    }
+                                                }
+
+                                                // 같은 날 강의한 다른 장소의 거리가 더 먼 경우
+                                                if(anotherDist>contDist){
+                                                    // 강의료 추가 적용 x
+                                                    result=false;
+
+                                                    // 같은 날 강의한 다른 장소의 거리와 일치하는 경우
+                                                }else if(anotherDist == contDist && namelist.indexOf(contName)==1){
+                                                    result=false;
+                                                } 
+                                                // 강사료 비교 작성
+                                                if(bizInstrIdntyEtc[index]!=null && bizInstrIdntyEtc[index].indexOf(`${dtlDate} ${anotherPbanc} ${anotherName}`)>=0){
+                                                    bizInstrIdntyEtc[index] = bizInstrIdntyEtc[index].replace("anotherDtlSameDate", `, ${anotherDtl.bizOrgAplyLsnDtlBgngTm}~${anotherDtl.bizOrgAplyLsnDtlEndTm}anotherDtlSameDate`)
+                                                    if(timeOver===true){
+                                                        bizInstrIdntyEtc[index] = bizInstrIdntyEtc[index].replace("시간 겹치지 않음", `시간 중복`)
+                                                    }
+                                                }else{
+                                                    if(bizInstrIdntyEtc[index] == null){
+                                                        bizInstrIdntyEtc[index]="";
+                                                    }
+                                                    bizInstrIdntyEtc[index]+=`${dtlDate} ${anotherPbanc} ${anotherName} 중복${result===false?', 거리상향 X':''} <br>`+
+                                                        `${anotherName}  ${anotherDtl.bizOrgAplyLsnDtlBgngTm}~${anotherDtl.bizOrgAplyLsnDtlEndTm}anotherDtlSameDate<br>`+
+                                                        `${contName}  ${contentDtlTimeStr}<br>`+
+                                                        `${timeOver===true?"시간 중복":"시간 겹치지 않음"}<br>`;
+                                                }
+                                            }
+                                        }
+
+                                        if(bizInstrIdntyEtc[index]){
+                                            bizInstrIdntyEtc[index] = bizInstrIdntyEtc[index].replace("anotherDtlSameDate", "")
+                                        }
+                                    }
+                                }
+                                if(result){
+                                    // 강사료 거리상향이 적용될 때만 수식 저장
+                                    if(bizInstrIdntyEtc[index] != null){
+                                        if(clclDdlnAmt.defaultValue==distanceAmt ){
+                                            bizInstrIdntyEtc[index]+=`${clclDdlnAmt.defaultValue}*${tempTime}=${tempTime*clclDdlnAmt.defaultValue}<br>`;
+                                        }else if(tempTime>2&&(clclDdlnAmt.defaultValue!=distanceAmt)){
+                                            bizInstrIdntyEtc[index] += `${distanceAmt}*2+${clclDdlnAmt.defaultValue}*${tempTime-2}=${2*distanceAmt+clclDdlnAmt.defaultValue*(tempTime-2)}<br>`;
+                                        }else if(tempTime<=2&&(clclDdlnAmt.defaultValue!=distanceAmt)){
+                                            bizInstrIdntyEtc[index]+=`${distanceAmt}*${tempTime}=${2*distanceAmt}<br>`;
+                                        }
+                                    }else{
+                                        if(tempTime>2&&(clclDdlnAmt.defaultValue!=distanceAmt)){
+                                            bizInstrIdntyFormula[index] = `${dtlDate} ${tempTime}시간<br>${distanceAmt}*2+${clclDdlnAmt.defaultValue}*${tempTime-2}=${2*distanceAmt+clclDdlnAmt.defaultValue*(tempTime-2)}<br>`;
+                                        }else if(tempTime<=2&&(clclDdlnAmt.defaultValue!=distanceAmt)){
+                                            bizInstrIdntyFormula[index] = `${dtlDate} ${tempTime}시간<br>${distanceAmt}*2=${2*distanceAmt}<br>`;
+                                        }
+                                    }
+                                    temp.tempValue+=2*distanceAmt; //2시간만 적용
+                                    temp.tempValue+=clclDdlnAmt.defaultValue*(tempTime-2);
+                                    temp.tempTime+=tempTime;
+
+                                }else{
+                                    if(bizInstrIdntyEtc[index] != null){
+                                        bizInstrIdntyEtc[index]+=`${clclDdlnAmt.defaultValue}*${tempTime}=${tempTime*clclDdlnAmt.defaultValue}<br>`;
+                                    }
+                                    temp.tempValue+=tempTime*clclDdlnAmt.defaultValue; // 기본료 적용
+                                    temp.tempTime+=tempTime;
+                                }
+
+                            }catch (e){
+                                errorFlag=true;
+                            }
+
+                        }
+                    }
+                    if(errorFlag){
+                        return null;
+                    }else{
+                        return temp;
+                    }
+                }
+                /* <![CDATA[ */
+                function getCont(){
+                    let CONT = [[ ${content} ]];
+                    return CONT;
+                }
+                function getClclAmt(){
+                    let clcl = [[${clclDdlnAmt}]];
+                    return clcl.content[0].bizInstrDistCrtrAmtValue;
+                }
+                function getDistAmt(){
+                    let CONT = getCont();
+                    return CONT[0].bizInstructorDist.bizDistAmt;
+                }
+                let clclDdlnAmt;
+                let distanceAmt;
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,1);
+
+                    let CONT = getCont();
+                    if(CONT){
+                        $("#bizOrgAplyRgn").val(CONT[0].bizOrganizationAply.bizOrgAplyRgn).attr('selected', 'selected');
+                    }
+                    let clcl=[[${clclDdlnAmt}]];
+                    if(clcl.content && clcl.content.length>0){
+                        clclDdlnAmt ={};
+                        clclDdlnAmt.defaultValue = clcl.content[0].bizInstrDistCrtrAmtValue;
+                    }else{
+                        clclDdlnAmt ={};
+                        clclDdlnAmt.defaultValue = 0;
+                        alert('정산 기준액을 찾을 수 없습니다. 문의를 부탁드립니다.');
+                    }
+                    if(CONT[0].bizInstructorDist){
+                        distanceAmt = CONT[0].bizInstructorDist.bizDistAmt;
+                    }else{
+                        distanceAmt = 0;
+                        alert('거리증빙 기록을 찾을 수 없습니다. 거리증빙 등록 후 강의확인서 작성 부탁드립니다.');
+                        window.location.href='/mypage/instructor-state/recruit/result';
+                    }
+                    if(CONT[0].bizInstrIdntyNo &&window.location.search.includes("searchYm") && window.location.pathname.includes("/mypage/instructor-state/lecture/confirm/write/BIA")){
+                        alert('이미 강의확인서를 작성하셨습니다.')
+                    }
+                    let now = new Date();
+                    now.setUTCHours(now.getUTCHours()+9);
+                    let toDay = now.toJSON().split('T')[0];
+                    let dtlDate = $(".bizOrgAplyLsnDtlYmd").last().text();
+                    if(dtlDate>toDay){
+                        alert(`${now.getMonth()+1}월 수업이 끝나지 않았습니다. ${dtlDate} 이후에 다시 작성해 주세요.`);
+                        window.location.href='/mypage/instructor-state/lecture';
+                    }
+
+                    $("input[type=file]").on("change", function(){
+                        let maxSize = 20 * 1024 * 1000; // 5MB 사이즈 제한
+                        let fileSize = this.files[0].size; //업로드한 파일용량
+
+                        if(fileSize > maxSize){
+                            alert("자료첨부 사이즈는 20MB 이내로 가능합니다.");
+                            $(this).val(''); //업로드한 파일 제거
+                            $(this).parent().find(".bl_upload_path").val(''); //업로드한 파일 제거
+                        }
+                    });
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

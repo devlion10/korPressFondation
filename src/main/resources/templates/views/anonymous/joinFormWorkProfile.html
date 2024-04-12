@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content ly_grid content_join">
+            <div class="join_step">
+                <div class="step step1">
+                    <span>01</span>
+                    <span>약관동의</span>
+                    <div class="dot">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="step step2">
+                    <span>02</span>
+                    <span>본인인증</span>
+                    <div class="dot">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="step step3 active">
+                    <span>03</span>
+                    <span>회원정보 입력</span>
+                    <div class="dot">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="step step4">
+                    <span>04</span>
+                    <span>회원가입 완료</span>
+                </div>
+            </div>
+
+            <form id="createUserForm" name="createUserForm" method="POST" action="/anonymous/user/create">
+                <div class="cont_title">강사정보</div>
+                <div class="common_input_wrap">
+                    <div class="common_input_box">
+                        <div class="common_label">
+                            <span class="essential">*</span>사진
+                        </div>
+                        <div class="profile_img"></div>
+                        <div class="d-flex flex-column">
+                            <div class="form_file">
+                                <input class="common_input upload_name" value="" disabled="disabled">
+
+                                <label class="btn_type1 btn_md btn_gray" for="file">파일찾기</label>
+                                <input type="file" id="file" class="upload_hidden">
+                            </div>
+                            <p class="input_text"><span class="essential">*</span>파일형식 pdf, jpg, png, gif / 5MB 미만</p>
+                        </div>
+                    </div>
+                    <div class="common_input_box">
+                        <div class="common_label">
+                            <span class="essential">*</span>서명/도장
+                        </div>
+                        <div class="stamp_img"></div>
+                        <div class="d-flex flex-column">
+                            <div class="form_file">
+                                <input class="common_input upload_name" value="" disabled="disabled">
+
+                                <label class="btn_type1 btn_md btn_gray" for="file">파일찾기</label>
+                                <input type="file" id="file" class="upload_hidden">
+                            </div>
+                            <p class="input_text"><span class="essential">*</span>파일형식 pdf, jpg, png, gif / 5MB 미만</p>
+                        </div>
+                    </div>
+                    <div class="common_input_box">
+                        <div class="common_label">
+                            <span class="essential">*</span>강의가능 지역
+                        </div>
+                        <select class="common_select">
+                            <option value="">선택1</option>
+                        </select>
+                        <select class="common_select">
+                            <option value="">선택2</option>
+                        </select>
+                    </div>
+                    <div class="common_input_box">
+                        <div class="common_label">
+                            <span class="essential">*</span>최종학력
+                        </div>
+                        <div class="common_table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>졸업년도</th>
+                                        <th>학교명</th>
+                                        <th>전공</th>
+                                        <th>학위</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="common_input"></td>
+                                        <td><input type="text" class="common_input"></td>
+                                        <td><input type="text" class="common_input"></td>
+                                        <td><input type="text" class="common_input"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="common_input_box">
+                        <div class="common_label">
+                            <span class="essential">*</span>주요이력
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="common_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>년도</th>
+                                            <th>기관</th>
+                                            <th>내용</th>
+                                            <th>삭제</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><a href="" class="btn_type3 btn_del">삭제</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><input type="text" class="common_input"></td>
+                                            <td><a href="" class="btn_type3 btn_del">삭제</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn_box">
+                    <button id="createUserButton" name="createUserButton" type="button" class="btn_type1 btn_lg btn_red">신청완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

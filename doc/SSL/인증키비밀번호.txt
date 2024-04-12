@@ -1,0 +1,7 @@
+서버 인증서 Base64 PEM - _wildcard.meca.or.kr.crt
+개인키 Base64 PEM - _wildcard.meca.or.kr.key (암호 : 없음)
+PFX, JKS (전체zip) (암호 : xj39x157)
+* 체인(중개) 적용은 필수 사항입니다 (AlphaSSL CA - SHA256 - G4)
+* key / pfx / jks 파일은, CSR 자동 생성 신청시에만 제공됩니다 (전체zip)
+* pfx / jks 파일에는 '개인키+서버인증서+체인인증서+루트인증서' 가 포함되어 있습니다 (전체zip)
+* 적용 전, 발급내역서(필독) PDF 및 루트/체인 PDF 의 파일 설명을 꼭 확인 바랍니다 (전체zip)

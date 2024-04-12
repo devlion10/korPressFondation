@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">수업지도안</div>
+                    </div>
+                </div>
+
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab2 js_tab">
+                    <div class="bl_iscroll" id="navTab2">
+                        <div class="hp_md_iscroll">
+                            <ul class="bl_tab2_menu">
+                                <li>
+                                    <a href="/communication/archive/class-guide" onclick="reset()">전체</a>
+                                </li>
+                                <li>
+                                    <a href="/communication/archive/class-guide?classGuideType=1" onclick="reset()">교사용</a>
+                                </li>
+                                <li>
+                                    <a href="/communication/archive/class-guide?classGuideType=2" onclick="reset()">학부모용</a>
+                                </li>
+                                <li>
+                                    <a href="/communication/archive/class-guide?classGuideType=3" onclick="reset()">기타 대상</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button class="bl_tab2_btnPrev" disabled><img th:src="@{/assets/images/icons/tab2_prev.png}" alt="이전"></button>
+                        <button class="bl_tab2_btnNext"><img th:src="@{/assets/images/icons/tab2_next.png}" alt="다음"></button>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>필터</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">구분</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="radio_box">
+                                            <input id="all" type="radio" name="ctg" value="0">
+                                            <label for="all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="professor" type="radio" name="ctg" value="1">
+                                            <label for="professor">
+                                                <span></span>
+                                                교사용
+                                            </label>
+                                        </div>
+
+                                        <div class="radio_box">
+                                            <input id="parent" type="radio" name="ctg" value="2">
+                                            <label for="parent">
+                                                <span></span>
+                                                학부모용
+                                            </label>
+                                        </div>
+
+                                        <div class="radio_box">
+                                            <input id="etc" type="radio" name="ctg" value="3">
+                                            <label for="etc">
+                                                <span></span>
+                                                기타(다문화/유아/일반)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="professor_parent_area">
+                                <th scope="row">단계</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="school_all" type="checkbox" name="targets" class="all_checkbox" value="0">
+                                            <label for="school_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="elementary_school" type="checkbox" name="targets" value="초등학교">
+                                            <label for="elementary_school">
+                                                <span></span>
+                                                초등학교
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="middle_school" type="checkbox" name="targets" value="중학교">
+                                            <label for="middle_school">
+                                                <span></span>
+                                                중학교
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="high_school" type="checkbox" name="targets" value="고등학교">
+                                            <label for="high_school">
+                                                <span></span>
+                                                고등학교
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="etc_area">
+                                <th scope="row">단계</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="step_all" type="checkbox" name="targets" class="all_checkbox" value="0">
+                                            <label for="step_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="multicultural" type="checkbox" name="targets" value="다문화">
+                                            <label for="multicultural">
+                                                <span></span>
+                                                다문화
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="toddler" type="checkbox" name="targets" value="유아">
+                                            <label for="toddler">
+                                                <span></span>
+                                                유아
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="general" type="checkbox" name="targets" value="일반">
+                                            <label for="general">
+                                                <span></span>
+                                                일반
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="professor_parent_area">
+                                <th scope="row">학년</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="grade_all" type="checkbox" class="all_checkbox" name="targetGrades" value="0">
+                                            <label for="grade_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_1" type="checkbox" name="targetGrades" value="1">
+                                            <label for="grade_1">
+                                                <span></span>
+                                                1학년
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_2" type="checkbox" name="targetGrades" value="2">
+                                            <label for="grade_2">
+                                                <span></span>
+                                                2학년
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_3" type="checkbox" name="targetGrades" value="3">
+                                            <label for="grade_3">
+                                                <span></span>
+                                                3학년
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_4" type="checkbox" name="targetGrades" value="4">
+                                            <label for="grade_4">
+                                                <span></span>
+                                                4학년
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_5" type="checkbox" name="targetGrades" value="5">
+                                            <label for="grade_5">
+                                                <span></span>
+                                                5학년
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="grade_6" type="checkbox" name="targetGrades" value="6">
+                                            <label for="grade_6">
+                                                <span></span>
+                                                6학년
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="professor_parent_area">
+                                <th scope="row">년도</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="year_all" type="checkbox" class="all_checkbox" name="years" value="0">
+                                            <label for="year_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="2023" type="checkbox" name="years" value="2023">
+                                            <label for="2023">
+                                                <span></span>
+                                                2023
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="2022" type="checkbox" name="years" value="2022">
+                                            <label for="2022">
+                                                <span></span>
+                                                2022
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="2021" type="checkbox" name="years" value="2021">
+                                            <label for="2021">
+                                                <span></span>
+                                                2021
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="professor_parent_area">
+                                <th scope="row">과목</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="subject_all" name="subjects" value="0" type="checkbox" class="all_checkbox">
+                                            <label for="subject_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="korean" name="subjects" value="국어"  type="checkbox">
+                                            <label for="korean">
+                                                <span></span>
+                                                국어
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="english" name="subjects" value="영어" type="checkbox">
+                                            <label for="english">
+                                                <span></span>
+                                                영어
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="math" name="subjects" value="수학" type="checkbox">
+                                            <label for="math">
+                                                <span></span>
+                                                수학
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>검색</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">작성일자</th>
+                                <td>
+                                    <div class="bl_dateRange">
+                                        <label for="startDate" class="hidden_label">검색시작일</label>
+                                        <input id="startDate" type="text" class="el_datePicker startDate common_input">
+                                        <span class="blank">~</span>
+                                        <label for="endDate" class="hidden_label">검색종료일</label>
+                                        <input id="endDate" type="text" class="el_datePicker endDate common_input">
+                                    </div>
+
+                                    <div class="bl_btnGroup">
+                                        <button class="btn_datepicker" onclick="setSearchDate(7)">1주일</button>
+                                        <button class="btn_datepicker" onclick="setSearchDate(30)">1개월</button>
+                                        <button class="btn_datepicker" onclick="setSearchDate(90)">3개월</button>
+                                        <button class="btn_datepicker" onclick="setSearchDate(180)">6개월</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">검색어</th>
+                                <td>
+                                    <div class="bl_formSearch">
+                                        <label for="containTextType" class="hidden_label">검색 구분</label>
+                                        <select class="common_select" id="containTextType">
+                                            <option value="0">전체</option>
+                                            <option value="1">주제</option>
+                                            <option value="2">내용</option>
+                                            <option value="3">작성자</option>
+                                        </select>
+                                        <label for="containText" class="hidden_label">검색어</label>
+                                        <input type="text" id="containText" class="common_input" >
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_gray" href="javascript:void(0);" onclick="reset()">초기화</a>
+                            <a class="btn_type1 btn_blue" onclick="searchEduPlan()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색">  검색</a>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : CONTROLLER -->
+                    <div class="bl_boardCtrls">
+                        <div class="bl_boardCtrls_lft">
+                            <p class="bl_boardCtrls_total">
+                                <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                            </p>
+                        </div>
+
+                        <div class="bl_boardCtrls_rgt">
+                            <select class="common_select" data-list="countSortList"></select>
+                        </div>
+                    </div>
+
+                    <!-- BOARD : LIST -->
+                    <div class="bl_board">
+                        <div class="bl_board_head">
+                            <div class="bl_board_no">No.</div>
+                            <div class="bl_board_ctg bl_board_ctg__chip">구분/단계</div>
+                            <div class="bl_board_subject">제목</div>
+                            <div class="bl_board_lesson">수업지도안</div>
+                            <div class="bl_board_author">작성자</div>
+                            <div class="bl_board_date">작성일</div>
+                        </div>
+
+                        <div class="bl_board_body">
+                            <div class="bl_board_unit" th:each="item, stat: ${content}">
+                                <div class="bl_board_no">
+                                    <span th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></span>
+                                </div>
+                                <div class="bl_board_ctg">
+                                    <span class="bl_board_chip_md">
+                                        <span th:if="${item.classGuideType == '1'}">교사</span>
+                                        <span th:if="${item.classGuideType == '2'}">학부모</span>
+                                        <span th:if="${item.classGuideType == '3'}">기타(다문화/유아/일반)</span>
+                                        / <span th:text="${item.target}"></span>
+                                    </span>
+                                </div>
+                                <a th:href="@{/communication/archive/class-guide/view/{id}(id=${item.classGuideCode})}" class="bl_board_subject">
+                                    <span class="hp_ellipsis" th:text="${item.title}"></span>
+                                </a>
+                                <div class="bl_board_lesson">
+                                    <a th:href="@{/communication/archive/class-guide/view/{id}#guideFile(id=${item.classGuideCode})}"
+                                       class="btn_type5 btn_green btn_learning download_ajax" th:if="${item.guideFileList != null}">
+                                        <span th:if="${item.classGuideType == '1'}">학습</span>
+                                        <span th:unless="${item.classGuideType == '1'}">길라</span>
+                                    </a>
+                                    <a th:href="@{/communication/archive/class-guide/view/{id}#activityFile(id=${item.classGuideCode})}"
+                                       class="btn_type5 btn_blue btn_activity download_ajax" th:if="${item.activityFileList != null}">활동</a>
+                                    <a th:href="@{/communication/archive/class-guide/view/{id}#answerFile(id=${item.classGuideCode})}"
+                                       class="btn_type5 btn_brown btn_answer download_ajax" th:if="${item.answerFileList != null}">답안</a>
+                                    <a th:href="@{/communication/archive/class-guide/view/{id}#nieFile(id=${item.classGuideCode})}"
+                                       class="btn_type5 btn_purple btn_assistant download_ajax" th:if="${item.nieFileList != null}">NIE</a>
+                                </div>
+                                <div class="bl_board_author bl_board_barNone" th:text="${item.userName}"></div>
+                                <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime,0,10)}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bl_paginate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            $(".all_checkbox").bind('click',function (e){
+                if($(this).is(":checked")){
+                    let name=$(this).attr("name");
+                    $(`input:checkbox[name=${name}]`).prop("checked", true);
+                }else{
+                    let name=$(this).attr("name");
+                    $(`input:checkbox[name=${name}]`).prop("checked", false);
+
+                }
+            })
+            function searchEduPlan(){
+                let searchQuery ={};
+                let text= $("#containText").val();
+                let type= $("#containTextType").val();
+                let sDate = $("#startDate").val()
+                let eDate = $("#endDate").val()
+                if(sDate && eDate){
+                    searchQuery.startDate= sDate;
+                    searchQuery.endDate= eDate;
+                }else if(sDate||eDate){
+                    alert('검색 시작일과 종료일을 모두 입력해야 합니다.')
+                }
+                if(text){
+                    searchQuery.containText=text;
+                    searchQuery.containTextType=type;
+                }
+
+                let targets =$("input[name=targets]:checked").length>0 ? new Array(  $("input[name=targets]:checked").length ) :"0";
+                $("input[name=targets]:checked").each(function(index, item) {
+                    if($(this).val()!="0" &&targets!="0"){
+                        targets[index] = $(this).val();
+                    }else{
+                        targets = "0";
+                    }
+                })
+                if(targets!="0"){
+                    searchQuery.targets=targets.toString();
+                }
+
+                let targetGrades =$("input[name=targetGrades]:checked").length>0 ? new Array(  $("input[name=targetGrades]:checked").length ) :"0";
+                $("input[name=targetGrades]:checked").each(function(index, item) {
+                    if($(this).val()!="0" &&targetGrades!="0"){
+                        targetGrades[index] = $(this).val();
+                    }else{
+                        targetGrades = "0";
+                    }
+                })
+                if(targetGrades!="0"){
+                    searchQuery.targetGrades=targetGrades.toString();
+                }
+
+                let years =$("input[name=years]:checked").length>0 ? new Array(  $("input[name=years]:checked").length ) :"0";
+                $("input[name=years]:checked").each(function(index, item) {
+                    if($(this).val()!="0" &&years!="0"){
+                        years[index] = $(this).val();
+                    }else{
+                        years = "0";
+                    }
+                })
+                if(years!="0"){
+                    searchQuery.years=years.toString();
+                }
+
+                let subjects =$("input[name=subjects]:checked").length>0 ? new Array(  $("input[name=subjects]:checked").length ) :"0";
+                $("input[name=subjects]:checked").each(function(index, item) {
+                    if($(this).val()!="0" &&subjects!="0"){
+                        subjects[index] = $(this).val();
+                    }else{
+                        subjects = "0";
+                    }
+                })
+                if(subjects!="0"){
+                    searchQuery.subjects=subjects.toString();
+                }
+
+                let classGuideType = $("input:radio[name=ctg]:checked").val();
+                if (classGuideType != "0")
+                    searchQuery.classGuideType= classGuideType;
+
+                searchJson(searchQuery);
+            }
+            function getSpecificDate(num){
+                let current = new Date();
+                let temp_
+                if(num==0){
+                    temp_ = current;
+                } else if(num==30){
+                    let maxDate = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+                    temp_ = new Date(Date.parse(current) - (maxDate * 1000 * 60 * 60 * 24));
+                }else{
+                    temp_ = new Date(Date.parse(current) - (num * 1000 * 60 * 60 * 24));
+                }
+                let year_ = temp_.getFullYear();
+                let month_ = temp_.getMonth() + 1;
+                let day_ = temp_.getDate();
+
+                month_ = month_ < 10? '0'+month_:month_;
+                day_   = day_ < 10? '0'+day_:day_;
+
+                return year_+'-'+month_+'-'+day_;
+            }
+            function setSearchDate(date){
+                if(date==7){
+                    $(".startDate").val(getSpecificDate(7))
+                    $(".endDate").val(getSpecificDate(0))
+                }else if(date==30){
+                    $(".startDate").val(getSpecificDate(30))
+                    $(".endDate").val(getSpecificDate(0))
+                }else{
+                    $(".startDate").val(getSpecificDate(date))
+                    $(".endDate").val(getSpecificDate(0))
+                }
+            }
+
+            /* 탭 메뉴 제어 */
+            const radio_btn = document.querySelectorAll('input[type=radio]');
+            const all = document.getElementById('all');
+            const professor = document.getElementById('professor');
+            const parent = document.getElementById('parent');
+            const etc = document.getElementById('etc');
+            const professor_parent_area = document.querySelectorAll('.professor_parent_area');
+            const etc_area = document.querySelector('.etc_area');
+
+            const tab_menu = document.querySelectorAll('.bl_tab2_menu li');
+            const urlParams = new URL(location.href).searchParams;
+            const classGuideType = urlParams.get('classGuideType');
+
+            professor.removeAttribute('checked');
+            parent.removeAttribute('checked');
+            etc.removeAttribute('checked');
+            all.removeAttribute('checked');
+
+            professor.setAttribute('disabled', '');
+            parent.setAttribute('disabled', '');
+            etc.setAttribute('disabled', '');
+            all.setAttribute('disabled', '');
+
+            if(classGuideType === '1'){
+                // 교사용
+                tab_menu[1].classList.add('is_active');
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'table-row';
+                });
+                etc_area.style.display = 'none';
+                professor.checked = true;
+            } else if(classGuideType === '2'){
+                // 학부모용
+                tab_menu[2].classList.add('is_active');
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'table-row';
+                });
+                etc_area.style.display = 'none';
+                parent.checked = true;
+            } else if(classGuideType === '3'){
+                // 기타
+                tab_menu[3].classList.add('is_active');
+                etc.checked = true;
+
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'none';
+                });
+                etc_area.style.display = 'table-row';
+            } else {
+                // 전체
+                tab_menu[0].classList.add('is_active');
+                professor.removeAttribute('disabled');
+                parent.removeAttribute('disabled');
+                etc.removeAttribute('disabled');
+                all.removeAttribute('disabled');
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'none';
+                });
+                etc_area.style.display = 'none';
+                // professor.checked = true;
+                all.checked = true; // - 전체 검색에 작성일자와 검색어만 사용 시 혹은 모든 대상이 표현될 때
+            }
+
+            if (professor.checked || parent.checked) {
+                // 1. 교사용/학부모용
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'table-row';
+                });
+                etc_area.style.display = 'none';
+
+            } else if (etc.checked) {
+                // 2. 기타(다문화/유아/일반)
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'none';
+                });
+                etc_area.style.display = 'table-row';
+
+            } else if (all.checked) {
+                professor_parent_area.forEach(area => {
+                    area.style.display = 'none';
+                });
+                etc_area.style.display = 'none';
+            }
+
+            radio_btn.forEach((btn, idx) => {
+                if (btn.name == 'ctg') {
+                    btn.addEventListener('click', function () {
+                        if (professor.checked || parent.checked) {
+                            // 1. 교사용/학부모용
+                            professor_parent_area.forEach(area => {
+                                area.style.display = 'table-row';
+                            });
+                            etc_area.style.display = 'none';
+
+                        } else if (etc.checked) {
+                            // 2. 기타(다문화/유아/일반)
+                            professor_parent_area.forEach(area => {
+                                area.style.display = 'none';
+                            });
+                            etc_area.style.display = 'table-row';
+                        } else if (all.checked) {
+                            professor_parent_area.forEach(area => {
+                                area.style.display = 'none';
+                            });
+                            etc_area.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            /* 초기화 */
+            function reset() {
+                let checkBox = document.querySelectorAll('input[type="checkbox"]');
+                let input = document.querySelectorAll('input[type="text"]');
+
+                checkBox.forEach(item => {
+                    item.checked = false;
+                });
+
+                input.forEach(item => {
+                    item.value = '';
+                });
+            }
+
+        </script>
+    </th:block>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false);
+                navigation(3,2,0);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

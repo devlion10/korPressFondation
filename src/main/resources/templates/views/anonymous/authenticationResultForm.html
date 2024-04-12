@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <body>
+		<th:block layout:fragment="script">
+			<script th:inline="javascript">
+				/* <![CDATA[ */
+				[# th:if="${errorMessage == null}"]
+					[# th:if="${youth != null}"]
+						opener.call({
+							userName : [[ ${userName}]],
+							userPhone : [[ ${userPhone}]],
+							birthDate : [[ ${birthDate}]],
+							gender : [[ ${gender}]],
+							userId : [[ ${userId}]],
+							userIds : [[ ${userIds}]],
+							userNames : [[ ${userNames}]]
+						});
+					[/]
+					[# th:if="${youth == null}"]
+						[# th:if="${migrationYN == 'Y'}"]
+							// 접근 경로 값이 로그인이 아닐 경우 안내메시지 출력
+							if( [[ ${session.joinRoot} ]] != 'login' ){
+								alert('기존 회원 정보입니다. 재가입이 필요합니다.');
+							}
+							opener.call({
+								userName : [[ ${userName} ]],
+								userPhone : [[ ${userPhone} ]],
+								birthDate : [[ ${birthDate} ]],
+								gender : [[ ${gender} ]],
+								userId : [[ ${userId} ]],
+								migrationYN : [[ ${migrationYN} ]]
+							});
+						[/]
+						[# th:if="${migrationYN == 'N'}"]
+							alert("본인인증을 성공하였습니다.");
+							opener.call({
+								userName : [[ ${userName}]],
+								userPhone : [[ ${userPhone}]],
+								birthDate : [[ ${birthDate}]],
+								gender : [[ ${gender}]],
+								userId : [[ ${userId}]]
+							});
+						[/]
+					[/]
+					window.close();
+				[/]
+				[# th:if="${errorMessage != null}"]
+					setTimeout(function(){
+						alert([[ ${errorMessage} ]]);
+						window.close();
+					},100);
+				[/]
+			/* ]]> */
+			</script>
+		</th:block>
+    </body>
+</html>

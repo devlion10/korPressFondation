@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+    <body>
+        <div layout:fragment="content">
+
+            <div class="subpage_banner" style="background-image: url(/assets/images/top_visual6.png)">
+            </div>
+
+            <!-- CONTAINER -->
+            <div class="container">
+                <!-- CONTENT -->
+                <div class="content">
+                    <div class="ly_grid"></div>
+                </div>
+            </div>
+
+            <th:block layout:fragment="script">
+                <script th:inline="javascript">
+                    /* <![CDATA[ */
+                    function onLoadSubmit() {
+                        console.log('commonCode: ', [[ ${commonCode} ]] )
+                    }
+                    /* ]]> */
+                </script>
+            </th:block>
+            <form id="submitForm" action="#" style="visibility: hidden;">
+        </div>
+    </body>
+</html>

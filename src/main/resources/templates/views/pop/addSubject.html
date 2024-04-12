@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+<div class="pop_page">
+    <div class="pop_primary">
+        <div class="pop_head">
+            <h1 class="tit">교과 등록</h1>
+        </div>
+        <div class="pop_cont">
+            <div id="jsTree"></div>
+
+            <div class="bl_gridBtns">
+                <div class="bl_gridBtns_md">
+                    <button type="button" class="btn_type1 btn_blue" onclick="subjectSelect()">과목 선택</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        const CONT = [[ ${content} ]];
+        let resData = [];
+        function makeData(){
+            for(let i=0; i<CONT.length; i++){
+                let tempObj = {};
+                tempObj.id = CONT[i].individualCode;
+                if (CONT[i].depth == 0) {
+                    tempObj.parent = '#';
+                } else {
+                    tempObj.parent = CONT[i].upIndividualCode;
+                }
+                tempObj.text = CONT[i].content;
+                tempObj.description = CONT[i].description;
+                tempObj.order = CONT[i].order;
+                tempObj.depth = CONT[i].depth;
+                resData.push(tempObj);
+            }
+        }
+        makeData();
+
+        let $tree1 = $('#jsTree');
+        $tree1.jstree({
+            "json_data": {},
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "plugins": ["json_data", "checkbox"],
+            "core": {
+                "themes": {"icons": true, "dots": true, "stripes" : true},
+                "check_callback": true, "multiple": true, "data": resData.map(function (node, index) {
+                    if (index === 0) {
+                        node.state = {
+                            'opened': true
+                        };
+                    }
+                    return node;
+                })
+            },
+            "checkbox" : {
+                "three_state" : false //checkbox가 부모 자식노드 상관이 체크되도록
+            },
+        });
+        
+        
+        function subjectSelect() {
+            subjectChkList = $tree1.jstree("get_selected",true); //선택된 리스트
+            
+            //선택된 리스트의 parent
+            let parentList = [];
+            for (let i = 0; i < subjectChkList.length; i++) {
+                let parents = subjectChkList[i].parents;
+                parentList.push(parents);
+            }
+
+            let resultList = [];
+            for (let i = 0; i < parentList.length; i++) {
+                resultList[i] = [];
+                targetSubjectText = subjectChkList[i].text; //선택한 과목 text
+                if (subjectChkList[i].parent != '#') {
+                    subjectChkList[i].text = ''; //depth 추가를 위한 기존 text 초기화
+                }
+
+                for (let j = 0; j < parentList[i].length; j++) {
+                    const result = resData.filter((item) => { return item.id == parentList[i][j] });
+                    if (result.length > 0) {
+                        resultList[i].push(result[0].text);
+                        subjectChkList[i].text = resultList[i].reverse().join(' > ') + ' > ' + targetSubjectText;
+                    }
+                }
+            }
+
+            // 부모에게 메시지 전달
+            sendMsgToParent( subjectChkList );
+            $('.pop_close').click();
+        }
+
+        // 부모에게 메시지 전달
+        function sendMsgToParent( msg ) {
+            window.parent.postMessage( msg, '*' );
+        }
+
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+        }
+        /* ]]> */
+    </script>
+</th:block>
+</div>
+</body>
+</html>

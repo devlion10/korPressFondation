@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title_left">
+                    <div class="page_title">교재자료</div>
+                </div>
+
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab2 js_tab">
+                    <div class="bl_iscroll" id="navTab2">
+                        <div class="hp_md_iscroll">
+                            <ul class="bl_tab2_menu">
+                                <li>
+                                    <a href="/communication/archive/edu-data" onclick="reset()">전체</a>
+                                </li>
+                                <li>
+                                    <a href="/communication/archive/edu-data?teamCategory=2" onclick="reset()">언론인연수</a>
+                                </li>
+                                <li>
+                                    <a href="/communication/archive/edu-data?teamCategory=1" onclick="reset()">미디어교육</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button class="bl_tab2_btnPrev" disabled><img th:src="@{/assets/images/icons/tab2_prev.png}" alt="이전"></button>
+                        <button class="bl_tab2_btnNext"><img th:src="@{/assets/images/icons/tab2_next.png}" alt="다음"></button>
+                    </div>
+                </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>필터</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">구분</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="radio_box">
+                                            <input id="ctgr_all" type="radio" name="teamcategory" value="">
+                                            <label for="ctgr_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="ctgr_2" type="radio" name="teamcategory" value="2">
+                                            <label for="ctgr_2">
+                                                <span></span>
+                                                언론인연수
+                                            </label>
+                                        </div>
+                                        <div class="radio_box">
+                                            <input id="ctgr_1" type="radio" name="teamcategory" value="1">
+                                            <label for="ctgr_1">
+                                                <span></span>
+                                                미디어교육
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">유형</th>
+                                <td>
+                                    <div class="common_input_box align-items-center">
+                                        <div class="chk_box">
+                                            <input id="types_all" type="checkbox" class="all_checkbox" name="types" value="0">
+                                            <label for="types_all">
+                                                <span></span>
+                                                전체
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="types_11" type="checkbox" name="types" value="11">
+                                            <label for="types_11">
+                                                <span></span>
+                                                초등
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="types_12" type="checkbox" name="types" value="12">
+                                            <label for="types_12">
+                                                <span></span>
+                                                중등
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="types_13" type="checkbox" name="types" value="13">
+                                            <label for="types_13">
+                                                <span></span>
+                                                고등
+                                            </label>
+                                        </div>
+                                        <div class="chk_box">
+                                            <input id="types_10" type="checkbox" name="types" value="10">
+                                            <label for="types_10">
+                                                <span></span>
+                                                기타
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>검색</caption>
+                            <colgroup>
+                                <col class="hp_lg_w236" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">검색어</th>
+                                <td>
+                                    <div class="bl_formSearch">
+                                        <label for="containTextType" class="hidden_label">검색 구분</label>
+                                        <select id="containTextType" name="containTextType" class="common_select">
+                                            <option value="1" selected>제목+내용</option>
+                                            <option value="2">제목</option>
+                                            <option value="3">내용</option>
+                                        </select>
+                                        <label for="containText" class="hidden_label">검색어</label>
+                                        <input type="text" id="containText" name="containText" class="common_input" >
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_gray" href="/communication/archive/edu-data" onclick="reset()">초기화</a>
+                            <a class="btn_type1 btn_blue" href="javascript:void(0);" onclick="sch()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</a>
+                        </div>
+                    </div>
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">No.</div>
+                        <div class="bl_board_ctg">구분</div>
+                        <div class="bl_board_type--long">유형</div>
+                        <div class="bl_board_subject">제목</div>
+                        <div class="bl_board_author">작성자</div>
+                        <div class="bl_board_date">작성일</div>
+                        <div class="bl_board_hit">조회수</div>
+                    </div>
+
+                    <div class="bl_board_body" th:if="${content != null && content.size > 0}">
+                        <div class="bl_board_unit" th:each="item, stat: ${content}">
+                            <div class="bl_board_no">
+                                <span th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></span>
+                            </div>
+                            <div class="bl_board_ctg">
+                                <span th:if="${item.teamCategory != null}">
+                                    <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'TEAM_CTGR'">
+                                        <text th:each="categories : ${commonCode.subCode}" th:if="${categories.code == item.teamCategory}" th:text="${categories.codeName}"></text>
+                                    </th:block>
+                                </span>
+                            </div>
+                            <div class="bl_board_type--long">
+                                <span th:if="${item.materialType != null}">
+                                    <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'MTRL_TYPE'">
+                                        <text th:each="types : ${commonCode.subCode}" th:if="${types.code == item.materialType}" th:text="${types.codeName}"></text>
+                                    </th:block>
+                                </span>
+                            </div>
+
+                            <a th:href="@{/communication/archive/edu-data/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${item.title}"></span>
+                                <i class="el_ico" th:if="${item.isNew}"><img th:src="@{/assets/images/icons/new.png}" alt="새글"></i>
+                                <i class="el_ico" th:if="${item.lmsDataFiles != null}"><img th:src="@{/assets/images/icons/file_icon.png}" alt="첨부파일"></i>
+                            </a>
+
+                            <div class="bl_board_author" th:text="${item.author}"></div>
+                            <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime, 0, 10)}"></div>
+                            <div class="bl_board_hit" th:text="${item.viewCount}"></div>
+                        </div>
+                    </div>
+                    <div class="bl_board_body" th:unless="${content != null && content.size > 0}">
+                        <div class="bl_board_unit bl_board_unit__empty">
+                            <div class="bl_card_empty">조회된 내역이 없습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function sch(){
+                let searchQuery = {}
+                let text = $("#containText").val();
+                let type = $("#containTextType").val();
+                let teamcategory = $("input[name='teamcategory']:checked").val();
+                if (teamcategory) {
+                    searchQuery.teamteamcategory = teamcategory
+                }
+                let types =$("input[name=types]:checked").length>0 ? new Array(  $("input[name=types]:checked").length ) :"0";
+                $("input[name=types]:checked").each(function(index, item) {
+                    if($(this).val()!="0" &&types!="0"){
+                        types[index] = $(this).val();
+                    }else{
+                        types = "0";
+                    }
+                })
+                if(types!="0"){
+                    searchQuery.types=types.toString();
+                }
+                if(text){
+                    searchQuery.containText = text
+                    if(type){
+                        searchQuery.containTextType = type
+                    }
+                }
+                searchJson(searchQuery)
+            }
+
+            /* 탭 메뉴 제어 */
+            const tabMenu = $('.bl_tab2 .bl_tab2_menu li');
+            const urlParams = new URL(location.href).searchParams;
+            const tabCtgr = urlParams.get('teamcategory');
+            if (tabCtgr == null) { //전체
+                tabMenu.eq(0).addClass('is_active');
+                $("input[name='teamcategory']#ctgr_all").attr('checked', true);
+            } else if (tabCtgr == 1) { // 미디어교육
+                tabMenu.eq(2).addClass('is_active');
+                $("input[name='teamcategory']").attr('disabled', true);
+            } else if (tabCtgr == 2) { // 언론인연수
+                tabMenu.eq(1).addClass('is_active');
+                $("input[name='teamcategory']").attr('disabled', true);
+            }
+
+            /* 체크박스 전체 선택 */
+            $(".all_checkbox").bind('click',function (e){
+                if($(this).is(":checked")){
+                    let name=$(this).attr("name");
+                    $(`input:checkbox[name=${name}]`).prop("checked", true);
+                }else{
+                    let name=$(this).attr("name");
+                    $(`input:checkbox[name=${name}]`).prop("checked", false);
+
+                }
+            })
+
+            /* 검색 초기화 */
+            function reset() {
+                let checkboxAll = document.querySelectorAll('input[type="checkbox"]');
+                let inputAll = document.querySelectorAll('input[type="text"]');
+
+                checkboxAll.forEach(item => {
+                    item.checked = false;
+                });
+
+                inputAll.forEach(item => {
+                    item.value = '';
+                });
+            }
+
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(3,2,1);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

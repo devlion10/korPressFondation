@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title_left">
+                    <div class="page_title">기타자료</div>
+                </div>
+
+                <div class="sch_box">
+                    <select id="types" name="types" class="common_select2">
+                        <option value="0" selected>유형</option>
+                        <option value="01">미디어교육전국대회</option>
+                        <option value="02">아카이브</option>
+                        <option value="03">NIE공모전</option>
+                        <option value="04">신문제작갤러리</option>
+                        <option value="05">외부자료</option>
+                    </select>
+
+                    <select id="containTextType" name="containTextType" class="common_select2">
+                        <option value="1">제목+내용</option>
+                        <option value="2">제목</option>
+                        <option value="3">내용</option>
+                    </select>
+                    <label for="containText" class="hidden_label">검색어</label>
+                    <input id="containText" name="containText" class="common_input2 form_input_md" >
+
+                    <a class="btn_type1 btn_blue" href="javascript:void(0);" onclick="sch()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</a>
+                    <a class="btn_type1 btn_gray" href="/communication/archive/etc-data" onclick="reset()">초기화</a>
+                </div>
+
+                <!-- BOARD : CONTROLLER -->
+                <div class="bl_boardCtrls">
+                    <div class="bl_boardCtrls_lft">
+                        <p class="bl_boardCtrls_total">
+                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">No.</div>
+                        <div class="bl_board_type--long">유형</div>
+                        <div class="bl_board_subject">제목</div>
+                        <div class="bl_board_author">작성자</div>
+                        <div class="bl_board_date">작성일</div>
+                        <div class="bl_board_hit">조회수</div>
+                    </div>
+
+                    <div class="bl_board_body" th:if="${content != null && content.size > 0}">
+                        <div class="bl_board_unit" th:each="item, stat: ${content}">
+                            <div class="bl_board_no">
+                                <span th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"></span>
+                            </div>
+                            <div class="bl_board_type--long">
+                                <span th:if="${item.materialType != null}">
+                                    <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'MTRL_TYPE'">
+                                        <text th:each="types : ${commonCode.subCode}" th:if="${types.code == item.materialType}" th:text="${types.codeName}"></text>
+                                    </th:block>
+                                </span>
+                            </div>
+
+                            <a th:href="@{/communication/archive/etc-data/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject">
+                                <span class="hp_ellipsis" th:text="${item.title}"></span>
+                                <i class="el_ico" th:if="${item.isNew}"><img th:src="@{/assets/images/icons/new.png}" alt="새글"></i>
+                                <i class="el_ico" th:if="${item.lmsDataFiles != null}"><img th:src="@{/assets/images/icons/file_icon.png}" alt="첨부파일"></i>
+                            </a>
+
+                            <div class="bl_board_author" th:text="${item.author}"></div>
+                            <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime, 0, 10)}"></div>
+                            <div class="bl_board_hit" th:text="${item.viewCount}"></div>
+                        </div>
+                    </div>
+                    <div class="bl_board_body" th:unless="${content != null && content.size > 0}">
+                        <div class="bl_board_unit bl_board_unit__empty">
+                            <div class="bl_card_empty">조회된 내역이 없습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function sch(){
+                let searchQuery = {}
+                let text = $("#containText").val();
+                let type = $("#containTextType").val();
+                let types = $("#types").val();
+                if(types && types!="0"){
+                    searchQuery.types=types.toString();
+                }
+                if(text){
+                    searchQuery.containText = text
+                    if(type){
+                        searchQuery.containTextType = type
+                    }
+                }
+                searchJson(searchQuery)
+            }
+
+            /* 검색 초기화 */
+            function reset() {
+                $('#types').val("0").prop("selected", true);
+                $('#containTextType').val("1").prop("selected", true);
+
+                let inputAll = document.querySelectorAll('input[type="text"]');
+                inputAll.forEach(item => {
+                    item.value = '';
+                });
+            }
+
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(3,2,5);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

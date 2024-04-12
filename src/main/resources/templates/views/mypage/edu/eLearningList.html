@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li>
+                            <a id="tabLink1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink2" href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li>
+                            <a id="tabLink3" href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li>
+                            <a id="tabLink4" href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭2] 진도목차 -->
+                        <div class="bl_tab_item js_tab_item">
+                            <div class="bl_borderBox">
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="cal"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">학습기간</strong>
+                                            <p class="bl_borderBox__txt">
+                                                <span th:text="${#strings.substring(content[0].operationBeginDateTime, 0 ,10)}">2022.08.06</span> ~
+                                                <span th:text="${#strings.substring(content[0].operationEndDateTime, 0 , 10)}">2022.09.05</span>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">잔여 학습일</strong>
+                                            <p id="leftDate" class="bl_borderBox__txt"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="chkList"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">나의 진도율</strong>
+                                            <div class="bl_progress">
+                                                <progress th:value="${content[0].progressRate}" min="0" max="100" class="el_progress progress_my"></progress>
+                                                <div class="bl_progress_txt">
+                                                    <span th:text="${#numbers.formatInteger(content[0].progressRate,0,'COMMA')}"></span>%
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">권장 진도율</strong>
+                                            <div class="bl_progress">
+                                                <progress th:value="${content[0].educationPlan.curriculumMaster.progressRateOfEnd}" min="0" max="100" class="el_progress progress_recommend"></progress>
+                                                <div class="bl_progress_txt">
+                                                    <span th:text="${#numbers.formatInteger(content[0].educationPlan.curriculumMaster.progressRateOfEnd,0,'COMMA')}"></span>%
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- GRID : BUTTON -->
+                            <div class="bl_gridBtns hp_mt20">
+                                <div class="bl_gridBtns_md">
+                                    <div id='startStudy' class="btn_type1 btn_red" th:if="${content[0].educationPlan.curriculumMaster.isSequentialEducation}">학습시작</div>
+                                </div>
+                            </div>
+
+                            <!-- COMPONENT : SCROLL -->
+                            <div class="bl_scroll bl_scroll__hor">
+                                <!-- COMPONENT : TABLE -->
+                                <table class="bl_table border_none">
+                                    <colgroup>
+                                        <col >
+                                        <col style="width:10%" >
+                                        <col style="width:12%" >
+                                        <col style="width:15%" >
+                                        <col style="width:12%" >
+                                        <col style="width:10%" >
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">차시명</th>
+                                            <th scope="col">학습</th>
+                                            <th scope="col">학습 여부</th>
+                                            <th scope="col">학습페이지</th>
+                                            <th scope="col">최초 학습</th>
+                                            <th scope="col">진도율</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item, stat : ${content[0].curriculumApplicationContentsList[0].contentsApplicationChapterList}">
+                                            <td class="hp_ta_left" th:text="${item.chapterMaster.chapterTitle}"></td>
+                                            <td>
+<!--                                                <a class="btn_type1 btn_sm btn_blue" th:href="${item.chapterApplicationSectionList[0].sectionMaster.link}">학습</a>-->
+<!--                                                <div class="btn_type1 btn_sm btn_blue __studyBtnItem" th:onclick="viewContents( [[${item.contentsCode}]], [[${item.chapterApplicationSectionList[0].sectionMaster.link}]], [[${content[0].curriculumApplicationContentsList[0].contentsMaster.width}]], [[${content[0].curriculumApplicationContentsList[0].contentsMaster.height}]])">학습</div>-->
+                                                <div class="btn_type1 btn_sm btn_blue __studyBtnItem" th:onclick="viewContents2( [[${item}]], [[${content[0].curriculumApplicationContentsList[0].contentsMaster.width}]], [[${content[0].curriculumApplicationContentsList[0].contentsMaster.height}]])">학습</div>
+                                            </td>
+                                            <td>
+                                                <span th:if="${item.isComplete}">Y</span>
+                                                <span th:if="${!(item.isComplete)}">N</span>
+                                            </td>
+                                            <td>
+                                                <span class="isCompleteStudy"></span>/
+                                                <span th:text="${#lists.size(item.chapterApplicationSectionList)}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${item.chapterBeginDateTime == null}">-</span>
+                                                <span th:unless="${item.chapterBeginDateTime == null}" th:text="${item.chapterBeginDateTime}"></span>
+                                            </td>
+                                            <td class="__progressRate"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p class="el_lv4heading">시험</p>
+
+                            <!-- COMPONENT : SCROLL -->
+                            <div class="bl_scroll bl_scroll__hor">
+                                <!-- COMPONENT : TABLE -->
+                                <table class="bl_table border_none" th:if="${content[0].educationPlan.curriculumMaster.isExam}">
+                                    <colgroup>
+                                        <col >
+                                        <col style="width:25%" >
+                                        <col style="width:25%" >
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">응시기간</th>
+                                            <th scope="col">참여여부</th>
+                                            <th scope="col">바로가기</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item, stat:${content[0].curriculumApplicationExamList}">
+                                            <td>
+                                                <span th:text="${#strings.substring(item.beginDateTime, 0, 10)}">2022.08.06</span>~
+                                                <span th:text="${#strings.substring(item.completeDateTime, 0, 10)}">2022.09.05</span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${item.isComplete}">응시</span>
+                                                <span th:if="${!(item.isComplete)}">미응시</span>
+                                            </td>
+                                            <td>
+                                                <a class="btn_type1 btn_sm btn_blue" id="goExam">바로가기</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div th:unless="${content[0].educationPlan.curriculumMaster.isExam}">해당 교육은 시험이 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            const CONT = [[ ${content} ]]
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+
+                for(let i=0; i<CONT[0].curriculumApplicationContentsList[0].contentsApplicationChapterList.length; i++){
+                    let completStudyCnt = 0;
+                    let totalProgressRate = 0;
+                    let chapterApplicationSectionList = CONT[0].curriculumApplicationContentsList[0].contentsApplicationChapterList[i].chapterApplicationSectionList
+                    for(let j=0; j<chapterApplicationSectionList.length; j++){
+                        if( chapterApplicationSectionList.length ){
+                            totalProgressRate += chapterApplicationSectionList[j].progressRate;
+                        }
+                        if(chapterApplicationSectionList[j].isComplete){
+                            completStudyCnt++;
+                        }
+                    }
+                    document.querySelectorAll('.isCompleteStudy')[i].innerText = completStudyCnt;
+                    document.querySelectorAll('.__progressRate')[i].innerText = (completStudyCnt / chapterApplicationSectionList.length * 100) + "%";
+
+                    let sectionLength = chapterApplicationSectionList.length;
+                    let progressRate = Math.round(totalProgressRate/sectionLength);
+                    if( progressRate > 100 ) progressRate = 100;
+                    else if( 0 > progressRate ) progressRate = 0;
+                    document.querySelectorAll('.__progressRate')[i].innerText = Math.round(totalProgressRate/sectionLength) +'%';
+                }
+
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                makeTabLink(nowId);
+                leftDate();
+                studyBtn();
+            }
+            function makeTabLink(id){
+                document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/e-learning/main/'+id);
+                document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/e-learning/list/'+id);
+                document.getElementById('tabLink3').setAttribute('href','/mypage/education-state/e-learning/exam/'+id);
+                document.getElementById('goExam') && document.getElementById('goExam').setAttribute('href','/mypage/education-state/e-learning/exam/'+id);
+                document.getElementById('tabLink4').setAttribute('href','/mypage/education-state/e-learning/archive/'+id);
+            }
+            function leftDate(){
+                let endDate = new Date(CONT[0].operationEndDateTime.substring(0, 10));
+                let today = new Date();
+                const diffMSec = endDate.getTime() - today.getTime();
+                const diffDate = diffMSec / (24 * 60 * 60 * 1000);
+                document.getElementById('leftDate').innerText = Math.ceil(diffDate) + '일'
+            }
+            function viewContents2(item, width, height){
+                window.open(`/mypage/education-state/e-learning/list/${item.applicationNo}/${item.chapterCode}`, "_blank", `toolbar=yes,scrollbars=yes,resizable=yes,width=${width},height=${height}`);
+            }
+            function studyBtn(){
+                let seqState = CONT[0].educationPlan.curriculumMaster.isSequentialEducation;
+                if(seqState){
+                    let num = 0;
+                    // 순차 방식
+                    for(let i=1; i<document.querySelectorAll('.__studyBtnItem').length; i++){
+                        document.querySelectorAll('.__studyBtnItem')[i].style.display = 'none';
+                    }
+                    for(let i=1; i<CONT[0].curriculumApplicationContentsList[0].contentsApplicationChapterList.length; i++){
+                        if(CONT[0].curriculumApplicationContentsList[0].contentsApplicationChapterList[i-1].isComplete){
+                            document.querySelectorAll('.__studyBtnItem')[i].style.display = 'block';
+                            num = num+1;
+                        }
+                    }
+                    document.getElementById('startStudy').setAttribute('onclick', document.querySelectorAll('.__studyBtnItem')[num].getAttribute('onclick'));
+                }
+            }
+            function pageReload(){
+                window.location.reload();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

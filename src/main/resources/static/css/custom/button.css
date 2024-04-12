@@ -1,0 +1,534 @@
+.btn_box {
+	position: relative;
+	display: flex;
+	margin-top: 40px;
+	justify-content: center;
+}
+
+.btn_box.left {
+	justify-content: flex-start;
+}
+
+.btn_box.right {
+	justify-content: flex-end;
+}
+
+.btn_box .btn_type1+.btn_type1 {
+	margin-left: 10px;
+}
+
+.btn_box .btn_type2 {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+}
+
+.btn_box .btn_sns:not(:last-child) {
+	margin-right: 6px;
+}
+
+[class*=btn_type]:not(span) {
+	cursor: pointer;
+}
+
+/* btn_type1 */
+.btn_type1 {
+	display: inline-block;
+	padding: 0 30px;
+	min-width: 120px;
+	height: 48px;
+	border-radius: 3px;
+	color: #fff;
+	text-align: center;
+	letter-spacing: -.5px;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 48px;
+	cursor: pointer;
+	transition: background-color .3s;
+}
+
+.btn_type1:hover {
+	color: #fff;
+	filter: brightness(.9);
+}
+
+.btn_type1.btn_main {
+    background-color: var(--color-main);
+}
+
+.btn_type1.btn_blue {
+	background-color: var(--color-blue);
+}
+
+.btn_type1.btn_darkblue {
+	background-color: var(--color-darkblue);
+}
+
+
+.btn_type1.btn_red {
+	background-color: var(--color-red);
+}
+
+.btn_type1.btn_gray {
+	background-color: var(--color-gray);
+}
+
+.btn_type1.btn_lightgray {
+	background-color: #eee;
+	color: #666;
+}
+
+.btn_type1.btn_lightgray[disabled]:hover {
+	filter: none;
+	cursor: default
+}
+
+.btn_type1.btn_ghost {
+	background-color: none;
+	color: #888;
+}
+
+.btn_type1.btn_ghost[disabled]:hover {
+	filter: none;
+	cursor: default
+}
+
+
+.btn_type1.btn_ghostBg {
+	background-color: none;
+}
+
+.btn_type1.btn_lg {
+	padding: 0 60px;
+	min-width: auto;
+	height: 60px;
+	font-size: 18px;
+	line-height: 60px;
+}
+
+.btn_type1.btn_md {
+	padding: 0 20px;
+	min-width: auto;
+	height: 40px;
+	letter-spacing: -.25px;
+	font-size: 15px;
+	line-height: 40px;
+}
+
+.btn_type1.btn_sm {
+	padding: 0 10px;
+	min-width: 74px;
+	height: 36px;
+	font-size: 15px;
+	line-height: 36px;
+}
+
+.btn_type1.btn_xs {
+	padding: 0 10px;
+	min-width: auto;
+	height: 28px;
+	font-size: 14px;
+	line-height: 28px;
+}
+
+/* btn_type1 - btn_icon */
+.btn_type1.btn_icon {
+	padding: 0 20px 0 42px;
+	min-width: auto;
+	background-position: left 20px center;
+	background-size: 18px;
+	background-repeat: no-repeat;
+}
+
+.custom_list+.btn_type1.btn_icon {
+	float: right;
+	margin-top: 32px;
+}
+
+.custom_list+.btn_type1.btn_icon::after {
+	display: block;
+	clear: both;
+	content: '';
+}
+
+.btn_type1.btn_reset {
+	background-color: var(--color-gray);
+	background-image: url();
+}
+
+.btn_type1.btn_search {
+	background-color: var(--color-blue);
+	background-image: url(../../assets/images/icons/btn_search.png);
+}
+
+.btn_type1.btn_write {
+	background-color: var(--color-red);
+	background-image: url(../../assets/images/icons/btn_write.png);
+	background-size: 16px;
+}
+
+/* Tablet, Mobile -- */
+@media screen and (max-width:1024px) {
+	.btn_type1.btn_write {
+		padding-right: 11px;
+		padding-left: 27px;
+		height: 40px;
+		background-position: left 10px center;
+		background-size: 14px;
+		font-size: 15px;
+		line-height: 40px;
+	}
+}
+
+/* btn_type2 */
+.btn_type2 {
+	display: inline-block;
+	min-width: 120px;
+	height: 48px;
+	border: 1px solid #656d78;
+	border-radius: 3px;
+	background: #fff;
+	color: #333;
+	text-align: center;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 46px;
+	cursor: pointer;
+	transition: all .3s;
+}
+
+.btn_type2.btn_md {
+	padding: 0 20px;
+	min-width: auto;
+	height: 40px;
+	letter-spacing: -.25px;
+	font-size: 15px;
+	line-height: 40px;
+}
+
+.btn_type2:hover {
+	border: 1px solid var(--color-main);
+
+	/* filter: brightness(0.97); */
+	color: var(--color-main);
+}
+
+/* btn_type3 */
+.btn_type3 {
+	display: inline-flex;
+	padding: 0 10px;
+	height: 24px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	background: #fff;
+	color: #333;
+	letter-spacing: -.5px;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	cursor: pointer;
+	transition: border .3s, color .3s;
+	align-items: center;
+}
+
+button.btn_type3 {
+	padding: 5px 10px 2px;
+}
+
+.btn_type3.btn_sm {
+	font-size: 13px
+}
+
+.btn_type3:hover {
+	border: 1px solid #007bc6;
+	color: #007bc6;
+	font-weight: 500;
+}
+
+.btn_type3.btn_register {
+	padding-left: 26px;
+	background-image: url(../../assets/images/icons/btn_register.png);
+	background-position: left 8px center;
+	background-size: 14px;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_add {
+	padding-left: 23px;
+	background-image: url(../../assets/images/icons/btn_add.png);
+	background-position: left 8px center;
+	background-size: 11px 14px;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_del {
+	padding-left: 26px;
+	background-image: url(../../assets/images/icons/btn_del.png);
+	background-position: left 8px center;
+	background-size: 14px 13px;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_iconDel {
+	width: 28px;
+	background-image: url(../../assets/images/icons/btn_del.png);
+	background-position: center 4px;
+	background-size: 14px 13px;
+	background-repeat: no-repeat;
+	text-indent: -9999em;
+}
+
+.btn_type3.btn_confirm {
+	padding-left: 25px;
+	background-image: url(../../assets/images/icons/btn_confirm.png);
+	background-position: left 8px center;
+	background-size: 13px 14px;
+	background-repeat: no-repeat;
+	height: 30px;
+	font-weight: 400;
+	font-size: 15px;
+}
+
+.btn_type3.btn_modify {
+	padding-left: 26px;
+	background-image: url(../../assets/images/icons/btn_register.png);
+	background-position: left 8px center;
+	background-size: 14px;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_url {
+	padding-left: 25px;
+	background-image: url(../../assets/images/icons/sns2_url.png);
+	background-position: 8px 50%;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_facebook {
+	padding-left: 25px;
+	background-image: url(../../assets/images/icons/sns2_facebook.png);
+	background-position: 9px 50%;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_twitter {
+	padding-left: 30px;
+	background-image: url(../../assets/images/icons/sns2_twitter.png);
+	background-position: 11px 50%;
+	background-repeat: no-repeat;
+}
+
+.btn_type3.btn_scrap {
+	padding-left: 30px;
+	background-image: url(../../assets/images/icons/sns2_scrap.png);
+	background-position: 11px 50%;
+	background-repeat: no-repeat;
+}
+
+/* btn_type4 */
+.btn_type4 {
+	position: relative;
+	display: inline-block;
+	padding: 0 6px;
+	height: 24px;
+	color: #333;
+	letter-spacing: -.5px;
+	font-weight: 500;
+	font-size: 15px;
+	line-height: 24px;
+}
+
+.btn_type4.btn_blue {
+	color: var(--color-blue);
+}
+
+.btn_type4.btn_red {
+	color: var(--color-red);
+}
+
+.btn_type4.btn_green {
+	color: var(--color-green);
+}
+
+.btn_type4.btn_gray {
+	color: #888;
+}
+
+.btn_type4.btn_underline::after {
+	position: absolute;
+	bottom: 0;
+	left: 6px;
+	width: calc(100% - 12px);
+	height: 1px;
+	content: '';
+	background: #333;
+}
+
+.btn_type4.btn_blue.btn_underline::after {
+	background: var(--color-blue);
+}
+
+.btn_type4.btn_red.btn_underline::after {
+	background: var(--color-red);
+}
+
+.btn_type4.btn_gray.btn_underline::after {
+	background: #888;
+}
+
+.btn_type4.btn_green.btn_underline::after {
+	background: var(--color-green);
+}
+
+/* btn_type4 - btn_icon */
+.btn_type4.btn_url {
+	padding: 0 19px 0 6px;
+	background-image: url(../../assets/images/icons/btn_url.png);
+	background-position: 100% 48%;
+	background-repeat: no-repeat;
+}
+
+/* Tablet, Mobile -- */
+@media screen and (max-width:1024px) {
+	.btn_type4 {
+		font-size: 14px;
+	}
+}
+
+/* btn_type5 */
+.btn_type5 {
+	position: relative;
+	display: inline-block;
+	padding: 0 4px 0 20px;
+	height: 24px;
+	background-position: left 4px center;
+	background-size: 12px 12px;
+	background-repeat: no-repeat;
+	letter-spacing: -.5px;
+	font-weight: 500;
+	font-size: 15px;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+/* Tablet, Mobile -- */
+@media screen and (max-width:1024px) {
+	.btn_type5 {
+		font-size: 14px;
+	}
+}
+
+
+.btn_type5.btn_green {
+	color: var(--color-green);
+}
+
+.btn_type5.btn_blue {
+	color: var(--color-blue);
+}
+
+.btn_type5.btn_purple {
+	color: var(--color-purple);
+}
+
+.btn_type5.btn_brown {
+	color: var(--color-brown);
+}
+
+
+.btn_type5::after {
+	position: absolute;
+	bottom: 0;
+	left: 4px;
+	width: calc(100% - 8px);
+	height: 1px;
+	content: '';
+}
+
+.btn_type5.btn_green::after {
+	background: var(--color-green);
+}
+
+.btn_type5.btn_blue::after {
+	background: var(--color-blue);
+}
+
+.btn_type5.btn_purple::after {
+	background: var(--color-purple);
+}
+
+.btn_type5.btn_brown::after {
+	background: var(--color-brown);
+}
+
+/* btn_type5 - btn_file */
+.btn_type5.btn_learning,
+.btn_type5.btn_activity,
+.btn_type5.btn_assistant,
+.btn_type5.btn_answer {
+	background-image: url(../../assets/images/icons/download_learning.png);
+	background-position: 5px center;
+}
+
+.btn_type5.btn_activity {
+	background-image: url(../../assets/images/icons/download_activity.png);
+}
+
+.btn_type5.btn_assistant {
+	background-image: url(../../assets/images/icons/download_assistant.png);
+}
+
+.btn_type5.btn_answer {
+	background-image: url(../../assets/images/icons/download_answer.png);
+}
+
+/* btn_type5 - btn_file */
+.btn_type5.btn_file {
+	display: inline-block;
+	padding: 0 4px 0 20px;
+	background: url(../../assets/images/icons/download_icon.png) no-repeat left center;
+	background-size: 14px 14px;
+	color: var(--color-main);
+	text-decoration: underline;
+	font-weight: 400;
+	font-size: 15px;
+	text-underline-offset: 4px;
+}
+
+.btn_type5.btn_file::after {
+	display: none;
+}
+
+/* btn_sns */
+.btn_sns {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.btn_sns > span {
+	display:none;
+}
+
+.btn_sns.btn_naver {
+	background: #03c75a url(../../assets/images/icons/sns_naver.png) no-repeat center;
+}
+
+.btn_sns.btn_facebook {
+	background: #1977f3 url(../../assets/images/icons/sns_facebook.png) no-repeat center;
+}
+
+.btn_sns.btn_twitter {
+	background: #2aa9e0 url(../../assets/images/icons/sns_twitter.png) no-repeat center;
+}
+
+.btn_sns.btn_kakao {
+	background: #ffc20e url(../../assets/images/icons/sns_kakao.png) no-repeat center;
+}
+
+.btn_sns.btn_star {
+	background: #656d78 url(../../assets/images/icons/sns_star.png) no-repeat center;
+}

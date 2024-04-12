@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual7.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">연수원 소개</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="page_title">관련사이트</div>
+                <ol class="bl_boxCardList2 relatedSite">
+                    <li>
+                        <div class="relatedSite__thum">
+                            <img th:src="@{/assets/images/subpage_eduCenter/site.png}" class="hp_md_w100p" alt="한국언론진흥재단 썸네일">
+                        </div>
+                        <div>
+                            <strong class="bl_boxCardList2_tit">한국언론진흥재단</strong>
+                            <ul class="bl_list2 bl_list2__dot">
+                                <li><a href="http://www.kpf.or.kr" target="_blank">http://www.kpf.or.kr</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="relatedSite__thum">
+                            <img th:src="@{/assets/images/subpage_eduCenter/site2.png}" class="hp_md_w100p" alt="e-NIE 썸네일">
+                        </div>
+                        <div>
+                            <strong class="bl_boxCardList2_tit">e-NIE</strong>
+                            <ul class="bl_list2 bl_list2__dot">
+                                <li><a href="https://enie.forme.or.kr" target="_blank">https://enie.forme.or.kr</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="relatedSite__thum">
+                            <img th:src="@{/assets/images/subpage_eduCenter/site3.png}" class="hp_md_w100p" alt="다독다독 썸네일">
+                        </div>
+                        <div>
+                            <strong class="bl_boxCardList2_tit">다독다독</strong>
+                            <ul class="bl_list2 bl_list2__dot">
+                                <li><a href="https://dadoc.or.kr/" target="_blank">https://dadoc.or.kr/</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

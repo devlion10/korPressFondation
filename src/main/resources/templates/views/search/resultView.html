@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <th:block th:if="${#strings.isEmpty(searchText)}">
+        <div class="ly_searchForm">
+            <div class="ly_grid">
+                <div class="bl_searchForm">
+                    <input class="bl_searchForm_input searchText" placeholder="검색어를 입력하세요.">
+                    <button type="submit" class="bl_searchForm_submit" onclick="sch()"><img th:src="@{/assets/images/icons/btn_searchForm.png}" alt=""></button>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:unless="${#strings.isEmpty(searchText)}">
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title"><label for="search_txt">통합검색</label></div>
+                        </div>
+                    </div>
+
+                    <div class="sch_box">
+
+                        <input class="common_input2 form_input_md searchText" id="search_txt" placeholder="검색어를 입력하세요." >
+                        <button type="submit" class="btn_type1 btn_blue" onclick="sch()"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+
+                        <!-- BOARD : CONTROLLER -->
+                        <div class="bl_boardCtrls">
+                            <div class="bl_boardCtrls_lft">
+                                <p class="bl_boardCtrls_total2">
+                                    <strong th:text="${searchText}">언론</strong> 에 대해 총 <em th:text="${pageable.totalElements}"></em>건이 검색되었습니다.
+                                </p>
+                            </div>
+                        </div>
+        
+                        <!-- BOARD : SEARCH LIST -->
+                        <div class="bl_board4">
+                            <div class="bl_board4_body">
+                                <div class="bl_board4_unit" th:each="item, stat: ${content}">
+                                    <div class="bl_breadcrumb2">
+                                        <div class="bl_breadcrumb2_item" th:text="${item.menuName}">
+                                            <a href="#none">공모/자격</a>
+                                        </div>
+                                        <div class="bl_breadcrumb2_seperater">&gt;</div>
+                                        <div class="bl_breadcrumb2_item">
+                                            <strong th:if="${item.menuSubSubName == null}" th:text="${item.menuSubName}">공모사업</strong>
+                                            <span th:if="${item.menuSubSubName != null}" th:text="${item.menuSubName}">공모사업</span>
+                                        </div>
+                                        <div class="bl_breadcrumb2_seperater" th:if="${item.menuSubSubName != null}">&gt;</div>
+                                        <div class="bl_breadcrumb2_item" th:if="${item.menuSubSubName != null}">
+                                            <strong th:text="${item.menuSubSubName}">공모사업</strong>
+                                        </div>
+                                    </div>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '공모사업'}" th:href="@{/business/pbanc/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '교육후기방'}" th:href="@{communication/review/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '자료실' && item.menuSubSubName == '수업지도안'}" th:href="@{/communication/archive/class-guide/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '자료실' && item.menuSubSubName == '교육 자료'}" th:href="@{/communication/archive/edu-data/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '자료실' && item.menuSubSubName == '연구/통계 자료'}" th:href="@{/communication/archive/research-data/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '자료실' && item.menuSubSubName == '영상 자료'}" th:href="@{/communication/archive/media/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '이벤트/설문'}" th:href="@{/communication/event/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '공지사항'}" th:href="@{/service-center/notice/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <a class="bl_board4_subject hp_ellipsis" th:if="${item.menuSubName == '행사소개'}" th:href="@{/edu-center/press/view/{id}(id=${item.contentNo})}">
+                                        <strong th:text="${item.title}">2022년 지역신문활용 자유학기제 미디어교육(2차)</strong>
+                                    </a>
+                                    <div th:id="contents+${stat.index}" class="bl_board4_desc hp_ellipsis_2" th:text="${item.contents}">한국언론진흥재단은 학교 미디어교육 활성화 및 청소년의 미디어 리터러시 능력 향상을 위해 다음과 같이 지역신문활용 자유학기제 미디어교육 지원 사업을 실시합니다. 관심 있는 학교의 많은 신청 바랍니
+                                        다. 1. 지원 목적 가. 학교 미디어교육 활성화 나. 청소년의 뉴스 리터러시(News Literacy) 및 미디어 리터러시(Media Literacy) 능력 향상을 통해 뉴스와 미디어에 분별 있게 접근하고, 비판적으로 이해하며 ...</div>
+                                    <div class="bl_board4_info">
+                                        <dl class="bl_defList3" th:if="${!#strings.isEmpty(item.bizPbancRcptBgng)} and ${!#strings.isEmpty(item.bizPbancRcptEnd)}">
+                                            <dt>접수기간</dt>
+                                            <dd>
+                                                <span th:text="${item.bizPbancRcptBgng}">2022.08.19</span>
+                                                ~<span th:text="${item.bizPbancRcptEnd}">2022.08.30</span>
+                                            </dd>
+                                        </dl>
+                                        <dl class="bl_defList3" th:if="${!#strings.isEmpty(item.bizPbancSprtBgng)} and ${!#strings.isEmpty(item.bizPbancSprtEnd)}">
+                                            <dt>지원기간</dt>
+                                            <dd>
+                                                <span th:text="${item.bizPbancSprtBgng}">2022.08.19</span>
+                                                ~<span th:text="${item.bizPbancSprtEnd}">2022.08.30</span>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- PAGINATE -->
+                        <div class="bl_paginate"></div>
+        
+                        <!-- GRID : BUTTON -->
+                        <div class="bl_gridBtns">
+                            <div class="bl_gridBtns_rgt">
+                                <div id="listViewBtn" class="btn_type2">전체보기</div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                $(".searchText").focus();
+
+                if (searchParams.has("size")) {
+                    $('.bl_gridBtns').show();
+                    $('.bl_paginate').hide();
+                } else if (!searchParams.has("size")) {
+                    $('.bl_gridBtns').hide();
+                    $('.bl_paginate').show();
+                }
+
+                pagination([[ ${pageable} ]], false)
+                schBox();
+            }
+
+            let CONT = [[ ${content} ]];
+            for (let i=0; i<CONT.length; i++) {
+                $('#contents'+i).html(CONT[i].contents);
+            }
+
+            let searchParams = new URLSearchParams(window.location.search);
+            $('#listViewBtn').on('click', function(){
+                searchParams.delete("size");
+                return window.location.replace(window.location.pathname + '?' + searchParams.toString());
+            });
+
+            $(".searchText").keydown(function() {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    sch();
+                };
+            });
+
+            function sch(){
+                var pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9\s]/gi;
+
+                let searchQuery = {};
+                let searchText = $(".searchText").val();
+                if (searchText.length < 3) {
+                    alert('검색어는 최소 3자 이상 입력해주세요.');
+                    return;
+                }
+                if (!pattern.test(searchText)) {
+                    searchQuery.searchText = searchText;
+                } else {
+                    alert('검색어에 특수문자는 입력할 수 없습니다.')
+                    return false;
+                }
+                searchQuery.size = 5;
+
+                searchJson(searchQuery);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

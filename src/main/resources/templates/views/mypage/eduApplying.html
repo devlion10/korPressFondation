@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">마이페이지</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">신청중인 과정</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_ctg">카테고리</div>
+                        <div class="bl_board_type">유형</div>
+                        <div class="bl_board_subject">과정명</div>
+                        <div class="bl_board_dateRange">학습기간</div>
+                        <div class="bl_board_date">신청일</div>
+                        <div class="bl_board_application">신청서</div>
+                        <div class="bl_board_state bl_board_state_sm">상태</div>
+                    </div>
+
+                    <div class="bl_board_body">
+                        <div class="bl_board_unit" th:each="item:${content}">
+                            <th:block th:switch="${item.educationPlan.curriculumMaster.categoryCode}">
+                                <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                    <div class="bl_board_ctg" th:each="categoryCode : ${commonCode.subCode}"
+                                         th:if="${categoryCode.code == item.educationPlan.curriculumMaster.categoryCode}"
+                                         th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></div>
+                                </th:block>
+                            </th:block>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '1'}">화상교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '2'}">집합교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">이러닝교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '4'}">화상교육 + 집합교육</div>
+                            <div class="bl_board_subject" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                <a th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}" class="hp_ellipsis" style="overflow: auto; white-space: pre-wrap;" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</a>
+                            </div>
+                            <div class="bl_board_subject" th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}">
+                                <a th:href="@{/education/application/lecture/view/{id}(id=${item.educationPlanCode})}" class="hp_ellipsis" style="overflow: auto; white-space: pre-wrap;" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</a>
+                            </div>
+                            <div class="bl_board_dateRange hp_md_ord51">
+                                <span class="bl_board_label hp_md_show">학습기간</span>
+                                <span>
+                                    <span th:text="${#strings.substring(item.educationPlan.operationBeginDateTime, 0 , 10)}">2022-09-13</span> ~
+                                    <span th:text="${#strings.substring(item.educationPlan.operationEndDateTime, 0 , 10)}">2022-09-30</span>
+                                </span>
+                            </div>
+                            <div class="bl_board_date hp_lg_show" th:text="${#strings.substring(item.educationPlan.createDateTime, 0, 10)}">
+                                2022.08.10
+                            </div>
+                            <div class="bl_board_application hp_md_ord51 bl_board_md_label">
+                                <span class="bl_board_label hp_md_show">신청서</span>
+                                <a class="btn_type5 btn_file" th:if="${item.applicationFilePath != null}" th:href="@{/api/common/upload/download(attachFilePath=${item.applicationFilePath})}">다운로드</a>
+                                <div th:unless="${item.applicationFilePath != null}">-</div>
+                            </div>
+                            <div class="bl_board_state bl_board_state_sm" style="flex-direction: column; padding-top: 5px; padding-bottom: 5px">
+                                <div>
+                                    <span class="btn_type4" th:if="${item.adminApprovalState == '1'}">승인대기</span>
+                                    <span class="btn_type4" th:if="${item.adminApprovalState == '2'}">승인</span>
+                                    <span class="btn_type4" th:if="${item.adminApprovalState == '3'}">승인거절</span>
+                                    <span class="btn_type4" th:if="${item.adminApprovalState == '4'}">신청취소</span>
+                                </div>
+                                <div style="text-align: center; cursor: pointer; background-color: #cd484d; color: #ffffff; font-size: 13px; padding: 5px; border-radius: 10px"
+                                     th:if="${(item.adminApprovalState == '1') && ((#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')) > (item.educationPlan.cancelBeginDateTime)) && ((#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')) < (item.educationPlan.cancelEndDateTime))}"
+                                     th:onclick="cancelEdu([[${item.applicationNo}]])">
+                                    신청취소
+                                </div>
+                                <div style="text-align: center; cursor: pointer; background-color: #104fa6; font-size: 13px; padding: 5px; border-radius: 10px"
+                                     th:if="${(item.adminApprovalState == '4') && ((#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')) > (item.educationPlan.applyBeginDateTime)) && ((#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')) < (item.educationPlan.applyEndDateTime))}">
+                                    <a style="color: #ffffff;" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}">재신청</a>
+                                    <a style="color: #ffffff;" th:unless="${item.educationPlan.curriculumMaster.educationType == '3'}" th:href="@{/education/application/lecture/view/{id}(id=${item.educationPlanCode})}">재신청</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                            <div class="bl_card_empty">등록된 강의가 없습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(0,3,0);
+            }
+
+            function cancelEdu(value){
+                if (confirm("정말 교육을 취소하시겠습니까?")) {
+                    $.ajax({
+                        type: "put",
+                        headers: {'Content-Type': 'application/json'},
+                        url: "/api/education/application/cancel/" + value,
+                        // data: JSON.stringify(params),
+                        dataType: "json",
+                        success: function (data) {
+                            alert("교육 신청 취소가 완료되었습니다.");
+                            window.location.reload();
+                        },
+                        error: function (e) {
+                            alert(e.responseJSON.resultMessage);
+                        }
+                    })
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

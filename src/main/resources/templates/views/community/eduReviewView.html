@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">교육후기방</div>
+                    </div>
+                </div>
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx != null}">
+                    <div class="bl_boardView_head">
+                        <div id="title" class="bl_boardView_subject" th:text="${content[param.selectIdx[0]].title}"></div>
+                    </div>
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd id="userName" th:text="${content[param.selectIdx[0]].adminUser.userName}"></dd>
+                            <dt>작성일</dt>
+                            <dd id="createDateTime" th:text="${content[param.selectIdx[0]].createDateTime}"></dd>
+                            <dt>조회수</dt>
+                            <dd id="viewCount" th:text="${content[param.selectIdx[0]].viewCount}"></dd>
+                        </dl>
+                    </div>
+                    <div id="contents" class="bl_boardView_cont" th:text="${content[param.selectIdx[0]].contents}"></div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx == null}">
+                    <div class="bl_boardView_head">
+                        <div id="title" data-binding-key="title" class="bl_boardView_subject" th:text="${content[0].title}"></div>
+                    </div>
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd id="userName" data-binding-key="userName" th:text="${content[0].adminUser.userName}"></dd>
+                            <dt>작성일</dt>
+                            <dd id="createDateTime" data-binding-key="createDateTime" th:text="${content[0].createDateTime}"></dd>
+                            <dt>조회수</dt>
+                            <dd id="viewCount" data-binding-key="viewCount" th:text="${content[0].viewCount}"></dd>
+                        </dl>
+                    </div>
+
+                    <div id="contents" class="bl_boardView_cont" data-binding-key="contents" th:text="${content[0].contents}"></div>
+                </div>
+
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/communication/review">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode}]])
+                navigation(3, 1);
+                viewCntUpdate('review');
+
+                let urlLink = window.location.href;
+                let viewNum = urlLink.split('/');
+                viewNum = viewNum[viewNum.length - 1];
+
+                let url = new URL(window.location.href);
+                let selectIdx = url.searchParams;
+                selectIdx = selectIdx.get('selectIdx');
+                if(selectIdx === null){
+                    (function(){
+                        let dataset = [[ ${content} ]];
+                        let item = _.find(dataset, {'sequenceNo': parseInt(viewNum)});
+                        if( item ){
+                            for(var key in item){
+                                let target = $("[data-binding-key='"+key+"']");
+                                if(target) {
+                                    if (key == "fileMasters" && item[key] && item[key].length) {
+                                        item[key].forEach(function(file){
+                                            let attachFilePath = file;
+                                            target.append('<div><a class="btn_type5 btn_file download_ajax" href="/api/common/upload/download?attachFilePath='
+                                                +attachFilePath.filePath+'">'
+                                                +'<span>'+( attachFilePath.originalFileName )+'</span>'
+                                                +'<span>['+CommonUtil.formatBytes(attachFilePath.fileSize)+']</span>'
+                                                +'</a></div>');
+                                        });
+
+                                    } else {
+                                        target.html(item[key]);
+                                    }
+                                }
+                            }
+                            if( item.top !== true){
+
+                            }
+                        }
+                    })();
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

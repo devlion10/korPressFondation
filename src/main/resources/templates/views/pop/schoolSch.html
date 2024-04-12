@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+<!-- POPUP : 학교 검색 -->
+<div class="pop_wrapper ui-modal">
+    <div class="pop_wrap pop_secondary">
+        <div class="pop_cont hp_h715">
+            <div class="sch_box">
+                <select class="common_select2">
+                    <option value="">학교명</option>
+                </select>
+                <input class="common_input2">
+                <button type="submit" class="btn_type1 btn_icon btn_search">검색</button>
+            </div>
+            
+            <!-- BOARD : CONTROLLER -->
+            <div class="bl_boardCtrls">
+                <div class="bl_boardCtrls_lft">
+                    <p class="bl_boardCtrls_total">
+                        총: <strong>0</strong>건
+                    </p>
+                </div>
+            </div>
+
+            <!-- COMPONENT : SCROLL -->
+            <div class="bl_scroll bl_scroll__hor">
+                <!-- COMPONENT : TABLE -->
+                <table class="bl_table">
+                    <colgroup>
+                        <col style="width: 80px">
+                        <col>
+                        <col style="width: 100px">
+                        <col style="width: 100px">
+                        <col>
+                        <col style="width: 80px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">학교명</th>
+                            <th scope="col">학교급<br>(초/중/고)</th>
+                            <th scope="col">시도</th>
+                            <th scope="col">행정구</th>
+                            <th scope="col">선택</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>하량초등학교</td>
+                            <td>초등</td>
+                            <td>22</td>
+                            <td>경기도 화성시</td>
+                            <td>
+                                <div class="btn_type3">선택</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="bl_paginate"></div>
+        </div>
+
+        <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]])
+            pagination([[ ${pageable} ]], false)
+        }
+        /* ]]> */
+    </script>
+</th:block>
+</div>
+</body>
+</html>

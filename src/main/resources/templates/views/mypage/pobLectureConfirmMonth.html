@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="page_title">강의확인서</div>
+
+                    <!-- BOARD : WRITE -->
+                    <div th:if="${#lists.size(content) > 0}" class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <colgroup>
+                                <col class="hp_lg_w150" >
+                                <col >
+                                <col class="hp_lg_w150" >
+                                <col >
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td th:text="${content[0].bizPbancMaster.bizPbancNm}">2022년 지역신문활용 자유학기제 미디어교육(2차)</td>
+                                <th scope="row">사업기간</th>
+                                <td th:text="${content[0].bizOrganizationAply.bizOrgAplyLsnPlanBgng + ' ~ ' + content[0].bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-08-03 ~ 2022-09-03</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : LIST -->
+                    <div th:if="${#lists.size(content) > 0}" class="bl_board hp_mt60">
+                        <div class="bl_board_head">
+                            <div class="bl_board_no">번호</div>
+                            <div class="bl_board_year">년도</div>
+                            <div class="bl_board_subject">사업명</div>
+                            <div class="bl_board_date">교육월</div>
+                            <div class="bl_board_teacher">강사</div>
+                            <div class="bl_board_btn">강의확인서</div>
+                            <div class="bl_board_state">상태</div>
+                        </div>
+
+                        <div class="bl_board_body" th:each="item,stat : ${content}">
+                            <div class="bl_board_unit">
+                                <div class="bl_board_no" th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}">3</div>
+                                <div class="bl_board_year" th:text="${item.bizPbancMaster.bizPbancYr}">2022</div>
+                                <a th:href="@{/mypage/business-state/view/{id}(id=${item.BizPbancMaster.bizPbancNo})}" class="bl_board_subject">
+                                    <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">미디어교육 평생교실 8기</span>
+                                </a>
+                                <div class="bl_board_date">
+                                    <span th:text="${#strings.substring(item.bizInstrIdntyYm,0,4)}"></span>.
+                                    <span th:text="${#strings.substring(item.bizInstrIdntyYm,4,6)}"></span>
+                                </div>
+                                <div class="bl_board_teacher" th:if="${item.userName != null}" th:text="${item.userName}">홍길동</div>
+                                <div class="bl_board_btn">
+                                    <a th:href="@{/mypage/business-state/confirmation/view/{id}(id=${item.bizInstrIdntyNo})}" class="btn_type1 btn_sm btn_blue">보기</a>
+                                </div>
+                                <div class="bl_board_state hp_md_ord51">
+                                    <span class="btn_type4" th:if="${item.bizInstrIdntyStts == 0}">임시저장</span>
+                                    <span class="btn_type4" th:if="${item.bizInstrIdntyStts == 1}">승인대기</span>
+                                    <span class="btn_type4 btn_blue" th:if="${item.bizInstrIdntyStts == 2}">승인</span>
+                                    <span class="btn_type4 btn_blue" th:if="${item.bizInstrIdntyStts == 3}">지출접수</span>
+                                    <span class="btn_type4 btn_green" th:if="${item.bizInstrIdntyStts == 4}">지출 완료</span>
+                                    <span class="btn_type4 btn_red" th:if="${item.bizInstrIdntyStts == 9}">반려</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:unless="${#lists.size(content) > 0}">작성된 강의확인서가 없습니다.</div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/business-state">목록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,0,0);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

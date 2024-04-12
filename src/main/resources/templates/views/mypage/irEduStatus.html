@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="bl_title">
+                        <div class="bl_title_left">
+                            <div class="page_title">강의현황</div>
+                        </div>
+                    </div>
+
+                    <!-- 컴포넌트 : 탭 -->
+                    <div class="bl_tab2 js_tab">
+                        <div class="bl_iscroll" id="navTab2">
+                            <ul class="bl_tab2_menu">
+                                <li class="is_active">
+                                    <a href="/mypage/instructor-state/lecture">진행중인 사업</a>
+                                </li>
+                                <li>
+                                    <a href="/mypage/instructor-state/lecture/complete">완료된 사업</a>
+                                </li>
+                                <li>
+                                    <a href="/mypage/instructor-state/calculate">강의료 정산</a>
+                                </li>
+                            </ul>
+
+                            <button class="bl_tab2_btnPrev" disabled><img th:src="@{/assets/images/icons/tab2_prev.png}" alt="이전"></button>
+                            <button class="bl_tab2_btnNext"><img th:src="@{/assets/images/icons/tab2_next.png}" alt="다음"></button>
+                        </div>
+
+                        <div class="bl_tab2_body js_tab_contents">
+                            <!-- 1. 진행중인 사업 -->
+                            <div class="bl_tab2_item js_tab_item">
+                                <div class="bl_boxNote">
+                                    <ul class="bl_list2 bl_list2__star">
+                                        <li>
+                                            금회차 정산을 위한
+                                            <p class="emphasis_text">강의확인서 작성 및 승인 마감시간은
+                                                <span th:if="${bizInstructorClclnDdln!=null}" class="deadline" th:text="${bizInstructorClclnDdln.bizInstrClclnDdlnValue + ' ' + #strings.substring(bizInstructorClclnDdln.bizInstrClclnDdlnTm,0,5)}">2022-08-03 23:59</span>
+                                                <span th:unless="${bizInstructorClclnDdln!=null}" class="deadline"> - </span>
+                                                까지</p> 입니다.
+                                            <br >
+                                            기간 내 작성 및 접수를 부탁드립니다.
+                                        </li>
+                                        <li>진행중인 사업에서는 해당 월에 시작되는 강의만 조회됩니다.</li>
+                                    </ul>
+                                </div>
+
+                                <!-- BOARD : WRITE -->
+                                <div class="bl_boardWrite bl_boardWrite__gray">
+                                    <table>
+                                        <caption>검색테이블</caption>
+                                        <colgroup>
+                                            <col class="hp_lg_w236">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">지역</th>
+                                            <td>
+                                                <label class="hidden_label" for="bizOrgAplyRgn">지역</label>
+                                                <select id="bizOrgAplyRgn" class="common_select" data-list="regionList"></select>
+                                            </td>
+                                        <tr>
+                                            <th scope="row" class="h-60">
+                                                <label class="hidden_label" for="containTextType">검색구분</label>
+                                                <select id="containTextType" class="common_select">
+                                                    <option value="1">사업명</option>
+                                                    <option value="2">기관명</option>
+                                                </select>
+                                            </th>
+                                            <td>
+                                                <label class="hidden_label" for="containText">검색어</label>
+                                                <input id="containText" type="text" class="common_input form_input hp_md_w100p" placeholder="검색어를 입력해주세요." >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">작성여부</th>
+                                            <td>
+                                                <div class="common_input_box align-items-center">
+                                                    <div class="radio_box">
+                                                        <input id="write_all" type="radio" value="-" name="isWrite" checked >
+                                                        <label for="write_all">
+                                                            <span></span>
+                                                            전체
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="write_ok" value="true" type="radio" name="isWrite" >
+                                                        <label for="write_ok">
+                                                            <span></span>
+                                                            작성
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="write_no" value="false" type="radio" name="isWrite" >
+                                                        <label for="write_no">
+                                                            <span></span>
+                                                            미작성
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">승인상태</th>
+                                            <td>
+                                                <div class="common_input_box align-items-center">
+                                                    <div class="radio_box">
+                                                        <input id="status_all" value="-" type="radio" name="bizInstrIdntyStts" checked >
+                                                        <label for="status_all">
+                                                            <span></span>
+                                                            전체
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="status_approval" value="2" type="radio" name="bizInstrIdntyStts" >
+                                                        <label for="status_approval">
+                                                            <span></span>
+                                                            승인
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="status_send" value="3" type="radio" name="bizInstrIdntyStts" >
+                                                        <label for="status_send">
+                                                            <span></span>
+                                                            지출접수
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="status_pay" value="4" type="radio" name="bizInstrIdntyStts" >
+                                                        <label for="status_pay">
+                                                            <span></span>
+                                                            지출완료
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="status_modifiy" value="9" type="radio" name="bizInstrIdntyStts" >
+                                                        <label for="status_modifiy">
+                                                            <span></span>
+                                                            수정요청
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio_box">
+                                                        <input id="status_waiting" value="1" type="radio" name="bizInstrIdntyStts" >
+                                                        <label for="status_waiting">
+                                                            <span></span>
+                                                            승인대기
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="bl_gridBtns">
+                                    <div class="bl_gridBtns_md">
+                                        <a class="btn_type1 btn_blue" onclick="searchConfrim()">검색</a>
+                                    </div>
+                                </div>
+                                <!-- BOARD : CONTROLLER -->
+                                <div class="bl_boardCtrls">
+                                    <div class="bl_boardCtrls_lft">
+                                        <p class="bl_boardCtrls_total">
+                                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- BOARD : LIST -->
+                                <div class="bl_board">
+                                    <div class="bl_board_head">
+                                        <div class="bl_board_region">지역</div>
+                                        <div class="bl_board_agency">기관</div>
+                                        <div class="bl_board_subject">사업명</div>
+                                        <div class="bl_board_dateRange bl_board_dateRange_sm">교육기간</div>
+                                        <div class="bl_board_month">교육월</div>
+                                        <div class="bl_board_btn">강의확인서</div>
+                                        <div class="bl_board_state bl_board_state_md">작성여부</div>
+                                        <div class="bl_board_state bl_board_state_sm">상태</div>
+                                    </div>
+
+                                    <div class="bl_board_body">
+                                        <div class="bl_board_unit" th:each="item:${content}">
+                                            <div class="bl_board_region" th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">서울</div>
+                                            <div class="bl_board_agency" th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">케이브레인</div>
+                                            <a th:href="@{/business/instructor/view/{id}(id=${item.sequenceNo})}" class="bl_board_subject">
+                                                <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">미디어교육 평생교실 8기</span>
+                                            </a>
+                                            <div class="bl_board_dateRange bl_board_dateRange_sm hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">교육기간</span>
+                                                <span>
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanBgng}">2022-06-02</span> ~
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-06-02</span>
+                                                </span>
+                                            </div>
+                                            <div class="bl_board_month font_noto">
+                                                <span class="monthString" th:if="${bizInstructorClclnDdln!=null}" th:text="${#strings.substring(item.month,5,7)}"></span>
+                                                <span th:unless="${bizInstructorClclnDdln!=null}">-</span>월
+                                            </div>
+                                            <div class="bl_board_btn">
+                                                <a th:if="${item.bizInstrIdntyNo == null}" th:href="@{/mypage/instructor-state/lecture/confirm/write/{id}(id=${item.bizInstrAplyNo}, searchYm=${item.month})}" class="btn_type1 btn_sm btn_red">강의확인서</a>
+                                                <a th:if="${(item.bizInstrIdntyNo != null) && (item.bizInstrIdnty.bizInstrIdntyStts <= 1 || item.bizInstrIdnty.bizInstrIdntyStts == 9)}" th:href="@{/mypage/instructor-state/lecture/confirm/edit/{id}(id=${item.bizInstrIdntyNo})}" class="btn_type1 btn_sm btn_blue">수정하기</a>
+                                                <a th:if="${(item.bizInstrIdntyNo != null) && (item.bizInstrIdnty.bizInstrIdntyStts > 1 && item.bizInstrIdnty.bizInstrIdntyStts < 5)}" th:href="@{/mypage/instructor-state/lecture/confirm/view/{id}(id=${item.bizInstrIdntyNo})}" class="btn_type1 btn_sm btn_gray">보기</a>
+                                            </div>
+                                            <div class="bl_board_state bl_board_state_md hp_md_ord51">
+                                                <span th:if="${item.bizInstrIdntyNo==null}" class="btn_type4">미작성</span>
+                                                <span th:unless="${item.bizInstrIdntyNo==null}" class="btn_type4">작성</span>
+                                            </div>
+                                            <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                <th:block th:unless="${#strings.isEmpty(item.bizInstrIdntyNo)}">
+                                                    <span class="btn_type4" th:if="${item.bizInstrIdnty.bizInstrIdntyStts == 0}">임시저장</span>
+                                                    <span class="btn_type4" th:if="${item.bizInstrIdnty.bizInstrIdntyStts == 1}">승인대기</span>
+                                                    <span class="btn_type4 btn_blue" th:if="${item.bizInstrIdnty.bizInstrIdntyStts >=2  && item.bizInstrIdnty.bizInstrIdntyStts!=9}">승인</span>
+                                                    <span class="btn_type4 btn_red" th:if="${item.bizInstrIdnty.bizInstrIdntyStts == 9}">수정요청</span>
+                                                </th:block>
+                                                <th:block th:if="${#strings.isEmpty(item.bizInstrIdntyNo)}">
+                                                    <span class="btn_type4">미제출</span>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                                            <div class="bl_card_empty">등록된 사업이 없습니다.</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_paginate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                $(".monthString").each((index,item)=>{
+                    if(parseInt($(item).text())){
+                     $(item).text(parseInt($(item).text()));
+                    }
+                })
+                function searchConfrim(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    if($("#bizOrgAplyRgn").val() && $("#bizOrgAplyRgn").val()!="지역") searchQuery.bizOrgAplyRgn = $("#bizOrgAplyRgn").val()
+                    if(name){
+                        searchQuery.containText = name;
+                        searchQuery.containTextType = type;
+                    }
+
+                    // 미완성으로 인한 임시 주석
+                    if($("input:radio[name=isWrite]:checked").attr("value")!='-'){
+                        searchQuery.isWrite = $("input:radio[name=isWrite]:checked").attr("value")
+                    }
+                    if($("input:radio[name=bizInstrIdntyStts]:checked").attr("value")!='-'){
+                        searchQuery.bizInstrIdntyStts = parseInt($("input:radio[name=bizInstrIdntyStts]:checked").attr("value"))
+                    }
+                    searchJson(searchQuery)
+                }
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]], false)
+                    navigation(0,2,1);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

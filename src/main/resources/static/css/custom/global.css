@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+
+/* LIBRARY */
+@import url('./libs/bootstrap.min.css');
+@import url('./libs/jquery-ui.min.css');
+@import url('./libs/slick.css');
+@import url('./libs/slick-theme.css');
+@import url('./libs/datepicker.css');
+@import url('./libs/jstree/style.css');
+@import url('./libs/fontawesome-free/all.css');
+
+@import url('../font/font.css');
+@import url('./reset.css');
+@import url('./common.css');
+@import url('./layout.css');
+@import url('./button.css');
+@import url('./popup.css');
+@import url('./common.component.css');
+
+
+.hidden_label{
+    display: none !important;
+}

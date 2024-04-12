@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<script src="../../../static/app/js/snsShare.js"></script>
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../../assets/images/top_visual6.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">고객센터</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <!-- 221005 : SNS 영역 수정 -->
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">공지사항</div>
+                    </div>
+
+                    <div class="bl_title_right">
+                        <div class="bl_title_sns">
+                            <div class="btn_sns btn_naver" th:onclick="snsShare('naver')"></div>
+                            <div class="btn_sns btn_facebook" th:onclick="snsShare('facebook')"></div>
+                            <div class="btn_sns btn_kakao" th:onclick="snsShare('kakao')"></div>
+                            <div class="btn_sns btn_twitter" th:onclick="snsShare('twitter')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx == null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" data-binding-key="title"></div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd data-binding-key="adminName"></dd>
+                            <dt>작성일</dt>
+                            <dd data-binding-key="createDateTime"></dd>
+                            <dt class="hp_show">조회수</dt><!-- 221005 : 모바일 보완 -->
+                            <dd data-binding-key="viewCount"></dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont">
+                        <div data-binding-key="contents"></div>
+                        <div class="bl_boardView_file" data-binding-key="fileMasters">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOARD : VIEW -->
+                <div class="bl_boardView" th:if="${param.selectIdx != null}">
+                    <div class="bl_boardView_head">
+                        <div class="bl_boardView_subject" data-binding-key="title" th:text="${content[param.selectIdx[0]].title}">수강 문의 드립니다!</div>
+                    </div>
+
+                    <div class="bl_boardInfo">
+                        <dl>
+                            <dt>작성자</dt>
+                            <dd data-binding-key="registUserId" th:text="${content[param.selectIdx[0]].registUserId}"></dd>
+                            <dt>작성일</dt>
+                            <dd data-binding-key="createDateTime" th:text="${content[param.selectIdx[0]].createDateTime}"></dd>
+                            <dt class="hp_show">조회수</dt><!-- 221005 : 모바일 보완 -->
+                            <dd data-binding-key="viewCount" th:text="${content[param.selectIdx[0]].viewCount}"></dd>
+                        </dl>
+                    </div>
+
+                    <div class="bl_boardView_cont" th:with="noticeContent=${content[param.selectIdx[0]].contents}">
+                        <div th:utext="${noticeContent}"></div>
+                        <div style="margin-top: 40px">
+                            <div class="bl_boardView_file" data-binding-key="fileMasters" style="margin-top: 10px">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_rgt">
+                        <a class="btn_type2" href="/service-center/notice">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            globalKeyValue = 'noticeSerialNo';
+            const CONT = [[ ${content} ]];
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(4,0);
+                viewCntUpdate('noti');
+                editorWidthController();
+
+                preNextCont(
+                    "/api/service-center/notice/page",
+                    "noticeSerialNo",
+                    [[ ${content} ]],
+                    [# th:if="${param.selectIdx == null || param.selectIdx != ''}"]
+                    null,
+                    generalViewParam([[ ${content} ]], [[ ${noticeSerialNo} ]])
+                    [/]
+                )
+
+            }
+
+            function fileSizeConvert(){
+                const urlParams = new URL(location.href).searchParams;
+                const selectIdx = urlParams.get('selectIdx');
+                if( CONT && CONT.length && CONT[selectIdx] ){
+                    for(let i=0; i<CONT[selectIdx].fileMasters.length; i++){
+                        const fileSizeRander = document.querySelectorAll('.fileSize');
+                        fileSizeRander[i].innerText = formatBytes(CONT[selectIdx].fileMasters[i].fileSize);
+                    }
+                }
+            }
+
+            (function(){
+                let dataset = [[ ${content} ]];
+                let item = _.find(dataset, {noticeSerialNo: [[ ${noticeSerialNo} ]]});
+                if( item ){
+                    for(var key in item){
+                        let target = $("[data-binding-key='"+key+"']");
+                        if(target) {
+                            if (key == "fileMasters" && item[key] && item[key].length) {
+                                item[key].forEach(function(file){
+                                    let attachFilePath = file;
+                                    target.append('<div><a class="btn_type5 btn_file download_ajax" href="/api/common/upload/download?attachFilePath='
+                                        +attachFilePath.filePath+'">'
+                                        +'<span>'+( attachFilePath.originalFileName )+'</span>'
+                                        +'<span>['+CommonUtil.formatBytes(attachFilePath.fileSize)+']</span>'
+                                        +'</a></div>');
+                                });
+
+                            } else {
+                                target.html(item[key]);
+                            }
+                        }
+                    }
+                }
+            })();
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

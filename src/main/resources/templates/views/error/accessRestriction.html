@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="한국언론진흥재단" name="keywords" >
+    <title>한국언론진흥재단 미디어아카데미</title>
+    <link rel="icon" th:href="@{/assets/favicon/favicon-32x32.png}">
+    <link th:href="@{/css/error.css}" rel="stylesheet">
+</head>
+<body th:fragment="accessRestriction">
+
+    <div class="error_page content_full">
+        <div>
+            <img th:src="@{/assets/images/icons/warning.png}" alt="경고아이콘">
+            <div class="error_box">
+                <strong>접근이 제한 된 페이지입니다.</strong>
+                <p>잠시 후 이전 페이지로 돌아갑니다.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

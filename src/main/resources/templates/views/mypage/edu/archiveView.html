@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <!-- 이러닝 강의실 -->
+                    <ul class="bl_tab_menu hp_mb40" id="tabGroup1">
+                        <li>
+                            <a id="tabLink1_1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink1_2" href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li>
+                            <a id="tabLink1_3" href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink1_4" href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <!-- 집합 강의실 -->
+                    <ul class="bl_tab_menu hp_mb40" id="tabGroup2">
+                        <li>
+                            <a id="tabLink2_1" href="/mypage/education-state/lecture/main">강의실 홈</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink2_2" href="/mypage/education-state/lecture/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <!-- BOARD : VIEW -->
+                    <div class="bl_boardView border_none">
+                        <div class="bl_boardView_head">
+                            <div class="bl_boardView_subject" id="__title">수강 문의 드립니다!</div>
+                        </div>
+
+                        <div class="bl_boardInfo">
+                            <dl>
+                                <dt>작성자</dt>
+                                <dd id="__writer">홍길동</dd>
+                                <dt>작성일</dt>
+                                <dd id="__createDate">2022.08.18</dd>
+                            </dl>
+                        </div>
+
+                        <div class="bl_boardView_cont">
+                            <div id="__cont"></div>
+                            <div class="bl_boardView_file" id="__file"><a class="btn_type5 btn_file" href=""></a></div>
+                        </div>
+                    </div>
+
+                    <!-- GRID : BUTTON -->
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <div class="btn_type2" onclick="history.back()">목록</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+
+                let CONT = [[ ${content} ]];
+                let type = window.location.pathname.split('/')[window.location.pathname.split('/').length-4];
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+
+                let _content = [[ ${content} ]];
+                if( _content.length && _content[0].applicationNo ){
+                    nowId = _content.length && _content[0].applicationNo;
+                }
+                if(type == 'e-learning'){
+                    document.getElementById('tabGroup2').style.display = 'none';
+                    document.getElementById('tabLink1_1').setAttribute('href','/mypage/education-state/e-learning/main/'+nowId);
+                    document.getElementById('tabLink1_2').setAttribute('href','/mypage/education-state/e-learning/list/'+nowId);
+                    document.getElementById('tabLink1_3').setAttribute('href','/mypage/education-state/e-learning/exam/'+nowId);
+                    document.getElementById('tabLink1_4').setAttribute('href','/mypage/education-state/e-learning/archive/'+nowId);
+                } else if(type == 'lecture'){
+                    document.getElementById('tabGroup1').style.display = 'none';
+                    document.getElementById('tabLink2_1').setAttribute('href','/mypage/education-state/lecture/main/'+nowId);
+                    document.getElementById('tabLink2_2').setAttribute('href','/mypage/education-state/lecture/archive/'+nowId);
+                }
+
+                // 게시글 랜더링을 위한 부분
+                const targetList = CONT[0].educationPlan.curriculumMaster.curriculumReferenceRoomList
+                const targetId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                let target;
+                for(let i=0; i<targetList.length; i++){
+                    if(parseInt(targetId) == targetList[i].sequenceNo){
+                        target = targetList[i];
+                    }
+                }
+
+                document.getElementById('__title').innerText = target.title;
+                document.getElementById('__writer').innerText = target.registUserId;
+                document.getElementById('__createDate').innerText = target.createDateTime.substring(0,10)
+                document.getElementById('__cont').innerText = target.contents;
+                if(target.filePath === null || target.filePath === ''){
+                    document.getElementById('__file').style.display = 'none';
+                } else {
+                    const fileChild = document.getElementById('__file').firstChild;
+                    fileChild.setAttribute('href',"/api/mypage/education-state/download?attachFilePath="+target.filePath);
+                    if (target.fileOriginName == null || target.fileOriginName === '') {
+                        fileChild.innerText = target.filePath.split('/')[target.filePath.split('/').length - 1];
+                    } else {
+                        fileChild.innerText = target.fileOriginName;
+                    }
+                }
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

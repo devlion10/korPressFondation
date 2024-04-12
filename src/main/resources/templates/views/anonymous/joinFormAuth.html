@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="join_step">
+                    <div class="step step1">
+                        <span>01</span>
+                        <span>약관동의</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step2 active">
+                        <span>02</span>
+                        <span>본인인증</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step3">
+                        <span>03</span>
+                        <span>회원정보 입력</span>
+                        <div class="dot">
+                            <div></div>
+                            <div></div>
+                            <div class="hp_show_pc"></div>
+                        </div>
+                    </div>
+                    <div class="step step4">
+                        <span>04</span>
+                        <span>회원가입 완료</span>
+                    </div>
+                </div>
+                <div class="page_title hp_show_tb hp_show_mo">회원가입</div>
+                <p class="cont_description" th:if="${youth==null}">회원가입을 위해 본인인증을 통해 회원님의 정보를 확인하고자 합니다. 아래 본인인증을 진행해주세요.</p>
+                <p class="cont_description" th:if="${youth!=null}">회원가입을 위해 본인인증을 통해 보호자의 정보를 확인하고자 합니다. 아래 본인인증을 진행해주세요.</p>
+                <div class="card_wrap justify-content-center">
+                    <div class="card half">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_join/join_icon3.png}" alt="" >
+                            <div class="text_box">
+                                <p class="card_title">휴대폰 인증</p>
+                                <p class="card_text" th:if="${youth==null}">실명인증을 통해 회원님의 정보를 확인하고자 하시면<br >아래 ‘<span class="color_blue">인증하기</span>’버튼을 클릭해 주세요.</p>
+                                <p class="card_text" th:if="${youth!=null}">실명인증을 통해 보호자의 정보를 확인하고자 하시면<br >아래 ‘<span class="color_blue">인증하기</span>’버튼을 클릭해 주세요.</p>
+                            </div>
+                            <a id="authenticationByPhoneButton" class="btn_type1 btn_blue">인증하기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP : 본인인증 -->
+    <div class="pop_wrapper ui-modal" id="popCertification">
+        <div class="pop_wrap pop_secondary hp_mw500">
+            <div class="pop_cont">
+                본인인증 임시 팝업입니다.
+            </div>
+            <button type="button" class="pop_close pop-close" onclick="openPopup()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                let youth = [[${youth}]]
+                document.querySelector("#authenticationByPhoneButton").addEventListener('click', function() {
+                    const wWidth = 480;
+                    const wHeight = 800;
+                    const wX = (window.screen.width - wWidth) / 2;
+                    const wY = (window.screen.height - wHeight) / 2;
+                    window.open(youth?"/user/join/authentication?youth=youth":"/user/join/authentication", "mbAuthPopup", "directories=no,toolbar=no,left="+wX+",top="+wY+",width="+wWidth+",height="+wHeight);
+                });
+
+                window.call = function (params) {
+                    let userName = params.userName;
+                    let userPhone = params.userPhone;
+                    let birthDate = params.birthDate;
+                    let gender = params.gender;
+                    let userId = params.userId;
+                    let migrationYN = params.migrationYN;
+                    const form = document.createElement('form'); // 폼객체 생성
+
+                    if(userId) {
+                        const userIdInput = document.createElement('input'); // 형식
+                        userIdInput.setAttribute('type', 'text'); // type
+                        userIdInput.setAttribute('name', 'userId'); // 객체이름
+                        userIdInput.setAttribute('value', userId); //객체값
+                        form.appendChild(userIdInput);
+
+                        const migrationYNInput = document.createElement('input'); // 형식
+                        migrationYNInput.setAttribute('type', 'text'); // type
+                        migrationYNInput.setAttribute('name', 'migrationYN'); // 객체이름
+                        migrationYNInput.setAttribute('value', migrationYN); //객체값
+                        form.appendChild(migrationYNInput);
+                    }
+                    const userNameInput = document.createElement('input'); // 형식
+                    userNameInput.setAttribute('type', 'text'); // type
+                    userNameInput.setAttribute('name', 'userName'); // 객체이름
+                    userNameInput.setAttribute('value', userName); //객체값
+                    form.appendChild(userNameInput);
+                    const userPhoneInput = document.createElement('input'); // 형식
+                    userPhoneInput.setAttribute('type', 'text'); // type
+                    userPhoneInput.setAttribute('name', 'userPhone'); // 객체이름
+                    userPhoneInput.setAttribute('value', userPhone); //객체값
+                    form.appendChild(userPhoneInput);
+                    const birthDateInput = document.createElement('input'); // 형식
+                    birthDateInput.setAttribute('type', 'text'); // type
+                    birthDateInput.setAttribute('name', 'birthDate'); // 객체이름
+                    birthDateInput.setAttribute('value', birthDate); //객체값
+                    form.appendChild(birthDateInput);
+                    const genderInput = document.createElement('input'); // 형식
+                    genderInput.setAttribute('type', 'text'); // type
+                    genderInput.setAttribute('name', 'gender'); // 객체이름
+                    genderInput.setAttribute('value', gender); //객체값
+                    form.appendChild(genderInput);
+                    form.setAttribute('method', 'post'); //get,post 가능
+
+                    if (youth) {
+                        const youthInput = document.createElement('input'); // 형식
+                        youthInput.setAttribute('type', 'text'); // type
+                        youthInput.setAttribute('name', 'youth'); // 객체이름
+                        youthInput.setAttribute('value', youth); //객체값
+                        form.appendChild(genderInput);
+                        form.setAttribute('action', "/user/join/profile/youth"); //보내는 url
+                    } else {
+                        form.setAttribute('action', "/user/join/type"); //보내는 url
+                    }
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function openPopup() {
+                location.href = "";
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

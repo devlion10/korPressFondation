@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">휴면계정 해지</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="card">
+                    <div>
+                        <img th:src="@{/assets/images/subpage_member/card_icon3.png}" alt="" >
+                        <div class="text_box">
+                            <p class="card_title">휴면계정 해지</p>
+                            <div class="card_text">
+                                안녕하세요.<br >
+                                한국언론진흥재단 미디어아카데미(KPF 미카)에서는 회원님의 소중한 개인정보를 보호하기 위하여<br >
+                                1년 동안 로그인 이용 기록이 없는 회원의 경우, 휴면 계정으로 전환하여 개인정보를 별도로 보관하고 있습니다.<br ><br >
+                                휴면 계정 해지를 원하시면 아래 “<span>휴면계정 해지</span>”를 눌러주시기 바랍니다.
+                            </div>
+                        </div>
+                        <button id="dormantCancel" type="button" class="btn_type1 btn_blue">휴면계정 해지</button>
+                        <div class="line"></div>
+                        <div class="form_box">
+                            <div class="title"><label for="floatingPassword">비밀번호를 정확하게 입력해주세요.</label></div>
+                            <input type="password" name="password" id="floatingPassword" class="common_input2" placeholder="비밀번호" disabled >
+                            <button type="submit" class="btn_type1 btn_blue" onclick="location.href='/'">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            let dormantCancel = document.getElementById('dormantCancel');
+            let passwordInput = document.getElementById('floatingPassword');
+
+            dormantCancel.addEventListener('click', function () {
+                passwordInput.removeAttribute('disabled');
+            });
+        </script>
+    </th:block>
+
+</div>
+</body>
+</html>

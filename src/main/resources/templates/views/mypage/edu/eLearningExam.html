@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont hp_h715">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li>
+                            <a id="tabLink1" href="/mypage/education-state/e-learning/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink2"  href="/mypage/education-state/e-learning/list">학습목차</a>
+                        </li>
+                        <li class="is_active">
+                            <a id="tabLink3"  href="/mypage/education-state/e-learning/exam">시험</a>
+                        </li>
+                        <li>
+                            <a id="tabLink4"  href="/mypage/education-state/e-learning/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭3] 시험 -->
+                        <div class="bl_tab_item js_tab_item">
+                            <p class="el_lv4heading">시험</p>
+                            <!-- COMPONENT : SCROLL -->
+                            <div class="bl_scroll bl_scroll__hor">
+                                <!-- COMPONENT : TABLE -->
+                                <table class="bl_table border_none exam_list" th:if="${content[0].educationPlan.curriculumMaster.isExam}">
+                                    <colgroup>
+                                        <col >
+                                        <col style="width:20%" >
+                                        <col style="width:30%" >
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">응시기간</th>
+                                            <th scope="col">응시일시</th>
+                                            <th scope="col">응시여부</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item, stat:${content[0].curriculumApplicationExamList}">
+                                            <td>
+                                                <span th:text="${#strings.substring(item.beginDateTime, 0, 10)}">2022.08.06</span>~
+                                                <span th:text="${#strings.substring(item.completeDateTime, 0, 10)}">2022.09.05</span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${!(item.isComplete)}">미응시</span>
+                                                <span th:if="${item.isComplete}" th:text="${#strings.substring(item.completeDateTime,0 ,10)}">2022.02.28</span>
+                                            </td>
+                                            <td>
+                                                <a class="btn_type1 btn_sm btn_blue" th:href="'/mypage/education-state/e-learning/exam/view?examCode='+${content[0].curriculumApplicationExamList[0].examSerialNo}" th:if="${!(item.isComplete)}">응시하기</a>
+                                                <span class="btn_type4 btn_blue" th:unless="${content[0].educationPlan.curriculumMaster.examScoreOfEnd > content[0].examScore}">
+                                                    합격(<span th:text="${content[0].examScore}"></span>점)
+                                                </span>
+                                                <span class="btn_type4 btn_gray" th:unless="${content[0].educationPlan.curriculumMaster.examScoreOfEnd > content[0].examScore}">
+                                                    불합격(<span th:text="${content[0].examScore}"></span>점)
+                                                </span>
+                                                <a class="btn_type1 btn_sm btn_gray" th:href="'/mypage/education-state/e-learning/exam/view?examCode='+${content[0].curriculumApplicationExamList[0].examSerialNo}" th:unless="${content[0].educationPlan.curriculumMaster.examScoreOfEnd > content[0].examScore}">재응시</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div th:unless="${content[0].educationPlan.curriculumMaster.isExam}">해당 교육은 시험이 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /* <![CDATA[ */
+        // [탭3] 시험 - 응시하기 - 시험 문제 - 답안 제출시 alert
+        function examSubmint() {
+            alert('제출한 답안은 수정이 불가합니다. 답안을 최종 제출하시겠습니까?');
+        }
+        function onLoadSubmit() {
+            console.log('commonCode: ', [[ ${commonCode} ]] )
+            let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+            makeTabLink(nowId)
+        }
+        function makeTabLink(id){
+            document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/e-learning/main/'+id);
+            document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/e-learning/list/'+id);
+            document.getElementById('tabLink3').setAttribute('href','/mypage/education-state/e-learning/exam/'+id);
+            document.getElementById('tabLink4').setAttribute('href','/mypage/education-state/e-learning/archive/'+id);
+        }
+        /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="ly_grid">
+                    <div class="page_title">강사모집</div>
+
+                    <!-- 컴포넌트 : 탭 -->
+                    <div class="bl_tab2 js_tab">
+                        <ul class="bl_tab2_menu">
+                            <li>
+                                <a href="/mypage/instructor-state/recruit">지원중인 사업</a>
+                            </li>
+                            <li class="is_active">
+                                <a href="/mypage/instructor-state/recruit/result">지원완료 사업</a>
+                            </li>
+                        </ul>
+
+                        <div class="bl_tab2_body js_tab_contents hp_mt60">
+                            <!-- 지원완료 사업 -->
+                            <div class="bl_tab2_item js_tab_item">
+                                <div class="sch_box sch_box_wrap">
+                                    <label for="bizOrgAplyRgn" class="hidden_label">지역</label>
+                                    <label for="containText" class="hidden_label">내용</label>
+                                    <label for="containTextType" class="hidden_label">검색타입</label>
+                                    <select id="bizOrgAplyRgn" class="common_select2" data-list="regionList"></select>
+                                    <select id="containTextType" class="common_select2">
+                                        <option value="1">사업명</option>
+                                        <option value="2">기관명</option>
+                                    </select>
+                                    <input id="containText" class="common_input2 form_input_md" placeholder="검색어를 입력해주세요.">
+                                    <a class="btn_type1 btn_icon btn_search" th:onclick="searchInstCmpl()">검색</a>
+                                </div>
+
+                                <!-- BOARD : CONTROLLER -->
+                                <div class="bl_boardCtrls">
+                                    <div class="bl_boardCtrls_lft">
+                                        <p class="bl_boardCtrls_total">
+                                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- BOARD : LIST -->
+                                <div class="bl_board">
+                                    <div class="bl_board_head">
+                                        <div class="bl_board_ctg">지역</div>
+                                        <div class="bl_board_ctg">기관</div>
+                                        <div class="bl_board_ctg">우선순위</div>
+                                        <div class="bl_board_subject">사업명</div>
+                                        <div class="bl_board_dateRange bl_board_dateRange_sm">교육기간</div>
+                                        <div class="bl_board_btn">신청서</div>
+                                        <div class="bl_board_btn">거리 증빙</div>
+                                        <div class="bl_board_state bl_board_state_sm">지원결과</div>
+                                    </div>
+
+                                    <div class="bl_board_body">
+                                        <div class="bl_board_unit" th:each="item:${content}">
+                                            <div class="bl_board_ctg" th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">서울</div>
+                                            <div class="bl_board_ctg" th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">케이브레인</div>
+                                            <div class="bl_board_ctg bizInstrAplyCndtOrdr" th:text="${item.bizInstrAplyCndtOrdr}">1</div>
+                                            <div class="bl_board_subject">
+                                                <span class="hp_ellipsis" th:text="${item.bizPbancMaster.bizPbancNm}">미디어교육 평생교실 8기</span>
+                                            </div>
+                                            <div class="bl_board_dateRange bl_board_dateRange_sm hp_md_ord51">
+                                                <span class="bl_board_label hp_md_show">교육기간</span>
+                                                <span>
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanBgng}">2022-06-02</span> ~
+                                                    <span th:text="${item.bizOrganizationAply.bizOrgAplyLsnPlanEnd}">2022-06-02</span>
+                                                </span>
+                                            </div>
+                                            <div class="bl_board_btn">
+                                                <a th:href="@{/business/instructor/view/{id}/{code}(id=${item.bizInstructorPbanc.sequenceNo}, code=${item.bizOrgAplyNo})}"  class="btn_type1 btn_sm btn_blue">보기</a>
+                                            </div>
+                                            <div class="bl_board_btn">
+                                                <a th:if="${(item.bizInstructorDist == null) && (item.bizInstrAplyStts==2)}" th:href="@{/mypage/instructor-state/distance/{id}(id=${item.bizInstrAplyNo})}" class="btn_type1 btn_sm btn_blue">증빙</a>
+                                                <span th:if="${item.bizInstructorDist != null && item.bizInstructorDist.bizDistStts == 1}" class="btn_type4 btn_green">승인</span>
+                                                <span th:if="${item.bizInstructorDist != null && item.bizInstructorDist.bizDistStts == 0}" class="btn_type4 btn_red">미승인</span>
+                                            </div>
+                                            <div class="bl_board_state bl_board_state_sm hp_md_ord51">
+                                                <span class="btn_type4 btn_gray" th:if="${item.bizInstrAplyStts == 1}">미선정</span>
+                                                <span class="btn_type4 btn_green" th:if="${item.bizInstrAplyStts == 2}">선정</span>
+                                                <span class="btn_type4 btn_red" th:if="${item.bizInstrAplyStts == 3}">반려</span>
+                                            </div>
+                                        </div>
+                                        <div class="bl_board_unit bl_board_unit__empty" th:if="${#lists.isEmpty(content)}">
+                                            <div class="bl_card_empty">등록된 사업이 없습니다.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bl_paginate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                function searchInstCmpl(){
+                    let searchQuery = {}
+                    let name = $("#containText").val();
+                    let type = $("#containTextType").val();
+                    let rgn = $("#bizOrgAplyRgn").val();
+                    if(name){
+                        searchQuery.containText = name
+                        searchQuery.containTextType = type
+                    }
+                    if(rgn && rgn!="지역"){
+                        searchQuery.bizOrgAplyRgn = rgn
+                    }
+                    searchJson(searchQuery)
+                }
+
+                //아래행과 위치변경
+                function moveDown(el){
+                    let $tr = $(el).parent();
+                    $tr.next().after($tr);
+                }
+
+                /* <![CDATA[ */
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    pagination([[ ${pageable} ]])
+                    navigation(0,2,0);
+                }
+                /* ]]> */
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

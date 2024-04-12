@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">연구/간행물</div>
+                    </div>
+                </div>
+
+                <div class="card_wrap">
+                    <div class="card half pt-0 card__proposition">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_community/proposition_icon.png}" alt="" >
+                            <div class="text_box">
+                                <p class="card_title">미디어리터러시</p>
+                            </div>
+                            <button type="button" class="btn_type1 btn_blue" onclick="location.href='/communication/archive/publication'">바로가기</button>
+                        </div>
+                    </div>
+                    <div class="card half pt-0 card__proposition">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_community/proposition_icon2.png}" alt="" >
+                            <!-- 아이콘 필요 - 현재 임시 -->
+                            <div class="text_box">
+                                <p class="card_title">연구/통계</p>
+                            </div>
+                            <button type="button" class="btn_type1 btn_blue" onclick="location.href='/communication/archive/research-data'">바로가기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,2,2);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

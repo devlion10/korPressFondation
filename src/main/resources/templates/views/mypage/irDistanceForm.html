@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <div th:if="${authError == null}">
+        <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual2.png} + ')'">
+            <div class="ly_grid">
+                <div class="banner_title_area">
+                    <h3 class="banner_title">마이페이지</h3>
+                </div>
+            </div>
+        </div>
+        <div class="navigation"></div>
+
+        <!-- CONTAINER -->
+        <div class="container">
+            <!-- CONTENT -->
+            <div class="content content_mypage">
+                <div class="ly_grid">
+                    <div class="page_title">거리증빙</div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>사업정보</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">사업명</th>
+                                <td th:text="${content[0].bizPbancMaster.bizPbancNm}">미디어교육 평생교실new test(예시)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기관명</th>
+                                <td id="bizDistEndNm" th:text="${content[0].bizOrganizationAply.organizationInfo.organizationName}">한국언론진흥재단(예시)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기관 주소</th>
+                                <td>
+                                    [<span th:text="${content[0].bizOrganizationAply.organizationInfo.organizationZipCode}">12345(예시)</span>]
+                                    <span id="bizDistEndAddr" th:text="${content[0].bizOrganizationAply.organizationInfo.organizationAddress1}">경기도 성남시 수정구 복정로 73</span>
+                                    <span th:text="${content[0].bizOrganizationAply.organizationInfo.organizationAddress2}">가천대학교(예시)</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BOARD : WRITE -->
+                    <div class="bl_boardWrite bl_boardWrite__gray">
+                        <table>
+                            <caption>거리증빙 내용</caption>
+                            <colgroup>
+                                <col class="hp_lg_w150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row">주소</th>
+                                <td>
+                                    <div class="input_btn_box">
+                                        <label for="bizDistBgngAddr" class="hidden_label">주소 입력창</label>
+                                        <input id="bizDistBgngAddr" th:if="${instr!=null}" th:value="${instr.instrAddr1}" type="text" class="common_input form_input"  data-not_null="true" data-alert_name="출발지 주소(강사 주소)" disabled>
+                                        <input id="bizDistBgngAddr" th:unless="${instr!=null}" type="text" class="common_input form_input"  data-not_null="true" data-alert_name="출발지 주소(강사 주소)"  disabled>
+                                        <a id="map_naver" th:if="${instr!=null}" th:href="@{https://map.kakao.com/(eName=${content[0].bizOrganizationAply.organizationInfo.organizationAddress1}, sName=${instr.instrAddr1})}" target="_blank" class="btn_type1 btn_blue btn_md" >지도보기</a>
+                                    </div>
+                                    <p class="guide_text">※ 거리증빙 지도 이미지는 카카오맵 길찾기 <span class="color_red mx-2">최적경로</span> 검색 캡쳐 화면을 제출 부탁드립니다.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="essential">*</span>지도 이미지
+                                </th>
+                                <td>
+                                    <div class="chk_box d-block">
+                                        <input id="map_agree" type="checkbox" >
+                                        <label for="map_agree">
+                                            <span></span>
+                                            40km 미만으로 지도 이미지를 첨부하지 않습니다.
+                                        </label>
+                                    </div>
+                                    <div id="div_file" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+                                        <label for="map_name" class="hidden_label">파일 업로드</label>
+                                        <label for="map_file" class="hidden_label">파일 업로드</label>
+                                        <input id="map_name" type="text" class="common_input bl_upload_path js_path" data-not_null="true" data-alert_name="지도 이미지" readonly="">
+                                        <label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+                                        <input id="map_file" type="file" name="file" class="bl_upload_file js_file">
+                                    </div>
+                                    <p id="p_file" class="guide_text">업로드 가능한 파일 확장자: gif,jpg,png,bmp / 파일 용량 : 10MB 미만</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="essential">*</span><label for="bizDistValue">기관까지의 거리</label></th>
+                                <td>
+                                    <input id="bizDistValue" class="common_input form_input_sm" placeholder="0.0" data-not_null="true" data-alert_name="기관까지 거리(km)"><span class="mx-1">km</span>
+                                    <div class="guide_text">※ 숫자만 소수점 한자리까지 입력해 주세요.</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bl_gridBtns">
+                        <div class="bl_gridBtns_md">
+                            <a class="btn_type1 btn_blue" onclick="create()">저장하기</a>
+                        </div>
+                        <div class="bl_gridBtns_rgt">
+                            <a class="btn_type2" href="/mypage/instructor-state/recruit/result">뒤로가기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${authError == null}">
+        <div th:include="@{views/error/accessRestriction}"></div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            if( [[${authError}]] == null ) {
+                $("#bizDistValue").bind("change",function (e){
+                    if(parseFloat($(this).val())>=40 ){
+                        if($('#map_agree').is(':checked')){
+                            $('#map_agree').trigger("click");
+                            alert('주소가 40km 이상입니다. 거리증빙 지도 이미지를 첨부해 주세요.');
+                        }
+                        $("#map_name").attr("data-not_null", true);
+                        $('#map_agree').attr('disabled', true);
+                    }else if(parseFloat($(this).val())<40){
+                        $("#map_name").removeAttr("data-not_null");
+                        $('#map_agree').removeAttr('disabled');
+                    }else{
+                        $(this).val(0)
+                        $("#map_name").removeAttr("data-not_null");
+                        $('#map_agree').removeAttr('disabled');
+                        alert('거리에는 숫자만 입력해 주세요.')
+                    }
+                })
+                $("#map_agree").bind('click',function (e){
+                    if($(this).is(":checked")){
+                        $("#map_name").removeAttr("data-not_null");
+                        $("#div_file").hide();
+                        $("#p_file").hide();
+                    }else{
+                        $("#map_name").attr("data-not_null", true);
+                        $("#div_file").show();
+                        $("#p_file").show();
+                    }
+                })
+                function create(){
+                    let params = getFormData()
+                    if(nullCheck()&&params.bizDistValue>=0){
+                        if (params.bizDistValue>=40) {
+                            if ($("#map_file")[0].files.length>0) {
+                                $.ajax({
+                                    type: "POST",
+                                    headers: {'Content-Type' : 'application/json'},
+                                    url: "/api/business/instructor/dist/create",
+                                    data: JSON.stringify(params),
+                                    dataType: "json",
+                                    success: function (data){
+                                        // 강사 신청의 거리도 수정
+                                        var form = new FormData();
+                                        form.append( "attachFile", $("#map_file")[0].files[0] );
+                                        $.ajax({
+                                            type:"put", //http method
+                                            url:`/api/business/instructor/dist/upload/${data.bizInstrDistNo}`, //값을 가져올 경로
+                                            processData : false,
+                                            contentType : false,
+                                            data: form,
+                                            success: function(subData) {
+                                                alert("거리증빙이 등록되었습니다.");
+                                                window.location.replace('/mypage/instructor-state/recruit/result')
+                                            }, error: function(e) {
+                                                alert("오류가 발생했습니다. 데이터를 다시 확인해 주세요.");
+                                            }
+                                        })
+                                    },error: function (e){
+                                        alert("오류가 발생했습니다. 데이터를 다시 확인해 주세요.");
+                                    }
+                                })
+                            } else {
+                                alert('주소가 40km 이상입니다. 거리증빙 지도 이미지를 첨부해 주세요.');
+                            }
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                headers: {'Content-Type' : 'application/json'},
+                                url: "/api/business/instructor/dist/create",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (data){
+                                    alert("거리증빙이 등록되었습니다.");
+                                    window.location.replace('/mypage/instructor-state/recruit/result')
+                                },error: function (e){
+                                    alert("오류가 발생했습니다. 데이터를 다시 확인해 주세요.");
+                                }
+                            })
+                        }
+                    }else if(!(params.bizDistValue>=0)){
+                        alert('기관까지의 거리에는 숫자만 입력해 주세요.')
+                    }
+                }
+
+                /* <![CDATA[ */
+                function getFormData(){
+                    let CONT =  [[ ${content} ]];
+                    let AMT =  [[ ${clclDdlnAmt} ]];
+                    let params = {};
+                    params.bizInstrAplyNo = CONT[0].bizInstrAplyNo;
+                    params.bizOrgAplyNo =CONT[0].bizOrganizationAply.bizOrgAplyNo;
+                    params.bizDistStts = 0;
+                    params.bizDistValue = parseFloat(parseFloat($("#bizDistValue").val()).toFixed(1));
+                    params.bizDistMapYn = $('#map_agree').is(':checked') ? 1 : 0;
+                    params.bizDistBgngNm = "자택";
+                    params.bizDistBgngAddr = $("#bizDistBgngAddr").val();
+                    params.bizDistEndNm = $("#bizDistEndNm").text();
+                    params.bizDistEndAddr = $("#bizDistEndAddr").text();
+                    params.bizInstrDistNo = '1';
+                    params.bizDistAmt = 0;
+                    try{
+                        let temp = params.bizDistValue;
+                        for(let amtItem of AMT.content[0].bizInstructorDistCrtrAmtItems){
+                            if(temp >= amtItem.bizInstrDistCrtrAmtItemLowr && temp < amtItem.bizInstrDistCrtrAmtItemUp ){
+                                params.bizDistAmt = amtItem.bizInstrDistCrtrAmtItemValue;
+                            }
+                        }
+                        if(params.bizDistAmt ==0){
+                            params.bizDistAmt = AMT.content[0].bizInstrDistCrtrAmtValue
+                        }
+                    }catch (e){
+                        params.bizDistAmt = 10;
+                    }
+                    return params;
+                }
+
+                function onLoadSubmit() {
+                    console.log('commonCode: ', [[ ${commonCode} ]] )
+                    navigation(0,2,0);
+                }
+                /* ]]> */
+                //좌표 구하는 함수
+                //INDEX는 서울 강남구 강남대로 238 와 같이 건물 주소
+                function findPoint(input,currentPage=1,countPerPage=10) {
+                    let result={};
+                    let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                    let url ="https://dapi.kakao.com/v2/local/search/address.json";
+                    $.ajax({
+                        data: { query: input,page:currentPage,size:countPerPage },
+                        url: url,
+                        headers : {
+                            "Content-Type" : "application/json",
+                            Authorization : "KakaoAK "+newkey
+                        },
+                        async: false,
+                        dataType: "json",
+                        method: "GET",
+                        error: function (e) {
+                            result.documents=false
+                        },
+                        success: function (data) {
+                            result = data;
+                        },
+                    })
+                    if(result.documents && result.documents.length>0)
+                        return result.documents[0];
+                    else
+                        return null;
+                }
+
+
+                //시작Y, 시작X, 도착Y, 도착X 좌표를 입력하면 추천거리 계산
+                function distance(lat1,lng1,lat2,lng2){
+                    let result=0;
+                    let newkey = "6046c13b83a2e4d21d510736715ad9eb";
+                    let url =`https://apis-navi.kakaomobility.com/v1/directions?origin=${lng1},${lat1}&destination=${lng2},${lat2}&summary=true`;
+                    $.ajax({
+                        url: url,
+                        headers : {
+                            "Content-Type" : "application/json",
+                            Authorization : "KakaoAK "+newkey
+                        },
+                        async: false,
+                        dataType: "json",
+                        method: "GET",
+                        error: function (error) {
+                            result=0
+                        },
+                        success: function (data) {
+                            result = data.routes[0].summary.distance/1000
+                        },
+                    })
+                    return result;
+                }
+
+                //주소 string으로 거리를 계산하는 함수
+                function getDistance(start, end){
+                    let startPoint = findPoint(start);
+                    let endPoint= findPoint(end);
+                    if(startPoint && endPoint){
+                        $("#map_naver").removeClass('btn_lightgray')
+                        $("#map_naver").addClass('btn_blue')
+                        $("#map_naver").removeAttr('disabled')
+                        $("#map_naver").attr("href", `https://map.kakao.com/?eName=${endPoint.address_name}&sName=${startPoint.address_name}`)
+                    }else if(startPoint == null){
+                        alert("출발지 주소를 검색하는 과정에서 오류가 발생했습니다.");
+                        $("#map_naver").removeClass('btn_lightgray')
+                        $("#map_naver").addClass('btn_blue')
+                        $("#map_naver").removeAttr('disabled')
+                        $("#map_naver").attr("href", `https://map.kakao.com/?eName=${endPoint.address_name}`);
+                    }else if(endPoint == null){
+                        alert("도착지 주소를 검색하는 과정에서 오류가 발생했습니다.");
+                        $("#map_naver").removeClass('btn_lightgray')
+                        $("#map_naver").addClass('btn_blue')
+                        $("#map_naver").removeAttr('disabled')
+                        $("#map_naver").attr("href", `https://map.kakao.com/?sName=${startPoint.address_name}`);
+                    }
+
+                }
+
+
+                function addrSearch() {
+                    var width = 500; //팝업의 너비
+                    var height = 600; //팝업의 높이
+                    let test = $("#bizDistBgngNm").val() ? $("#bizDistBgngNm").val(): "";
+                    if(test ==''){
+                        alert('검색어를 입력해 주세요.')
+                    }else{
+
+                        new daum.Postcode({
+                            width: width, //생성자에 크기 값을 명시적으로 지정해야 합니다.
+                            height: height,
+                            oncomplete: function(data) {
+                                var zonecode = data.zonecode; // 우편번호 변수
+                                var addr = ''; // 주소 변수
+                                var addr2 = '';
+
+                                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                                    addr = data.roadAddress;
+                                    if (data.buildingName != '') {
+                                        addr2 = data.buildingName;
+                                    }
+                                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                                    addr = data.jibunAddress;
+                                }
+                                document.getElementById("bizDistBgngAddr").value = addr;
+                                if (addr2 != '') {
+                                    document.getElementById("bizDistBgngAddr").value += ' (' + addr2 + ')';
+                                }
+                                getDistance($("#bizDistBgngAddr").val(), $("#bizDistEndAddr").text())
+                            }
+                        }).open({
+                            left: (window.screen.width / 2) - (width / 2),
+                            top: (window.screen.height / 2) - (height / 2),
+                            q:test
+                        });
+                    }
+                }
+            } else {
+                alert( [[${authError}]] );
+                history.back();
+            }
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

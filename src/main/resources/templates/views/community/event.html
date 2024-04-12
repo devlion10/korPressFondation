@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">이벤트/설문</div>
+                    </div>
+                </div>
+
+                <form action="./event?size=8" method="get">
+                    <div class="sch_box">
+                        <!-- size=8 고정을 위한 검색값 추가 select문 -->
+                        <label for="size" class="hidden_label">크기</label>
+                        <select id="size" name="size" class="d-none">
+                            <option value="8">8</option>
+                        </select>
+
+                        <label for="containTextType" class="hidden_label">구분</label>
+                        <select id="containTextType" name="containTextType" class="common_select2">
+                            <option value="1">제목+내용</option>
+                            <option value="2">제목</option>
+                            <option value="3">내용</option>
+                        </select>
+
+                        <label for="containText" class="hidden_label">검색어</label>
+                        <input id="containText" name="containText" class="common_input2 form_input_md" placeholder="검색어를 입력해주세요." >
+                        <button type="submit" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+                    </div>
+                </form>
+
+                <!-- BOARD : CARD -->
+                <ul class="bl_gridCard2">
+                    <li th:each="item, stat: ${content}">
+                        <a th:href="@{/communication/event/view/{id}(id=${item.sequenceNo})}" class="bl_card3">
+                            <p class="bl_card2_thumb">
+                                <img th:if="${item.thumbFilePath!=null && item.thumbFilePath.length > 0}" th:src="@{/Public{path}(path = ${item.thumbFilePath})}" alt="">
+                                <img th:unless="${item.thumbFilePath!=null && item.thumbFilePath.length > 0}" th:src="@{/assets/images/@tmp/card2_video2.jpg}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis" th:text="${item.title}"></strong>
+                                    <i class="el_ico">
+                                        <span th:if="${item.status=='1'}" class="el_chip3">진행</span>
+                                        <span th:if="${item.status=='0'}" class="el_chip3 el_chip3__end">마감</span>
+                                    </i>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span class="bl_card3_label hp_lg_show">기간</span>
+                                        <span th:text="${#strings.substring(item.startDT, 0, 10)}"></span>~<span th:text="${#strings.substring(item.endDT, 0, 10)}">2022.07.30</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], false)
+                navigation(3,5);
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

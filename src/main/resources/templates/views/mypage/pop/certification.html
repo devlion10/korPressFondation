@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body class="reduction">
+<div layout:fragment="pop">
+  <style>
+    .reduction {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .reduction #__certi__ {
+      transform: scale(0.29) translate(-123%, -123%);
+      font-family: 'ChosunGs';
+    }
+    #__certi__ .certi_wrap {
+      position: absolute;
+      top: 863px;
+      left: 359px;
+      width: 1715px;
+      height: 1424px;
+    }
+    #__certi__ .curriculum_name {
+      font-size: 63px;
+      padding-left: 328px;
+      line-height: 83px;
+      margin-top: -10px;
+      letter-spacing: 5px;
+    }
+    #__certi__ .curriculum_date {
+      font-size: 52px;
+      padding-left: 328px;
+      line-height: 1;
+      letter-spacing: 4px;
+      margin-top: 44px;
+    }
+    #__certi__ .user_info {
+      display: flex;
+      align-items: center;
+      float: right;
+      margin-top: 197px;
+    }
+    #__certi__ .user_company {
+      font-size: 45px;
+      letter-spacing: 6px;
+    }
+    #__certi__ .user_name {
+      font-size: 86px;
+      margin-left: 69px;
+      letter-spacing: 18px;
+    }
+    #__certi__ .certi_content {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      width: 1462px;
+      height: 869px;
+      font-size: 69px;
+      line-height: 100px;
+      letter-spacing: 5px;
+      clear: both;
+    }
+    #__certi__ .certi_date {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      font-size: 57px;
+      letter-spacing: 4px;
+    }
+    .certi_btns {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+    }
+    #pdfDownBtn {
+      font-size: 15px!important;
+      margin-right: 5px;
+    }
+    #printBtn {
+      font-size: 15px!important;
+    }
+  </style>
+  <div class="certi_btns">
+    <span id="pdfDownBtn" class="btn_type1 btn_md btn_red" onclick="pdfDown()">pdf 다운로드</span>
+    <span id="printBtn" class="btn_type1 btn_md btn_blue" onclick="certiPrint()">인쇄</span>
+  </div>
+  <div id="__certi__">
+    <div class="certi_wrap">
+      <div class="curriculum_name">제 334기 수습기자 기본교육</div>
+      <div class="curriculum_date">
+        (<span class="curriculum_sdate">2023년 01월 09일</span> ~
+        <span class="curriculum_edate">2023년 01월 20일</span>)
+      </div>
+
+      <div class="user_info">
+        <div class="user_company">(주)매일신문사</div>
+        <div class="user_name">박상현</div>
+      </div>
+
+      <div class="certi_content">
+        <div>
+          상기인은 한국언론진흥재단이 주관하는<br/>
+          &#8216;<span>제 334기 수습기자 기본교육</span>&#8217; 과정을 성실히 이수하였기에 이 증서를 드립니다.
+        </div>
+      </div>
+
+      <div class="certi_date">2023년 02월 02일</div>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+      /* <![CDATA[ */
+      let fileName;
+
+      function dateConvert(date){
+        let convertDate = date.substring(0,4)+'년 '+ date.substring(5,7)+'월 ' + date.substring(8,10)+'일';
+        return convertDate
+      }
+
+      function makeCerti(){
+        const data = window.sendData;
+        if(data){
+          fileName = '수료증_' + data.eduTitle + '_' +data.name;
+          document.querySelector('#__certi__ .curriculum_name').innerText = data.eduTitle;
+          document.querySelector('#__certi__ .curriculum_sdate').innerText = dateConvert(data.eduStartDate);
+          if(data.eduEndDate !== null){
+            document.querySelector('#__certi__ .curriculum_edate').innerText = dateConvert(data.eduEndDate);
+          } else {
+            document.querySelector('#__certi__ .curriculum_edate').innerText = dateConvert(data.eduCompleteDate);
+          }
+          document.querySelector('#__certi__ .user_company').innerText = data.organName;
+          document.querySelector('#__certi__ .user_name').innerText = data.name;
+          document.querySelector('#__certi__ .certi_content div span').innerText = data.eduTitle;
+          // document.querySelector('#__certi__ .certi_date').innerText = dateConvert(data.eduCompleteDate);
+          /* 수료증 하단 날짜 */
+          let today = new Date();
+          let year = today.getFullYear(); // 년도
+          let month = today.getMonth() + 1;  // 월
+          let date = today.getDate();  // 날짜
+
+          let fullMonth
+          if (month < 10)
+            fullMonth = "0"+month
+          else
+            fullMonth = month
+          let fullDate
+          if (date < 10)
+            fullDate = "0"+date
+          else
+            fullDate = date
+
+          document.querySelector('#__certi__ .certi_date').innerText = year+'년 '+fullMonth+'월 '+fullDate+'일';
+        }else{
+          alert('오류가 발생했습니다.');
+          window.close();
+        }
+      }
+
+      function pdfDown(){
+        $('.reduction').append('<div class="dimm"></div>');
+        $('.reduction').removeClass('reduction');
+        html2canvas(document.querySelector('#__certi__')).then(canvas => {
+          // 캔버스를 이미지로 변환
+          var imgData = canvas.toDataURL('image/png');
+
+          var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
+          var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+          var imgHeight = canvas.height * imgWidth / canvas.width;
+          var heightLeft = imgHeight;
+          var margin = 10; // 출력 페이지 여백설정
+          var doc = new jsPDF('p','mm','a4');
+          var position = 0;
+
+          var width = doc.internal.pageSize.getWidth();
+          var height = doc.internal.pageSize.getHeight();
+          doc.addImage(imgData, 'PNG', 0, 11, width, height);
+          doc.save(fileName+'.pdf');
+          window.close();
+        })
+      }
+
+      function certiPrint() {
+        var certi = document.querySelector('#__certi__')
+        var certi_btns = document.querySelector('.certi_btns')
+        var certiDiv = document.createElement('div')
+        certiDiv.setAttribute('id', 'certiDiv')
+        certiDiv.setAttribute('class', 'eLearning')
+
+        html2canvas(certi).then(canvas => {
+          certiDiv.append(canvas)
+          certi.parentElement.append(certiDiv)
+          $(certi).hide()
+          $(certi_btns).hide()
+        }).then(function () {
+          window.print();
+          // window.close();
+          $(certi).show()
+          $(certi_btns).show()
+          $(certiDiv).remove()
+        })
+      }
+
+      function onLoadSubmit() {
+        makeCerti();
+        // pdfDown();
+      }
+      /* ]]> */
+    </script>
+  </th:block>
+</div>
+</body>
+</html>

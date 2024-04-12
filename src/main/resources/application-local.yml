@@ -1,0 +1,66 @@
+spring:
+  config:
+    import: classpath:application-db-mysql-local.yml, classpath:application-oauth-local.yml
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 350MB
+  thymeleaf:
+    cache: false
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 9000
+
+app-config:
+  domain: http://localhost:8080
+  qr-code-path: /mypage/education-state/lecture/attend
+  security:
+    debug: false
+    encrypt-key: 4B6150645367566B5970337336763979244226452948404D6251655468576D5A
+  web-connection:
+    http-connect-timeout: 10000
+    http-read-timeout: 5000
+  upload-file:
+    upload-context-path: C:/Users/Public/upload
+    contents-context-path: C:/Users/Public/contents
+    reference-folder: /reference
+    user-folder: /user
+    instr-folder: /instructor
+    application-folder: /application
+    my-qna-folder: /myqna
+    notice-folder: /notice
+    lms-data-folder: /lmsdata
+    banner-folder: /banner
+    thumbnail-folder: /thumbnail
+    qr-code-folder: /qr-code
+    class-guide-folder: /class-guide
+    biz-aply-folder: /biz-aply
+    biz-organization-aply-folder: /biz-organization-aply
+    biz-pbanc-result-folder: /biz-pbanc-result
+    biz-instr-folder: /biz-instr
+    biz-instr-dist-folder: /biz-instr-dist
+    biz-organization-rslt-rpt-folder: /biz-organization-rslt-rpt
+    upload-folder: /file
+    exam-folder: /exam
+    assignment-folder: /assignment
+# 본인인증(NICE)
+  self-authentication:
+    url: https://svc.niceapi.co.kr:22001
+    client-id: 1c4a15fb-f23c-4fd8-89a1-c39366eb0032
+    client-token: e64ddf53-f169-465a-8d02-9cf804ae4709
+    site-code: BZ902
+    site-password: AgdvB5n3z2P8
+    product-code: 2101979031
+    return-url: "/user/join/authentication/result"
+    return-url2: "/user/find/authentication/result"
+    return-url3: "/user/join/authentication/result?youth=youth"
+    return-url4: "/user/find/authentication/result?youth=youth"
+    failure-url: "/user/join/auth"
+  # 비즈뿌리오
+  biz-p-purio:
+    url: dev-api.bizppurio.com
+    id: kpfmeca
+    password: kpf21906006!

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included scan="false" scanPeriod="2 seconds">
+
+	<!-- TIME_ROLLING_FILE: 일자별 롤링 기록 (zip 압축적용) -->
+	<appender name="TIME_ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}.log</file>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>${LOG_CHARSET}</charset>
+		</encoder>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE}.%d{yyyyMMdd}.log.zip</fileNamePattern>
+			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+			<cleanHistoryOnStart>false</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>
+
+	<!-- TIME_ROLLING_FILE_WARN: 일자별 WARN로그 롤링 기록 (zip 압축적용) -->
+	<appender name="TIME_ROLLING_FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<!-- <file>${LOG_FILE}</file> -->
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>${LOG_CHARSET}</charset>
+		</encoder>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE}.%d{yyyyMMdd}.WARN.log.zip</fileNamePattern>
+			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+			<cleanHistoryOnStart>false</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>
+
+</included>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual7.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">연수원 소개</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div class="page_title">교육장 사용신청</div>
+                    </div>
+                </div>
+
+                <!-- BOARD : WRITE -->
+                <div class="bl_boardWrite bl_boardWrite__gray">
+                    <table>
+                        <colgroup>
+                            <col class="hp_lg_w236" >
+                            <col >
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">작성일자</th>
+                                <td>
+                                    <div class="bl_dateRange hp_md_w100p">
+                                        <input id="sdate" type="text" class="el_datePicker sdate common_input">
+                                        <span class="blank">~</span>
+                                        <input id="edate" type="text" class="el_datePicker edate common_input">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">검색어</th>
+                                <td>
+                                    <div class="bl_formSearch">
+                                        <select class="common_select" name="" id="containTextType">
+                                            <option value="0">전체</option>
+                                        </select>
+                                        <input type="text" name="" id="containText" class="common_input" >
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- GRID : BUTTON -->
+                <div class="bl_gridBtns">
+                    <div class="bl_gridBtns_md">
+                        <a class="btn_type1 btn_gray" onclick="window.location.assign(window.location.href)">초기화</a>
+                        <a class="btn_type1 btn_blue" onclick="searchUse()">검색</a>
+                    </div>
+                </div>
+
+                <!-- BOARD : LIST -->
+                <div class="bl_board">
+                    <div class="bl_board_head">
+                        <div class="bl_board_no">No.</div>
+                        <div class="bl_board_subject">제목</div>
+                        <div class="bl_board_application">신청서</div>
+                        <div class="bl_board_author">작성자</div>
+                        <div class="bl_board_date">작성일</div>
+                    </div>
+
+                    <div class="bl_board_body">
+                        <div class="bl_board_unit" th:each="item, stat : ${content}">
+                            <div class="bl_board_no"
+                                 th:text="${pageable.totalElements - ((pageable.page * pageable.size) + stat.index)}"
+                            ></div>
+
+                            <a
+                                th:href="@{/edu-center/apply/view/{id}(id=${item.sequenceNo})}"
+                                class="bl_board_subject"
+                            >
+                                <span class="hp_ellipsis" th:text="${item.title}"></span>
+                            </a>
+
+                            <div class="bl_board_application hp_md_ord52 bl_board_md_label">
+                                <span class="bl_board_label hp_md_show">신청서</span>
+                                <a class="btn_type5 btn_file" th:if="${item.attachFilePath != null}" th:href="@{/api/common/upload/download(attachFilePath=${item.attachFilePath})}">다운로드</a>
+                            </div>
+                            <div class="bl_board_author bl_board_barNone" th:text="${item.aplyUserNm}">홍길동</div>
+                            <div class="bl_board_date" th:text="${#strings.substring(item.createDateTime, 0, 10)}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function searchUse(){
+                let searchQuery ={};
+                let text= $("#containText").val();
+                let type= $("#containTextType").val();
+                let sdate = $("#sdate").val()
+                let edate = $("#edate").val()
+                if(sdate){
+                    searchQuery.sdate = sdate;
+                }
+                if(edate){
+                    searchQuery.edate = edate;
+                }
+                if(text){
+                    searchQuery.containText=text;
+                    searchQuery.containTextType=type;
+                }
+                searchJson(searchQuery);
+            }
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                pagination([[ ${pageable} ]], true, '사용신청')
+                navigation(5,3);
+                schBox();
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

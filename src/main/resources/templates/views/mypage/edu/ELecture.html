@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pop_layout}">
+<body>
+<div layout:fragment="pop">
+    <!-- POPUP : 강의실 -->
+    <div class="pop_page">
+        <div class="pop_primary">
+            <div class="pop_head overflow_head">
+                <h1 class="course_name">
+                    <th:block th:switch="${content[0].educationPlan.curriculumMaster.categoryCode}">
+                        <th:block th:each="commonCode : ${commonCode}" th:if="${commonCode.code} == 'CTS_CTGR'">
+                                <span class="ctg_name" th:each="categoryCode : ${commonCode.subCode}"
+                                      th:if="${categoryCode.code == content[0].educationPlan.curriculumMaster.categoryCode}"
+                                      th:value="${categoryCode.code}" th:text="${categoryCode.codeName}"></span>
+                        </th:block>
+                    </th:block>
+                    <span th:text="${content[0].educationPlan.curriculumMaster.curriculumName}"></span>
+                </h1>
+            </div>
+            <div class="pop_cont">
+                <!-- 컴포넌트 : 탭 -->
+                <div class="bl_tab js_tab">
+                    <ul class="bl_tab_menu hp_mb40">
+                        <li class="is_active">
+                            <a id="tabLink1" href="/mypage/education-state/e-lecture/main">강의실 홈</a>
+                        </li>
+                        <li>
+                            <a id="tabLink2" href="/mypage/education-state/e-lecture/archive">자료실</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab_body js_tab_contents">
+                        <!-- [탭1] MAIN -->
+                        <div class="bl_tab_item js_tab_item">
+                            <div class="bl_borderBox">
+                                <div class="bl_borderBox__item">
+                                    <div class="bl_borderBox__icon" data-icon="cal"></div>
+                                    <ul>
+                                        <li>
+                                            <strong class="bl_borderBox__tit">학습기간</strong>
+                                            <p class="bl_borderBox__txt">
+                                                <span th:text="${#strings.substring(content[0].educationPlan.operationBeginDateTime, 0 ,10)}">2022.08.06</span> ~
+                                                <span th:text="${#strings.substring(content[0].educationPlan.operationEndDateTime, 0 , 10)}">2022.09.05</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- GRID : BUTTON -->
+                            <div class="bl_gridBtns hp_mt20">
+                                <div class="bl_gridBtns_md">
+                                    <th:block th:if="${content[0].operationEndDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+                                        <a th:onclick="moveELecture(this, [[${content[0].educationPlan.videoLecturePath}]])" target="_blank" class="btn_type1 btn_red">입장하기</a>
+                                    </th:block>
+                                    <th:block th:unless="${content[0].operationEndDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+                                        <th:block th:if="${content[0].educationPlan.isReview}">
+                                            <a th:onclick="moveELecture(this, [[${content[0].educationPlan.reviewPath}]])" target="_blank" class="btn_type1 btn_red">입장하기</a>
+                                        </th:block>
+                                        <th:block th:unless="${content[0].educationPlan.isReview}">
+                                            <div class="guide_text">제공되는 복습 링크가 없습니다.</div>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="pop_close pop-close" onclick="parent.window.closePop()">닫기</button>
+        </div>
+    </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
+                document.getElementById('tabLink1').setAttribute('href','/mypage/education-state/e-lecture/main/'+nowId);
+                document.getElementById('tabLink2').setAttribute('href','/mypage/education-state/e-lecture/archive/'+nowId);
+            }
+
+            function moveELecture(e, url) {
+                e.href = url;
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>

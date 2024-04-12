@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" style="background-image: url(../assets/images/top_visual.png)">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">회원가입</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content content_join">
+            <div class="ly_grid">
+                <div class="page_title hp_show_tb hp_show_mo">회원가입</div>
+                <div class="card_wrap">
+                    <div class="card half pt-0">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_join/join_icon.png}" alt="" >
+                            <div class="text_box">
+                                <p class="card_title">14세 <span>이상</span> 회원가입</p>
+                                <p class="card_text">만 14세 이상인 고객님들을 위한 회원가입 절차입니다.</p>
+                            </div>
+                            <a href="/user/join/terms" class="btn_type1 btn_blue">회원 가입하기</a>
+                        </div>
+                    </div>
+                    <div class="card half pt-0">
+                        <div>
+                            <img th:src="@{/assets/images/subpage_join/join_icon2.png}" alt="" >
+                            <div class="text_box">
+                                <p class="card_title">14세 <span>미만</span> 회원가입</p>
+                                <p class="card_text">
+                                    만 14세 미만인 고객님들을 위한 회원가입 절차입니다.<br >
+                                    14세 미만은 <span><em>보호자의 동의</em>가 필요</span>합니다.
+                                </p>
+                            </div>
+                            <a href="/user/join/terms_youth" class="btn_type1 btn_blue">회원 가입하기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

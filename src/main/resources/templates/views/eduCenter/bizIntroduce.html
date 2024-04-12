@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual7.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">연수원 소개</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content conent_business">
+            <div class="ly_grid">
+                <div class="page_title">사업소개</div>
+                <div class="bl_tab2 js_tab">
+                    <ul class="bl_tab2_menu js_tab_menu">
+                        <li>
+                            <a href="#none">언론인연수</a>
+                        </li>
+                        <li>
+                            <a href="#none">미디어교육</a>
+                        </li>
+                    </ul>
+
+                    <div class="bl_tab2_body js_tab_contents">
+                        <!-- 언론인연수 -->
+                        <div class="bl_tab2_item js_tab_item" id="__edu">
+
+                            <div class="introduce_tag__wrap">
+                                <div class="introduce_tag">
+                                    <div class="introduce_tag__btn" onclick="eduVariables.tagToggle()">
+                                        <img class="btn_open" th:src="@{/assets/images/icons/tag_menu_open.png}" alt="메뉴열기버튼">
+                                        <img class="btn_close" th:src="@{/assets/images/icons/tag_menu_close.png}" alt="메뉴열기버튼">
+                                    </div>
+                                    <div class="introduce_tag__menu introduce_tag__basic"><span onclick="eduVariables.selectChange();">언론인연수란?</span></div>
+                                    <div class="introduce_tag__menu"><span>저널리즘 역량강화</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>글로벌 역량강화</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>언론인 학습지원</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>온라인 과정</span><div></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 언론인연수 소개 -->
+                            <div class="introduce_main_wrap">
+                                <div class="introduce">
+                                    <div class="introduce_mainText">
+                                        한국언론진흥재단은 <span>저널리즘 원칙을 지키고 미디어 환경 변화에 대응할 수 있는 언론인을 양성</span>합니다．　
+                                    </div>
+                                    <div class="introduce_img">
+                                        <img th:src="@{/assets/images/subpage_eduCenter/bg_contents.png}" alt="">
+                                    </div>
+                                </div>
+    
+                                <div class="introduce_list">
+                                    <div class="introduce_list__cont">
+                                        <div class="introduce_list__title">언론인연수란?</div>
+                                        <div class="introduce_list__text">
+                                            저널리즘 역량 강화, 글로벌 역량 강화, 언론인 학습지원, 온라인 과정을 통해
+                                            언론인의 전문역량 강화에 기여합니다. 
+                                            <br><br>
+                                            한국언론진흥재단은 전신인 한국신문연구소 시절인 1965년부터 지금까지 언론인교육을 실시하고 있습니다. 명실상부한 국내 유일의 언론인 전문 교육기관으로서 변화하는 미디어 환경에 맞춰 언론인교육을 하고 있습니다. 악화된 언론 경영 환경, 전통 매체의 영향력 및 신뢰도 하락 등이 언론 산업을 더욱 어렵게 만들었습니다. 한국언론진흥재단의 언론인교육은 변화 속에서도 저널리즘의 본령을 지키는 데 역점을 기울이고 있습니다. 이것은 재단의 존재 이유인 ‘저널리즘 품격 제고’라는 공적 임무의 일환입니다.
+                                            더불어 변화하는 미디어 환경에 적응하고, 나아가 이를 주도해나갈 수 있는 언론인의 전문역량을 강화하기 위한 다양한 모색도 게을리 하지 않고 있습니다. 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 카테고리별 소개 콘텐츠 -->
+                            <div class="introduce_wrap">
+                                <div class="introduce">
+                                    <div>
+                                        <div class="introduce_title __selTitle" ></div>
+                                        <div class="introduce_text __selCont"></div>
+                                        <div class='__selBtn'></div>
+                                    </div>
+                                    <div class="introduce_img">
+                                        <img class="__selBgImg" th:src="@{/assets/images/subpage_eduCenter/bg_menu.png}" alt="">
+                                    </div>
+                                </div>
+    
+                                <div class="cont_title">신청방법</div>
+                                <div class="method_img hp_lg_show" >
+                                    <img class="__selImg" th:src="@{/assets/images/subpage_eduCenter/method.png}" alt="">
+                                </div>
+                                <div class="hp_md_show">
+                                    <div class="method __selMethod" >
+                                        <ul>
+                                            <li class="method_tit">언론사</li>
+                                            <li>전화신청</li>
+                                            <li>교육위탁공문 및 참가자명단 송부</li>
+                                            <li>교육참가</li>
+                                        </ul>
+                                        <ul>
+                                            <li class="method_tit">재단</li>
+                                            <li>담당자협의</li>
+                                            <li>담당자 확인</li>
+                                            <li>교육운영</li>
+                                        </ul>
+                                    </div>
+                                </div>
+    
+                                <div class="__randerCont"></div>
+                            </div>
+                        </div>
+
+                        <!-- 미디어교육 -->
+                        <div class="bl_tab2_item js_tab_item" id="__media">
+                            <div class="introduce_tag__wrap">
+                                <div class="introduce_tag">
+                                    <div class="introduce_tag__btn" onclick="mediaVariables.tagToggle()">
+                                        <img class="btn_open" th:src="@{/assets/images/icons/tag_menu_open.png}" alt="메뉴열기버튼">
+                                        <img class="btn_close" th:src="@{/assets/images/icons/tag_menu_close.png}" alt="메뉴열기버튼">
+                                    </div>
+                                    <div class="introduce_tag__menu introduce_tag__basic"><span onclick="mediaVariables.selectChange();">미디어교육이란?</span></div>
+                                    <div class="introduce_tag__menu"><span>학교 미디어교육</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>사회 미디어교육</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>미디어교육 인프라 구축</span><div></div></div>
+                                    <div class="introduce_tag__menu"><span>읽기문화진흥</span><div></div></div>
+                                </div>
+                            </div>
+                            
+                            <!-- 미디어교육 소개 -->
+                            <div class="introduce_main_wrap">
+                                <div class="introduce">
+                                    <div class="introduce_mainText">
+                                        한국언론진흥재단의 미디어교육과 만나면<br>
+                                        오늘날 넘쳐나는 <span>뉴스와 정보를 제대로 분별하고 올바르게 이용하는</span><br>
+                                        <span>현명한 ‘뉴스 생비자’</span>가 될 수 있습니다.
+                                    </div>
+                                    <div class="introduce_img">
+                                        <img th:src="@{/assets/images/subpage_eduCenter/bg_contents.png}" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="introduce_list">
+                                    <div class="introduce_list__cont">
+                                        <div class="introduce_list__title">미디어교육이란?</div>
+                                        <div class="introduce_list__text">
+                                            미디어교육은 다양한 미디어를 통해 보고 듣는 메시지를 선별·비판적으로 이해하고 분별 있게 이용하며, 자기 의견이나 생각을 미디어를 통해 표현하고 소통할 수 있는 ‘미디어 리터러시’ 능력을 갖춘 수용자를 양성하는 교육입니다. 미디어교육의 범위는 신문, 방송 등 전통적인 미디어에서 넓게는 영화, 광고 등 모든 종류의 미디어와 그 미디어가 제공하는 콘텐츠를 포함합니다. 최근에는 미디어 환경의 급격한 변화에 따라 인터넷, SNS 등 온라인 미디어와 서비스도 그 대상이 되고 있습니다.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="introduce_list">
+                                    <div class="introduce_list__cont">
+                                        <div class="introduce_list__title">
+                                            <div>
+                                                한국언론진흥재단의 미디어교육 : <span>뉴스 미디어 중심의 미디어 리터러시 교육</span>
+                                            </div>
+                                        </div>
+                                        <div class="introduce_list__text">
+                                            뉴스와 정보의 홍수 시대, 미디어 리터러시 중에서도 특히 뉴스 리터러시가 중요합니다. 한국언론진흥재단의 미디어교육은 뉴스를 분별 있게, 현명하게, 올바르게 이용하는 능력인 뉴스 리터러시를 갖춘 수용자 양성에 중점을 두고 있습니다. 이는 교과서 신봉주의에서 벗어나 자기주도 학습 역량을 강화하고 세상과 소통하며 사고력·창의력 신장과 인성 함양에 기여하고 있는 NIE(뉴스활용교육)를 포괄하는 개념입니다.<br><br>
+                                            우리는 지식과 정보의 생산, 유통 및 활용을 통해 새로운 가치를 창출하는 것이 매우 중요한 지식기반사회를 살아가고 있습니다. 이러한 시대에는 지식과 정보에 분별 있게 접근하고 그 내용을 분석하고 평가하여 효율적으로 활용할 수 있는 능력을 기르는 뉴스 리터러시 교육이 꼭 필요합니다. 이는 2015 개정 교육과정에서 강조하는, 창의융합형 인재가 갖춰야 할 교과 공통 핵심역량 중 ‘정보처리 능력’, ‘의사소통 능력’, ‘공동체 의식’을 직접적으로 기를 수 있는 교육 분야이기도 합니다.<br><br>
+                                            한국언론진흥재단의 미디어교육은 학교 교육과 사회 교육 두 방면에서 다음과 같은 능력을 증진하고자 노력하고 있습니다.
+                                        </div>
+                                        <div class="introduce_list__text introduce_list__dots">
+                                            <ul>
+                                                <li>다양한 미디어를 통한 분별 있는 정보 접근 및 이용 능력</li>
+                                                <li>뉴스와 뉴스를 둘러싼 사회적 맥락에 대한 비판적 이해 능력</li>
+                                                <li>뉴스 또는 미디어를 매개로 한 자기 표현 및 소통 능력</li>
+                                                <li>뉴스 생비자(생산자+소비자)로서의 책임과 시민의식 함양</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 카테고리별 소개 콘텐츠 -->
+                            <div class="introduce_wrap">
+                                <div class="quotation"></div>
+
+                                <div class="introduce">
+                                    <div>
+                                        <div class="introduce_title __selTitle" id="selTitle"></div>
+                                        <div class="introduce_text __selCont" id="selCont"></div>
+                                        <!-- 버튼 임시 추가 (230112) : 디자인 전달 예정 -->
+                                        <div class='__selBtn' id="selBtn"></div>
+                                    </div>
+                                    <div class="introduce_img">
+                                        <img class="__selBgImg" id="selBgImg" th:src="@{/assets/images/subpage_eduCenter/bg_menu.png}" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="method_img hp_lg_show" >
+                                    <img class="__selImg" th:src="@{/assets/images/subpage_eduCenter/method.png}" alt="">
+                                </div>
+                                <div class="hp_md_show">
+                                    <div class="method __selMethod" >
+                                        <ul>
+                                            <li class="method_tit">언론사</li>
+                                            <li>전화신청</li>
+                                            <li>교육위탁공문 및 참가자명단 송부</li>
+                                            <li>교육참가</li>
+                                        </ul>
+                                        <ul>
+                                            <li class="method_tit">재단</li>
+                                            <li>담당자협의</li>
+                                            <li>담당자 확인</li>
+                                            <li>교육운영</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div id="__sel3">
+                                    <div class="introduce">
+                                        <div>
+                                            <div class="introduce_text __selCont2" id="selCont2"></div>
+                                            <!-- 버튼 임시 추가 (230112) : 디자인 전달 예정 -->
+                                            <div class='__selBtn2' id="selBtn2"></div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="method_img hp_lg_show" >
+                                        <img class="__selImg2" id="selImg2" th:src="@{/assets/images/subpage_eduCenter/method.png}" alt="">
+                                    </div>
+                                    <div class="hp_md_show">
+                                        <div class="method __selMethod2" id="selMethod2">
+                                            <ul>
+                                                <li class="method_tit">언론사</li>
+                                                <li>전화신청</li>
+                                                <li>교육위탁공문 및 참가자명단 송부</li>
+                                                <li>교육참가</li>
+                                            </ul>
+                                            <ul>
+                                                <li class="method_tit">재단</li>
+                                                <li>담당자협의</li>
+                                                <li>담당자 확인</li>
+                                                <li>교육운영</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="bottom_img">
+                                    <img th:src="@{/assets/images/subpage_eduCenter/bottom_imgM13-1.png}" alt="">
+                                    <img th:src="@{/assets/images/subpage_eduCenter/bottom_imgM13-2.png}" alt="">
+                                    <img th:src="@{/assets/images/subpage_eduCenter/bottom_imgM13-2.png}" alt="">
+                                </div>
+
+                                <div class="__randerCont"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /* <![CDATA[ */
+
+            const eduList = JSON.parse(JSON.stringify(data));
+            const mediaList = JSON.parse(JSON.stringify(dataM));
+            const setVariables = (prefix) => ({
+                variables: {
+                    // introduce tag 관련 변수 SET
+                    tag: document.querySelector(`#${prefix} .introduce_tag`),
+                    tagMenu: document.querySelectorAll(`#${prefix} .introduce_tag .introduce_tag__menu`),
+                    tagItem: document.querySelectorAll(`#${prefix} .introduce_tag .introduce_tag__item`),
+                    tagBtnOpen: document.querySelector(`#${prefix} .introduce_tag .introduce_tag__btn .btn_open`),
+                    tagBtnClose: document.querySelector(`#${prefix} .introduce_tag .introduce_tag__btn .btn_close`),
+                    introduceMain: document.querySelector(`#${prefix} .introduce_main_wrap`),
+                    introduceTag: document.querySelector(`#${prefix} .introduce_wrap`),
+                    // 언론인연수/미디어교육 공통 변수 SET
+                    selTitle: document.querySelector(`#${prefix} .__selTitle`),
+                    selCont: document.querySelector(`#${prefix} .__selCont`),
+                    selBtn: document.querySelector(`#${prefix} .__selBtn`),
+                    selBgImg: document.querySelector(`#${prefix} .__selBgImg`),
+                    selImg: document.querySelector(`#${prefix} .__selImg`),
+                    selMethod: document.querySelector(`#${prefix} .__selMethod`),
+                    randerCont: document.querySelector(`#${prefix} .__randerCont`),
+                    // 미디어교육 변수 SET
+                    media_selQ: document.querySelector(`#__media .quotation`),
+                    media_botImg_1: document.querySelector('#__media .bottom_img img:nth-child(1)'),
+                    media_botImg_2: document.querySelector('#__media .bottom_img img:nth-child(2)'),
+                    media_botImg_3: document.querySelector('#__media .bottom_img img:nth-child(3)'),
+                    media_sel3: document.querySelector(`#__media #__sel3`),
+                    media_sel3selCont: document.querySelector(`#__media .__selCont2`),
+                    media_sel3selBtn: document.querySelector(`#__media .__selBtn2`),
+                    media_sel3SelImg: document.querySelector(`#__media .__selImg2`),
+                    media_sel3SelMethod: document.querySelector(`#__media .__selMethod2`),
+                },
+                movePage: (page) => {
+                    const URLSearch = new URLSearchParams(location.search);
+                    URLSearch.set('view', `view${page}`);
+                    history.pushState(null, null, `${location.pathname}?${URLSearch.toString()}`, '_self');
+                },
+                selectChange: (val = 'basic') => {
+                    let _variables = setVariables(prefix).variables;
+
+                    // active 초기화
+                    _variables.tagMenu.forEach((menu) => {
+                        if ($(menu).hasClass('is_active')) {
+                            // active된 메뉴 초기화
+                            $(menu).removeClass('is_active');
+                            $(menu).find('.introduce_tag__item').each((idx, tag) => {
+                                if ($(tag).hasClass('is_active')) {
+                                    // active된 메뉴의 active된 태그 초기화
+                                    $(tag).removeClass('is_active');
+                                }
+                            });
+                        }
+                    });
+
+                    // 태그 박스 닫기
+                    setVariables(prefix).tagClose();
+
+                    if (val === 'basic') { // 메인 사업소개(언론인연수란?, 미디어교육이란?)
+                        _variables.introduceMain.style.display = 'block';
+                        _variables.introduceTag.style.display = 'none';
+
+                        // 메인 메뉴 active
+                        _variables.tagMenu[0].classList.add('is_active');
+                    } else { // 태그별 사업소개
+                        // 페이지 이동
+                        let pageVal = val + (prefix === '__media' ? 10 : 1);
+                        setVariables(prefix).movePage(pageVal);
+
+
+                        _variables.introduceMain.style.display = 'none';
+                        _variables.introduceTag.style.display = 'block';
+
+                        // 선택된 태그 & 태그의 메뉴 active
+                        let $currentMenu = $(_variables.tagItem[val].parentElement.parentElement);
+                        let $currentTag = $(_variables.tagItem[val]);
+                        $currentMenu.addClass('is_active');
+                        $currentTag.addClass('is_active');
+
+
+                        // 렌더링
+                        const list = prefix === '__media' ? mediaList : eduList;
+                        if (list[val].commonQuo != null) {
+                            let quoIdx = list[val].commonQuo;
+                            _variables.media_selQ.innerHTML = list[quoIdx].quo;
+                        } else if (!list[val].commonQuo && list[val].quo) {
+                            _variables.media_selQ.innerHTML = list[val].quo;
+                        }
+
+                        _variables.selTitle.innerText = list[val].title;
+
+                        _variables.selCont.innerHTML = list[val].cont;
+
+                        if (list[val].btn != null) {
+                            _variables.selBtn.style.display = 'flex';
+                            _variables.selBtn.innerHTML = list[val].btn;
+                        } else {
+                            _variables.selBtn.style.display = 'none';
+                        }
+
+                        _variables.selBgImg.setAttribute('src', list[val].img);
+
+                        if (list[val].method != null) {
+                            _variables.selImg.style.display = 'inline';
+                            _variables.selMethod.style.display = 'flex';
+                            _variables.selImg.setAttribute('src', list[val].method);
+                            _variables.selMethod.innerHTML = list[val].mobileMethod;
+                        } else {
+                            _variables.selImg.style.display = 'none';
+                            _variables.selMethod.style.display = 'none';
+                        }
+
+                        if (list[val].botImg1 != null) {
+                            $('.bottom_img').show();
+                            _variables.media_botImg_1.setAttribute('src', list[val].botImg1);
+                            _variables.media_botImg_2.setAttribute('src', list[val].botImg2);
+                            _variables.media_botImg_3.setAttribute('src', list[val].botImg3);
+                        } else {
+                            $('.bottom_img').hide();
+                        }
+
+                        _variables.randerCont.innerHTML = list[val].randerCont;
+
+                        if (list[val].title == '교사연수') { // 미디어교육 > '교사연수'
+                            _variables.media_sel3.style.display = 'block';
+                            _variables.media_sel3selCont.innerHTML = list[val].cont2;
+                            _variables.media_sel3selBtn.innerHTML = list[val].btn2;
+                            _variables.media_sel3SelImg.setAttribute('src', list[val].method2);
+                            _variables.media_sel3SelMethod.innerHTML = list[val].mobileMethod2;
+                        } else {
+                            _variables.media_sel3.style.display = 'none';
+                        }
+                    }
+                },
+                tagOpen: () => {
+                    let _variables = setVariables(prefix).variables;
+                    _variables.tag.classList.add('open');
+                    _variables.tagBtnOpen.style.display = 'none';
+                    _variables.tagBtnClose.style.display = 'block';
+                },
+                tagClose: () => {
+                    let _variables = setVariables(prefix).variables;
+                    _variables.tag.classList.remove('open');
+                    _variables.tagBtnOpen.style.display = 'block';
+                    _variables.tagBtnClose.style.display = 'none';
+                },
+                tagToggle: () => {
+                    let _variables = setVariables(prefix).variables;
+                    if (_variables.tag.classList.contains('open')) {
+                        setVariables(prefix).tagClose();
+                    } else {
+                        setVariables(prefix).tagOpen();
+                    }
+                }
+            });
+            const mediaVariables = setVariables('__media');
+            const eduVariables = setVariables('__edu');
+
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(5,1);
+
+                // 태그 생성
+                [mediaList, eduList].forEach((list, i) => {
+                    list.forEach((item, index) => {
+                        const _setVariables = i === 0 ? mediaVariables : eduVariables;
+                        const menu = _setVariables.variables.tagMenu[item.menu].querySelector('div');
+                        const tag_item = document.createElement("div");
+                        tag_item.setAttribute('class', `introduce_tag__item`);
+                        tag_item.onclick = (i === 0) ? () => mediaVariables.selectChange(index) : () => eduVariables.selectChange(index);
+                        tag_item.innerText = item.title;
+
+                        menu.appendChild(tag_item);
+                    });
+                });
+
+                [# th:if="${param.view != null}"]
+                    let view = [[ ${param.view} ]];
+                    if(view && view.length){
+                        const tabIndex = view[0] ? parseInt(view[0].replace('view', '')) : 0;
+                        const panelIndex = tabIndex < 10 ? 0 : 1;
+                        const prefix = tabIndex < 10 ? '__edu' : '__media';
+                        const _setVariables = setVariables(prefix);
+                        $(".bl_tab2.js_tab").selectTabPanel(panelIndex); // 언론인 연수/미디어 교육 탭 구분
+                        _setVariables.selectChange(tabIndex - (prefix === '__media' ? 10 : 1)); //태그 선택
+                    }
+                [/]
+                [# th:if="${param.view == null}"]
+                    $(".bl_tab2.js_tab").selectTabPanel(0);
+                    mediaVariables.selectChange(); // 초기 세팅
+                    eduVariables.selectChange(); // 초기 세팅 & 기본값 지정 - previx = "__edu", selectChange(val = basic)
+                [/]
+            }
+            /* ]]> */
+        </script>
+    </th:block>
+</div>
+</body>
+</html>
