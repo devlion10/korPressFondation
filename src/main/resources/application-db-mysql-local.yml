@@ -18,8 +18,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: false
+    show-sql: true
+    format_sql: true
 #Jasypt
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+logging:
+  level:
+    org.hibernate.SQL: debug # logger에 출력하려면
+    org.hibernate.type.descriptor.sql: trace # 파라미터 값 출력
