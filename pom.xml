@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -23,8 +23,8 @@
 		<commons-fileupload.version>1.3.3</commons-fileupload.version>
 		<commons-io.version>2.6</commons-io.version>
 		<joda-money.version>1.0.1</joda-money.version>
-<!--		<maven.compiler.source>12</maven.compiler.source>-->
-<!--		<maven.compiler.target>12</maven.compiler.target>-->
+		<!--		<maven.compiler.source>12</maven.compiler.source>-->
+		<!--		<maven.compiler.target>12</maven.compiler.target>-->
 	</properties>
 
 	<!--로컬 리파지토리 추가-->
@@ -51,9 +51,9 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-<!--			<version>5.1.18</version>-->
+			<!--			<version>5.1.18</version>-->
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -80,7 +80,7 @@
 					<artifactId>hibernate-jpa-2.1-api</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>	
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,20 +90,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-oauth2-client</artifactId>
-	    </dependency>
-		
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-devtools</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
-		
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.boot</groupId>-->
+		<!--			<artifactId>spring-boot-devtools</artifactId>-->
+		<!--			<scope>runtime</scope>-->
+		<!--			<optional>true</optional>-->
+		<!--		</dependency>-->
+
 		<!-- JSP지원을 위한 standard spec -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -123,19 +123,19 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		
+
 		<!-- spring-security-taglibs -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-		</dependency>	
-		
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
 		<dependency>
-		    <groupId>org.thymeleaf.extras</groupId>
-		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-		    <version>3.0.4.RELEASE</version>
-		</dependency>			
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
 
 		<!-- Springboot Swagger 3.0.0 -->
 		<dependency>
@@ -153,12 +153,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session-jdbc -->
 		<dependency>
-		    <groupId>org.springframework.session</groupId>
-		    <artifactId>spring-session-jdbc</artifactId>
-		    <version>2.7.0</version>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+			<version>2.7.0</version>
 		</dependency>
 
 		<!-- Apache Commons Utils -->
@@ -191,18 +191,18 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.0</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
 		<dependency>
-		    <groupId>commons-validator</groupId>
-		    <artifactId>commons-validator</artifactId>
-		    <version>1.7</version>
-		</dependency>	
-		
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.7</version>
+		</dependency>
+
 		<!-- Jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -239,7 +239,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jsonSchema</artifactId>
-		</dependency>		
+		</dependency>
 
 		<!-- JODA-MONEY -->
 		<dependency>
@@ -247,7 +247,7 @@
 			<artifactId>joda-money</artifactId>
 			<version>${joda-money.version}</version>
 		</dependency>
-		
+
 		<!-- Gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -259,24 +259,24 @@
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 			<version>3.0.3</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
 		<dependency>
-		    <groupId>org.bouncycastle</groupId>
-		    <artifactId>bcprov-jdk15on</artifactId>
-		    <version>1.70</version>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
 		</dependency>
-		
+
 		<!-- JSR-380 bean validation -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-validator</artifactId>
-		    <version>6.1.0.Final</version>
-		</dependency>		
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.0.Final</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -332,21 +332,21 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <!-- 기존 농협 sha256 비밀번호 암호화 라이브러리 -->
-        <dependency>
-            <groupId>gnu-crypto</groupId>
-            <artifactId>gnu-crypto</artifactId>
-            <version>1.0.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/gnu-crypto.jar</systemPath>
-        </dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- 기존 농협 sha256 비밀번호 암호화 라이브러리 -->
+		<dependency>
+			<groupId>gnu-crypto</groupId>
+			<artifactId>gnu-crypto</artifactId>
+			<version>1.0.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/gnu-crypto.jar</systemPath>
+		</dependency>
 
 		<!--<dependency>
 			<groupId>NiceID</groupId>
@@ -357,21 +357,21 @@
 		</dependency>-->
 
 		<!-- NiceAPI -->
-		<!--<dependency>
+		<dependency>
 			<groupId>nice.check</groupId>
 			<artifactId>addition</artifactId>
 			<version>1.1.0</version>
-		</dependency>-->
-
-		<dependency>
-			<groupId>nice.check</groupId>
-			<artifactId>nice.check</artifactId>
-			<version>1.0.0.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/addition-1.1.0.jar</systemPath>
 		</dependency>
 
-    </dependencies>
+		<!--		<dependency>
+                    <groupId>nice.check</groupId>
+                    <artifactId>nice.check</artifactId>
+                    <version>1.0.0.0</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/addition-1.1.0.jar</systemPath>
+                </dependency>-->
+
+	</dependencies>
 
 	<build>
 		<plugins>
