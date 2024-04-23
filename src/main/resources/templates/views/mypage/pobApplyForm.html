@@ -108,15 +108,41 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanTrgt">수업대상학년</label>
                                 </th>
-                                <td>
-                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt"  th:value="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[1] :'-'}" data-not_null="true" data-alert_name="수업대상학년">
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt"  th:value="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[1] :'-'}" data-not_null="true" data-alert_name="수업대상학년" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt"  th:value="${#lists.size(#strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_'))==2 ? #strings.arraySplit(item.bizOrgAplyLsnPlanTrgt, '_')[1] :'-'}" data-not_null="true" data-alert_name="수업대상학년" >
                                 </td>
                                 <th scope="row">
                                     <span class="el_required">*</span>
-                                    <label for="bizOrgAplyOperMeth">수업형태</label>
+                                    <label for="bizOrgAplyOperMeth" >수업형태</label>
                                 </th>
-                                <td>
-                                    <select class="common_select" id="bizOrgAplyOperMeth" data-not_null="true" data-alert_name="수업형태" onchange="methEtc(this.value)">
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <select class="common_select" id="bizOrgAplyOperMeth" data-not_null="true" data-alert_name="수업형태" onchange="methEtc(this.value)" disabled>
+                                        <option value="교과수업" th:selected="${#strings.startsWith(item.bizOrgAplyOperMeth, '교과수업')}">교과수업</option>
+                                        <option value="동아리" th:selected="${item.bizOrgAplyOperMeth =='동아리'}">동아리</option>
+                                        <option value="진로" th:selected="${#strings.startsWith(item.bizOrgAplyOperMeth, '진로')}">진로수업</option>
+                                        <option value="자율수업" th:selected="${item.bizOrgAplyOperMeth =='자율수업'}">자율수업</option>
+                                        <option value="자유학기제" th:selected="${item.bizOrgAplyOperMeth =='자유학기제'}">자유학기제</option>
+                                        <option value="기타" th:selected="${item.bizOrgAplyOperMeth =='기타'}">기타</option>
+                                    </select>
+                                    <th:block th:if="${(item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3)}">
+                                        <th:block th:if="${#strings.startsWith(item.bizOrgAplyOperMeth, '교과수업_')}">
+                                            <input type="text" class="common_input" id="bizOrgAplyOperMethEtc" placeholder="(선택)25자 이내"
+                                                   th:value="${#strings.replace(item.bizOrgAplyOperMeth, '교과수업_', '')}">
+                                        </th:block>
+                                        <th:block th:if="${#strings.startsWith(item.bizOrgAplyOperMeth, '기타_')}">
+                                            <input type="text" class="common_input" id="bizOrgAplyOperMethEtc" placeholder="(선택)25자 이내"
+                                                   th:value="${#strings.replace(item.bizOrgAplyOperMeth, '기타_', '')}">
+                                        </th:block>
+                                        <th:block th:unless="${#strings.startsWith(item.bizOrgAplyOperMeth, '교과수업_') || #strings.startsWith(item.bizOrgAplyOperMeth, '기타_')}">
+                                            <input type="text" class="common_input" id="bizOrgAplyOperMethEtc" placeholder="(선택)25자 이내">
+                                        </th:block>
+                                    </th:block>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <select class="common_select" id="bizOrgAplyOperMeth" data-not_null="true" data-alert_name="수업형태" onchange="methEtc(this.value)" >
                                         <option value="교과수업" th:selected="${#strings.startsWith(item.bizOrgAplyOperMeth, '교과수업')}">교과수업</option>
                                         <option value="동아리" th:selected="${item.bizOrgAplyOperMeth =='동아리'}">동아리</option>
                                         <option value="진로" th:selected="${#strings.startsWith(item.bizOrgAplyOperMeth, '진로')}">진로수업</option>
@@ -240,15 +266,22 @@
                                     <span class="el_required">*</span>
                                     담당자<br>이름(직급)
                                 </th>
-                                <td>
-                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicNm}" data-not_null="true" data-alert_name="담당자 이름">
-                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicJbgd}" data-not_null="true" data-alert_name="담당자 직급">
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicNm}" data-not_null="true" data-alert_name="담당자 이름" disabled>
+                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicJbgd}" data-not_null="true" data-alert_name="담당자 직급" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicNm}" data-not_null="true" data-alert_name="담당자 이름" >
+                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicJbgd}" data-not_null="true" data-alert_name="담당자 직급" >
                                 </td>
                                 <th scope="row">
                                     <span class="el_required">*</span>
                                     담당자 이메일
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicEml" type="text" class="common_input" th:value="${item.bizOrgAplyPicEml}" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicEml" type="text" class="common_input" th:value="${item.bizOrgAplyPicEml}" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email">
                                 </td>
                             </tr>
@@ -257,14 +290,20 @@
                                     <span class="el_required">*</span>
                                     담당자 전화번호
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicTelno" type="text" class="common_input" th:value="${item.bizOrgAplyPicTelno}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicTelno" type="text" class="common_input" th:value="${item.bizOrgAplyPicTelno}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number">
                                 </td>
                                 <th scope="row">
                                     <span class="el_required">*</span>
                                     담당자 휴대폰
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicMpno" type="text" class="common_input" th:value="${item.bizOrgAplyPicMpno}" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicMpno" type="text" class="common_input" th:value="${item.bizOrgAplyPicMpno}" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number">
                                 </td>
                             </tr>
@@ -307,7 +346,10 @@
                                                 <td>
                                                     <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
                                                 <td>
@@ -334,7 +376,7 @@
                                                 <td>
                                                     (미배정)
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 && content[0].bizOrgAplyChgYn == 1 }">
                                                     <a class="btn_type3" onclick="addList(this)">추가</a>
                                                     <a class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
                                                 </td>
@@ -362,52 +404,55 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                <tr th:each="item2,stat:${item.bizOrganizationAplyDtls}" class="dtl_list">
-                                                    <td>
-                                                        <input type="hidden" class="common_input bizOrgAplyDtlNo" th:value="${item2.bizOrgAplyDtlNo}">
-                                                        <input type="hidden" class="common_input bizOrgAplyDtlIndex" th:value="${stat.index}">
-                                                        <input type="text" class="common_input bizOrgAplyLsnDtlRnd" th:value="${item2.bizOrgAplyLsnDtlRnd}" disabled>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="el_datePicker common_input bizOrgAplyLsnDtlYmd" th:value="${item2.bizOrgAplyLsnDtlYmd}" data-not_null="true" data-alert_name="수업시간표 수업일정" data-reg_type="date">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item2.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
-                                                    </td>
-                                                    <td>
-                                                        <div class="time_select">
-                                                            <select class="common_select bgng1" th:id="${'startHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
-                                                            <select class="common_select bgng2" th:id="${'startMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="time_select">
-                                                            <select class="common_select end1" th:id="${'endHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
-                                                            <select class="common_select end2" th:id="${'endMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" onchange="changeNope()" class="common_input bizOrgAplyLsnDtlNope" th:value="${item2.bizOrgAplyLsnDtlNope}" data-not_null="true" data-alert_name="수업시간표 수업인원" data-reg_type="int">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlPlc" th:value="${item2.bizOrgAplyLsnDtlPlc}" data-not_null="true" data-alert_name="수업시간표 수업장소">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="common_input bizOrgAplyLsnDtlEtc" th:value="${item2.bizOrgAplyLsnDtlEtc}">
-                                                    </td>
-                                                    <td>
-                                                        <span th:if="${! #lists.isEmpty(item2.bizInstructorAsgnms) }" th:text="${item2.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}"></span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn_type3" onclick="addList(this)">추가</div>
-                                                        <th:block th:if="${#lists.isEmpty(item2.bizInstructorAsgnms) }">
-                                                            <a class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
-                                                        </th:block>
-                                                    </td>
-                                                </tr>
+                                            <tr th:each="item2,stat:${item.bizOrganizationAplyDtls}" class="dtl_list">
+                                                <td>
+                                                    <input type="hidden" class="common_input bizOrgAplyDtlNo" th:value="${item2.bizOrgAplyDtlNo}">
+                                                    <input type="hidden" class="common_input bizOrgAplyDtlIndex" th:value="${stat.index}">
+                                                    <input type="text" class="common_input bizOrgAplyLsnDtlRnd" th:value="${item2.bizOrgAplyLsnDtlRnd}" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="el_datePicker common_input bizOrgAplyLsnDtlYmd" th:value="${item2.bizOrgAplyLsnDtlYmd}" data-not_null="true" data-alert_name="수업시간표 수업일정" data-reg_type="date">
+                                                </td>
+                                                <td>
+                                                    <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item2.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
+                                                </td>
+                                                <td>
+                                                    <div class="time_select">
+                                                        <select class="common_select bgng1" th:id="${'startHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                                        <select class="common_select bgng2" th:id="${'startMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="time_select">
+                                                        <select class="common_select end1" th:id="${'endHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
+                                                        <select class="common_select end2" th:id="${'endMin' + stat.index}" data-list="minuteList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 종료시간"></select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" onchange="changeNope()" class="common_input bizOrgAplyLsnDtlNope" th:value="${item2.bizOrgAplyLsnDtlNope}" data-not_null="true" data-alert_name="수업시간표 수업인원" data-reg_type="int">
+                                                </td>
+                                                <td>
+                                                    <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlPlc" th:value="${item2.bizOrgAplyLsnDtlPlc}" data-not_null="true" data-alert_name="수업시간표 수업장소">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="common_input bizOrgAplyLsnDtlEtc" th:value="${item2.bizOrgAplyLsnDtlEtc}">
+                                                </td>
+                                                <td>
+                                                    <span th:if="${! #lists.isEmpty(item2.bizInstructorAsgnms) }" th:text="${item2.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}"></span>
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 && content[0].bizOrgAplyChgYn == 1 }">
+                                                    <div class="btn_type3" onclick="addList(this)">추가</div>
+                                                    <th:block th:if="${#lists.isEmpty(item2.bizInstructorAsgnms) }">
+                                                        <a class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
+                                                    </th:block>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -436,8 +481,11 @@
                                     <span class="el_required">*</span>
                                     <label for="selectRegion">지역</label>
                                 </th>
-                                <td th:colspan="${item.bizPbancMaster.bizPbancType == 1? 1 : 3}">
-                                    <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역"></select>
+                                <td th:colspan="${item.bizPbancMaster.bizPbancType == 1? 1 : 3}" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역" disabled></select>
+                                </td>
+                                <td th:colspan="${item.bizPbancMaster.bizPbancType == 1? 1 : 3}" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역" ></select>
                                 </td>
                                 <th scope="row" th:if="${item.bizPbancMaster.bizPbancType == 1}">
                                     <span class="el_required">*</span>
@@ -545,8 +593,11 @@
                                     <span class="el_required">*</span>
                                     회차당 교육인원
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
                                     <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" th:value="${item.bizOrgAplyLsnPlanNope}" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" th:value="${item.bizOrgAplyLsnPlanNope}" >
                                 </td>
                             </tr>
 
@@ -555,7 +606,10 @@
                                     <span class="el_required">*</span>
                                     우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유
                                 </th>
-                                <td colspan="3">
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr1" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr1}" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유" disabled></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr1" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr1}" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유"></textarea>
                                 </td>
                             </tr>
@@ -565,6 +619,11 @@
                                     미디어교육 운영 현황
                                 </th>
                                 <td colspan="3">
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr2" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr2}" data-not_null="true" data-alert_name="미디어교육 운영 현황" readonly></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr2" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr2}" data-not_null="true" data-alert_name="미디어교육 운영 현황" ></textarea>
                                 </td>
                             </tr>
@@ -573,7 +632,10 @@
                                     <span class="el_required">*</span>
                                     향후 활용계획 및 수업을 통한 기대효과
                                 </th>
-                                <td colspan="3">
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과" disabled></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과"></textarea>
                                 </td>
                             </tr>
@@ -581,9 +643,14 @@
                                 <th scope="row" class="lh">
                                     희망강사
                                 </th>
-                                <td colspan="3">
-                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1">
-                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2">
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1" disabled>
+                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2" disabled>
+                                    <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1" >
+                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2" >
                                     <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
                                 </td>
                             </tr>
@@ -591,7 +658,10 @@
                                 <th scope="row" class="lh">
                                     건의사항 (기타의견)
                                 </th>
-                                <td colspan="3">
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <input id="bizOrgAplyLsnPlanEtc" type="text" class="common_input form_input_lg" th:value="${item.bizOrgAplyLsnPlanEtc}" disabled>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <input id="bizOrgAplyLsnPlanEtc" type="text" class="common_input form_input_lg" th:value="${item.bizOrgAplyLsnPlanEtc}">
                                 </td>
                             </tr>
@@ -659,7 +729,7 @@
                                     <label for="selectRegion">지역</label>
                                 </th>
                                 <td>
-                                    <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역"></select>
+                                    <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역" disabled></select>
                                 </td>
                                 <th scope="row">
                                     주소
@@ -674,8 +744,11 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyRprsvNm">대표자명</label>
                                 </th>
-                                <td>
-                                    <input id="bizOrgAplyRprsvNm" type="text" class="common_input" th:value="${item.bizOrgAplyRprsvNm}">
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyRprsvNm" type="text" class="common_input"  th:value="${item.bizOrgAplyRprsvNm}" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
+                                    <input id="bizOrgAplyRprsvNm" type="text" class="common_input"  th:value="${item.bizOrgAplyRprsvNm}" >
                                 </td>
                                 <th scope="row" class="lh">
                                     사업자등록번호(고유번호)
@@ -686,7 +759,7 @@
                             </tbody>
                         </table>
                     </div>
-<!--                    담당자 정보-->
+                    <!--                    담당자 정보-->
                     <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
                         <table>
                             <caption>사업신청서</caption>
@@ -703,7 +776,13 @@
                                     <span class="el_required">*</span>
                                     담당자<br>이름(직급)
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <label for="bizOrgAplyPicNm" class="hidden_label">담당자 이름</label>
+                                    <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicNm}" data-not_null="true" data-alert_name="담당자 이름" disabled>
+                                    <label for="bizOrgAplyPicJbgd" class="hidden_label">담당자 직급</label>
+                                    <input id="bizOrgAplyPicJbgd" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicJbgd}" data-not_null="true" data-alert_name="담당자 직급" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <label for="bizOrgAplyPicNm" class="hidden_label">담당자 이름</label>
                                     <input id="bizOrgAplyPicNm" type="text" class="common_input form_input_sm" th:value="${item.bizOrgAplyPicNm}" data-not_null="true" data-alert_name="담당자 이름">
                                     <label for="bizOrgAplyPicJbgd" class="hidden_label">담당자 직급</label>
@@ -713,7 +792,10 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyPicEml">담당자 이메일</label>
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicEml" type="text" class="common_input" th:value="${item.bizOrgAplyPicEml}" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicEml" type="text" class="common_input" th:value="${item.bizOrgAplyPicEml}" data-not_null="true" data-alert_name="담당자 이메일" data-reg_type="email">
                                 </td>
                             </tr>
@@ -722,21 +804,27 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyPicTelno">담당자 전화번호</label>
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicTelno" type="text" class="common_input" th:value="${item.bizOrgAplyPicTelno}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicTelno" type="text" class="common_input" th:value="${item.bizOrgAplyPicTelno}" data-not_null="true" data-alert_name="담당자 전화번호" data-reg_type="number">
                                 </td>
                                 <th scope="row">
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyPicMpno">담당자 휴대폰</label>
                                 </th>
-                                <td>
+                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
+                                    <input id="bizOrgAplyPicMpno" type="text" class="common_input" th:value="${item.bizOrgAplyPicMpno}" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number" disabled>
+                                </td>
+                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 }">
                                     <input id="bizOrgAplyPicMpno" type="text" class="common_input" th:value="${item.bizOrgAplyPicMpno}" data-not_null="true" data-alert_name="담당자 휴대폰" data-reg_type="number">
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-<!--                    교육일정-->
+                    <!--                    교육일정-->
                     <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
                         <table>
                             <caption>사업신청서</caption>
@@ -786,7 +874,7 @@
                             </tbody>
                         </table>
                     </div>
-<!--                    수업시간표-->
+                    <!--                    수업시간표-->
                     <div class="bl_boardWrite bl_boardWrite__gray"  th:if="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}">
                         <table>
                             <caption>사업신청서</caption>
@@ -835,7 +923,10 @@
                                                 <td>
                                                     <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
                                                 <td>
@@ -862,7 +953,7 @@
                                                 <td>
                                                     (미배정)
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 && content[0].bizOrgAplyChgYn == 1 }">
                                                     <a class="btn_type3" onclick="addList(this)">추가</a>
                                                     <a class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
                                                 </td>
@@ -905,7 +996,11 @@
                                                     <label th:for="${'p005'+stat.index}" class="hidden_label">라벨</label>
                                                     <input th:id="${'p005'+stat.index}" type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item2.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                    <label th:for="${'p006'+stat.index}" class="hidden_label" disabled>라벨</label>
+                                                    <input th:id="${'p006'+stat.index}" type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
+                                                </td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                                     <label th:for="${'p006'+stat.index}" class="hidden_label">라벨</label>
                                                     <input th:id="${'p006'+stat.index}" type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
@@ -940,7 +1035,7 @@
                                                 <td>
                                                     <span th:if="${! #lists.isEmpty(item2.bizInstructorAsgnms) }" th:text="${item2.bizInstructorAsgnms[0].bizInstructorAply.bizInstrAplyInstrNm}"></span>
                                                 </td>
-                                                <td>
+                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 && content[0].bizOrgAplyChgYn == 1 }">
                                                     <a class="btn_type3" onclick="addList(this)">추가</a>
                                                     <th:block th:if="${#lists.isEmpty(item2.bizInstructorAsgnms) }">
                                                         <a class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
@@ -969,7 +1064,10 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanDscr1">우리 학교/기관만의 특성과 추구하는 교육의 방향성 및 신청한 이유</label>
                                 </th>
-                                <td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr1" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr1}" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유" disabled></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr1" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr1}" data-not_null="true" data-alert_name="교육의 방향성 및 신청한 이유"></textarea>
                                 </td>
                             </tr>
@@ -978,7 +1076,10 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanDscr2">미디어교육 운영 현황</label>
                                 </th>
-                                <td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr2" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr2}" data-not_null="true" data-alert_name="미디어교육 운영 현황" disabled></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr2" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr2}" data-not_null="true" data-alert_name="미디어교육 운영 현황" ></textarea>
                                 </td>
                             </tr>
@@ -987,18 +1088,26 @@
                                     <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanDscr3">향후 활용계획 및 수업을 통한 기대효과</label>
                                 </th>
-                                <td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과" disabled></textarea>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="lh">
-                                    <label for="bizOrgAplyLsnPlanEtcInstr1">희망강사</label>
+                                    <label for="bizOrgAplyLsnPlanEtcInstr1">희망강사 </label>
                                     <label for="bizOrgAplyLsnPlanEtcInstr2" class="hidden_label">희망강사2</label>
                                 </th>
-                                <td>
-                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1">
-                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2">
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1" disabled>
+                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2" disabled>
+                                    <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                    <input type="text" class="common_input instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr1" >
+                                    <input type="text" class="common_input ms-2 instr-list" placeholder="클릭 시 검색됩니다." id="bizOrgAplyLsnPlanEtcInstr2" >
                                     <div class="guide_text">※ 강사배정 참고를 위한 선택사항입니다.</div>
                                 </td>
                             </tr>
@@ -1006,7 +1115,10 @@
                                 <th scope="row" class="lh">
                                     <label for="bizOrgAplyLsnPlanEtc">건의사항 (기타의견)</label>
                                 </th>
-                                <td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                    <input id="bizOrgAplyLsnPlanEtc" type="text" class="common_input form_input_lg" th:value="${item.bizOrgAplyLsnPlanEtc}" disabled>
+                                </td>
+                                <td colspan="3" th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
                                     <input id="bizOrgAplyLsnPlanEtc" type="text" class="common_input form_input_lg" th:value="${item.bizOrgAplyLsnPlanEtc}">
                                 </td>
                             </tr>
@@ -1060,6 +1172,9 @@
 
     <th:block layout:fragment="script">
         <script th:inline="javascript">
+            var cons = [[${content}]]
+
+            console.log(cons);
             if( [[${authError}]] == null ) {
 
 
@@ -1077,15 +1192,17 @@
                 }
 
                 $("#create").bind("click",function (e){
+                    $("#selectRegion").attr("disabled",false);
+                    $("#bizOrgAplyOperMeth").attr("disabled",false);
                     if(CONT[0].bizPbancMaster.bizPbancSlctnMeth==1 && CONT[0].bizOrgAplyStts=='0' &&CONT[0].orgAplyCnt >= CONT[0].bizPbancMaster.bizPbancMaxInst){
                         alert('선착순 마감되었습니다.')
                         window.history.back();
                         // 승인되고 변경 불가(기본)인 상태에서는 수정 불가
-                    }else if(CONT[0].bizOrgAplyStts=='2' && params.bizOrgAplyChgYn == 0){
+                    }else if(CONT[0].bizOrgAplyStts=='2' && CONT[0].bizOrgAplyChgYn == 0){
                         alert('승인된 신청서는 수정하실 수 없습니다. 담당자에게 문의해 주세요.');
                     }else if(nullCheck() &&totalClassTimeSet()){
                         let params = getFormData();
-                        // 승인된 신청서를 수정하면 가승인으로 처리하기 때문에 접수로 바꾸고 바로 다시 승인 
+                        // 승인된 신청서를 수정하면 가승인으로 처리하기 때문에 접수로 바꾸고 바로 다시 승인
                         if(CONT[0].bizPbancMaster.bizPbancSlctnMeth==1 ){
                             bizStts2 = true ;
                             params.bizOrgAplyStts = 1 ;
@@ -1104,6 +1221,8 @@
                     }
                 })
                 $("#update").bind("click",function (e){
+                    $("#selectRegion").attr("disabled",false);
+                    $("#bizOrgAplyOperMeth").attr("disabled",false);
                     if(nullCheck() && totalClassTimeSet()){
                         if (checkTimes() < 1) {
                             let params = getFormData();
@@ -1133,6 +1252,8 @@
                 }
 
                 function sendData(params, successText){
+                    $("#selectRegion").attr("disabled",false);
+                    $("#bizOrgAplyOperMeth").attr("disabled",false);
                     if(confirm("저장하시겠습니까?")) {
                         $.ajax({
                             type: "put",
@@ -1393,6 +1514,8 @@
                     }, 100)
                 }
                 function makeScheduleTr(cloneTarget){
+                    var ckContent = [[ ${content} ]]
+                    console.log(ckContent);
                     cloneTarget = cloneTarget ? cloneTarget : $(`
                         <tr class="dtl_list">
                             <td>
@@ -1406,8 +1529,8 @@
                             <td>
                                 <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
                             </td>
-                            <td>
-                                <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
+                            <td >
+                                <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" >
                             </td>
                             <td>
                                 <div class="time_select">
@@ -1431,12 +1554,18 @@
                                 <input type="text" class="common_input bizOrgAplyLsnDtlEtc">
                             </td>
                             <td> - </td>
-                            <td>
+                            <td id="tmtable">
                                 <a href="javascript: void(0)" class="btn_type3" onclick="addList(this)">추가</a>
                                 <a href="javascript: void(0)" class="btn_type3 mt-1 delete_btn" onclick="removeList(this)">삭제</a>
                             </td>
                         </tr>
                     `);
+                    var ckContent = [[ ${content} ]]
+                    console.log(ckContent[0]);
+                    // if(${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9 && content[0].bizOrgAplyChgYn == 1 )
+                    if(ckContent[0].bizOrgAplyStts != 2 && ckContent[0].bizOrgAplyStts !=9 && ckContent[0].bizOrgAplyChgYn ==1 ){
+                        // $('.chk_box').style.display="none";
+                    }
                     cloneTarget.find('.bizOrgAplyLsnDtlHr').each(function(idx,el){
                         $(el).change(function (){changeDtlHr(this)})
                     })
@@ -1529,67 +1658,67 @@
 
                     //수업시수를 초과하지 않을 때만
                     if(timeNow+2<=bizPbancMaxTm){
-                    // 노드 복사하기 (deep copy)
-                    let newDiv = makeScheduleTr();
+                        // 노드 복사하기 (deep copy)
+                        let newDiv = makeScheduleTr();
 
-                    // input 값 초기화
-                    let input = newDiv.querySelectorAll('input');
-                    if(cloneDiv){
-                        let cloneInput = $(cloneDiv).find('input');
-                        let count=0;
-                        input.forEach(item => {
-                            if($(item).attr('type')!="hidden"){
-                                item.value = cloneInput[count].value;
-                            }
-                            count+=1;
-                        })
-                    }else{
-                        input.forEach(item => {
-                            item.value = '';
-                        })
-                    }
-
-                    // select 값 초기화
-                    let select = newDiv.querySelectorAll('select');
-                    if(cloneDiv){
-                        let cloneSelect= $(cloneDiv).find('select');
-                        let count=0;
-
-                        if($(cloneSelect[0]).val()!=0){
-                            $(select[2]).removeAttr('disabled');
-                            $(select[3]).removeAttr('disabled');
+                        // input 값 초기화
+                        let input = newDiv.querySelectorAll('input');
+                        if(cloneDiv){
+                            let cloneInput = $(cloneDiv).find('input');
+                            let count=0;
+                            input.forEach(item => {
+                                if($(item).attr('type')!="hidden"){
+                                    item.value = cloneInput[count].value;
+                                }
+                                count+=1;
+                            })
+                        }else{
+                            input.forEach(item => {
+                                item.value = '';
+                            })
                         }
-                        select.forEach(item => {
-                            for (let i = 0; i < item.options.length; i++) {
-                                item.options[i].removeAttribute('selected');
-                            }
-                            if( $(cloneSelect[count]).val() ){
-                                $(item).val($(cloneSelect[count]).val()).prop("selected", true);
-                                count++;
-                            }
-                        })
-                    }else{
-                        select.forEach(item => {
-                            for (let i = 0; i < item.options.length; i++) {
-                                item.options[i].removeAttribute('selected');
-                            }
-                            if( item.options.length ){
-                                item.options[0].setAttribute('selected', true);
-                            }
-                            if($(item).attr("data-list")=="minuteList"){
-                                $(item).val("60").prop("selected", false);
-                                $(item).val("00").prop("selected", true);
-                            }
-                        })
-                    }
 
-                    // 복제할 값보다는 남은 수업시수가 적다면 남은 값으로 적용
-                    if(timeMax>bizPbancMaxTm ){
-                        $(newDiv).find(".bizOrgAplyLsnDtlHr").val(bizPbancMaxTm-timeNow);
-                    }
-                    cloneDiv.after(newDiv);
-                    dtlRnd();
-                    totalClassTimeSet();
+                        // select 값 초기화
+                        let select = newDiv.querySelectorAll('select');
+                        if(cloneDiv){
+                            let cloneSelect= $(cloneDiv).find('select');
+                            let count=0;
+
+                            if($(cloneSelect[0]).val()!=0){
+                                $(select[2]).removeAttr('disabled');
+                                $(select[3]).removeAttr('disabled');
+                            }
+                            select.forEach(item => {
+                                for (let i = 0; i < item.options.length; i++) {
+                                    item.options[i].removeAttribute('selected');
+                                }
+                                if( $(cloneSelect[count]).val() ){
+                                    $(item).val($(cloneSelect[count]).val()).prop("selected", true);
+                                    count++;
+                                }
+                            })
+                        }else{
+                            select.forEach(item => {
+                                for (let i = 0; i < item.options.length; i++) {
+                                    item.options[i].removeAttribute('selected');
+                                }
+                                if( item.options.length ){
+                                    item.options[0].setAttribute('selected', true);
+                                }
+                                if($(item).attr("data-list")=="minuteList"){
+                                    $(item).val("60").prop("selected", false);
+                                    $(item).val("00").prop("selected", true);
+                                }
+                            })
+                        }
+
+                        // 복제할 값보다는 남은 수업시수가 적다면 남은 값으로 적용
+                        if(timeMax>bizPbancMaxTm ){
+                            $(newDiv).find(".bizOrgAplyLsnDtlHr").val(bizPbancMaxTm-timeNow);
+                        }
+                        cloneDiv.after(newDiv);
+                        dtlRnd();
+                        totalClassTimeSet();
                     }else{
                         alert('시간표를 더 추가하면 사업에서 지원 가능한 최대 수업시수를 초과하게 됩니다. 수업시간표 하나의 최소 수업시수는 2입니다.')
                     }
