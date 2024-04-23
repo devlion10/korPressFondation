@@ -1,20 +1,24 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-      # 상용 암호화
-    url: ENC(EgvJm8ZzW7UjW5HPMIJfTBOtUQdDTVoOLy4mTJ1k/Ox3kfY5trE8L03aVI1VBSHk5TJ80rXVUVsS8L9UtzxSIM/r8vjTo9qLd/9IDAXcNnTciYIynSFlFaRLQsLmLMKqcSe8bI+6OhQ=)
-    username: ENC(B6QU6cCp1Lyh8KTf8rbZOA==)
-    password: ENC(VyhYiz5kVotO9eZb9rV7wxbWYBZxb9Yw)
+    # 상용 암호화
+    #    url: ENC(EgvJm8ZzW7UjW5HPMIJfTBOtUQdDTVoOLy4mTJ1k/Ox3kfY5trE8L03aVI1VBSHk5TJ80rXVUVsS8L9UtzxSIM/r8vjTo9qLd/9IDAXcNnTciYIynSFlFaRLQsLmLMKqcSe8bI+6OhQ=)
+    #    username: ENC(vIiLmrAEPW4V2zZ5DMOCXg==)
+    #    password: ENC(l8nwroHz/TjRN1Vm2xRC+FlD5eKDYDe6)
     # 상용 접속 정보
-#    url: jdbc:mysql://db-18q25-kr1.vpc-pub-cdb.gov-ntruss.com:3306/kpf_meca?characterEncoding=UTF-8
-#    username: kbrainc
-#    password: kbrainc1!
+    #    url: jdbc:mysql://db-18q25-kr1.vpc-pub-cdb.gov-ntruss.com:3306/kpf_meca?characterEncoding=UTF-8
+    #    username: kbrainc
+    #    password: kbrainc1!
 
+    # 로컬 암호화
+    url: ENC(Svtb4kHar3bHB5B0xbTLrtuF74MNwjqC8pZQfyNHsOVvrPzjrLCl8GcxhLi9MelH)
+    username: ENC(pnVW+E02e83MI8igUNXWLA==)
+    password: ENC(BzJH7TpPQYtReeGpxNEehg==)
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
       connection-test-query: select 1
-#JPA
+  #JPA
   jpa:
     hibernate:
       ddl-auto: none
