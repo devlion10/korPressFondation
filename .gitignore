@@ -11,3 +11,4 @@
 /.idea/
 /.mvn/
 kpf-lms.iml
+src/main/resources/application-db-mysql-local.yml
