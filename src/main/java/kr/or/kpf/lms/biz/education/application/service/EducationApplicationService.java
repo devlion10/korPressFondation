@@ -120,6 +120,7 @@ public class EducationApplicationService extends CSServiceSupport {
 
         /** 회원 ID 추가 셋팅 */
         entity.setUserId(userId);
+        entity.setIsAccommodation(educationApplicationApiRequestVO.getIsAccommodation());
         entity.setEducationPlanCode(educationPlan.getEducationPlanCode());
         entity.setCurriculumCode(educationPlan.getCurriculumCode());
         EducationApplicationApiResponseVO result = EducationApplicationApiResponseVO.builder().build();
