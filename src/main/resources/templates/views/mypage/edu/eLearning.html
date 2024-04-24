@@ -82,7 +82,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <!-- GRID : BUTTON -->
                             <div class="bl_gridBtns hp_mt20">
                                 <div class="bl_gridBtns_md">
@@ -171,6 +171,7 @@
         <script th:inline="javascript">
             /* <![CDATA[ */
             let CONT = [[ ${content} ]]
+            console.log(CONT);
             function onLoadSubmit() {
                 console.log('commonCode: ', [[ ${commonCode} ]] )
                 let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];
