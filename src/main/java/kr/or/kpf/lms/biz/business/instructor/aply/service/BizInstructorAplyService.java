@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,22 +137,30 @@ public class BizInstructorAplyService extends CSServiceSupport {
     /**
      강사 모집 신청 정보 업데이트 (복수)
      */
+    @PutMapping
     public List<BizInstructorAplyApiResponseVO> updateBizInstructorAplies(List<BizInstructorAplyApiRequestVO> requestObjects) {
         List<BizInstructorAplyApiResponseVO> bizInstructorAplyApiResponseVOList = new ArrayList<>();
         for (BizInstructorAplyApiRequestVO requestObject : requestObjects) {
-             if (vailedBizInstructorAply(requestObject, "submit")) {
-                 bizInstructorAplyRepository.findById(requestObject.getBizInstrAplyNo())
+            BizInstructorAply entity = BizInstructorAply.builder().build();
+            BeanUtils.copyProperties(requestObject, entity);
+            BizInstructorAplyApiResponseVO result = BizInstructorAplyApiResponseVO.builder().build();
+            BeanUtils.copyProperties(bizInstructorAplyRepository.saveAndFlush(entity), result);
+
+            bizInstructorAplyApiResponseVOList.add(result);
+
+           // if (vailedBizInstructorAply(requestObject, "submit")) {
+                /* bizInstructorAplyRepository.findById(requestObject.getBizInstrAplyNo())
                          .map(bizInstructorAply -> {
                              copyNonNullObject(requestObject, bizInstructorAply);
 
                              BizInstructorAplyApiResponseVO result = BizInstructorAplyApiResponseVO.builder().build();
-                             BeanUtils.copyProperties(bizInstructorAplyRepository.saveAndFlush(bizInstructorAply), result);
+                            // BeanUtils.copyProperties(bizInstructorAplyRepository.saveAndFlush(bizInstructorAply), result);
 
                              return bizInstructorAplyApiResponseVOList.add(result);
-                         }).orElseThrow(() -> new KPFException(KPF_RESULT.ERROR3605, "해당 강사 모집 미존재"));
-             } else {
-                 bizInstructorAplyApiResponseVOList.add(null);
-             }
+                         }).orElseThrow(() -> new KPFException(KPF_RESULT.ERROR3605, "해당 강사 모집 미존재"));*/
+//             } else {
+//                 bizInstructorAplyApiResponseVOList.add(null);
+//             }
         }
         return bizInstructorAplyApiResponseVOList;
     }

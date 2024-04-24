@@ -132,6 +132,8 @@ public class BizInstructorAplyApiController extends CSViewControllerSupport {
     @PutMapping(value = "/updates", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateInfo(HttpServletRequest request, HttpServletResponse response,
                                                                      @Validated(value = {UpdateBizInstructorAply.class}) @NotNull @RequestBody List<BizInstructorAplyApiRequestVO> bizInstructorAplyApiRequestVOs) {
+
+        logger.info("Aply_updateInfo");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Optional.ofNullable(bizInstructorAplyService.updateBizInstructorAplies(bizInstructorAplyApiRequestVOs))
                         .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR3623, "강사 신청 수정 실패")));
