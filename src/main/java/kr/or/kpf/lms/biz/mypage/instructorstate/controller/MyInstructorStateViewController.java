@@ -19,8 +19,10 @@ import kr.or.kpf.lms.config.security.vo.KoreaPressFoundationUserDetails;
 import kr.or.kpf.lms.framework.exception.KPFException;
 import kr.or.kpf.lms.framework.model.CSPageImpl;
 import kr.or.kpf.lms.framework.model.CSSearchMap;
+import kr.or.kpf.lms.repository.entity.BizInstructorAply;
 import kr.or.kpf.lms.repository.entity.BizInstructorIdentify;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.list.UnmodifiableList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -34,10 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 강사참여 현황 관련 Controller
@@ -107,6 +106,9 @@ public class MyInstructorStateViewController extends CSViewControllerSupport {
                     modelSetting(model, Optional.ofNullable(requestParam)
                             .map(searchMap -> myInstructorStateService.getApplyResultList((MyInstructorStateApplyResultViewRequestVO) params(MyInstructorStateApplyResultViewRequestVO.class, searchMap, pageable)))
                             .orElse(CSPageImpl.of(new ArrayList<>(), pageable, 0)), List.of("CON_TEXT_TYPE", "BIZ_INSTR_STTS", "BIZ_INSTR_APLY_STTS"));
+
+
+
                     return new StringBuilder(MYPAGE).append("InstructorRecruitComplete").toString();
                 } else {
                     model.addAttribute("authError", "접근이 제한된 페이지입니다.");

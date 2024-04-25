@@ -710,7 +710,7 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                     .leftJoin(bizPbancMaster).on(bizPbancMaster.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .leftJoin(bizInstructor).on(bizInstructor.bizInstrNo.eq(bizInstructorAply.bizInstrNo))
                     .where(getQuery(requestObject))
-                    .orderBy(bizInstructor.createDateTime.desc(), bizInstructorAply.bizInstrAplyCndtOrdr.asc(), bizInstructorAply.createDateTime.desc())
+                    .orderBy(bizInstructorAply.bizInstrAplyCndtOrdr.asc())
                     .offset(requestObject.getPageable().getOffset())
                     .limit(requestObject.getPageable().getPageSize())
                     .fetch();
