@@ -1372,7 +1372,7 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                             condition(authenticationInfo().getUserId(), curriculumApplicationMaster.userId::eq)};
                 } else if (((MyEducationStateViewRequestVO) requestObject).getEducationState().equals(Code.EDU_STATE.END.enumCode)) {
                     return new Predicate[] { // condition(true, curriculumApplicationMaster.educationPlan.isUsable::eq), // 수료 메뉴에서는 사용 여부 체크 하지 않음(모든 교육 수료 현황 노출 필요)
-                            checkPeriod(new CurriculumApplicationMaster(), "lt"), // 화상/집합 수료 기준 우선 기간 확인
+                            //checkPeriod(new CurriculumApplicationMaster(), "lt"), // 화상/집합 수료 기준 우선 기간 확인
                             condition(((MyEducationStateViewRequestVO) requestObject).getApplicationNo(), curriculumApplicationMaster.applicationNo::eq),
                             condition(((MyEducationStateViewRequestVO) requestObject).getYear(), curriculumApplicationMaster.educationPlan.yearOfEducationPlan::eq),
                             condition(authenticationInfo().getUserId(), curriculumApplicationMaster.userId::eq)};

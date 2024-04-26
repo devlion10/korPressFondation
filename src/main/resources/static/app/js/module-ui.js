@@ -1495,7 +1495,7 @@ let CommonUtil = {};
 					+ (opt.link ? `</a>` : '') +
 				`</div>
 				<form class="pop_form" name="pop_form">
-					<div id="check" ${opt.cache == true ? 'style="display:inline-block;"':'style="display:none;"'}><input type="checkbox" name="chkbox" value="checkbox" id='${opt.layerId}_chk' ><label for="${opt.layerId}_chk">&nbsp&nbsp오늘 하루동안 보지 않기</label></div>
+					<div id="check" ${opt.cache == true ? 'style="display:inline-block;"':'style="display:none;"'}><input type="checkbox" name="chkbox" value="checkbox" id='${opt.layerId}_chk' ><label for="${opt.layerId}_chk">&nbsp&nbsp오늘 하루 동안 보지 않기</label></div>
 					<div id="close" ><a class='close-button-layerpopup' href="#">닫기</a></div>
 				</form>
 			</div>
