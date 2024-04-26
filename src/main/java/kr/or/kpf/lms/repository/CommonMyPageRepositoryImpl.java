@@ -173,6 +173,8 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                     .leftJoin(organizationInfo).on(organizationInfo.organizationCode.eq(bizOrganizationAply.orgCd))
                     .leftJoin(bizPbancMaster).on(bizPbancMaster.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .leftJoin(bizInstructor).on(bizInstructor.bizInstrNo.eq(bizInstructorAply.bizInstrNo))
+                    .leftJoin(bizInstructorPbanc).on(bizInstructorPbanc.bizInstrNo.eq(bizInstructorAply.bizInstrNo),
+                            bizInstructorPbanc.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .where(getQuery(requestObject))
                     .fetchOne();
         } else if(requestObject instanceof MyInstructorStateViewRequestVO) { /** 강사 참여 현황 - 강의 현황 - 진행 중 */
@@ -709,6 +711,8 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                     .leftJoin(organizationInfo).on(organizationInfo.organizationCode.eq(bizOrganizationAply.orgCd))
                     .leftJoin(bizPbancMaster).on(bizPbancMaster.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .leftJoin(bizInstructor).on(bizInstructor.bizInstrNo.eq(bizInstructorAply.bizInstrNo))
+                    .leftJoin(bizInstructorPbanc).on(bizInstructorPbanc.bizInstrNo.eq(bizInstructorAply.bizInstrNo),
+                            bizInstructorPbanc.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .where(getQuery(requestObject))
                     .orderBy(bizInstructorAply.bizInstrAplyCndtOrdr.asc())
                     .offset(requestObject.getPageable().getOffset())
@@ -1252,9 +1256,10 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
         } else if(requestObject instanceof MyInstructorStateApplyViewRequestVO) { /** 강사 참여 현황 - 강사 모집 - 지원 중 */
             return new Predicate[] { condition(((MyInstructorStateApplyViewRequestVO) requestObject).getBizInstrAplyNo(), bizInstructorAply.bizInstrAplyNo::eq),
                     condition(((MyInstructorStateApplyViewRequestVO) requestObject).getBizInstrAplyInstrId(), bizInstructorAply.bizInstrAplyInstrId::eq),
-                    condition(1, bizInstructorAply.bizInstrAplyStts::loe),
-                    checkPeriod(new BizInstructorPbanc(), "loe"),
-                    checkPeriod(new BizInstructorPbanc(), "goe")};
+                    condition(((MyInstructorStateApplyViewRequestVO) requestObject).getBizInstrPbancStts(), bizInstructorPbanc.bizInstrPbancStts::goe),
+                    condition(1, bizInstructorAply.bizInstrAplyStts::loe)};
+                    //checkPeriod(new BizInstructorPbanc(), "loe"),
+                    //checkPeriod(new BizInstructorPbanc(), "goe")};
         } else if(requestObject instanceof MyInstructorStateApplyResultViewRequestVO) {
             Integer[] bizOrgAplyStts = {2, 7, 9};
             /** 강사 참여 현황 - 강사 모집 - 지원 완료 */
@@ -1264,6 +1269,7 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyNo(), bizInstructorAply.bizInstrAplyNo::eq),
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyInstrId(), bizInstructorAply.bizInstrAplyInstrId::eq),
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyStts(), bizInstructorAply.bizInstrAplyStts::goe),
+                            condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrPbancStts(), bizInstructorPbanc.bizInstrPbancStts::goe),
                             condition(bizOrgAplyStts, bizOrganizationAply.bizOrgAplyStts::in),
                             searchContainText(requestObject, ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainTextType(), ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainText()) };
                 } else {
@@ -1271,6 +1277,7 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyNo(), bizInstructorAply.bizInstrAplyNo::eq),
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyInstrId(), bizInstructorAply.bizInstrAplyInstrId::eq),
                             condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyStts(), bizInstructorAply.bizInstrAplyStts::eq),
+                            condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrPbancStts(), bizInstructorPbanc.bizInstrPbancStts::goe),
                             condition(bizOrgAplyStts, bizOrganizationAply.bizOrgAplyStts::in),
                             searchContainText(requestObject, ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainTextType(), ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainText()) };
                 }
@@ -1278,6 +1285,7 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                 return new Predicate[] { condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizOrgAplyRgn(), bizOrganizationAply.bizOrgAplyRgn::eq),
                         condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyNo(), bizInstructorAply.bizInstrAplyNo::eq),
                         condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrAplyInstrId(), bizInstructorAply.bizInstrAplyInstrId::eq),
+                        condition(((MyInstructorStateApplyResultViewRequestVO) requestObject).getBizInstrPbancStts(), bizInstructorPbanc.bizInstrPbancStts::goe),
                         condition(bizOrgAplyStts, bizOrganizationAply.bizOrgAplyStts::in),
                         searchContainText(requestObject, ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainTextType(), ((MyInstructorStateApplyResultViewRequestVO) requestObject).getContainText()) };
             }

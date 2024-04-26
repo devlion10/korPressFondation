@@ -72,6 +72,7 @@ public class MyInstructorStateViewController extends CSViewControllerSupport {
 
                     CSSearchMap requestParam = CSSearchMap.of(request);
                     requestParam.put("bizInstrAplyInstrId", registUserId);
+                    requestParam.put("bizInstrPbancStts", 1);
                     modelSetting(model, Optional.ofNullable(requestParam)
                             .map(searchMap -> myInstructorStateService.getApplyList((MyInstructorStateApplyViewRequestVO) params(MyInstructorStateApplyViewRequestVO.class, searchMap, pageable)))
                             .orElse(CSPageImpl.of(new ArrayList<>(), pageable, 0)), List.of("CON_TEXT_TYPE", "BIZ_INSTR_STTS", "BIZ_INSTR_APLY_STTS"));
@@ -103,6 +104,7 @@ public class MyInstructorStateViewController extends CSViewControllerSupport {
                     CSSearchMap requestParam = CSSearchMap.of(request);
                     requestParam.put("bizInstrAplyInstrId", registUserId);
                     requestParam.put("bizInstrAplyStts", 1);
+                    requestParam.put("bizInstrPbancStts", 1);
                     modelSetting(model, Optional.ofNullable(requestParam)
                             .map(searchMap -> myInstructorStateService.getApplyResultList((MyInstructorStateApplyResultViewRequestVO) params(MyInstructorStateApplyResultViewRequestVO.class, searchMap, pageable)))
                             .orElse(CSPageImpl.of(new ArrayList<>(), pageable, 0)), List.of("CON_TEXT_TYPE", "BIZ_INSTR_STTS", "BIZ_INSTR_APLY_STTS"));

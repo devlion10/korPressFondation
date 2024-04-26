@@ -27,4 +27,7 @@ public class MyInstructorStateApplyViewRequestVO extends CSViewVOSupport {
 
     /** 강사 id */
     private String bizInstrAplyInstrId;
+
+    /** 공고 마감상태 */
+    private Integer bizInstrPbancStts;
 }
