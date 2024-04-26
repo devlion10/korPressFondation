@@ -245,7 +245,8 @@
                                         <input id="personalNeisNo" type="text" class="common_input form_input">
                                     </div>
                                     <p class="input_text school"><span class="essential">*</span>입력 예시: A123456789(영문 대문자 1자리+숫자 9자리)</p>
-                                    <p class="input_text youth"><span class="essential">*</span>입력 예시: A12B345678(영문 대문자 1자리+숫자 2자리+영문 대문자 1자리+숫자 6자리)</p>
+                                    <p class="input_text youth"><span class="essential">*</span>사립 유치원 예시: A123456789(영문 대문자 1자리+숫자 9자리)</p>
+                                    <p class="input_text youth1"><span class="essential">*</span>공립 유치원 예시: A12B345678 (영문 대문자 1자리 + 숫자2자리 + 영문 대문자 1자리 + 숫자 6자리)</p>
                                     <p class="input_text mt-0"><span class="essential">*</span>NEIS 개인번호 확인경로: NEIS > 나의 메뉴 > 인사기록 > 기본사항 > 근무사항 > 개인번호 확인</p>
                                 </div>
                             </div>
@@ -650,8 +651,10 @@
                         $("#personalNeisNo").val() !== null &&
                         $("#personalNeisNo").val().length == 10
                     ) {
-                        if(($('#personalNeisType').is(':checked') && !regYouthNeisNo.test($("#personalNeisNo").val())) ||
-                            (!$('#personalNeisType').is(':checked') && !regNeisNo.test($("#personalNeisNo").val()))) {
+                        if(!$('#personalNeisType').is(':checked') && !regNeisNo.test($("#personalNeisNo").val())) {
+                            alert('NEIS 개인 번호 형식이 일치하지 않습니다.')
+                            return false;
+                        } else if(($('#personalNeisType').is(':checked') && !regYouthNeisNo.test($("#personalNeisNo").val())) && ($('#personalNeisType').is(':checked') && !regNeisNo.test($("#personalNeisNo").val()))){
                             alert('NEIS 개인 번호 형식이 일치하지 않습니다.')
                             return false;
                         } else {
@@ -929,9 +932,11 @@
                 if ($(chk).is(':checked')) {
                     $('.school').hide()
                     $('.youth').show()
+                    $('.youth1').show()
                 } else {
                     $('.school').show()
                     $('.youth').hide()
+                    $('.youth1').hide()
                 }
             }
             /* ]]> */

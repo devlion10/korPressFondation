@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="common_input_box class_and_studentNum">
+                            <!--<div class="common_input_box class_and_studentNum">
                                 <div class="common_label">
                                     <label for="learningCount"><span class="essential">*</span>학급수/학생수</label>
                                 </div>
@@ -120,7 +120,7 @@
                                     <input type="text" id="numberStudents" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" class="common_input" >
                                     <div class="blank">명</div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="common_input_box">
                                 <div class="common_label">
                                     <label for="organizationZipCode"><span class="essential">*</span><span id="changeTarget3">학교/기관 주소</span></label>
@@ -440,11 +440,11 @@
                         document.querySelector('#representative').value = representative;
                     }
 
-                    if(organization.learningCount) {
-                        /** 학급수 존재할 경우 셋팅 */
+ /*                   if(organization.learningCount) {
+                        /!** 학급수 존재할 경우 셋팅 *!/
                         const learningCount = organization.learningCount;
                         document.querySelector('#learningCount').value = learningCount;
-                    }
+                    }*/
 
                     if(organization.numberStudents) {
                         /** 학생수 존재할 경우 셋팅 */
@@ -535,7 +535,7 @@
             const agency_admin = document.getElementById('agency_admin');
             const media_instructor = document.getElementById('media_instructor');
             const school_admin_chk = document.querySelector('.school_admin_chk');
-            const class_and_studentNum = document.querySelector('.class_and_studentNum');
+            // const class_and_studentNum = document.querySelector('.class_and_studentNum');
             const media_instructor_chk = document.querySelector('.media_instructor_chk');
             let type = ''; //학교/기관 타입 구분(학교/기관명 찾기 팝업에 필요)
             let registerType = ''; //학교/기관 타입 구분(매체사/학교/기관명 등록신청 팝업에 필요)
@@ -559,7 +559,7 @@
                             type = 3;
                             registerType = 1;
                             school_admin_chk.style.display = 'block';
-                            class_and_studentNum.style.display = 'flex';
+                            // class_and_studentNum.style.display = 'flex';
                             bizLicenseNumberWrap.style.display = 'none';
                             changeTargetTitle.innerText='학교 정보';
                             changeTargetTitle2.innerText='교사 정보';
@@ -573,7 +573,7 @@
                             type = null;
                             registerType = 2;
                             school_admin_chk.style.display = 'block';
-                            class_and_studentNum.style.display = 'none';
+                            // class_and_studentNum.style.display = 'none';
                             bizLicenseNumberWrap.style.display = 'flex';
                             changeTargetTitle.innerText='기관 정보';
                             changeTargetTitle2.innerText='담당자 정보';
@@ -598,7 +598,7 @@
                 agency_admin.disabled = true;
                 media_instructor.disabled = true;
                 school_admin_chk.style.display = 'block';
-                class_and_studentNum.style.display = 'flex';
+                // class_and_studentNum.style.display = 'flex';
                 bizLicenseNumberWrap.style.display = 'none';
                 changeTargetTitle.innerText='학교 정보';
                 changeTargetTitle2.innerText='교사 정보';
@@ -614,7 +614,7 @@
                 school_admin.disabled = true;
                 media_instructor.disabled = true;
                 school_admin_chk.style.display = 'block';
-                class_and_studentNum.style.display = 'none';
+                // class_and_studentNum.style.display = 'none';
                 bizLicenseNumberWrap.style.display = 'flex';
                 changeTargetTitle.innerText='기관 정보';
                 changeTargetTitle2.innerText='담당자 정보';
@@ -668,14 +668,14 @@
                 if(!document.querySelector('#organizationName').value) { alert('소속 기관 명은 필수입니다.'); return false; }
                 else { params.organizationName = document.querySelector('#organizationName').value }
 
-                if( agency_admin.checked != true ){
-                    /** 학습 수 */
+                /*if( agency_admin.checked != true ){
+                    /!** 학습 수 *!/
                     if(!document.querySelector('#learningCount').value) { alert('학급 수는 필수입니다.'); return false; }
                     else { params.learningCount = document.querySelector('#learningCount').value }
-                    /** 학생 수 */
+                    /!** 학생 수 *!/
                     if(!document.querySelector('#numberStudents').value) { alert('학생 수는 필수입니다.'); return false; }
                     else { params.numberStudents = document.querySelector('#numberStudents').value }
-                }
+                }*/
                 /** 대표전화 */
                 params.organizationTelNumber = document.querySelector('#schoolTel > input:nth-child(2)').value
                     + document.querySelector('#schoolTel > input:nth-child(5)').value
@@ -757,6 +757,7 @@
                         dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
                         success: function(data){   //요청 성공시 실행될 메서드
                             /** 사업 참여 권한 신청 성공 */
+                            alert("권한신청이 승인되었습니다. 재로그인 시 적용됩니다.");
                             location.reload();
                         },
                         error: function(e){		 //요청 실패시 에러 확인을 위함
