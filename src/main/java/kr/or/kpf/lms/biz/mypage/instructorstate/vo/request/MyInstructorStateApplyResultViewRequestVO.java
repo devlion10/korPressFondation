@@ -33,4 +33,7 @@ public class MyInstructorStateApplyResultViewRequestVO extends CSViewVOSupport {
 
     /** 강사 모집 상태 */
     private Integer bizInstrAplyStts;
+
+    /** 공고 마감상태 */
+    private Integer bizInstrPbancStts;
 }
