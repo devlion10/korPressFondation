@@ -52,13 +52,13 @@
                                 <!-- BOARD : CONTROLLER -->
                                 <div class="bl_boardCtrls">
                                     <div class="bl_boardCtrls_lft">
-                                        <p class="bl_boardCtrls_total" th:if="${pageable.totalElements < 22 } ">
-                                            <strong   th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
+                                        <p class="bl_boardCtrls_total">
+                                            <strong th:text="${pageable.totalElements}"></strong>개의 게시글이 있습니다.
                                         </p>
-                                        <p class="bl_boardCtrls_total" th:if="${pageable.totalElements > 22 } ">
+                                        <!--<p class="bl_boardCtrls_total" th:if="${pageable.totalElements > 22 } ">
                                             <strong   th:text="21"></strong>개의 게시글이 있습니다.
-                                        </p>
-                                    </div>
+                                        </p>-->
+                                    </div>-
                                 </div>
 
                                 <!-- BOARD : LIST -->
@@ -75,7 +75,7 @@
                                     </div>
 
                                     <div class="bl_board_body">
-                                        <div class="bl_board_unit" th:each="item:${content}" th:if="${item.bizInstrAplyCndtOrdr < 22}">
+                                        <div class="bl_board_unit" th:each="item:${content}" >
                                             <div class="bl_board_ctg" th:text="${item.bizOrganizationAply.bizOrgAplyRgn}">서울</div>
                                             <div class="bl_board_ctg" th:text="${item.bizOrganizationAply.organizationInfo.organizationName}">케이브레인</div>
                                             <div class="bl_board_ctg bizInstrAplyCndtOrdr" th:text="${item.bizInstrAplyCndtOrdr}">1</div>
@@ -123,8 +123,6 @@
 
     <th:block layout:fragment="script">
         <script th:inline="javascript">
-            var consa = [[${content}]]
-            console.log(consa);
             if( [[${authError}]] == null ) {
                 function searchInstCmpl(){
                     let searchQuery = {}
