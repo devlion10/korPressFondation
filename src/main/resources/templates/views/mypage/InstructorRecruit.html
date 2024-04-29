@@ -59,7 +59,7 @@
                                         <div class="bl_board_state bl_board_state_sm">취소</div>
                                     </div>
 
-                                    <div class="bl_board_body">
+                                    <div id='bl_board_body_id' class="bl_board_body">
                                         <div class="bl_board_unit" th:each="item, stat:${content}">
                                             <input type="hidden" class="board_index" th:value="${stat.index}">
                                             <div class="bl_board_no board_order bizInstrAplyCndtOrdr" th:text="${item.bizInstrAplyCndtOrdr}">1</div>
@@ -132,7 +132,26 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             if( [[${authError}]] == null ) {
-                let checkOrdr=false;
+
+                debugger;
+                console.info("init");
+                //var checkOrdr=false;//기본 셋팅 순서조정이력변수 false
+                function changeOrdr(){//순서조정하는 함수
+                    checkOrdr=true;
+                    $(".board_order").each(function (index,item){
+                        $(item).text(index+1);
+                    })
+                }
+                changeOrdr();//페이지 로딩 시 기본 정렬
+                $("#bl_board_body_id").sortable({//드래그로 우선순위조정 가능하게 하는 동작
+                    beforeStop: function(event, ui) {
+                        console.log("beforeStop");
+                        changeOrdr();
+                    }
+                });
+                $("#bl_board_body_id").disableSelection();
+
+
                 function changeOrdr(){
                     checkOrdr=true;
                     $(".board_order").each(function (index,item){
@@ -167,6 +186,7 @@
                 }
 
                 function aply(){
+                    debugger;
                     if(checkOrdr){
                         let params = getFormData();
                         /** 정렬코드 추가 */
@@ -288,3 +308,4 @@
 </div>
 </body>
 </html>
+
