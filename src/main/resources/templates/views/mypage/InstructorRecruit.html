@@ -145,7 +145,7 @@
                 }
                 changeOrdr();//페이지 로딩 시 기본 정렬
                 $("#bl_board_body_id").sortable({//드래그로 우선순위조정 가능하게 하는 동작
-                    beforeStop: function(event, ui) {
+                    beforeStop: function(event, ui) {//드래그 드랍 한 후 이벤트
                         console.log("beforeStop");
                         changeOrdr();
                     }
@@ -238,12 +238,12 @@
                     return params;
                 }
 
-                // 무조건 리스트 크기 30 되도록
-                let searchParams = new URLSearchParams(window.location.search);
-                let size = searchParams.get("size");
-                if (size != 30) {
-                    searchJson({size:30})
-                }
+                // 무조건 리스트 크기 30 되도록############ 중복으로 현재 url 요청하여 주석처리
+                // let searchParams = new URLSearchParams(window.location.search);
+                // let size = searchParams.get("size");
+                // if (size != 30) {
+                //     searchJson({size:30})
+                // }
 
                 //우선순위 정렬 주석처리
                 let n = $('.bizInstrAplyCndtOrdr').length;
