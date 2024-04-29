@@ -134,8 +134,9 @@
             if( [[${authError}]] == null ) {
 
                 debugger;
-                console.info("init");
+                console.info("checkOrdrinit");
                 //var checkOrdr=false;//기본 셋팅 순서조정이력변수 false
+                alert("지원순위 화살표 버튼 클릭 또는 각각의 목록을 드래그하여 우선순위를 조정 바랍니다.");
                 function changeOrdr(){//순서조정하는 함수
                     checkOrdr=true;
                     $(".board_order").each(function (index,item){
