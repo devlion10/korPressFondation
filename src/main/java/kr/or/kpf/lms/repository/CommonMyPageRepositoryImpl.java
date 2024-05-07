@@ -1069,15 +1069,25 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                         }
                     }
 
-                    if(data.getEducationPlan().getIsReview() && data.getEducationPlan().getAvailableReviewTerm() != null && !StringUtils.isEmpty(data.getCompleteDateTime())) { /** 복습을 지원하고, 수료를 한 경우 */
+                    //if(data.getEducationPlan().getIsReview() && data.getEducationPlan().getAvailableReviewTerm() != null && !StringUtils.isEmpty(data.getCompleteDateTime())) { /** 복습을 지원하고, 수료를 한 경우 */
+                    //복습여부 체크 해제, 이러닝이면 무조건 REVIEW_YN, REVIEW_TERM 에 관계 없이 복습 활성화, 윗줄 주석, 프론트에서 이러닝 외에는 복습표출 버튼 비활성화
+                    if(  !StringUtils.isEmpty(data.getCompleteDateTime())) {
                         try {
                             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
                             Date completeDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(data.getCompleteDateTime());
-                            if(data.getEducationPlan().getAvailableReviewTerm() > 0) {
-                                data.setReviewDateTime(new LocalDateTime(completeDateTime).plusMonths(data.getEducationPlan().getAvailableReviewTerm()).toString(formatter));
-                            } else {
-                                data.setReviewDateTime("2999-12-31 23:59:59");
+                            if(data.getEducationPlan().getAvailableReviewTerm() != null){//복습기간이 EDU_PLAN_LIST에 존재하는 경우,
+                                if(data.getEducationPlan().getAvailableReviewTerm() > 0 ) {
+                                    data.setReviewDateTime(new LocalDateTime(completeDateTime).plusMonths(data.getEducationPlan().getAvailableReviewTerm()).toString(formatter));
+                                } else {
+                                    data.setReviewDateTime("2999-12-31 23:59:59");
+                                }
+                            }else if(data.getEducationPlan().getCurriculumMaster().getReEducationTerm() !=null){//CRCL_MASTER 에 존재하는 경우(이러닝 중 기수운영(OPER_TYPE:1)으로 구분)
+                                data.setReviewDateTime(new LocalDateTime(completeDateTime).plusMonths(data.getEducationPlan().getCurriculumMaster().getReEducationTerm()).toString(formatter));
+                                //테스트용data.setReviewDateTime("2024-05-06 23:59:59");
+                            }else{
+
                             }
+
                         } catch (ParseException e) {
                             throw new RuntimeException("교육 수료 현황 조회 중 날짜 파싱에 실패하였습니다.");
                         }

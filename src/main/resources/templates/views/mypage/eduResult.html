@@ -88,12 +88,21 @@
                             <!--<div th:if="${item.educationPlan.isReview == true && item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss') && item.isComplete != 'W'}" class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto">-->
                             <!--<div th:if="${item.isComplete != 'Y'}" class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto">-->
                             <!--현재 이러닝만 복습표출,이러닝에서 수료를 다 하더라도 복습버튼은 활성화 요청하여 수료조건 제거-->
-                            <div class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto">
-                                <a th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')">복습</a>
+                            <div  class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto" >
+                                <!--이와같이 직접 임의의 날짜 설정가능
+                                item.reviewDateTime > #calendars.format(#calendars.create(2024,8,31).time, 'yyyy-MM-dd HH:mm:ss')-->
+                                <a th:if="${
+                                              item.educationPlan.curriculumMaster.educationType == '3' &&
+                                              not #strings.isEmpty(item.reviewDateTime) &&
+                                              item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')
+                                          }"
+                                          th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')"
+                                   class="btn_type4 btn_blue btn_underline">복습</a>
                                 <!--이러닝인 경우만 복습버튼 활성화-->
                                 <!--<a th:if="${item.educationPlan.curriculumMaster.educationType == '2' || item.setEducationType == '2'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/lecture/main','forPopLecture')">복습</a>-->
                                 <!--<a th:if="${item.educationPlan.curriculumMaster.educationType == '1' || item.setEducationType == '1'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-lecture/main','forPopLecture')">복습</a>-->
                             </div>
+
                             <!--<div th:unless="${item.educationPlan.isReview == true && item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}" class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto"></div>-->
 
                             <div class="bl_board_eduComplete hp_md_ord53">
