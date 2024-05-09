@@ -1000,6 +1000,22 @@ let CommonUtil = {};
 												<input type="text" maxlength="20" onchange="maxCheck(this)" id="add_representative" class="common_input form_input">
 											</td>
 										</tr>
+										<!--<tr>
+											<th scope="row"><span id="mediaCompanyChk" class="el_required">*</span>사업자등록증</th>
+											<td>
+												<div class="common_input_box">								
+													<div class="d-flex flex-column hp_md_w100p">
+														<div id="mainFileUpload" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+															<input type="text" id="file001" class="common_input bl_upload_path js_path" readonly >
+															<label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
+															<input type="file" name="file" class="bl_upload_file js_file" accept=".gif, .jpg, .png, .pdf, .hwp, .hwpx, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .zip" id="attachFilePath">
+															<label for="file001" class="hidden_label">사업자등록증</label>
+														</div>
+														<p class="input_text"><span class="essential">*</span>파일형식 pdf, jpg, png, gif / 5MB 미만</p>
+													</div>
+												</div>
+											</td>
+										</tr>-->
 										<tr ${registerType == 1 ? 'style="display: none"' : ''}>
 											<th scope="row"><span id="mediaCompanyChk" class="el_required">*</span>사업자등록번호</th>
 											<td>

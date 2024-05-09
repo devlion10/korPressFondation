@@ -193,6 +193,7 @@
                             <div class="common_input_box">
                                 <div class="common_label">
                                     <label for="organizationName"><span class="essential">*</span>매체사</label>
+                                    <label for="organizationName"><span class="essential">(법인명)</span></label>
                                 </div>
                                 <div class="d-flex flex-column hp_md_w100p">
                                     <div class="d-flex">
@@ -200,12 +201,15 @@
                                         <button class="btn_type1  btn_md btn_gray" type="button" onclick="findOrganization()">찾아보기</button>
                                     </div>
                                     <p class="input_text"><span class="essential">*</span>매체사 검색이 안될 경우, “기타”로 등록후에 매체사 등록 신청을 해주시기 바랍니다.</p>
+                                    <!--<p class="input_text"><span class="essential">*</span>매체사 검색이 안 될 경우 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>-->
                                     <input type="hidden" id="organizationCode" class="common_input form_input">
                                 </div>
                             </div>
                             <div class="common_input_box">
                                 <div class="common_label">
-                                    <label for="mediaCode"><span class="essential">*</span>매체</label>
+                                    <label for="mediaCode"><span class="essential">*</span>매체<span class="essential"> (제호명)</span></label>
+
+
                                 </div>
                                 <div class="d-flex flex-column hp_md_w100p">
                                     <div class="d-flex">
@@ -280,7 +284,7 @@
                             </div>
                             <div class="common_input_box">
                                 <div class="common_label">
-                                    <label for="attachFilePath"><span class="essential">*</span>재직증명서</label>
+                                    <label for="attachFilePath"><span class="essential">*</span>재직증명서<br><span class="essential">(신청일 기준 1년 이내 발급)</span></label>
                                 </div>
                                 <div class="d-flex flex-column hp_md_w100p">
                                     <div id="mainFileUpload" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
