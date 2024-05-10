@@ -133,6 +133,8 @@
         <script th:inline="javascript">
             if( [[${authError}]] == null ) {
 
+
+
                 debugger;
                 console.info("checkOrdrinit");
                 //var checkOrdr=false;//기본 셋팅 순서조정이력변수 false
@@ -268,7 +270,7 @@
                     console.log('commonCode: ', [[ ${commonCode} ]] )
                     pagination([[ ${pageable} ]], true, '최종지원', true);
                     navigation(0,2,0);
-
+                    document.body.querySelector('.bl_pageNums').style.display='none'//지원중인 사업목록인 경우 페이징 표출 안함
                     if( [[ ${content} ]] && ![[ ${content} ]].length ){
                         $(".bl_paginate_rgt").hide();
                     }

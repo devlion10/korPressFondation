@@ -657,8 +657,8 @@ public class CommonMyPageRepositoryImpl extends CSRepositorySupport implements C
                     .leftJoin(bizInstructorPbanc).on(bizInstructorPbanc.bizInstrNo.eq(bizInstructorAply.bizInstrNo), bizInstructorPbanc.bizPbancNo.eq(bizOrganizationAply.bizPbancNo))
                     .where(getQuery(requestObject))
                     .orderBy(bizInstructorPbanc.createDateTime.desc(), bizInstructorAply.bizInstrAplyCndtOrdr.asc())
-                    .offset(requestObject.getPageable().getOffset())
-                    .limit(requestObject.getPageable().getPageSize())
+                    //.offset(requestObject.getPageable().getOffset())
+                    //.limit(requestObject.getPageable().getPageSize())
                     .fetch();
 
             if (entities != null && entities.size() > 0){
