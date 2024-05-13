@@ -115,6 +115,10 @@ public class BizPbancMaster extends CSEntitySupport implements Serializable {
     @Column(name="TOP_YN")
     private String isTop;
 
+    @Schema(description="사업공고 노출범위")
+    @Column(name="BIZ_PBANC_GROUP_ROLE")
+    private String ckBox;
+
     /** 신규 여부 */
     @Transient
     @Builder.Default

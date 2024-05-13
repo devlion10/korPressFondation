@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Transient;
 import java.util.ArrayList;
@@ -94,6 +95,9 @@ public class BizPbancCustomApiResponseVO extends CSResponseVOSupport {
 
     @Schema(description="상단 고정 여부")
     private String isTop;
+
+    @Schema(description="사업공고 노출범위")
+    private String ckBox;
 
     @Schema(description="신규 공고 여부")
     private Boolean isNew = false;

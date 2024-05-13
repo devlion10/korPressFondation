@@ -170,8 +170,6 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             /* <![CDATA[ */
-            let CONT = [[ ${content} ]]
-            console.log(CONT);
             function onLoadSubmit() {
                 console.log('commonCode: ', [[ ${commonCode} ]] )
                 let nowId = window.location.pathname.split('/')[window.location.pathname.split('/').length-1];

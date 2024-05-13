@@ -189,7 +189,41 @@
                                    th:href="@{/business/pbanc/result/{id}(id=${content.bizPbancNo})}"
                                 >선정결과</a>
                             </th:block>
-                            <th:block th:if="${content.bizPbancType==5}">
+                            <th:block th:if="${content.bizPbancType==5 && !(#strings.contains(content.ckBox,'99'))}" >
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#strings.contains(content.ckBox,'0')) && (#authentication.principal.approFlag == 'Y')}"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#strings.contains(content.ckBox,'1')) && (#authentication.principal.approFlag == 'N')}"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'TEACHER') && (#strings.contains(content.ckBox,'2')) && (#authentication.principal.bizAuth == null) }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'STUDENT') && (#strings.contains(content.ckBox,'3')) && (#authentication.principal.bizAuth == null)  }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'PARENTS') && (#strings.contains(content.ckBox,'4')) && (#authentication.principal.bizAuth == null)  }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'GENERAL') && (#strings.contains(content.ckBox,'5')) && (#authentication.principal.bizAuth == null)  }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') &&  (#strings.contains(content.ckBox,'6')) && (#authentication.principal.bizAuth == 'AGENCY')  }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') &&  (#strings.contains(content.ckBox,'7')) && (#authentication.principal.bizAuth == 'SCHOOL')  }"
+                                >신청하기</a>
+                                <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (#authentication.principal != 'anonymousUser') &&  (#strings.contains(content.ckBox,'8')) && (#authentication.principal.bizAuth == 'INSTR')  }"
+                                >신청하기</a>
+                                <!-- 이미 신청한 경우 -->
+                                <a class="btn_type1 btn_lightgray" href="/mypage/bizapply"
+                                   th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied != null) && (#authentication.principal != 'anonymousUser')}"
+                                >신청완료</a>
+
+                            </th:block>
+                            <th:block th:if="${content.bizPbancType==5 && (#strings.contains(content.ckBox,'99'))}">
                                 <a class="btn_type1 btn_blue bizPbancStts"  th:href="@{/business/pbanc/apply/5/{id}(id=${content.bizPbancNo})}"
                                    th:if="${(content.bizPbancStts == 0) && (content.loginUserApplied == null) && (content.bizPbancCtgr == 1) && (#authentication.principal != 'anonymousUser') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')}"
                                 >신청하기</a>
@@ -254,6 +288,7 @@
 
     <th:block layout:fragment="script">
         <script th:inline="javascript">
+
             let tmpl0 = $(".tmpl0_trgts");
             let tmpl1 = $(".tmpl1_trgts");
             if(tmpl0.length>0){

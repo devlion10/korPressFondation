@@ -518,6 +518,7 @@ public class CommonBusinessRepositoryImpl extends CSRepositorySupport implements
                             bizPbancMaster.bizPbancPeprYn,
                             bizPbancMaster.bizPbancPicTel,
                             bizPbancMaster.isTop,
+                            bizPbancMaster.ckBox,
                             bizPbancMaster.createDateTime,
                             bizPbancMaster.registUserId,
                             bizPbancMaster.updateDateTime,
