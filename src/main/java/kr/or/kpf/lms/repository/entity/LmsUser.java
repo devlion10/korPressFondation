@@ -185,6 +185,10 @@ public class LmsUser extends CSEntitySupport implements Serializable {
     @Column(name = "APPRO_YN")
     private String approFlag;
 
+    /** 언론일 경우 회원 미 승인 사유*/
+    @Column(name = "APPRO_YN_RSN_CD")
+    private String approYnRsnCd;
+
     /** 집 우편번호 */
     @Column(name = "USER_ZIPCD")
     private String userZipCode;

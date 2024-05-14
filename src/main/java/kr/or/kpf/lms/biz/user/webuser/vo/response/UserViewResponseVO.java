@@ -6,6 +6,7 @@ import kr.or.kpf.lms.repository.entity.OrganizationInfo;
 import kr.or.kpf.lms.repository.entity.OrganizationInfoMedia;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Schema(name="UserViewResponseVO", description="유저 VIEW 관련 응답 객체")
@@ -113,4 +114,10 @@ public class UserViewResponseVO {
 
     @Schema(description = "매체 기관")
     private OrganizationInfoMedia mediaInfo;
+
+    @Schema(description = "언론일 경우 회원 승인 여부")
+    private String approFlag;
+
+    @Schema(description = "언론일 경우 회원 미 승인 사유")
+    private String approYnRsnCd;
 }
