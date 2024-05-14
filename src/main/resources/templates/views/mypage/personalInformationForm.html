@@ -39,8 +39,25 @@
                                     <span th:if="${content.roleGroup == 'GENERAL'}">일반인</span>
                                     <span th:if="${content.roleGroup == 'SUPER'}">관리자</span>
                                 </div>
+
+                            </div>
+                            <div th:if="${content.roleGroup == 'JOURNALIST' && content.approFlag == 'N'}" class="common_input_box align-items-center">
+                                <div class="common_label"><span class="essential">*</span>승인상태</div>
+                                <div>
+                                    <span>미승인</span>
+                                </div>
+                            </div>
+                            <div th:if="${content.roleGroup == 'JOURNALIST' && content.approFlag == 'N'}" class="common_input_box align-items-center">
+                                <div class="common_label"><span class="essential">*</span>미승인사유</div>
+                                <div>
+                                    <span th:if="${content.approYnRsnCd == '1'}">재직증명서 재발급(1년 이내) 필요</span>
+                                    <span th:if="${content.approYnRsnCd == '2'}">언론인연수 참가자격 기준 미충족</span>
+                                    <span th:if="${content.approYnRsnCd == '3'}">담당자 확인중</span>
+                                </div>
                             </div>
                         </div>
+
+
 
                         <div id="auth_request_wrap" style="display: none;">
                             <div class="cont_title">
