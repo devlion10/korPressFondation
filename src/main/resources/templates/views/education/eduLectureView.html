@@ -81,7 +81,7 @@
                                         </dd>
                                     </dl>
                                     <dl class="bl_defList2">
-                                        <dt>지점</dt>
+                                        <dt>담당부서</dt>
                                         <dd th:if="${not #strings.isEmpty(content[0].province)}" th:switch="${content[0].province}">
                                             <p th:case="'HEAD'">본사</p>
                                             <p th:case="'SEDA'">세종대전 지사</p>
@@ -90,7 +90,7 @@
                                             <p th:case="'DA'">대구 지사</p>
                                             <p th:case="*">미정의 지사</p>
                                         </dd>
-                                        <dd th:unless="${not #strings.isEmpty(content[0].province)}">지정 지점 없음</dd>
+                                        <dd th:unless="${not #strings.isEmpty(content[0].province)}">지정 담당부서 없음</dd>
                                     </dl>
                                     <dl class="bl_defList2">
                                         <dt>담당자</dt>
