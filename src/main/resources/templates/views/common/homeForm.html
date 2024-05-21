@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- CONTAINER -->
         <div class="container">
             <!-- CONTENT -->
@@ -135,7 +135,7 @@
                         <button type="button" class="bl_navRoll_btnNext"><img class="bl_mainSlide_img" th:src="@{/assets/images/icons/roll_next.png}" alt="다음"></button>
                     </div>
                 </div>
-                
+
                 <div id="main-content-preview-list" class="hp_bg_sky__pc cts-loading">
                     <div class="loading-ly-main">
                         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -327,7 +327,7 @@
                     <label for="popDate" class="hidden_label"></label>
                     <input id="popDate" type="text" class="el_datePicker" value="2022.12.27" readonly>
                 </div>
-                
+
                 <!-- BOARD : CONTROLLER -->
                 <div class="bl_boardCtrls">
                     <div class="bl_boardCtrls_lft">
@@ -1225,6 +1225,23 @@ e
 
         function laypopup(data) {
             if (data && data.popupList && data.popupList.length > 0) {
+                //슬라이드 다음,이전 버튼 요소생성 및 표출
+                let html = $(`
+
+                                    <div class="slideshow-container">
+
+
+                                          <a class="popSlidePrev" onclick="plusSlides(-1)">❮</a>
+                                          <a class="popSlideNext" onclick="plusSlides(1)">❯</a>
+                                           <div class="slideshowGroup">
+
+                                           </div>
+                                    </div>
+
+		        `);
+                $('body').append(html);
+                html.show();
+                html.draggable();
                 data.popupList.forEach(popData => {
                     new CommonUI.Laypopup({
                         layerId : 'layer_'+popData.popupSn,
@@ -1239,8 +1256,118 @@ e
                         cache: true
                     });
                 });
+
+
+
+
+
             }
         }
+
+        setInterval(() => {
+            plusSlides(-1);
+        }, 3000);
+
+
+        function plusSlides(n) {
+
+            if(n===1){
+                console.info("plus")
+                $("div.mySlides:last-child").insertBefore("div.mySlides:first-child");
+                document.body.querySelector('.slideshowGroup').style.marginLeft='-659px';
+                $(".slideshowGroup").animate({ "margin-left": "0px" }, 300, function () {
+
+                    //$(".slideshowGroup").css({ "margin-left": "-8px" });
+                    document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
+                });
+
+            }else{
+                console.info("minus")
+                $(".slideshowGroup").animate({ "margin-left": "-648px" }, 300, function () {
+                    $("div.mySlides:first-child").insertAfter("div.mySlides:last-child");
+                    document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
+                });
+                /*var slideGroup=document.body.querySelector('.slideshowGroup');
+                var animation = slideGroup.animate({
+                    marginLeft: ['-648px']
+                }, {
+                    duration: 3000,
+                    easing: 'ease',
+                    iterations: 1,
+                    fill: 'both'
+                });
+
+                animation.finished.then(() => {
+                    $("div.mySlides:first-child").insertAfter("div.mySlides:last-child");
+                    //document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
+                    slideGroup.style.marginLeft='-8px';
+                });*/
+
+            }
+
+           //showSlides(slideIndex += n);
+
+            /*var len=document.body.querySelectorAll(".mySlides").length;
+
+
+            for(var i=0;i<len;i++){
+                debugger;
+                if(i===len-1){//마지막 공지팝업
+                    var duration=0;
+                    var vari_px=(-148+0)-(662*(len));
+                    //맨 앞의 하나 앞으로 순간이동
+                    document.body.querySelectorAll(".mySlides")[i].animate({
+                        left: [vari_px+"px"]
+                    }, {
+                        duration: duration,
+                        easing: "ease",
+                        iterations: 1,
+                        fill: "both"
+                    });
+                    //맨앞으로 점진 이동
+                    document.body.querySelectorAll(".mySlides")[i].animate({
+                        left: [vari_px+662+"px"]
+                    }, {
+                        duration: 2000,
+                        easing: "ease",
+                        iterations: 1,
+                        fill: "both"
+                    });
+                } else{
+
+                    //const first = document.querySelectorAll('.mySlides')[0];
+                    //const last = document.querySelectorAll('.mySlides')[len-1];
+                    //first.parentNode.insertBefore(last, first);
+                    var duration=2000;
+                    var vari_px=(-148+0)+(662);
+
+                    document.body.querySelectorAll(".mySlides")[i].animate({
+                        left: [vari_px+"px"]
+                    }, {
+                        duration: duration,
+                        easing: "ease",
+                        iterations: 1,
+                        fill: "both"
+                    });
+
+
+                }
+
+
+            }*/
+
+            /*document.body.querySelectorAll(".mySlides")[len-1].animate({
+                left: [(-148+0)-(662*len)+"px"]
+            }, {
+                duration: 0,
+                easing: "ease",
+                iterations: 1,
+                fill: "both"
+            });*/
+        }
+
+
+
     </script>
 
 </div>

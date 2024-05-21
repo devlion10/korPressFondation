@@ -1497,25 +1497,25 @@ let CommonUtil = {};
 			startLeft: 0,
 			cache : true
 		},options);
-
+		var layerId=opt.layerId
 		let html = $(`
-		<div class="layerPopup" id="layer_popup" style="visibility: visible;">
-			<div class="layerBox">`
-				+(opt.title ? `<h4 class="title">${opt.title}</h4>` : '')+
-				`<div class="cont">
-					<div>
-						${opt.content}
-					</div>`
-					+ (opt.link ? `<a href="${opt.link}" target="_blank">` : '')
-					+ (opt.img ? `<img src="/Public${opt.img}" style="width:100%; height: auto" />` : '')
-					+ (opt.link ? `</a>` : '') +
-				`</div>
-				<form class="pop_form" name="pop_form">
-					<div id="check" ${opt.cache == true ? 'style="display:inline-block;"':'style="display:none;"'}><input type="checkbox" name="chkbox" value="checkbox" id='${opt.layerId}_chk' ><label for="${opt.layerId}_chk">&nbsp&nbsp오늘 하루 동안 보지 않기</label></div>
-					<div id="close" ><a class='close-button-layerpopup' href="#">닫기</a></div>
-				</form>
-			</div>
-		</div>
+					<div class="layerPopup mySlides" id=${opt.layerId} style="visibility: visible;">
+						<div class="layerBox">`
+							+(opt.title ? `<h4 class="title">${opt.title}</h4>` : '')+
+							`<div class="cont">
+								<div>
+									${opt.content}
+								</div>`
+								+ (opt.link ? `<a href="${opt.link}" target="_blank">` : '')
+								+ (opt.img ? `<img src="/Public${opt.img}" style="width:100%; height: auto" />` : '')
+								+ (opt.link ? `</a>` : '') +
+							`</div>
+							<form class="pop_form" name="pop_form">
+								<div id="check" ${opt.cache == true ? 'style="display:inline-block;"':'style="display:none;"'}><input type="checkbox" name="chkbox" value="checkbox" id='${opt.layerId}_chk' ><label for="${opt.layerId}_chk">&nbsp&nbsp오늘 하루 동안 보지 않기</label></div>
+								<div id="close" ><a class='close-button-layerpopup' href="#">닫기</a></div>
+							</form>
+						</div>
+					</div>
 		`);
 
 		let setCookie=function( name, value, expiredays ){
@@ -1537,8 +1537,10 @@ let CommonUtil = {};
 			html.css({visibility : "hidden" });
 			html.remove();
 		});
-		html.find(".layerBox").css({left:opt.startLeft, top:opt.startTop}).draggable();
-		html.find(".layerBox").css({width:opt.width ? opt.width : '', height:opt.height ? opt.height : 'auto'});
+		//html.find(".layerBox").css({left:opt.startLeft, top:opt.startTop}).draggable();
+		//html.find(".layerBox").css({width:opt.width ? opt.width : '', height:opt.height ? opt.height : 'auto'});
+		html.find(".layerBox").css({width:'629px' });
+
 
 		// '오늘 하루 보지 않기 클릭 시'
 		html.find('#check').click(function(e){
@@ -1550,8 +1552,15 @@ let CommonUtil = {};
 		});
 
 		if(document.cookie.indexOf(opt.layerId+"=done") < 0 ){      // 쿠키 저장여부 체크
-			$('body').append(html);
+			$('.slideshowGroup').append(html);
 			html.show();
+			var ele=document.body.querySelector('#'+layerId);
+
+			//ele.style.position='relative'
+			//ele.style.top='183px'
+			//ele.style.left='-148px'
+			ele.style.padding='0 0 0 23px'
+
 		}else {
 			html.hide();
 		}

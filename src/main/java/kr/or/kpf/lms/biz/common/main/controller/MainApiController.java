@@ -115,6 +115,7 @@ public class MainApiController extends CSApiControllerSupport {
     @Operation(operationId="Main", summary = "메인 배너/팝업 조회", description = "메인 배너/팝업 조회한다.")
     @GetMapping(path = {"/api/main/display"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getMainDisplay(HttpServletRequest request, HttpServletResponse response, @PageableDefault Pageable pageable){
+        logger.info("getMainDisplay");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Optional.ofNullable(CSSearchMap.of(request))
                         .map(searchMap -> mainService.getMainDisplay((MainViewRequestVO) params(MainViewRequestVO.class, searchMap, pageable)))
