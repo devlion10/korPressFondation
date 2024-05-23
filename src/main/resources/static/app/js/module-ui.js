@@ -1502,10 +1502,10 @@ let CommonUtil = {};
 					<div class="layerPopup mySlides" id=${opt.layerId} style="visibility: visible;">
 						<div class="layerBox">`
 							+(opt.title ? `<h4 class="title">${opt.title}</h4>` : '')+
-							`<div class="cont">
-								<div>
+							`<div class="cont">`
+								/*<div>
 									${opt.content}
-								</div>`
+								</div>`*/
 								+ (opt.link ? `<a href="${opt.link}" target="_blank">` : '')
 								+ (opt.img ? `<img src="/Public${opt.img}" style="width:100%; height: auto" />` : '')
 								+ (opt.link ? `</a>` : '') +
@@ -1515,8 +1515,8 @@ let CommonUtil = {};
 								<div id="close" ><a class='close-button-layerpopup' href="#">닫기</a></div>
 							</form>
 						</div>
-					</div>
-		`);
+						</div>
+					`);
 
 		let setCookie=function( name, value, expiredays ){
 			var todayDate = new Date();
@@ -1530,28 +1530,38 @@ let CommonUtil = {};
 		//닫기 버튼 클릭 시
 		html.find('.close-button-layerpopup').click(function(e){
 			e.preventDefault();
-			let form = html.find(".pop_form").get(0);
+			/*let form = html.find(".pop_form").get(0);
 			if ( form.chkbox.checked ){
 			    setCookie( opt.layerId, "done" , 1 );
 			}
 			html.css({visibility : "hidden" });
-			html.remove();
+			html.remove();*/
+			
+			
+			//전체팝업삭제
+			document.body.querySelector('.slideshow-container').remove();
 		});
 		//html.find(".layerBox").css({left:opt.startLeft, top:opt.startTop}).draggable();
 		//html.find(".layerBox").css({width:opt.width ? opt.width : '', height:opt.height ? opt.height : 'auto'});
-		html.find(".layerBox").css({width:'629px' });
+		html.find(".layerBox").css({width:'552px' , height:'651px'});
 
 
 		// '오늘 하루 보지 않기 클릭 시'
 		html.find('#check').click(function(e){
 			e.preventDefault();
-			let form = html.find(".pop_form").get(0);
-			setCookie( opt.layerId, "done" , 1 );
-			html.css({visibility : "hidden" });
-			html.remove();
+			
+			//setCookie( opt.layerId, "done" , 1 );
+			
+			//전체 적용
+			setCookie( "entire_pops", "done" , 1 );
+			//전체팝업삭제
+			document.body.querySelector('.slideshow-container').remove();
+			//html.css({visibility : "hidden" });
+			//html.remove();
 		});
 
-		if(document.cookie.indexOf(opt.layerId+"=done") < 0 ){      // 쿠키 저장여부 체크
+		//if(document.cookie.indexOf(opt.layerId+"=done") < 0 ){
+		if(document.cookie.indexOf('entire_pops'+"=done") < 0 ){     	// 쿠키 저장여부 체크
 			$('.slideshowGroup').append(html);
 			html.show();
 			var ele=document.body.querySelector('#'+layerId);

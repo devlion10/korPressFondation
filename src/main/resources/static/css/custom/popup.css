@@ -297,7 +297,7 @@
 }
 .layerPopup .layerBox .cont {
     flex-grow: 1;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .layerPopup .layerBox .btnTodayHide {
     font-size:14px; font-weight:600; color:black;
@@ -311,8 +311,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top : 15px;
-    padding-top:10px;
+    /*margin-top : 15px;
+    padding-top:10px;*/
     font-size:16px;
     font-weight:600;
     width: 100%;

@@ -1225,8 +1225,10 @@ e
 
         function laypopup(data) {
             if (data && data.popupList && data.popupList.length > 0) {
-                //슬라이드 다음,이전 버튼 요소생성 및 표출
-                let html = $(`
+                // 쿠키 '하루그만보기 클릭' 저장여부 체크
+                if(document.cookie.indexOf('entire_pops'+"=done") < 0 ) {
+                    //슬라이드 다음,이전 버튼 요소생성 및 표출
+                    let html = $(`
 
                                     <div class="slideshow-container">
 
@@ -1238,10 +1240,11 @@ e
                                            </div>
                                     </div>
 
-		        `);
-                $('body').append(html);
-                html.show();
-                html.draggable();
+		            `);
+                    $('body').append(html);
+                    html.show();
+                    html.draggable();
+                }
                 data.popupList.forEach(popData => {
                     new CommonUI.Laypopup({
                         layerId : 'layer_'+popData.popupSn,
@@ -1264,12 +1267,12 @@ e
             }
         }
 
-        setInterval(() => {
+        /*setInterval(() => {
             var popCnt=document.body.querySelectorAll(".mySlides").length
             if(popCnt>1){//현재 팝업창의 갯수가 1개 초과 일때 만 자동 슬라이드 실행
                 plusSlides(-1);
             }
-        }, 3000);
+        }, 3000);*/
 
 
 
@@ -1277,19 +1280,21 @@ e
         function plusSlides(n) {
 
             if(n===1){
-                console.info("plus")
-                $("div.mySlides:last-child").insertBefore("div.mySlides:first-child");
-                document.body.querySelector('.slideshowGroup').style.marginLeft='-659px';
-                $(".slideshowGroup").animate({ "margin-left": "0px" }, 300, function () {
-
-                    //$(".slideshowGroup").css({ "margin-left": "-8px" });
+                console.info("minus")
+                $(".slideshowGroup").animate({ "margin-left": "-570px" }, 300, function () {
+                    $("div.mySlides:first-child").insertAfter("div.mySlides:last-child");
                     document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
                 });
 
             }else{
-                console.info("minus")
-                $(".slideshowGroup").animate({ "margin-left": "-648px" }, 300, function () {
-                    $("div.mySlides:first-child").insertAfter("div.mySlides:last-child");
+
+
+                console.info("plus")
+                $("div.mySlides:last-child").insertBefore("div.mySlides:first-child");
+                document.body.querySelector('.slideshowGroup').style.marginLeft='-580px';
+                $(".slideshowGroup").animate({ "margin-left": "0px" }, 300, function () {
+
+                    //$(".slideshowGroup").css({ "margin-left": "-8px" });
                     document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
                 });
                 /*var slideGroup=document.body.querySelector('.slideshowGroup');

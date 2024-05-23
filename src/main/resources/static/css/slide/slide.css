@@ -3,8 +3,8 @@
     position: absolute;
     top: 93px;
     left: 15px;
-    width: 648px;
-    /*height: 500px;*/
+    width: 570px;
+    height: 670px;
     z-index: 99999;
     overflow: hidden;
     /*display: flex;*/
@@ -33,13 +33,12 @@
     color: #573e3e;
     font-weight: bold;
     font-size: 52px;
-    transition: 0.6s ease;
     border-radius: 0 3px 3px 0;
     height: max-content;
     user-select: none;
     z-index: 10001;
-    left: -8px;
-    top: 356px;
+    left: -4px;
+    top: 284px;
 }
 
 .popSlideNext {
@@ -50,13 +49,12 @@
     color: #573e3e;
     font-weight: bold;
     font-size: 52px;
-    /*transition: 0.6s ease;*/
     border-radius: 0 3px 3px 0;
     height: max-content;
     user-select: none;
     z-index: 10001;
-    left: 543px;
-    top: 356px;
+    left: 465px;
+    top: 284px;
 }
 
 .mySlides img {
