@@ -121,11 +121,9 @@
                         <div class="bl_board3_unit" th:each="item, stat: ${content}">
                             <div class="bl_board3_ctg_detail hp_md_ord2" style="flex: 0 0 130px;">
                                 <div th:if="${item.curriculumMaster.categoryCode=='2'}" class="el_ctg hp_brown text-center">
-                                    <div><img   th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
                                     <div>미디어교육</div>
                                 </div>
                                 <div th:if="${item.curriculumMaster.categoryCode=='1'}" class="el_ctg hp_main text-center">
-                                    <div><img   th:src="@{/assets/images/icons/board_top.png}" alt="Top"></div>
                                     <div>언론인연수</div>
                                 </div>
                             </div>
