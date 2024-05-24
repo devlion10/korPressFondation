@@ -1244,6 +1244,23 @@ e
                     $('body').append(html);
                     html.show();
                     html.draggable();
+
+                    //팝업에 마우스 오버 시 인터벌 중지
+                    document.body.querySelector(".slideshow-container").onmouseover= function(){
+
+                        clearInterval(interval);
+                    };
+
+                    //팝업에 마우스 out 시 인터빌 재 시작
+                    document.body.querySelector(".slideshow-container").onmouseout= function(){
+
+                        interval=    setInterval(() => {
+                            var popCnt=document.body.querySelectorAll(".mySlides").length
+                            if(popCnt>1){//현재 팝업창의 갯수가 1개 초과 일때 만 자동 슬라이드 실행
+                                plusSlides(-1);
+                            }
+                        }, 3000);
+                    }
                 }
                 data.popupList.forEach(popData => {
                     new CommonUI.Laypopup({
@@ -1267,7 +1284,7 @@ e
             }
         }
 
-        setInterval(() => {
+        let interval=    setInterval(() => {
             var popCnt=document.body.querySelectorAll(".mySlides").length
             if(popCnt>1){//현재 팝업창의 갯수가 1개 초과 일때 만 자동 슬라이드 실행
                 plusSlides(-1);

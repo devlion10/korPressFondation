@@ -1561,7 +1561,7 @@ let CommonUtil = {};
 		});
 
 		//if(document.cookie.indexOf(opt.layerId+"=done") < 0 ){
-		if(document.cookie.indexOf('entire_pops'+"=done") < 0 ){     	// 쿠키 저장여부 체크
+		if(document.cookie.indexOf('entire_pops'+"=done") < 0 ){// 쿠키 저장여부 체크
 			$('.slideshowGroup').append(html);
 			html.show();
 			var ele=document.body.querySelector('#'+layerId);
