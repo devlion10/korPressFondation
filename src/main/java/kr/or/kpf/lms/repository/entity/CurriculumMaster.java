@@ -70,6 +70,12 @@ public class CurriculumMaster extends CSEntitySupport implements Serializable {
     @Convert(converter = BooleanConverter.class)
     private Boolean isUsable;
 
+    /** 복습제공 여부 */
+    @Column(name="REVIEW_YN")
+    @Convert(converter = BooleanConverter.class)
+    private Boolean isReview;
+
+
     /** 관리자 승인 여부(N: 미승인, Y: 승인) */
     @Column(name="ADMIN_APL", nullable = false)
     @Convert(converter = BooleanConverter.class)

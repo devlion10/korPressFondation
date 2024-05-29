@@ -76,7 +76,8 @@
                                 <!--이러닝인경우 복습기간 활성화-->
                                 <!--<th:block th:if="${item.isComplete != 'Y' && item.educationPlan.curriculumMaster.educationType == '3'}">-->
                                 <!--현재 이러닝만 복습표출,이러닝인에서 수료를 다 하더라도 복습활성화 요청하여 수료조건 제거-->
-                                <th:block th:if="${ item.educationPlan.curriculumMaster.educationType == '3'}">
+                                <!--curriculumMaster의 복습제공여부 값을 사용하여 판단 추가-->
+                                <th:block th:if="${ item.educationPlan.curriculumMaster.isReview == true && item.educationPlan.curriculumMaster.educationType == '3' }">
                                     <div th:if="${not #strings.isEmpty(item.completeDateTime) && not #strings.isEmpty(item.reviewDateTime)}" th:text="${#strings.substring(item.completeDateTime, 0, 10)+' ~ '+#strings.substring(item.reviewDateTime, 0, 10)}"></div>
                                     <div th:if="${#strings.isEmpty(item.completeDateTime) && #strings.isEmpty(item.reviewDateTime)}" th:text="${'-'+' ~ '+'-'}"></div>
                                     <div th:if="${#strings.isEmpty(item.completeDateTime) && not #strings.isEmpty(item.reviewDateTime)}" th:text="${'-'+' ~ '+#strings.substring(item.reviewDateTime, 0, 10)}"></div>
@@ -91,7 +92,8 @@
                             <div  class="bl_board_eduStudy hp_md_ord52 bl_board_md_leftAuto" >
                                 <!--이와같이 직접 임의의 날짜 설정가능
                                 item.reviewDateTime > #calendars.format(#calendars.create(2024,8,31).time, 'yyyy-MM-dd HH:mm:ss')-->
-                                <a th:if="${
+                                <!--curriculumMaster의 복습제공여부 값을 사용하여 판단 추가-->
+                                <a th:if="${ item.educationPlan.curriculumMaster.isReview == true &&
                                               item.educationPlan.curriculumMaster.educationType == '3' &&
                                               not #strings.isEmpty(item.reviewDateTime) &&
                                               item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')
