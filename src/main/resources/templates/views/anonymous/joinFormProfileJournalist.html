@@ -679,118 +679,12 @@
                 }
             }
 
-            /* 매체사 등록 신청 */
-            function createMediaCompany() {
-                var subParams = {};
-                subParams.organizationName = document.querySelector('#createMediaCompanyForm > tr:nth-child(1) > td > input').value;
-                subParams.organizationZipCode = document.getElementById("add_organizationZipCode").value;
-                subParams.organizationAddress1 = document.getElementById("add_organizationAddress1").value
-                subParams.organizationAddress2 = document.getElementById("add_organizationAddress2").value;
-                subParams.homepage = document.getElementById('homePage_pop').value;
-                subParams.bizLicenseNumber = document.querySelector('#bizLicenseNumber > div > input').value;
 
-                if($("#add_companyTel > select").length>0){
-                    let companyTelS = $("#add_companyTel > select");
-                    let companyTel = $("#add_companyTel > input");
-                    subParams.organizationTelNumber = companyTelS.eq(0).val()+companyTel.eq(0).val()+companyTel.eq(1).val();
-
-                }else{
-                    let companyTel = $("#add_companyTel > input");
-                    subParams.organizationTelNumber = companyTel.eq(0).val()+companyTel.eq(1).val()+companyTel.eq(2).val();
-                }
-
-                if($("#add_companyFax > select").length>0){
-                    let companyFaxS = $("#add_companyFax > select");
-                    let companyFax = $("#add_companyFax > input");
-                    subParams.organizationFaxNumber = companyFaxS.eq(0).val()+companyFax.eq(0).val()+companyFax.eq(1).val();
-
-                }else{
-                    let companyFax = $("#add_companyFax > input");
-                    subParams.organizationFaxNumber = companyFax.eq(0).val()+companyFax.eq(1).val()+companyFax.eq(2).val();
-                }
-
-
-                if(subParams.bizLicenseNumber == '') {
-                    alert('사업자 등록 번호는 필수입니다.'); return;
-                }
-                if(subParams.bizLicenseNumber.length > 11) {
-                    alert('사업자 등록 번호가 올바르지 않습니다.'); return;
-                }
-
-                subParams.organizationType = "1" //1: 매체사, 2: 기관, 3: 학교
-                /** 매체사 등록 */
-                $.ajax({ //jquery ajax
-                    type:"post", //http method
-                    url:"/api/user/organization/create", //값을 가져올 경로
-                    headers: {'Content-Type': 'application/json'},
-                    data: JSON.stringify(subParams),
-                    dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
-                    success: function(data){   //요청 성공시 실행될 메서드
-                        if($("#subFileInput")[0].files.length>0){
-                            var form = new FormData();
-                            form.append( "attachFile", document.querySelector('#subFileUpload > input.bl_upload_file.js_file').files[0] );
-                            $.ajax({
-                                type:"put", //http method
-                                url:"/api/user/organization/upload/" + data.organizationCode, //값을 가져올 경로
-                                processData : false,
-                                contentType : false,
-                                data: form,
-                                success: function(subData) {   //요청 성공시 실행될 메서드
-
-                                }, error: function(e) {
-                                    if(e && e.responseJSON && e.responseJSON.resultMessage){
-                                        alert(e.responseJSON.resultMessage);
-                                    }else{
-                                        alert('매체사를 등록하는 과정에서 오류가 발생하였습니다.');
-                                    }
-                                }
-                            });
-                        }
-
-                        /** 기관 코드 셋팅 */
-                        organizationCode = data.organizationCode;
-                        params.organizationCode = organizationCode;
-
-                        /** 기관 등록 요청 데이터 표출 */
-                        document.querySelector('#organizationName').value = data.organizationName;
-                        document.querySelector('#organizationCode').value = data.organizationCode;
-
-                        document.querySelector('#organizationZipCode').value = data.organizationZipCode;
-                        document.querySelector('#organizationAddress1').value = data.organizationAddress1;
-                        document.querySelector('#organizationAddress2').value = data.organizationAddress2;
-
-                        let convertPhoneNum = data.organizationTelNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
-                        let convertPhoneNum1 = convertPhoneNum.split('-')[0];
-                        let convertPhoneNum2 = convertPhoneNum.split('-')[1];
-                        let convertPhoneNum3 = convertPhoneNum.split('-')[2];
-                        document.querySelector('#organizationTelNumber1').value = convertPhoneNum1;
-                        document.querySelector('#organizationTelNumber2').value = convertPhoneNum2;
-                        document.querySelector('#organizationTelNumber3').value = convertPhoneNum3;
-
-                        let convertFaxeNum = data.organizationFaxNumber.replace(/(^02.{0}|^01.{1}|^050.{1}|^[0-9]{3})([0-9]*)([0-9]{4})/, "$1-$2-$3");
-                        let convertFaxeNum1 = convertFaxeNum.split('-')[0];
-                        let convertFaxeNum2 = convertFaxeNum.split('-')[1];
-                        let convertFaxeNum3 = convertFaxeNum.split('-')[2];
-                        document.querySelector('#organizationFaxNumber1').value = convertFaxeNum1;
-                        document.querySelector('#organizationFaxNumber2').value = convertFaxeNum2;
-                        document.querySelector('#organizationFaxNumber3').value = convertFaxeNum3;
-
-                        /** 기관 등록 팝업창 close 처리 */
-                        document.querySelector('#popMediaCompanyRegistration > div > button').click();
-                    },
-                    error: function(e){		 //요청 실패시 에러 확인을 위함
-                        if(e && e.responseJSON && e.responseJSON.resultMessage){
-                            alert(e.responseJSON.resultMessage);
-                        }else{
-                            alert('매체사를 등록하는 과정에서 오류가 발생하였습니다.');
-                        }
-                    }
-                })
-            }
 
             function go() {
                 /** 필수 값 체크 */
                 if(!requiredChk()) return;
+                debugger;
 
                 $("#createUserButton").attr("disabled", true);
                 if([[ ${content} ]]) {

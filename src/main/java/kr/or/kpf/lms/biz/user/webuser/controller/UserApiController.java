@@ -1,5 +1,7 @@
 package kr.or.kpf.lms.biz.user.webuser.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +30,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.session.Session;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -159,6 +159,8 @@ public class UserApiController extends CSApiControllerSupport {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserApiResponseVO> createUserInfo(HttpServletRequest request, HttpServletResponse response,
                                                             @Validated(value = {CreateUser.class}) @NotNull @RequestBody UserApiRequestVO userApiRequestVO) {
+
+        logger.info("createUserInfo__");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Optional.ofNullable(userService.createUserInfo(request, userApiRequestVO))
                         .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR1001, "회원 정보 생성 실패")));
@@ -327,11 +329,23 @@ public class UserApiController extends CSApiControllerSupport {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "소속 기관 정보 생성 성공", content = @Content(schema = @Schema(implementation = OrganizationApiResponseVO.class)))})
     @Operation(operationId = "User", summary = "소속 기관 정보 생성", description = "소속 기관 정보를 생성한다.")
-    @PostMapping(value = "/organization/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrganizationApiResponseVO> createOrganizationInfo(HttpServletRequest request, HttpServletResponse response,
-                                                                            @Validated(value = {CreateOrganizationInfo.class}) @NotNull @RequestBody OrganizationApiRequestVO organizationApiRequestVO) {
+    //@PostMapping(value = "/organization/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/organization/create")
+   // public ResponseEntity<OrganizationApiResponseVO> createOrganizationInfo(HttpServletRequest request, HttpServletResponse response,
+   //                                                                         @Validated(value = {CreateOrganizationInfo.class}) @NotNull @RequestBody OrganizationApiRequestVO organizationApiRequestVO) {
+        public ResponseEntity<OrganizationApiResponseVO> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("stringdata") String stringdata) {
+        logger.info("createOrganizationInfo__");
+
+        OrganizationApiRequestVO orgReq=new OrganizationApiRequestVO();
+        // VO 객체로 매핑
+        ObjectMapper objectMapper= new ObjectMapper();
+        try {
+            orgReq = objectMapper.readValue(stringdata, OrganizationApiRequestVO.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Optional.ofNullable(userService.createOrganizationInfo(organizationApiRequestVO))
+                .body(Optional.ofNullable(userService.createOrganizationInfo(orgReq))
                         .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR1031, "소속 기관 정보 생성 실패")));
     }
 

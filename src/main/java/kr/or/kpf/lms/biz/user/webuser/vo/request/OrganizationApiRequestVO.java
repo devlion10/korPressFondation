@@ -49,6 +49,9 @@ public class OrganizationApiRequestVO {
     @Schema(description="기관 연락처", example="0311234567")
     private String organizationTelNumber;
 
+    @Schema(description="대표자명")
+    private String organizationRepresentativeName;
+
     @Schema(description="기관 팩스 번호", example="0278974561")
     private String organizationFaxNumber;
 

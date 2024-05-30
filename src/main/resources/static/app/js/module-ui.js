@@ -1000,12 +1000,12 @@ let CommonUtil = {};
 												<input type="text" maxlength="20" onchange="maxCheck(this)" id="add_representative" class="common_input form_input">
 											</td>
 										</tr>
-										<!--<tr>
+										<tr ${registerType == 1 ? 'style="display: none"' : ''}>
 											<th scope="row"><span id="mediaCompanyChk" class="el_required">*</span>사업자등록증</th>
 											<td>
 												<div class="common_input_box">								
 													<div class="d-flex flex-column hp_md_w100p">
-														<div id="mainFileUpload" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
+														<div id="mainFileUpload_bnsiReg" class="bl_upload js_upload hp_lg_w462 hp_md_w100p">
 															<input type="text" id="file001" class="common_input bl_upload_path js_path" readonly >
 															<label class="btn_type1 btn_md btn_gray bl_upload_btn">파일찾기</label>
 															<input type="file" name="file" class="bl_upload_file js_file" accept=".gif, .jpg, .png, .pdf, .hwp, .hwpx, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .zip" id="attachFilePath">
@@ -1015,7 +1015,7 @@ let CommonUtil = {};
 													</div>
 												</div>
 											</td>
-										</tr>-->
+										</tr>
 										<tr ${registerType == 1 ? 'style="display: none"' : ''}>
 											<th scope="row"><span id="mediaCompanyChk" class="el_required">*</span>사업자등록번호</th>
 											<td>
@@ -1164,13 +1164,21 @@ let CommonUtil = {};
 	
 				subParams.organizationType = "1"; //1: 매체사, 2: 기관, 3: 학교
 				subParams.isUsable = 'Y';
+
+				const org_form = new FormData();
+				org_form.append("stringdata",JSON.stringify(subParams));
+				org_form.append("file", document.querySelector('#mainFileUpload_bnsiReg > input.bl_upload_file.js_file').files[0]);
+				console.info(org_form);
 				/** 매체사 등록 */
 				$.ajax({ //jquery ajax
 					type:"post", //http method
 					url:"/api/user/organization/create", //값을 가져올 경로
-					headers: {'Content-Type': 'application/json'},
-					data: JSON.stringify(subParams),
-					dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
+					processData: false,
+					contentType: false,
+					//headers: {'Content-Type': 'application/json'},
+					//data: JSON.stringify(subParams),
+					data:org_form,
+					//dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
 					success: function(data){   //요청 성공시 실행될 메서드
 						html.find('.pop_close').click();
 						resolve(data);
@@ -1274,7 +1282,27 @@ let CommonUtil = {};
                     }
                 })
             }
+
+
+			if( $('input[name="typeChk"]')[0].id ==='typeMediaCompany'){//매체사 등록인 경우 사업자 등록증 첨부파일 인풋 이벤트 등록
+
+				//사업자등록증 등록 input 변화 이벤트
+				let mainFileTarget_bnsiReg = document.querySelector('#mainFileUpload_bnsiReg > input.bl_upload_file.js_file');
+				mainFileTarget_bnsiReg.addEventListener('change', mainFileUpload_bnsiReg);
+
+				function mainFileUpload_bnsiReg() {
+					let fileTarget = document.querySelector('#mainFileUpload_bnsiReg > input.bl_upload_file.js_file');
+					let fileName = fileTarget.files[0].name;
+					let uploadName = document.querySelector('#mainFileUpload_bnsiReg > input.common_input.bl_upload_path.js_path');
+					uploadName.value = fileName;
+				}
+			}
+
 		});
+
+
+
+
 	}
 
 	/**
