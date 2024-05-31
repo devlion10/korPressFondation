@@ -71,6 +71,7 @@ public class UserService extends CSServiceSupport {
 
     private static final String PROOF_EMPLOYMENT_IMG_TAG = "_PROOF_EMPLOYMENT";
     private static final String ORGANIZATION_IMG_TAG = "_ORGANIZATION";
+    private static final String BNSREG_IMG_TAG = "_BNSREG";
 
     private static final String TOKEN_URI = "/digital/niceid/api/v1.0/common/crypto/token";
 
@@ -743,6 +744,7 @@ public class UserService extends CSServiceSupport {
     @Transactional(rollbackOn = {Exception.class})
     public CSResponseVOSupport fileUpload(String userId, MultipartFile attachFile) {
         /** 회원 확인 */
+
         LmsUser lmsUser = lmsUserRepository.findOne(Example.of(LmsUser.builder()
                         .userId(userId)
                         .build()))
@@ -775,6 +777,50 @@ public class UserService extends CSServiceSupport {
     }
 
     /**
+     * 매체사(법인명) 등록 시 사업자등록증 업로드
+     *
+     * @param organizationCode
+     * @param attachFile
+     * @return
+     */
+    @Transactional(rollbackOn = {Exception.class})
+    public CSResponseVOSupport bnsFileUpload(String organizationCode, MultipartFile attachFile) {
+        /** 기관 정보 확인 */
+        OrganizationInfo organizationInfo = organizationInfoRepository.findOne(Example.of(OrganizationInfo.builder()
+                        .organizationCode(organizationCode)
+                        .build()))
+                .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR1033, "해당 기관 정보 미존재"));
+
+        logger.info("__bnsFileUpload");
+
+        /** 파일 저장 및 파일 경로 셋팅 */
+        Optional.ofNullable(attachFile)
+                .ifPresent(file -> {
+                    Path directoryPath = Paths.get(new StringBuilder(appConfig.getUploadFile().getUploadContextPath()).append(appConfig.getUploadFile().getBizRegFolder()).toString());
+                    try {
+                        Files.createDirectories(directoryPath);
+                        try {
+                            String imageSequence = new StringBuilder("_").append(new SimpleDateFormat("yyMMddHHmmss").format(new Date())).toString();
+
+                            String attachFilepath = new StringBuilder(appConfig.getUploadFile().getUploadContextPath())
+                                    .append(appConfig.getUploadFile().getBizRegFolder())
+                                    .append("/")
+                                    .append(organizationCode + BNSREG_IMG_TAG + imageSequence + "." + StringUtils.substringAfter(file.getOriginalFilename(), ".")).toString();
+                            file.transferTo(new File(attachFilepath));
+                            organizationInfo.setAttachFilePath(attachFilepath.replace(appConfig.getUploadFile().getUploadContextPath(), ""));
+                            organizationInfo.setFileSize(file.getSize());
+                        } catch (IOException e) {
+                            throw new KPFException(KPF_RESULT.ERROR9005, "파일 업로드 실패");
+                        }
+                    } catch (IOException e2) {
+                        throw new KPFException(KPF_RESULT.ERROR9005, "파일 경로 확인 또는, 생성 실패");
+                    }
+                });
+        return CSResponseVOSupport.of(KPF_RESULT.SUCCESS);
+    }
+
+
+    /**
      * 기관 정보 조회
      *
      * @param requestObject
@@ -792,7 +838,7 @@ public class UserService extends CSServiceSupport {
      * @param organizationApiRequestVO
      * @return
      */
-    public OrganizationApiResponseVO createOrganizationInfo(OrganizationApiRequestVO organizationApiRequestVO) {
+    public OrganizationApiResponseVO createOrganizationInfo(OrganizationApiRequestVO organizationApiRequestVO, MultipartFile attachFile) {
         OrganizationInfo entity = OrganizationInfo.builder().build();
         BeanUtils.copyProperties(organizationApiRequestVO, entity);
         if (organizationInfoRepository.findOne(Example.of(OrganizationInfo.builder()
@@ -804,6 +850,11 @@ public class UserService extends CSServiceSupport {
             BeanUtils.copyProperties(organizationApiRequestVO, entity);
             entity.setOrganizationCode(commonUserRepository.generateCode(PREFIX_ORGANIZATION));
             BeanUtils.copyProperties(organizationInfoRepository.saveAndFlush(entity), result);
+
+
+            CSResponseVOSupport bnsFileUploadRes=new CSResponseVOSupport();
+            bnsFileUploadRes=bnsFileUpload(entity.getOrganizationCode(),attachFile);
+
 
             return result;
         }

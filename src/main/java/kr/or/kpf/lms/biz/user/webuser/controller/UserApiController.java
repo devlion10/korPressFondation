@@ -344,8 +344,11 @@ public class UserApiController extends CSApiControllerSupport {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
+
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Optional.ofNullable(userService.createOrganizationInfo(orgReq))
+                .body(Optional.ofNullable(userService.createOrganizationInfo(orgReq,file))
                         .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR1031, "소속 기관 정보 생성 실패")));
     }
 

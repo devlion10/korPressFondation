@@ -217,6 +217,10 @@ public class AppConfig implements ApplicationRunner {
 		@NotNull @NotEmpty
 		private String bizOrganizationRsltRptFolder;
 
+		/** 사업자등록증 첨부파일 폴더*/
+		@NotNull @NotEmpty
+		private String bizRegFolder;
+
 		public void buildLog(StringBuilder sb, String prefix) {
 			sb.append(prefix).append("업로드 파일 Context 경로: ").append(uploadContextPath).append(System.lineSeparator()).append(prefix)
 					.append("콘텐츠 파일 Context 경로: ").append(contentsContextPath).append(System.lineSeparator()).append(prefix)
@@ -237,7 +241,9 @@ public class AppConfig implements ApplicationRunner {
 					.append("사업 공고 결과 첨부파일 폴더: ").append(bizPbancResultFolder).append(System.lineSeparator())
 					.append("강사 모집 공고 결과 첨부파일 폴더: ").append(bizInstrFolder).append(System.lineSeparator())
 					.append("거리 증빙 지도 첨부파일 폴더: ").append(bizInstrDistFolder).append(System.lineSeparator())
-					.append("결과보고서 첨부파일 폴더: ").append(bizOrganizationRsltRptFolder).append(System.lineSeparator());
+					.append("결과보고서 첨부파일 폴더: ").append(bizOrganizationRsltRptFolder).append(System.lineSeparator())
+			        .append("사업자등록증 첨부파일 폴더: ").append(bizRegFolder).append(System.lineSeparator());
+
 		}
 	}
 

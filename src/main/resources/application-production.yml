@@ -42,6 +42,7 @@ app-config:
     biz-instr-folder: /biz-instr
     biz-instr-dist-folder: /biz-instr-dist
     biz-organization-rslt-rpt-folder: /biz-organization-rslt-rpt
+    biz-reg-folder: /biz-reg
     upload-folder: /file
     exam-folder: /exam
     assignment-folder: /assignment
