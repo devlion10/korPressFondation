@@ -50,7 +50,7 @@
                             <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '1'}">화상교육</div>
                             <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '2'}">집합교육</div>
                             <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '3'}">이러닝교육</div>
-                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '4'}">화상교육 + 집합교육</div>
+                            <div class="bl_board_type" th:if="${item.educationPlan.curriculumMaster.educationType == '4'}">병행교육</div>
                             <a th:if="${item.educationPlan.curriculumMaster.educationType == '3'}" th:href="@{/education/application/e-learning/view/{id}(id=${item.educationPlanCode})}" style="overflow: auto; white-space: pre-wrap;" class="bl_board_subject">
                                 <span class="hp_ellipsis" th:text="${item.educationPlan.curriculumMaster.curriculumName}">과정명이 뿌려집니다.</span>
                             </a>

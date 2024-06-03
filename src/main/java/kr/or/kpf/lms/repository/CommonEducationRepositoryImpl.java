@@ -156,8 +156,10 @@ public class CommonEducationRepositoryImpl extends CSRepositorySupport implement
                                     }
                                 }));
                         /** 해당 교육 현재 신청 인원 셋팅 */
-                        plan.setCurrentNumberOfPeople(curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateIn(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode)).size());
-
+                        plan.setCurrentNumberOfPeople(curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateInAndSetEducationType(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode),"1").size());
+                        /** 해당 교육 현재 신청 인원 셋팅 (병행)*/
+                        plan.setCurrentNumberOfPeopleParallel(
+                                curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateInAndSetEducationType(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode),"2").size());
                         /** 신청 인원이 허용 인원보다 크거나 같을 경우 */
                         if(plan.getNumberOfPeople() != null && plan.getNumberOfPeople() > 0 && plan.getNumberOfPeople() <= plan.getCurrentNumberOfPeople()) {
                             /** 교육 일자 기준으로 신청 가능 이였을 경우 신청 마감으로 재변경 */
