@@ -68,10 +68,31 @@
                                             ? ${content[0].curriculumMaster.educationPerHour} + '시간' : 0 + '시간'">
                                         </dd>
                                     </dl>
-                                    <dl class="bl_defList2">
-                                        <dt>정원</dt>
-                                        <dd th:text="${not #strings.isEmpty(content[0].numberOfPeople)}
-                                            ? ${content[0].numberOfPeople} + '명' : 0 + '명'">
+                                    <dl class="bl_defList2" th:if="${content[0].curriculumMaster.educationType == '4'}">
+                                        <dt>화상정원</dt>
+                                        <span id="maxPeo1" th:text="${content[0].currentNumberOfPeople}+('/')" style="color: blue;padding-left: 20px"></span>
+                                        <dd id="maxPeo2" style="padding-left:0px" th:text=" ${not #strings.isEmpty(content[0].numberOfPeople)}
+                                            ? ${content[0].numberOfPeople} + '명 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : 0 + '명'">
+                                        </dd>
+                                        <dt>집합정원</dt>
+                                        <span id="maxPeo3" th:text="${content[0].currentNumberOfPeopleParallel}+('/')" style="color: blue;padding-left: 20px"></span>
+                                        <dd id="maxPeo4" style="padding-left:0px" th:text="${not #strings.isEmpty(content[0].numberOfPeopleParallel)}
+                                            ? ${content[0].numberOfPeopleParallel} + '명 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : 0 + '명'">
+                                        </dd>
+                                    </dl>
+                                    <!--<dl class="bl_defList2" th:if="${content[0].curriculumMaster.educationType == '4'}"></dl>-->
+                                    <dl class="bl_defList2" th:if="${content[0].curriculumMaster.educationType == '1'}">
+                                        <dt>화상정원</dt>
+                                        <span id="maxPeo5" th:if="${not #strings.isEmpty(content[0].numberOfPeople)}" th:text="${content[0].currentNumberOfPeople}+('/')" style="color: blue;padding-left: 20px"></span>
+                                        <dd id="maxPeo6" th:if="${not #strings.isEmpty(content[0].numberOfPeople)}" style="padding-left:0px" th:text=" ${content[0].numberOfPeople} + '명' ">
+                                        <dd id="maxPeo6" th:if="${#strings.isEmpty(content[0].numberOfPeople)}" style="padding-left:20px" th:text=" 0 + '명'">
+                                        </dd>
+                                    </dl>
+                                    <dl class="bl_defList2" th:if="${content[0].curriculumMaster.educationType == '2'}">
+                                        <dt>집합정원</dt>
+                                        <span id="maxPeo7" th:if="${not #strings.isEmpty(content[0].numberOfPeopleParallel)}" th:text="${content[0].currentNumberOfPeopleParallel}+('/')" style="color: blue;padding-left: 20px"></span>
+                                        <dd id="maxPeo8" th:if="${not #strings.isEmpty(content[0].numberOfPeopleParallel)}" style="padding-left:0px" th:text="  ${content[0].numberOfPeopleParallel} + '명' ">
+                                        <dd id="maxPeo8" th:if="${ #strings.isEmpty(content[0].numberOfPeopleParallel)}" style="padding-left:20px" th:text=" 0 + '명'">
                                         </dd>
                                     </dl>
                                     <dl class="bl_defList2">
@@ -110,7 +131,8 @@
                                                 ((content[0].curriculumMaster.educationTarget == '2') && (#authentication.principal.roleGroup == 'JOURNALIST') && (#authentication.principal.approFlag == 'Y')) ||
                                                 ((content[0].curriculumMaster.educationTarget == '3') && (#authentication.principal.roleGroup == 'TEACHER')) ||
                                                 ((content[0].curriculumMaster.educationTarget == '4') && (#authentication.principal.roleGroup == 'STUDENT')) ||
-                                                ((content[0].curriculumMaster.educationTarget == '5') && (#authentication.principal.roleGroup == 'PARENTS'))
+                                                ((content[0].curriculumMaster.educationTarget == '5') && (#authentication.principal.roleGroup == 'PARENTS')) ||
+                                                (content[0].curriculumMaster.educationTarget == '6')
                                             )
                                         }">
                                         <div class="btn_type1 btn_lg btn_lightgray" disabled th:if="${content[0].availableApplicationType == '1'}">신청불가</div>
