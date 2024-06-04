@@ -71,7 +71,7 @@ public class UserService extends CSServiceSupport {
 
     private static final String PROOF_EMPLOYMENT_IMG_TAG = "_PROOF_EMPLOYMENT";
     private static final String ORGANIZATION_IMG_TAG = "_ORGANIZATION";
-    private static final String BNSREG_IMG_TAG = "_BNSREG";
+    private static final String BIZREG_IMG_TAG = "_BIZREG";
 
     private static final String TOKEN_URI = "/digital/niceid/api/v1.0/common/crypto/token";
 
@@ -805,7 +805,7 @@ public class UserService extends CSServiceSupport {
                             String attachFilepath = new StringBuilder(appConfig.getUploadFile().getUploadContextPath())
                                     .append(appConfig.getUploadFile().getBizRegFolder())
                                     .append("/")
-                                    .append(organizationCode + BNSREG_IMG_TAG + imageSequence + "." + StringUtils.substringAfter(file.getOriginalFilename(), ".")).toString();
+                                    .append(organizationCode + BIZREG_IMG_TAG + imageSequence + "." + StringUtils.substringAfter(file.getOriginalFilename(), ".")).toString();
                             file.transferTo(new File(attachFilepath));
                             organizationInfo.setAttachFilePath(attachFilepath.replace(appConfig.getUploadFile().getUploadContextPath(), ""));
                             organizationInfo.setFileSize(file.getSize());
