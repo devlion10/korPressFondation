@@ -118,8 +118,8 @@ public class EducationPlan extends CSEntitySupport implements Serializable {
     private Integer numberOfPeople;
 
     /** 병행교육시 정원(집합) */
-    @Column(name="NOPE_PRL")
-    private Integer numberOfPeopleParallel;
+/*    @Column(name="NOPE_PRL")
+    private Integer numberOfPeopleParallel;*/
 
     /** 숙박 제공 여부 */
     @Column(name="ACCOM_YN")
@@ -179,8 +179,8 @@ public class EducationPlan extends CSEntitySupport implements Serializable {
     private Integer currentNumberOfPeople;
 
     /** 병행강의 조회 기준 신청 인원 */
-    @Transient
-    private Integer currentNumberOfPeopleParallel;
+/*    @Transient
+    private Integer currentNumberOfPeopleParallel;*/
 
     /** 담당자 정보 */
     @Transient

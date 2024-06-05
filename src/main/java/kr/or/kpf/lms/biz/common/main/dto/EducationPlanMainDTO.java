@@ -40,7 +40,7 @@ public class EducationPlanMainDTO {
     /** 정원 */
     private Integer numberOfPeople;
     /** 정원(병행교육시)*/
-    private Integer numberOfPeopleParallel;
+/*    private Integer numberOfPeopleParallel;*/
     /** 생성 일시 */
     @JsonIgnore
     private String createDateTime;
