@@ -109,7 +109,7 @@ public class EducationApplicationService extends CSServiceSupport {
                         .build()))
                 .orElseThrow(() -> new KPFException(KPF_RESULT.ERROR3064, "존재하지 않는 교육 과정 일정"));
         /** 신청 인원이 허용 인원보다 크거나 같을 경우 */
-        if((educationApplicationApiRequestVO.getSetEducationType()).equals("1")){ // 화상강의
+        if(educationApplicationApiRequestVO.getSetEducationType() != null &&(educationApplicationApiRequestVO.getSetEducationType()).equals("1")){ // 화상강의
             if (educationPlan.getNumberOfPeople() != null && educationPlan.getNumberOfPeople() > 0
                     && educationPlan.getNumberOfPeople() <= curriculumApplicationMasterRepository.findAll(Example.of(CurriculumApplicationMaster.builder()
                     .adminApprovalState(Code.ADM_APL_STATE.APPROVAL.enumCode)
@@ -119,7 +119,7 @@ public class EducationApplicationService extends CSServiceSupport {
                     .build())).size()) {
                 throw new RuntimeException("정원을 초과하였습니다.");
             }
-        }else if((educationApplicationApiRequestVO.getSetEducationType()).equals("2")){ //집합강의
+        }else if(educationApplicationApiRequestVO.getSetEducationType() != null && (educationApplicationApiRequestVO.getSetEducationType()).equals("2")){ //집합강의
             if (educationPlan.getNumberOfPeopleParallel() != null && educationPlan.getNumberOfPeopleParallel() > 0
                     && educationPlan.getNumberOfPeopleParallel() <= curriculumApplicationMasterRepository.findAll(Example.of(CurriculumApplicationMaster.builder()
                     .adminApprovalState(Code.ADM_APL_STATE.APPROVAL.enumCode)
