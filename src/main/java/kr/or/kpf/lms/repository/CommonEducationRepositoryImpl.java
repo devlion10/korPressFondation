@@ -220,7 +220,7 @@ public class CommonEducationRepositoryImpl extends CSRepositorySupport implement
                                                     .where(curriculumApplicationMaster.educationPlanCode.eq(plan.getEducationPlanCode()),
                                                             curriculumApplicationMaster.adminApprovalState.eq(Code.ADM_APL_STATE.APPROVAL.enumCode))
                                                     .fetchOne().intValue();
-                                            if (plan.getNumberOfPeople() <= count) {
+                                            if (plan.getNumberOfPeople() != null && plan.getNumberOfPeople() <= count && plan.getNumberOfPeople() != 0) {
                                                 return "2"; // 신청 마감(정원 마감)
                                             } else {
                                                 try {
