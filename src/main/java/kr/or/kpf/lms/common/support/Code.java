@@ -636,36 +636,6 @@ public class Code {
                     .findFirst().orElseThrow(() -> new KPFException(KPF_RESULT.ERROR9998, "유효하지 않은 교육 과정 구분"));
         }
     }
-    /**
-     * 교육 과정 유형
-     */
-    public enum SET_EDU_TYPE {
-        VIDEO("1", "화상 교육"),
-        CONVOCATION("2", "집합 교육"),
-        E_LEARNING("3", "이러닝"),
-        LECTURE("4", "병행(화상+집합) 교육");
-
-        public String enumCode;
-        public String codeName;
-
-        SET_EDU_TYPE(String enumCode, String codeName) {
-            this.enumCode = enumCode;
-            this.codeName = codeName;
-        }
-
-        public static String valueOfEnum(String imsiCode) {
-            return Optional.ofNullable(imsiCode)
-                    .filter(Objects::nonNull)
-                    .map(value -> Arrays.stream(SET_EDU_TYPE.values()).filter(data -> data.enumCode.equals(value))
-                            .findFirst().orElseThrow(() -> new KPFException(KPF_RESULT.ERROR9998, "유효하지 않은 교육 과정 구분")).enumCode)
-                    .orElse(null);
-        }
-
-        public static SET_EDU_TYPE enumOfCode(String imsiCode) {
-            return Arrays.stream(SET_EDU_TYPE.values()).filter(data -> data.enumCode.equals(imsiCode))
-                    .findFirst().orElseThrow(() -> new KPFException(KPF_RESULT.ERROR9998, "유효하지 않은 교육 과정 구분"));
-        }
-    }
 
     /**
      * 교육 과정 구분

@@ -156,10 +156,8 @@ public class CommonEducationRepositoryImpl extends CSRepositorySupport implement
                                     }
                                 }));
                         /** 해당 교육 현재 신청 인원 셋팅 */
-                        plan.setCurrentNumberOfPeople(curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateInAndSetEducationType(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode),"1").size());
-                        /** 해당 교육 현재 신청 인원 셋팅 (병행)*/
-                        plan.setCurrentNumberOfPeopleParallel(
-                                curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateInAndSetEducationType(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode),"2").size());
+                        plan.setCurrentNumberOfPeople(curriculumApplicationMasterRepository.findByEducationPlanCodeAndAdminApprovalStateIn(plan.getEducationPlanCode(), List.of(Code.ADM_APL_STATE.WAIT.enumCode, Code.ADM_APL_STATE.APPROVAL.enumCode)).size());
+
                         /** 신청 인원이 허용 인원보다 크거나 같을 경우 */
                         if(plan.getNumberOfPeople() != null && plan.getNumberOfPeople() > 0 && plan.getNumberOfPeople() <= plan.getCurrentNumberOfPeople()) {
                             /** 교육 일자 기준으로 신청 가능 이였을 경우 신청 마감으로 재변경 */
@@ -220,7 +218,7 @@ public class CommonEducationRepositoryImpl extends CSRepositorySupport implement
                                                     .where(curriculumApplicationMaster.educationPlanCode.eq(plan.getEducationPlanCode()),
                                                             curriculumApplicationMaster.adminApprovalState.eq(Code.ADM_APL_STATE.APPROVAL.enumCode))
                                                     .fetchOne().intValue();
-                                            if (plan.getNumberOfPeople() != null && plan.getNumberOfPeople() <= count && plan.getNumberOfPeople() != 0) {
+                                            if (plan.getNumberOfPeople() <= count) {
                                                 return "2"; // 신청 마감(정원 마감)
                                             } else {
                                                 try {
