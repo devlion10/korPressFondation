@@ -348,10 +348,12 @@
                                                 <td>
                                                     <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                <td>
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
-                                                </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                </td>-->
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">-->
+                                                <td>
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
                                                 <td>
@@ -417,12 +419,13 @@
                                                 <td>
                                                     <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item2.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
-                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
-                                                </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">-->
+                                                <td>
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                    <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
+                                                </td>-->
                                                 <td>
                                                     <div class="time_select">
                                                         <select class="common_select bgng1" th:id="${'startHour' + stat.index}" data-list="hourList" onchange="classTime(this)" data-not_null="true" data-alert_name="수업시간표 시작시간"></select>
@@ -918,10 +921,11 @@
                                                 <td>
                                                     <input type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
-                                                </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                </td>-->
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">-->
+                                                <td>
                                                     <input type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
                                                 <td>
@@ -996,11 +1000,12 @@
                                                     <label th:for="${'p005'+stat.index}" class="hidden_label">라벨</label>
                                                     <input th:id="${'p005'+stat.index}" type="text" maxlength="200" onchange="maxCheck(this)" class="common_input bizOrgAplyLsnDtlTpic" th:value="${item2.bizOrgAplyLsnDtlTpic}" data-not_null="true" data-alert_name="수업시간표 수업주제">
                                                 </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
                                                     <label th:for="${'p006'+stat.index}" class="hidden_label" disabled>라벨</label>
                                                     <input th:id="${'p006'+stat.index}" type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int" disabled>
-                                                </td>
-                                                <td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">
+                                                </td>-->
+                                                <!--<td th:if="${ content[0].bizOrgAplyStts != 2 && content[0].bizOrgAplyStts != 9}">-->
+                                                <td>
                                                     <label th:for="${'p006'+stat.index}" class="hidden_label">라벨</label>
                                                     <input th:id="${'p006'+stat.index}" type="number" min="2" class="common_input bizOrgAplyLsnDtlHr" oninput="this.value=this.value.replace(/[^-0-9]/g,'');" th:value="${item2.bizOrgAplyLsnDtlHr}" data-not_null="true" data-alert_name="수업시간표 수업시수" data-reg_type="int">
                                                 </td>
