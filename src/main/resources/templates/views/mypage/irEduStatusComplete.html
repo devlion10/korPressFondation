@@ -100,8 +100,8 @@
 
                                     <div class="bl_board_body">
                                         <div class="bl_board_unit" th:each="item, stat:${content}">
-                                            <div class="bl_board_check hp_md_ord1">
-                                                <div class="chk_box item_chk">
+                                            <div class="bl_board_check hp_md_ord1" >
+                                                <div class="chk_box item_chk" th:if="${item.bizSurveyAns} != null">
                                                     <input th:id="${item.bizInstrAplyNo}" name="bizInstrAplyNo" th:value="${stat.index}" type="checkbox">
                                                     <label th:for="${item.bizInstrAplyNo}">
                                                         <span></span>
