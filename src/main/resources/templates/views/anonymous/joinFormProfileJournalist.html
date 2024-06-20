@@ -192,6 +192,19 @@
                         <div class="common_input_wrap">
                             <div class="common_input_box">
                                 <div class="common_label">
+                                    <label for="mediaCode"><span class="essential">*</span>매체<span class="essential"> (제호명)</span></label>
+                                </div>
+                                <div class="d-flex flex-column hp_md_w100p">
+                                    <div class="d-flex">
+                                        <!--<input id="mediaCode" type="text" class="common_input form_input">-->
+                                        <input id="mediaName"  type="text" class="common_input form_input" disabled >
+                                        <button class="btn_type1  btn_md btn_gray" type="button" onclick="findMediaZeho()">찾아보기</button>
+                                    </div>
+                                    <p class="input_text"><span class="essential">*</span>매체가 리스트에 없을 경우, 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>
+                                </div>
+                            </div>
+                            <div class="common_input_box">
+                                <div class="common_label">
                                     <label for="organizationName"><span class="essential">*</span>매체사</label>
                                     <label for="organizationName"><span class="essential">(법인명)</span></label>
                                 </div>
@@ -205,19 +218,7 @@
                                     <input type="hidden" id="organizationCode" class="common_input form_input">
                                 </div>
                             </div>
-                            <div class="common_input_box">
-                                <div class="common_label">
-                                    <label for="mediaCode"><span class="essential">*</span>매체<span class="essential"> (제호명)</span></label>
 
-
-                                </div>
-                                <div class="d-flex flex-column hp_md_w100p">
-                                    <div class="d-flex">
-                                        <input id="mediaCode" type="text" class="common_input form_input">
-                                    </div>
-                                    <p class="input_text"><span class="essential">*</span>매체가 리스트에 없을 경우, 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>
-                                </div>
-                            </div>
                             <div class="common_input_box">
                                 <div class="common_label">
                                     <label for="organizationZipCode"><span class="essential">*</span>직장 주소</label>
@@ -611,13 +612,14 @@
                     params.organizationCode = document.querySelector('#organizationCode').value;
                 }
                 /** 소속 매체 명 */
-                if(!document.getElementsByClassName('media-selectbox-list')[0].value) {
+                /*if(!document.getElementsByClassName('media-selectbox-list')[0].value) {
                     var medias = document.getElementsByClassName('media-selectbox-list')[0]
                     if (medias.value == '' || medias.options[medias.selectedIndex].text == '선택없음') {
                         alert('매체명은 필수입니다.'); return false;
                     }
-                }
-                else { params.mediaCode = document.getElementsByClassName('media-selectbox-list')[0].value; }
+                } else {
+                    params.mediaCode = document.getElementsByClassName('media-selectbox-list')[0].value;
+                }*/
                 /** 부서 */
                 if(!document.querySelector('#department').value) { alert('부서는 필수입니다.'); return false; }
                 else { params.department = document.querySelector('#department').value }
@@ -661,7 +663,9 @@
             /* 매체사/학교/기관 찾기 */
             async function findOrganization(){
                 let code = await CommonUI.searchMediaCompany(1);
+                debugger;
                 if(code){
+                    console.info("selectMediaCompanyInfo");
                     selectMediaCompanyInfo(code);
                     $("#organizationCode").change();
                 }else{
@@ -669,11 +673,33 @@
                 }
             }
 
+            /* 제호명 찾기 */
+            async function findMediaZeho(){
+                let code = await CommonUI.searchMediaCompany(4);
+                console.info("searchMediaCompany");
+                console.info(code);
+                if(code){
+                    console.info("selectMediaCompanyInfo");
+                    selectMediaCompanyInfo(code.organizationInfo);
+                    selectMediaZehoInfo(code);
+                    $("#organizationCode").change();
+                }else{
+                    alert('오류가 발생했습니다.');
+                }
+
+            }
+
             /* 매체사/학교/기관 등록신청 */
             async function registerOrg(registerType){
                 let orgItem = await CommonUI.registerOrg(registerType, true);
                 if(orgItem){
-                    registerOrgInfo(orgItem);
+                    console.info(registerType);
+                    if(registerType===2){
+                        registerOrgInfo(orgItem);
+                    }else{
+                        registerOrgInfo(orgItem);
+                    }
+
                 }else{
                     alert('오류가 발생했습니다.');
                 }
@@ -803,11 +829,11 @@
                 }
             }
 
-            CommonUI.setMediaList({
+            /*CommonUI.setMediaList({
                 rejoin: ([[ ${content} ]] && [[ ${content} ]].userId && [[ ${content} ]].organizationCode) ? true : false, //재가입시 매체 리스트 불러오도록 적용
                 target : document.getElementById("mediaCode"),
                 organizationCodeTarget : document.getElementById("organizationCode")
-            })
+            })*/
             /* ]]> */
         </script>
     </th:block>

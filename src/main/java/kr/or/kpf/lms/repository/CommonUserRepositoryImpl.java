@@ -279,7 +279,9 @@ public class CommonUserRepositoryImpl extends CSRepositorySupport implements Com
                     condition("Y", organizationInfo.isUsable::eq)};
         } else if(requestObject instanceof OrganizationMediaViewRequestVO) { /** 매체 정보 */
             return new Predicate[]{ condition(true, organizationInfoMedia.isUsable::eq),
-                    condition("Y", organizationInfo.isUsable::eq)};
+                    condition("Y", organizationInfo.isUsable::eq),
+                    condition(((OrganizationMediaViewRequestVO) requestObject).getMediaName(), organizationInfoMedia.mediaName::contains)
+            };
         } else if(requestObject instanceof AdminUserViewRequestVO) { /** 관리자 정보 */
             return new Predicate[]{condition(((AdminUserViewRequestVO) requestObject).getUserId(), adminUser.userId::eq),
                     condition(((AdminUserViewRequestVO) requestObject).getUserName(), adminUser.userName::contains)};

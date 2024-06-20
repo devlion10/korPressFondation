@@ -833,6 +833,18 @@ public class UserService extends CSServiceSupport {
     }
 
     /**
+     * 기관 정보 조회
+     *
+     * @param requestObject
+     * @return
+     * @param <T>
+     */
+    public <T> Page<T> getOrganizationMediaInfo(OrganizationMediaViewRequestVO requestObject) {
+        return (Page<T>) Optional.ofNullable(commonUserRepository.findEntityList(requestObject))
+                .orElse(CSPageImpl.of(new ArrayList<>(), requestObject.getPageable(), 0));
+    }
+
+    /**
      * 소속 기관 정보 생성
      *
      * @param organizationApiRequestVO

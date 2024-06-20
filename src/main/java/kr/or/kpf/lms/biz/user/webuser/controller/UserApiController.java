@@ -318,6 +318,29 @@ public class UserApiController extends CSApiControllerSupport {
     }
 
     /**
+     * 매체(제호명) 정보 조회 API
+     *
+     * @param request
+     * @param response
+     * @param pageable
+     * @param organizationCode
+     * @param organizationName
+     * @return
+     */
+    @Tag(name = "User Management", description = "유저 정보 API")
+    @Operation(operationId = "User", summary = "매체(제호명) 정보 조회", description = "매체(제호명) 정보 조회한다.")
+    @GetMapping(value = "/organizationMedia", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getOrganizationMediaInfo(HttpServletRequest request, HttpServletResponse response, @PageableDefault Pageable pageable,
+                                                      @RequestParam(value="organizationCode", required = false) String organizationCode,
+                                                      @RequestParam(value="organizationName", required = false) String organizationName,
+                                                      @RequestParam(value="organizationType", required = false) String organizationType) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Optional.ofNullable(CSSearchMap.of(request))
+                        .map(searchMap -> resultPaging(userService.getOrganizationMediaInfo((OrganizationMediaViewRequestVO) params(OrganizationMediaViewRequestVO.class, searchMap, pageable)), Arrays.asList()))
+                        .orElse(new HashMap<>()));
+    }
+
+    /**
      * 소속 기관 정보 생성
      *
      * @param request

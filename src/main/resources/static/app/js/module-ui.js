@@ -819,13 +819,13 @@ let CommonUtil = {};
 							<div class="bl_board">
 								<div class="bl_board_head">
 									<div class="bl_board_no">번호</div>
-									<div class="bl_board_agency">${type == 1 ? '매체사' : type == 2 ? '기관' : type == 3 ? '학교' : ''}명</div>
+									<div class="bl_board_agency">${type == 1 ? '매체사' : type == 2 ? '기관' : type == 3 ? '학교' : type == 4 ? '매체(제호)' : ''}명</div>
 									<div class="bl_board_subject">주소</div>
 									<div ${type == 1 ? 'style="display: block"' : 'style="display: none"'} class="bl_board_state bl_board_state_sm">상태</div>
 								</div>
 								<div class="bl_board_body" style="max-height: 305px; overflow-y: auto"></div>
 							</div>
-							<div class="bl_card_empty">${type == 1 ? '매체사를' : type == 2 ? '기관을' : type == 3 ? '학교를' : ''} 검색 해주세요.</div>
+							<div class="bl_card_empty">${type == 1 ? '매체사를' : type == 2 ? '기관을' : type == 3 ? '학교를' :type == 4 ? '매체(제호)' : ''} 검색 해주세요.</div>
 						</div>
 			
 						<button type="button" class="pop_close pop-close">닫기</button>
@@ -847,22 +847,39 @@ let CommonUtil = {};
 				globalOrgCode = value.organizationCode;
 			};
 
+			let _selectMediaJehoInfo = function(value){
+				modal.closeModal();
+				resolve(value);
+				globalOrgCode = value.organizationInfo.organizationCode;
+			};
+
 			let _searchMediaCompanyInfo = function(page=0) { /** 매체사/기관/학교 찾기 */
 				var subParams = {};
-				subParams.organizationName = forms.find("input").val();
-				if (!$.trim(subParams.organizationName)) return alert('검색어를 입력해주세요.');
 				if (type != null) {
-					subParams.organizationType = type //1: 매체사, 2: 기관, 3: 학교
+					subParams.organizationType = type //1: 매체사, 2: 기관, 3: 학교 ,4:매체(제호)
+					if(type===4){
+						var url="/api/user/organizationMedia?"
+						subParams.mediaName = forms.find("input").val();
+					}else{////1: 매체사, 2: 기관, 3: 학교 ,4:매체(제호)
+						var url="/api/user/organization?"
+						subParams.organizationName = forms.find("input").val();
+						if (!$.trim(subParams.organizationName)) return alert('검색어를 입력해주세요.');
+					}
 				}
+
+
 				let queryParams = Object.entries(subParams).filter(data => data != null).map(data => data.join('=')).join('&');
 				if (page!=0) {queryParams += '&page=' + page}
+
+
 
 				/** 매체사/기관/학교 정보 조회 */
 				$.ajax({ //jquery ajax
 					type:"get", //http method
-					url:"/api/user/organization?" + queryParams, //값을 가져올 경로
+					url:url + queryParams, //값을 가져올 경로
 					dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
-					success: function(data){   //요청 성공시 실행될 메서드
+					success: function(data){ 
+						console.info(data);//요청 성공시 실행될 메서드
 						let wrap = html.find('.bl_board > .bl_board_body');
 						const paginateWrap = $('#popSearch > div > div')[0];
                         const paginate = document.createElement('div');
@@ -872,20 +889,44 @@ let CommonUtil = {};
 							wrap.empty();
 							data.content.forEach(function(currentValue, currentIndex){
 								if (currentValue !== undefined) {
+									var name='';
+									var organizationAddress1='';
+									var organizationAddress2='';
+									var organizationZipCode='';
+									if(type===4){//제호명검색이 경우
+										name= currentValue.mediaName;
+										organizationZipCode=currentValue.organizationInfo.organizationZipCode
+										organizationAddress1=currentValue.organizationInfo.organizationAddress1
+										organizationAddress2=currentValue.organizationInfo.organizationAddress2
+									}else{
+										name= currentValue.organizationName
+										organizationZipCode=currentValue.organizationZipCode
+										organizationAddress1=currentValue.organizationAddress1
+										organizationAddress2=currentValue.organizationAddress2
+
+									}
 									let tr = $("<div class='bl_board_unit'>"
 										+ "<div class='bl_board_no'>" + ((page*10)+Number.parseInt(currentIndex + 1)) + "</div>"
-										+ "<div class='bl_board_agency'>" + currentValue.organizationName + "</div>"
-										+ "<a href='javascript: void(0)' class='bl_board_subject before_none'>" + (currentValue.organizationZipCode != null && currentValue.organizationZipCode != ""
-											? "(" + currentValue.organizationZipCode + ")" + currentValue.organizationAddress1 + ", " + (currentValue.organizationAddress2 != null ? currentValue.organizationAddress2 : "")
+										+ "<div class='bl_board_agency'>" + name + "</div>"
+										+ "<a href='javascript: void(0)' class='bl_board_subject before_none'>" + (organizationZipCode != null && organizationZipCode != ""
+											? "(" + organizationZipCode + ")" + organizationAddress1 + ", " + (organizationAddress2 != null ? organizationAddress2 : "")
 											: "주소 정보 미존재(관리자 승인 필요 교육 기관)") + "</a>"
 										+ (type == 1 ? "<div class='bl_board_state bl_board_state_sm'>" + (currentValue.isUsable == 'Y' ? "<span class='btn_type4 btn_green'>승인</span>" : "<span class='btn_type4 btn_red'>미승인</span>") + "</div>" : '')
 										+ "</div>");
 									tr.click(function(){
-										if(currentValue.organizationZipCode != null){
-											_selectMediaCompanyInfo(currentValue);
+
+										if(organizationZipCode != null){
+											if(type===4){//제호명검색이 경우
+												_selectMediaJehoInfo(currentValue)
+
+											}else{
+												_selectMediaCompanyInfo(currentValue);
+											}
+
 										}else{
 											alert('관리자 승인이 필요한 기관입니다.');
 										}
+
 									});
 									tr.appendTo(wrap);
 								}
@@ -1181,6 +1222,8 @@ let CommonUtil = {};
 					//dataType:"json", //html, xml, text, script, json, jsonp 등 다양하게 쓸 수 있음
 					success: function(data){   //요청 성공시 실행될 메서드
 						html.find('.pop_close').click();
+						console.info("organization_Reg");
+						console.info(data);
 						resolve(data);
 					},
 					error: function(e){		 //요청 실패시 에러 확인을 위함
@@ -1632,7 +1675,7 @@ let CommonUtil = {};
 			loading.remove();
 		}
 		let prefixId = "mediaList"+new Date().getTime();
-		let html = $(`<select class="common_select media-selectbox-list" id="${prefixId}"><option value="">선택없음</option></select>`);
+		let html = $(`<select class="common_select media-selectbox-list" id="${prefixId}"><option value="">선택없음1</option></select>`);
 		let generalItem = function(findList, initValue){
 			//값 초기화
 			options.target.value = undefined;
@@ -1685,8 +1728,16 @@ function selectMediaCompanyInfo(code) {
 	faxNumSet(code.organizationFaxNumber); /* 팩스번호 셋팅 */
 }
 
+/* 제호명 셋팅 ---------- */
+function selectMediaZehoInfo(code) {
+	//제호명 셋팅
+	document.querySelector('#mediaName').value = code.mediaName;
+
+}
+
 /* 매체사/학교/기관 등록신청 셋팅 ---------- */
 function registerOrgInfo(code) {
+	console.info(code);
 	/* 매체사/기관/학교명, 매체사/기관/학교코드 셋팅 */
 	document.querySelector('#organizationName').value = code.organizationName;
 	if( document.querySelector('#organizationCode') ) document.querySelector('#organizationCode').value = code.organizationCode;
@@ -1700,6 +1751,10 @@ function registerOrgInfo(code) {
 	if (code.organizationHomepage) {
 		document.querySelector('#homepage').value = code.organizationHomepage; /* 홈페이지 셋팅 */
 	}
+}
+
+function registerZehoInfo(code) {
+	document.querySelector('#organizationName').value = code.organizationName;
 }
 
 function bizLicenseNumSet(bizLicenseNum) { 
