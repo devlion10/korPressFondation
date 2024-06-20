@@ -195,7 +195,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div><
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -564,7 +564,7 @@
                                 const DIV2_1 = document.createElement('div');
                                 DIV2_1.setAttribute('class', 'bl_listMuti_ctg');
                                 if(data.allList[i].categoryName == '학교 미디어' || data.allList[i].categoryName == '사회 미디어'){
-                                    if(data.allList[i].bizPbancType == '0' || data.allList[i].bizPbancType == '5'){
+                                    if(data.allList[i].bizPbancType == '0' ){
                                         DIV2_1.innerText = '기본형';
                                     } else if(data.allList[i].bizPbancType == '1'){
                                         DIV2_1.innerText = '미디어교육 평생교실';
@@ -572,6 +572,8 @@
                                         DIV2_1.innerText = '미디어교육 운영학교';
                                     } else if(data.allList[i].bizPbancType == '3'){
                                         DIV2_1.innerText = '자유학기제 미디어교육지원';
+                                    } else if(data.allList[i].bizPbancType == '5'){
+                                        DIV2_1.innerText = '자유형';
                                     }
                                 } else if(data.allList[i].categoryName == '공지사항'){
                                     if(data.allList[i].noticeType == '1'){
@@ -599,7 +601,7 @@
                         const TAB2 = document.getElementById('tab2');
                         const TABCONT2 = document.getElementById('tabCont2');
                         TABCONT2.innerHTML = '';
-
+                        console.log('data.bizList',data.bizList)
                         if ( CommonUtil.checkNullArray(data.bizList) ) {
                             const div = document.createElement('div');
                             div.setAttribute('class', 'bl_card_empty');
@@ -650,7 +652,7 @@
                                 DIV2.setAttribute('class', 'bl_listMuti_info');
                                 const DIV2_1 = document.createElement('div');
                                 DIV2_1.setAttribute('class', 'bl_listMuti_ctg');
-                                if(data.bizList[i].bizPbancType == '0' || data.bizList[i].bizPbancType == '5'){
+                                if(data.bizList[i].bizPbancType == '0' ){
                                     DIV2_1.innerText = '기본형';
                                 } else if(data.bizList[i].bizPbancType == '1'){
                                     DIV2_1.innerText = '미디어교육 평생교실';
@@ -660,6 +662,8 @@
                                     DIV2_1.innerText = '자유학기제 미디어교육지원';
                                 } else if(data.bizList[i].bizPbancType == '4'){
                                     DIV2_1.innerText = '팩트체크 교실';
+                                } else if(data.bizList[i].bizPbancType == '5'){
+                                    DIV2_1.innerText = '자유형';
                                 }
                                 const DIV2_2 = document.createElement('div');
                                 DIV2_2.setAttribute('class', 'bl_listMuti_date');

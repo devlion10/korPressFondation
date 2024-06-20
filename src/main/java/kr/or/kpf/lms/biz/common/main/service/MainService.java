@@ -159,7 +159,7 @@ public class MainService extends CSServiceSupport {
         unionBizList.addAll(schoolMediaList);
 
         /** 공모 사업(언론인 연수) */
-        requestObject.setBizPbancType(Arrays.asList(0));
+        requestObject.setBizPbancType(Arrays.asList(0,5));
         requestObject.setBizPbancCtgr(1);
         requestObject.setBizPbancCtgrSub(null);
         List<BizMainDTO> bizJournalList =  commonBusinessRepository.findEntityList(requestObject).getContent()
