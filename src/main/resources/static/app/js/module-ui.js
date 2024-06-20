@@ -1204,7 +1204,7 @@ let CommonUtil = {};
 				if (html.find('#add_organizationName').val() == '' | html.find("#add_organizationAddress1").val() == '') { alert('주소는 필수입니다.'); return; }
 	
 				subParams.organizationType = "1"; //1: 매체사, 2: 기관, 3: 학교
-				subParams.isUsable = 'Y';
+				subParams.isUsable = 'N';// DEFAULT N으로 변경
 
 				const org_form = new FormData();
 				org_form.append("stringdata",JSON.stringify(subParams));

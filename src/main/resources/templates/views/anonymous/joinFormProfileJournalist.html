@@ -200,7 +200,8 @@
                                         <input id="mediaName"  type="text" class="common_input form_input" disabled >
                                         <button class="btn_type1  btn_md btn_gray" type="button" onclick="findMediaZeho()">찾아보기</button>
                                     </div>
-                                    <p class="input_text"><span class="essential">*</span>매체가 리스트에 없을 경우, 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>
+                                    <!--<p class="input_text"><span class="essential">*</span>매체가 리스트에 없을 경우, 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>-->
+                                    <p class="input_text"><span class="essential">*</span>매체가 리스트에 없을 경우 매체사 등록 신청을 해주시기 바랍니다.</p>
                                 </div>
                             </div>
                             <div class="common_input_box">
@@ -213,7 +214,7 @@
                                         <input type="text" id="organizationName" class="common_input form_input" disabled >
                                         <button class="btn_type1  btn_md btn_gray" type="button" onclick="findOrganization()">찾아보기</button>
                                     </div>
-                                    <p class="input_text"><span class="essential">*</span>매체사 검색이 안될 경우, “기타”로 등록후에 매체사 등록 신청을 해주시기 바랍니다.</p>
+                                    <!--<p class="input_text"><span class="essential">*</span>매체사 검색이 안될 경우, “기타”로 등록후에 매체사 등록 신청을 해주시기 바랍니다.</p>-->
                                     <!--<p class="input_text"><span class="essential">*</span>매체사 검색이 안 될 경우 언론인연수팀 관리자에게 문의주시기 바랍니다.</p>-->
                                     <input type="hidden" id="organizationCode" class="common_input form_input">
                                 </div>
@@ -695,7 +696,21 @@
                 if(orgItem){
                     console.info(registerType);
                     if(registerType===2){
-                        registerOrgInfo(orgItem);
+                        //registerOrgInfo(orgItem);
+                        console.info(orgItem);
+                        //let parser = new DOMParser();
+                        //let xmlDoc = parser.parseFromString(orgItem, "text/xml");
+                        let json = xmlToJson(orgItem);
+                        console.info(json.OrganizationApiResponseVO);
+                        var organizationName= json.OrganizationApiResponseVO.organizationName["#text"];
+                        var organizationCode= json.OrganizationApiResponseVO.organizationCode["#text"];
+
+                        document.querySelector('#organizationName').value = organizationName + ', 기타(매체사 승인 필요)';
+                        document.querySelector('#mediaName').value = '';
+                        document.querySelector('#organizationZipCode').value = '';
+                        document.querySelector('#organizationAddress1').value ='' ;
+                        document.querySelector('#organizationAddress2').value = '';
+                        document.querySelector('#organizationCode').value = organizationCode;
                     }else{
                         registerOrgInfo(orgItem);
                     }
@@ -826,6 +841,43 @@
                         }
                     })
                 }
+            }
+
+            function xmlToJson(xml) {
+                // Create the return object
+                let obj = {};
+
+                if (xml.nodeType === 1) { // element
+                    // do attributes
+                    if (xml.attributes.length > 0) {
+                        obj["@attributes"] = {};
+                        for (let j = 0; j < xml.attributes.length; j++) {
+                            let attribute = xml.attributes.item(j);
+                            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                        }
+                    }
+                } else if (xml.nodeType === 3) { // text
+                    obj = xml.nodeValue;
+                }
+
+                // do children
+                if (xml.hasChildNodes()) {
+                    for(let i = 0; i < xml.childNodes.length; i++) {
+                        let item = xml.childNodes.item(i);
+                        let nodeName = item.nodeName;
+                        if (typeof(obj[nodeName]) === "undefined") {
+                            obj[nodeName] = xmlToJson(item);
+                        } else {
+                            if (typeof(obj[nodeName].push) === "undefined") {
+                                let old = obj[nodeName];
+                                obj[nodeName] = [];
+                                obj[nodeName].push(old);
+                            }
+                            obj[nodeName].push(xmlToJson(item));
+                        }
+                    }
+                }
+                return obj;
             }
 
             /*CommonUI.setMediaList({
