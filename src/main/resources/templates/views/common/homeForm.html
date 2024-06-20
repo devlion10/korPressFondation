@@ -1167,6 +1167,8 @@ e
                 type: 'GET',
                 data: { loginYn: loginChk },
                 success: function (data){
+                    console.info("display__")
+                    console.info(data)
                     bannerSlider(data);
                     laypopup(data);
                 },

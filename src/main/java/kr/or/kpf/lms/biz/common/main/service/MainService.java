@@ -421,6 +421,10 @@ public class MainService extends CSServiceSupport {
                     .collect(Collectors.toList());
         }
 
+
+        popupList.sort(Comparator.comparing(HomePopup::getPopupEndYmd));
+
+
         return MainApiResponseVO.builder()
                 .bannerList(bannerList.stream()
                         .map(data -> BannerMainDTO.builder()
