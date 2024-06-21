@@ -1239,8 +1239,8 @@ e
                                     <div class="slideshow-container">
 
 
-                                          <a class="popSlidePrev" onclick="plusSlides(1)">❮</a>
-                                          <a class="popSlideNext" onclick="plusSlides(-1)">❯</a>
+                                          <a class="popSlidePrev" onclick="plusSlides(-1)">❮</a>
+                                          <a class="popSlideNext" onclick="plusSlides(1)">❯</a>
                                            <div class="slideshowGroup">
 
                                            </div>
@@ -1263,7 +1263,7 @@ e
                         interval=    setInterval(() => {
                             var popCnt=document.body.querySelectorAll(".mySlides").length
                             if(popCnt>1){//현재 팝업창의 갯수가 1개 초과 일때 만 자동 슬라이드 실행
-                                plusSlides(-1);
+                                plusSlides(1);
                             }
                         }, 3000);
                     }
@@ -1293,7 +1293,7 @@ e
         let interval=    setInterval(() => {
             var popCnt=document.body.querySelectorAll(".mySlides").length
             if(popCnt>1){//현재 팝업창의 갯수가 1개 초과 일때 만 자동 슬라이드 실행
-                plusSlides(-1);
+                plusSlides(1);
             }
         }, 3000);
 
