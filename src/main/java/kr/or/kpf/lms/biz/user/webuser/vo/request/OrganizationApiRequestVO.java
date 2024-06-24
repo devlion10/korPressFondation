@@ -27,6 +27,10 @@ public class OrganizationApiRequestVO {
     @NotEmpty(groups={CreateOrganizationInfo.class}, message="기관 명은 필수 입니다.")
     private String organizationName;
 
+
+    @Schema(description="제호 명", example="")
+    private String zehoName;
+
     @Schema(description="기관 서브 기관 명", example="")
     private String orgnizationSubName;
 

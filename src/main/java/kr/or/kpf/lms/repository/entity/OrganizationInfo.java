@@ -32,6 +32,10 @@ public class OrganizationInfo extends CSEntitySupport implements Serializable {
     @Column(name="ORG_NAME")
     private String organizationName;
 
+    /** 매체사 등록 시 제호명 */
+    @Column(name="ZEHO_NAME")
+    private String zehoName;
+
     /** 소속 기관 대표자 명 */
     @Column(name="ORG_RPRT_NM")
     private String organizationRepresentativeName;

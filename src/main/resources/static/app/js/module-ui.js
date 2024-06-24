@@ -1015,10 +1015,20 @@ let CommonUtil = {};
 											</td>
 										</tr>
 										<tr>
-											<th scope="row"><span class="el_required">*</span>${registerType == 1 ? '학교' : registerType == 2 && journalistJoin ? '매체사' : registerType == 2 ? '매체사/기관' : ''}명</th>
+											<th scope="row"><span class="el_required">*</span>${registerType == 1 ? '학교' : registerType == 2 && journalistJoin ? '매체사' : registerType == 2 ? '매체사/기관' : ''}명
+												<span ${registerType == 1 ? 'style="display: none"' : ''} class="essential">(법인명)</span>
+											</th>
 											<td>
 												<input id="add_organizationName" type="text" class="common_input">
 												<span class="guide_text mt-1">※ ${registerType == 1 ? '학교' : '기관'}명을 정확히 입력해주세요. 공백은 제외됩니다.</span>
+											</td>
+										</tr>
+										
+										<tr ${registerType == 1  ? 'style="display: none"' : ''}>
+											<th scope="row"><span class="el_required">*</span>매체<span class="essential"> (제호명)</span></th>
+											<td>
+												<input id="add_zehoName" type="text" class="common_input">
+												<span class="guide_text mt-1">※ 제호명을 정확히 입력해주세요. 공백은 제외됩니다.</span>
 											</td>
 										</tr>
 										<tr>
@@ -1120,7 +1130,7 @@ let CommonUtil = {};
 				</div>
 			</div>
 			`);
-			
+
 			html.appendTo(document.body);
 			html.find(".common_select").each(function (idx, el) {
 				CommonUI.dataListSelectBox(el);
@@ -1172,6 +1182,7 @@ let CommonUtil = {};
 				// var organizationCode;
 
 				subParams.organizationName = html.find('#add_organizationName').val();
+				subParams.zehoName = html.find('#add_zehoName').val();
 				subParams.organizationZipCode = html.find("#add_organizationZipCode").val();
 				subParams.organizationAddress1 = html.find("#add_organizationAddress1").val();
 				subParams.organizationAddress2 = html.find("#add_organizationAddress2").val();
