@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: aimax
+Build-Jdk: Oracle OpenJDK 11.0.20
+Implementation-Title: kpf-lms
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: kr.or.kpf
+Main-Class: ${start-class}
+

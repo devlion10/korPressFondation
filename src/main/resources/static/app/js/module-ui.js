@@ -1604,6 +1604,7 @@ let CommonUtil = {};
 			var todayDate = new Date();
 			todayDate.setDate( todayDate.getDate() + expiredays );
 			document.cookie = name+"="+escape( value )+";path=/;expires=" + todayDate.toGMTString()+";"
+			//document.cookie = name+"="+escape( value )+";path=/;expires=" + "Mon, 24 Jun 2024 08:58:33 GMT"+";"
 			// console.info("layerId : " , name, opt);
 			// console.info("document.cookie : " , name+"=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";");
 			// console.info("document.cookie : " , document.cookie);
