@@ -813,9 +813,11 @@ let CommonUtil = {};
 					<div class="pop_wrap pop_secondary">
 						<div class="pop_cont">
 							<form class="sch_box" id="popSearchForm">
-								<input type="text" class="common_input2">
+								<input type="text" class="common_input2"  placeholder="*영문 대소문자 구분 입력">
 								<button type="submit" class="btn_type1 btn_blue"><img th:src="@{/assets/images/icons/btn_search.png}" alt="검색"> 검색</button>
+
 							</form>
+							
 							<div class="bl_board">
 								<div class="bl_board_head">
 									<div class="bl_board_no">번호</div>
