@@ -451,6 +451,7 @@
                                 data: JSON.stringify(params),
                                 dataType: "json",
                                 success: function (data){
+                                    console.info(data)
                                     let errorFlag=true;
                                     //파일 업로드
                                     if($("#bizInstrIdntyAtchFile")[0].files.length>0){
