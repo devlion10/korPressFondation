@@ -268,8 +268,8 @@
                                 <a href="https://zep.us/play/yWMj9v" target="_blank"><img th:src="@{/assets/images/main/bnnr_main5.png}" alt="메타버스 바로가기"></a>
                             </li>
                             <li>
-                                <ul id="bl_bnnrMain_slider">
-                                </ul>
+                                <a onclick="tmpClick()"><img th:src="@{/assets/images/main/bnnr_main6.png}" alt="메타버스 바로가기"></a>
+                                <!--<a href="#" target="_blank" onclick="tmpClick()"><img th:src="@{/assets/images/main/bnnr_main6.png}" alt="메타버스 바로가기"></a>-->
                             </li>
                         </ul>
 
@@ -348,8 +348,13 @@
     <script th:src="@{/app/js/libs/jquery.mtz.monthpicker.js}"></script>
     <th:block layout:fragment="script">
         <script th:inline="javascript">
+            function tmpClick(){
+                alert("서비스 준비중입니다.");
+            }
             /* <![CDATA[ */
             console.log('commonCode: ', [[ ${commonCode} ]] )
+            let now = new Date();
+            let toDay = now.toJSON().split('T')[0];
             function mainCall(type){
                 $.ajax({
                     url: "/api/main",
@@ -549,7 +554,7 @@
                                 STRONG.innerText = data.allList[i].title;
                                 const SPAN2 = document.createElement('span');
                                 SPAN2.setAttribute('class', 'btn_type1 btn_xs');
-                                if (data.allList[i].bizPbancStts === 1) {
+                                if (data.allList[i].bizPbancStts === 1 ||  data.allList[i].bizPbancRcptEnd < toDay) {
                                     SPAN2.classList.add('btn_gray');
                                     SPAN2.innerText = '신청마감';
                                     P.append(SPAN2);
@@ -639,7 +644,7 @@
                                 STRONG.innerText = data.bizList[i].bizPbancNm;
                                 const SPAN2 = document.createElement('span');
                                 SPAN2.setAttribute('class', 'btn_type1 btn_xs');
-                                if (data.bizList[i].bizPbancStts === 1) {
+                                if (data.bizList[i].bizPbancStts === 1 || data.bizList[i].bizPbancRcptEnd < toDay) {
                                     SPAN2.classList.add('btn_gray');
                                     SPAN2.innerText = '신청마감';
                                 } else if (data.bizList[i].bizPbancStts == 0) {

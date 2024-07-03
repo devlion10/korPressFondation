@@ -1,10 +1,12 @@
 package kr.or.kpf.lms.biz.common.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.or.kpf.lms.common.converter.DateYMDToStringConverter;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Transient;
 
 @Data
@@ -25,4 +27,8 @@ public class BizMainDTO {
     private Integer bizPbancStts;
     /** 등록 일시 */
     private String createDateTime;
+    /** 사업 공고 접수기간 종료일 */
+    @Convert(converter= DateYMDToStringConverter.class)
+    private String bizPbancRcptEnd;
+
 }
