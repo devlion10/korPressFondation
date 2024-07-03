@@ -1762,13 +1762,7 @@ public class CommonBusinessRepositoryImpl extends CSRepositorySupport implements
                 newBizInstrIdntyNo = prefixCode + "0000000";
             }
             return newBizInstrIdntyNo;
-            /*return jpaQueryFactory.selectFrom(bizInstructorIdentify)
-                    .where(bizInstructorIdentify.bizInstrIdntyNo.like(prefixCode+"%"))
-                    .orderBy(bizInstructorIdentify.bizInstrIdntyNo.desc())
-                    .fetch().stream().findFirst().map(data -> new StringBuilder(prefixCode)
-                            .append(StringUtils.leftPad(String.valueOf(Integer.parseInt(data.getBizInstrIdntyNo().replace(prefixCode, "")) + 1), 7, "0"))
-                            .toString())
-                    .orElse(new StringBuilder(prefixCode).append("0000000").toString());*/
+
         }else if (prefixCode.equals("BIID")) {
             return jpaQueryFactory.selectFrom(bizInstructorIdentifyDtl)
                     .where(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo.like(prefixCode+"%"))
