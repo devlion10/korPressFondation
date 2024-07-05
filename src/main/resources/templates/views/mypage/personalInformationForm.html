@@ -771,6 +771,8 @@
             if ($('#mediaCode').val() != 'undefined') tmpCONT.mediaCode = $('#mediaCode').val();
 
             // 회원정보
+            document.querySelector('#password').value=''
+            document.querySelector('#password2').value=''
             if ($('#password').val() === $('#password2').val()) {
                 if (!$('#password').val()) {
                     // 정보 수정 api
