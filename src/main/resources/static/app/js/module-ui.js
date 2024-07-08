@@ -1628,7 +1628,12 @@ let CommonUtil = {};
 		});
 		//html.find(".layerBox").css({left:opt.startLeft, top:opt.startTop}).draggable();
 		//html.find(".layerBox").css({width:opt.width ? opt.width : '', height:opt.height ? opt.height : 'auto'});
-		html.find(".layerBox").css({width:'552px' , height:'651px'});
+		if(window.innerWidth >768){
+			html.find(".layerBox").css({width:'552px' , height:'651px'});
+		}else{
+			html.find(".layerBox").css({width:'367px' , height:'651px'});
+		}
+
 
 
 		// '오늘 하루 보지 않기 클릭 시'

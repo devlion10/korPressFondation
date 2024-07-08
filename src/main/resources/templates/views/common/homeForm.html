@@ -348,6 +348,8 @@
     <script th:src="@{/app/js/libs/jquery.mtz.monthpicker.js}"></script>
     <th:block layout:fragment="script">
         <script th:inline="javascript">
+
+
             function tmpClick(){
                 alert("서비스 준비중입니다.");
             }
@@ -606,7 +608,6 @@
                         const TAB2 = document.getElementById('tab2');
                         const TABCONT2 = document.getElementById('tabCont2');
                         TABCONT2.innerHTML = '';
-                        console.log('data.bizList',data.bizList)
                         if ( CommonUtil.checkNullArray(data.bizList) ) {
                             const div = document.createElement('div');
                             div.setAttribute('class', 'bl_card_empty');
@@ -1172,8 +1173,6 @@ e
                 type: 'GET',
                 data: { loginYn: loginChk },
                 success: function (data){
-                    console.info("display__")
-                    console.info(data)
                     bannerSlider(data);
                     laypopup(data);
                 },
@@ -1239,19 +1238,26 @@ e
                 // 쿠키 '하루그만보기 클릭' 저장여부 체크
                 if(document.cookie.indexOf('entire_pops'+"=done") < 0 ) {
                     //슬라이드 다음,이전 버튼 요소생성 및 표출
-                    let html = $(`
-
+                    let html = ""
+                    if(window.innerWidth <768) {
+                        html = $(`
                                     <div class="slideshow-container">
-
-
+                                          <a class="popSlidePrev" onclick="plusSlides(-1)">❮</a>
+                                          <a style="left:264px" class="popSlideNext" onclick="plusSlides(1)">❯</a>
+                                           <div class="slideshowGroup">
+                                           </div>
+                                    </div>
+		                `);
+                    }else {
+                        html = $(`
+                                    <div class="slideshow-container">
                                           <a class="popSlidePrev" onclick="plusSlides(-1)">❮</a>
                                           <a class="popSlideNext" onclick="plusSlides(1)">❯</a>
                                            <div class="slideshowGroup">
-
                                            </div>
                                     </div>
-
-		            `);
+		                `);
+                    }
                     $('body').append(html);
                     html.show();
                     html.draggable();
@@ -1287,11 +1293,6 @@ e
                         cache: true
                     });
                 });
-
-
-
-
-
             }
         }
 
@@ -1308,16 +1309,11 @@ e
         function plusSlides(n) {
 
             if(n===1){
-                console.info("minus")
                 $(".slideshowGroup").animate({ "margin-left": "-570px" }, 300, function () {
                     $("div.mySlides:first-child").insertAfter("div.mySlides:last-child");
                     document.body.querySelector('.slideshowGroup').style.marginLeft='-8px';
                 });
-
             }else{
-
-
-                console.info("plus")
                 $("div.mySlides:last-child").insertBefore("div.mySlides:first-child");
                 document.body.querySelector('.slideshowGroup').style.marginLeft='-580px';
                 $(".slideshowGroup").animate({ "margin-left": "0px" }, 300, function () {
@@ -1403,8 +1399,6 @@ e
                 fill: "both"
             });*/
         }
-
-
 
     </script>
 
