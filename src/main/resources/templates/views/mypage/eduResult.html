@@ -93,13 +93,18 @@
                                 <!--이와같이 직접 임의의 날짜 설정가능
                                 item.reviewDateTime > #calendars.format(#calendars.create(2024,8,31).time, 'yyyy-MM-dd HH:mm:ss')-->
                                 <!--curriculumMaster의 복습제공여부 값을 사용하여 판단 추가-->
-                                <a th:if="${ item.educationPlan.curriculumMaster.isReview == true &&
-                                              item.educationPlan.curriculumMaster.educationType == '3' &&
+                                <!--<a th:if="${ item.educationPlan.curriculumMaster.isReview == true &&
+                                              item.educationPlan.curriculumMaster.educationType == '3'
+                                              &&
                                               not #strings.isEmpty(item.reviewDateTime) &&
                                               item.reviewDateTime > #calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')
                                           }"
                                           th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')"
-                                   class="btn_type4 btn_blue btn_underline">복습</a>
+                                             class="btn_type4 btn_blue btn_underline">복습</a>-->
+                                <a th:if="${ item.educationPlan.curriculumMaster.isReview == true &&
+                                          item.educationPlan.curriculumMaster.educationType == '3'  }"
+                                          th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-learning/main','forPopLecture')"
+                                              class="btn_type4 btn_blue btn_underline">복습</a>
                                 <!--이러닝인 경우만 복습버튼 활성화-->
                                 <!--<a th:if="${item.educationPlan.curriculumMaster.educationType == '2' || item.setEducationType == '2'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/lecture/main','forPopLecture')">복습</a>-->
                                 <!--<a th:if="${item.educationPlan.curriculumMaster.educationType == '1' || item.setEducationType == '1'}" class="btn_type4 btn_blue btn_underline" th:onclick="openPop([[${item.applicationNo}]],'/mypage/education-state/e-lecture/main','forPopLecture')">복습</a>-->
