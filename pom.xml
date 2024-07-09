@@ -11,7 +11,7 @@
 	<groupId>kr.or.kpf</groupId>
 	<artifactId>kpf-lms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<!--<packaging>war</packaging>-->
+	<packaging>war</packaging>
 	<name>kpf-lms</name>
 	<description>KoreaPressFoundation for Spring Boot</description>
 	<properties>
@@ -406,7 +406,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!--<mainClass>kr.or.kpf.lms.KoreaPressFoundationLmsApplication</mainClass>-->
+					<mainClass>kr.or.kpf.lms.KoreaPressFoundationLmsApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
