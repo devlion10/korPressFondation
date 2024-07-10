@@ -771,8 +771,12 @@
             if ($('#mediaCode').val() != 'undefined') tmpCONT.mediaCode = $('#mediaCode').val();
 
             // 회원정보
-            document.querySelector('#password').value=''
-            document.querySelector('#password2').value=''
+            if(document.querySelector('#password').value ==='' || document.querySelector('#password2').value===''){
+                //둘중하나라도 있으면 공백처리 비밀번호 변경안되게, 크롬 인풋 자동완성 기능 대비
+                document.querySelector('#password').value=''
+                document.querySelector('#password2').value=''
+            }
+
             if ($('#password').val() === $('#password2').val()) {
                 if (!$('#password').val()) {
                     // 정보 수정 api
@@ -858,6 +862,28 @@
                                 alert("회원정보 변경 중 오류가 발생했습니다.")
                             }
                         });
+
+                        if ($('#attachFilePath')[0].files.length > 0) {
+                            // 업로드한 파일이 있음
+                            let form = new FormData();
+                            form.append('attachFile', $('#attachFilePath')[0].files[0])
+                            $.ajax({ //jquery ajax
+                                type: "PUT", //http method
+                                enctype: 'multipart/form-data',
+                                url: "/api/user/upload/" + CONT.userId, //값을 가져올 경로
+                                processData: false,
+                                contentType: false,
+                                data: form,
+                                success: function (res) {
+                                    alert('재직증명서가 업데이트 되었습니다. 새로고침하면 반영됩니다.')
+                                    cancel();
+                                },
+                                error: function (err) {
+                                    alert('재직증명서 업데이트 중 오류가 발생했습니다.')
+                                    cancel();
+                                }
+                            });
+                        }
                     }
                 }
             } else {
