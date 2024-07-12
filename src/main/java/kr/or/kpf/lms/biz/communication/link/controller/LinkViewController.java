@@ -20,15 +20,19 @@ public class LinkViewController extends CSViewControllerSupport {
 
     /**
      * 외부 콘텐츠 연결(뉴스알고, e-NIE)
-     *
+      (뉴스알고 서비스 종료 2024-07-12)
      */
 
-    @GetMapping(path={"/news"})
+    /*@GetMapping(path={"/news"})
     public String newsKnows(){
         return new StringBuilder(COMMUNICATION).append("newsKnows").toString();
-    }
+    }*/
     @GetMapping(path={"/e-nie"})
     public String eNIE(){
         return new StringBuilder(COMMUNICATION).append("e-NIE").toString();
     }
+    /*@GetMapping(path={"/linkset"})
+    public String linkset(){
+        return new StringBuilder(COMMUNICATION).append("linkset").toString();
+    }*/
 }

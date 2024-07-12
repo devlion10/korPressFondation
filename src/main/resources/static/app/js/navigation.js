@@ -173,22 +173,27 @@ const MENU = [{
             name: '기타자료',
             href: '/communication/archive/etc-data'
         }]
-    }, {
+    }, /*{
         id: 3,
         name: '뉴스알고',
         href: '/communication/link/news',
         depth3: null
-    }, {
-        id: 4,
+    },*/ {
+        id: 3,
         name: 'e-NIE',
         href: '/communication/link/e-nie',
         depth3: null
     }, {
-        id: 5,
+        id: 4,
         name: '이벤트/설문',
         href: '/communication/event?size=8',
         depth3: null
-    }]
+    }/*,{
+        id: 5,
+        name: '테스트링크',
+        href: '/communication/link/linkset',
+        depth3: null
+    }*/]
 }, {
     id: 4,
     name: '고객센터',
