@@ -1744,7 +1744,7 @@ public class CommonBusinessRepositoryImpl extends CSRepositorySupport implements
                             .toString())
                     .orElse(new StringBuilder(prefixCode).append("0000000").toString());
         }else if (prefixCode.equals("BII")) {
-            QBizInstructorIdentify sub = new QBizInstructorIdentify("sub");
+
 
             String maxBizInstrIdntyNo = jpaQueryFactory
                     .select(bizInstructorIdentify.bizInstrIdntyNo)
@@ -1764,13 +1764,31 @@ public class CommonBusinessRepositoryImpl extends CSRepositorySupport implements
             return newBizInstrIdntyNo;
 
         }else if (prefixCode.equals("BIID")) {
-            return jpaQueryFactory.selectFrom(bizInstructorIdentifyDtl)
+
+            String maxBizInstrIdntyDtlNo = jpaQueryFactory
+                    .select(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo)
+                    .from(bizInstructorIdentifyDtl)
+                    .where(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo.like(prefixCode + "%"))
+                    .orderBy(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo.desc())
+                    .limit(1)
+                    .fetchOne();
+
+            String newBizInstrIdntyDtlNo;
+            if (maxBizInstrIdntyDtlNo != null) {
+                int nextNumber = Integer.parseInt(maxBizInstrIdntyDtlNo.replace(prefixCode, "")) + 1;
+                newBizInstrIdntyDtlNo = prefixCode + String.format("%07d", nextNumber);
+            } else {
+                newBizInstrIdntyDtlNo = prefixCode + "0000000";
+            }
+            return newBizInstrIdntyDtlNo;
+
+           /* return jpaQueryFactory.selectFrom(bizInstructorIdentifyDtl)
                     .where(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo.like(prefixCode+"%"))
                     .orderBy(bizInstructorIdentifyDtl.bizInstrIdntyDtlNo.desc())
                     .fetch().stream().findFirst().map(data -> new StringBuilder(prefixCode)
                             .append(StringUtils.leftPad(String.valueOf(Integer.parseInt(data.getBizInstrIdntyDtlNo().replace(prefixCode, "")) + 1), 7, "0"))
                             .toString())
-                    .orElse(new StringBuilder(prefixCode).append("0000000").toString());
+                    .orElse(new StringBuilder(prefixCode).append("0000000").toString());*/
         }else if (prefixCode.equals("BIQ")) {
             return jpaQueryFactory.selectFrom(bizInstructorQuestion)
                     .where(bizInstructorQuestion.bizInstrQstnNo.like(prefixCode+"%"))

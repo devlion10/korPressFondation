@@ -110,6 +110,10 @@ public class BizInstructorIdentifyDtlService extends CSServiceSupport {
                             bizInstructorIdentifyDtl.setBizInstrIdntyFormula(null);
 
                         BeanUtils.copyProperties(bizInstructorIdentifyDtlRepository.saveAndFlush(bizInstructorIdentifyDtl), result);
+                        
+                        //사업신청 수업 계획서에도 강의확인서의 주제 업데이트(키:BIZ_ORG_APLY_DTL_NO)
+                        bizOrganizationAplyDtl.setBizOrgAplyLsnDtlTpic(bizInstructorIdentifyDtl.getBizInstrIdntyDtlTpic());
+                        bizOrganizationAplyDtlRepository.saveAndFlush(bizOrganizationAplyDtl);
                         return result;
                     }).orElseThrow(() -> new KPFException(KPF_RESULT.ERROR3605, "해당 강의확인서 강의시간표 미존재"));
         } else {
