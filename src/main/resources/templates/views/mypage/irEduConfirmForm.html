@@ -344,6 +344,7 @@
                             success: function (data){
                                 let errorFlag=true;
                                 let dtlData =getDtlData(data.bizInstrIdntyNo);
+                                console.info(dtlData);
                                 for(let dtl of dtlData){
                                     if(dtl.bizInstrIdntyDtlNo=="0"){
                                         $.ajax({
@@ -405,7 +406,7 @@
                                 }
                                 if(errorFlag){
                                     alert("강의확인서를 수정하였습니다.");
-                                    window.location.reload();
+                                    //window.location.reload();
                                 }else{
                                     alert("강의확인서를 수정하였습니다. 작성하는 과정에서 오류가 발생했습니다. 화면을 이동하기 전에 작성한 내용을 저장해두시길 바랍니다.");
                                 }

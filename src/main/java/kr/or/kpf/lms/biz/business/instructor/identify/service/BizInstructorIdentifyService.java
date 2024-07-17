@@ -88,6 +88,10 @@ public class BizInstructorIdentifyService extends CSServiceSupport {
 
                     if (requestObject.getBizOrgAplyNo().equals(bizOrganizationAplyDtl.getBizOrgAplyNo())) {
                         bizInstructorIdentifyDtlRepository.saveAndFlush(dtlEntity);
+
+                        //사업신청 수업 계획서에도 강의확인서의 주제 업데이트(키:BIZ_ORG_APLY_DTL_NO)
+                        bizOrganizationAplyDtl.setBizOrgAplyLsnDtlTpic(dtlEntity.getBizInstrIdntyDtlTpic());
+                        bizOrganizationAplyDtlRepository.saveAndFlush(bizOrganizationAplyDtl);
                     }
                 }
             } catch (Exception e) {
