@@ -586,6 +586,45 @@
                             </tbody>
                         </table>
                     </div>
+                    <!-- 수업시간표 -->
+                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
+                        <table>
+                            <caption>신청서 작성</caption>
+                            <tbody>
+
+                            <tr id="dtlListRow" th:if="${#authentication.principal.roleGroup!='JOURNALIST'}">
+                                <th class="hp_lg_w150" scope="row" >
+                                    <span class="el_required">*</span>
+                                    수업시간표
+                                </th>
+                                <td >
+                                    <!-- COMPONENT : SCROLL -->
+                                    <div class="bl_scroll bl_scroll__hor dtl_list_table">
+                                        <!-- COMPONENT : TABLE -->
+                                        <table class="bl_table">
+                                            <caption>수업시간표</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="width:6%;" scope="col">회차</th>
+                                                <th style="width:13%;" scope="col">수업일정</th>
+                                                <th style="width:8%;" scope="col">수업주제</th>
+                                                <th style="width:6%;" scope="col">수업 시수</th>
+                                                <th style="width:12%;" scope="col">시작시간</th>
+                                                <th style="width:12%;" scope="col">종료시간</th>
+                                                <th style="width:7%;" scope="col">인원(명)</th>
+                                                <th style="width:12%;" scope="col">수업장소</th>
+                                                <th style="width:10%;" scope="col">비고</th>
+                                                <th style="width:6%;" scope="col">관리</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="bizScheduleTbody"></tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- 교육 일시/인원 -->
                     <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
                         <table>
@@ -631,45 +670,6 @@
                                 </th>
                                 <td>
                                     <input type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanNope" disabled>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 수업시간표 -->
-                    <div class="bl_boardWrite bl_boardWrite__gray" th:if="${content[0].bizPbancType==2||content[0].bizPbancType==3}">
-                        <table>
-                            <caption>신청서 작성</caption>
-                            <tbody>
-
-                            <tr id="dtlListRow" th:if="${#authentication.principal.roleGroup!='JOURNALIST'}">
-                                <th class="hp_lg_w150" scope="row" >
-                                    <span class="el_required">*</span>
-                                    수업시간표
-                                </th>
-                                <td >
-                                    <!-- COMPONENT : SCROLL -->
-                                    <div class="bl_scroll bl_scroll__hor dtl_list_table">
-                                        <!-- COMPONENT : TABLE -->
-                                        <table class="bl_table">
-                                            <caption>수업시간표</caption>
-                                            <thead>
-                                            <tr>
-                                                <th style="width:6%;" scope="col">회차</th>
-                                                <th style="width:13%;" scope="col">수업일정</th>
-                                                <th style="width:8%;" scope="col">수업주제</th>
-                                                <th style="width:6%;" scope="col">수업 시수</th>
-                                                <th style="width:12%;" scope="col">시작시간</th>
-                                                <th style="width:12%;" scope="col">종료시간</th>
-                                                <th style="width:7%;" scope="col">인원(명)</th>
-                                                <th style="width:12%;" scope="col">수업장소</th>
-                                                <th style="width:10%;" scope="col">비고</th>
-                                                <th style="width:6%;" scope="col">관리</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="bizScheduleTbody"></tbody>
-                                        </table>
-                                    </div>
                                 </td>
                             </tr>
                             </tbody>
