@@ -92,6 +92,48 @@
                             </div>
                         </div>
                     </div>
+                    <div class="cont_title">
+                        권한신청(필수)
+                    </div>
+                    <div class="guide_text mb-2">
+                        - 공모사업 신청을 위한 권한이 필요한 경우 아래 회원 권한을 선택해주시기 바랍니다.<br>
+                        - 공모사업 신청이 아닐 경우 별도의 권한이 필요하지 않습니다.(교사연수, 자료이동 등)
+                    </div>
+                    <div class="common_input_wrap">
+                        <div class="common_input_box align-items-center">
+                            <div class="common_label">
+                                <label for="school_admin">회원권한 신청</label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="school_admin" type="radio" name="membership_rights" >
+                                <label for="school_admin">
+                                    <span></span>
+                                    사업참여자(학교담당자)
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="agency_admin" type="radio" name="membership_rights" >
+                                <label for="agency_admin">
+                                    <span></span>
+                                    사업참여자(기관담당자)
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="media_instructor" type="radio" name="membership_rights" >
+                                <label for="media_instructor">
+                                    <span></span>
+                                    한국언론진흥재단 미디어강사
+                                </label>
+                            </div>
+                            <div class="radio_box">
+                                <input id="not_auth" type="radio" name="membership_rights" >
+                                <label for="not_auth">
+                                    <span></span>
+                                    해당없음
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- 개인정보 -->
                     <div class="cont_title">개인정보</div>
@@ -360,41 +402,6 @@
                         </div>
                     </div>
 
-                    <div class="cont_title">
-                        권한신청(선택)
-                    </div>
-                    <div class="guide_text mb-2">
-                        - 공모사업 신청을 위한 권한이 필요한 경우 아래 회원 권한을 선택해주시기 바랍니다.<br>
-                        - 공모사업 신청이 아닐 경우 별도의 권한이 필요하지 않습니다.(교사연수, 자료이동 등)
-                    </div>
-                    <div class="common_input_wrap">
-                        <div class="common_input_box align-items-center">
-                            <div class="common_label">
-                                <label for="school_admin">회원권한 신청</label>
-                            </div>
-                            <div class="radio_box">
-                                <input id="school_admin" type="radio" name="membership_rights" >
-                                <label for="school_admin">
-                                    <span></span>
-                                    사업참여자(학교담당자)
-                                </label>
-                            </div>
-                            <div class="radio_box">
-                                <input id="agency_admin" type="radio" name="membership_rights" >
-                                <label for="agency_admin">
-                                    <span></span>
-                                    사업참여자(기관담당자)
-                                </label>
-                            </div>
-                            <div class="radio_box">
-                                <input id="media_instructor" type="radio" name="membership_rights" >
-                                <label for="media_instructor">
-                                    <span></span>
-                                    한국언론진흥재단 미디어강사
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -565,6 +572,9 @@
                 const roleGroup = params.roleGroup;
                 /** 회원 타입 이동 간 이전 데이터가 셋팅되어 있을 수 있으므로 초기화 */
                 params={}; params.roleGroup = roleGroup;
+                if(school_admin.checked ==false && agency_admin.checked ==false && media_instructor.checked ==false && not_auth.checked ==false){
+                    alert('회원권한 신청은 필수입력 값 입니다'); return false;
+                }
                 /** 중복 ID 체크 여부 */
                 if(!isIdCheck) {
                     alert('ID 중복확인이 필요하거나 사용할 수 없는 ID 입니다.'); return false;
@@ -702,6 +712,7 @@
                     document.getElementById('school_admin').checked = false;
                     document.getElementById('agency_admin').checked = false;
                     document.getElementById('media_instructor').checked = false;
+                    document.getElementById('not_auth').checked = true;
                 } else if (parents.checked) {
                     // 3. 학부모
                     schoolteacher_chk.style.display = 'none';
@@ -714,6 +725,7 @@
                     document.getElementById('school_admin').checked = false;
                     document.getElementById('agency_admin').checked = false;
                     document.getElementById('media_instructor').checked = false;
+                    document.getElementById('not_auth').checked = true;
                 } else if (normal.checked) {
                     // 4. 일반인
                     schoolteacher_chk.style.display = 'none';
