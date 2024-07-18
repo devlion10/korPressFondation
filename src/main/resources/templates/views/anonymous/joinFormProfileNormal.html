@@ -751,6 +751,7 @@
             const school_admin = document.getElementById('school_admin');
             const agency_admin = document.getElementById('agency_admin');
             const media_instructor = document.getElementById('media_instructor');
+            const not_auth = document.getElementById('not_auth');
             let bizAuthority;
 
             radio_btn.forEach((btn, idx) => {
@@ -759,12 +760,17 @@
                         if (school_admin.checked) {
                             // 1. 사업참여자_학교
                             bizAuthority = "SCHOOL";
+                            $('#createUserButton').text('다음단계')
                         } else if (agency_admin.checked) {
                             // 2. 사업참여자_기관
                             bizAuthority = "AGENCY";
+                            $('#createUserButton').text('다음단계')
                         } else if (media_instructor.checked) {
                             // 3. 사업참여자_미디어강사
                             bizAuthority = "INSTR";
+                            $('#createUserButton').text('다음단계')
+                        } else if(not_auth.checked){
+                            $('#createUserButton').text('가입하기')
                         }
                     });
                 }
@@ -922,7 +928,6 @@
                         success: function(data){   //요청 성공시 실행될 메서드
                             /** 회원 가입 성공 */
                             if(bizAuthority) { /** 사업 참여 권한 신청 */
-                            alert('회원 가입이 완료되었습니다.\n권한 신청으로 이동합니다.');
                                 location.href = '/user/authority/' + data.userId + "?bizAuthority=" + bizAuthority;
                             } else { /** 회원 가입 성공 페이지 */
                             location.href = '/user/join/result'
