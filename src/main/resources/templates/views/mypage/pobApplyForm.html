@@ -20,8 +20,8 @@
             <!-- CONTENT -->
             <div class="content content_mypage" th:each="item:${content}">
                 <div class="ly_grid">
-                    <div class="bl_title">
-                        <div class="page_title">사업 신청서</div>
+                    <div class="bl_title" style="justify-content:unset">
+                        <p class="page_title">사업 신청서 &nbsp&nbsp<span style="color: red">*</span><p class="guide_text" style="color: #333">표시 항목은 모두 입력해주셔야 합니다.</p>
                     </div>
 
                     <!-- BOARD : WRITE -->
@@ -236,7 +236,6 @@
                                     <input id="bizOrgAplyRprsvNm" type="text" class="common_input" th:value="${item.bizOrgAplyRprsvNm}">
                                 </td>
                                 <th scope="row">
-                                    <span class="el_required">*</span>
                                     교육기간
                                 </th>
                                 <td>
@@ -490,7 +489,6 @@
                                     <select id="selectRegion" class="common_select" data-list="regionList" data-not_null="true" data-alert_name="지역" ></select>
                                 </td>
                                 <th scope="row" th:if="${item.bizPbancMaster.bizPbancType == 1}">
-                                    <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanNope">회차당 교육인원</label>
                                 </th>
                                 <td th:if="${item.bizPbancMaster.bizPbancType == 1}">
@@ -592,7 +590,6 @@
                                     <input th:unless="${item.bizPbancMaster.bizPbancType==2||item.bizPbancMaster.bizPbancType==3}" type="text" class="common_input form_input_sm" id="bizOrgAplyLsnPlanTrgt"  th:value="${item.bizOrgAplyLsnPlanTrgt}" data-not_null="true" data-alert_name="수업대상학년">
                                 </td>
                                 <th scope="row">
-                                    <span class="el_required">*</span>
                                     회차당 교육인원
                                 </th>
                                 <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
@@ -630,7 +627,10 @@
                             <tr>
                                 <th scope="row" class="lh">
                                     <span class="el_required">*</span>
-                                    향후 활용계획 및 수업을 통한 기대효과
+                                    <label for="bizOrgAplyLsnPlanDscr3" style="margin-bottom: 20px">향후 활용계획 및 수업을 통한 기대효과</label>
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr3" >회차 축소, 수업일정 및 시간 조율 가능 여부 기재 – (가능 / 불가능)</label>
+
                                 </th>
                                 <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과" disabled></textarea>
@@ -741,7 +741,6 @@
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <span class="el_required">*</span>
                                     <label for="bizOrgAplyRprsvNm">대표자명</label>
                                 </th>
                                 <td th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9 }">
@@ -1015,7 +1014,6 @@
                             <tbody>
                             <tr>
                                 <th scope="row">
-                                    <span class="el_required">*</span>
                                     교육기간
                                 </th>
                                 <td>
@@ -1042,7 +1040,6 @@
                                     <input id="bizOrgAplyTimeFrst" type="text" class="common_input" th:value="${item.bizOrgAplyTimeFrst}" disabled>
                                 </td>
                                 <th scope="row">
-                                    <span class="el_required">*</span>
                                     <label for="bizOrgAplyLsnPlanNope">회차당 교육인원</label>
                                 </th>
                                 <td>
@@ -1088,7 +1085,9 @@
                             <tr>
                                 <th scope="row" class="lh">
                                     <span class="el_required">*</span>
-                                    <label for="bizOrgAplyLsnPlanDscr3">향후 활용계획 및 수업을 통한 기대효과</label>
+                                    <label for="bizOrgAplyLsnPlanDscr3" style="margin-bottom: 20px">향후 활용계획 및 수업을 통한 기대효과</label>
+                                    <span class="el_required">*</span>
+                                    <label for="bizOrgAplyLsnPlanDscr3" >회차 축소, 수업일정 및 시간 조율 가능 여부 기재 – (가능 / 불가능)</label>
                                 </th>
                                 <td colspan="3" th:if="${ content[0].bizOrgAplyStts == 2 || content[0].bizOrgAplyStts == 9}">
                                     <textarea id="bizOrgAplyLsnPlanDscr3" cols="30" rows="10" class="common_input" th:text="${item.bizOrgAplyLsnPlanDscr3}"  data-not_null="true" data-alert_name="기대효과" disabled></textarea>

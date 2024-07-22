@@ -96,8 +96,8 @@
                         권한신청(필수)
                     </div>
                     <div class="guide_text mb-2">
-                        - 공모사업 신청을 위한 권한이 필요한 경우 아래 회원 권한을 선택해주시기 바랍니다.<br>
-                        - 공모사업 신청이 아닐 경우 별도의 권한이 필요하지 않습니다.(교사연수, 자료이동 등)
+                        - 공모사업 신청 시 (미디어교육 운영학교, 늘봄학교, 팩트체크교실 등) → 학교담당자, 기관담당자 中 택 1<br>
+                        - 공모사업 신청이 아닐 경우 (교사연수, 자료이용 등) → 해당없음 선택
                     </div>
                     <div class="common_input_wrap">
                         <div class="common_input_box align-items-center">
@@ -751,6 +751,7 @@
             const school_admin = document.getElementById('school_admin');
             const agency_admin = document.getElementById('agency_admin');
             const media_instructor = document.getElementById('media_instructor');
+            const not_auth = document.getElementById('not_auth');
             let bizAuthority;
 
             radio_btn.forEach((btn, idx) => {
@@ -759,12 +760,17 @@
                         if (school_admin.checked) {
                             // 1. 사업참여자_학교
                             bizAuthority = "SCHOOL";
+                            $('#createUserButton').text('다음단계')
                         } else if (agency_admin.checked) {
                             // 2. 사업참여자_기관
                             bizAuthority = "AGENCY";
+                            $('#createUserButton').text('다음단계')
                         } else if (media_instructor.checked) {
                             // 3. 사업참여자_미디어강사
                             bizAuthority = "INSTR";
+                            $('#createUserButton').text('다음단계')
+                        } else if(not_auth.checked){
+                            $('#createUserButton').text('가입하기')
                         }
                     });
                 }
@@ -922,7 +928,6 @@
                         success: function(data){   //요청 성공시 실행될 메서드
                             /** 회원 가입 성공 */
                             if(bizAuthority) { /** 사업 참여 권한 신청 */
-                            alert('회원 가입이 완료되었습니다.\n권한 신청으로 이동합니다.');
                                 location.href = '/user/authority/' + data.userId + "?bizAuthority=" + bizAuthority;
                             } else { /** 회원 가입 성공 페이지 */
                             location.href = '/user/join/result'
