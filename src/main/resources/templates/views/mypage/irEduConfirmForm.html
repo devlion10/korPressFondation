@@ -344,7 +344,6 @@
                             success: function (data){
                                 let errorFlag=true;
                                 let dtlData =getDtlData(data.bizInstrIdntyNo);
-                                console.info(dtlData);
                                 for(let dtl of dtlData){
                                     if(dtl.bizInstrIdntyDtlNo=="0"){
                                         $.ajax({
