@@ -95,13 +95,14 @@
                     "answerEvaluateInfo": []
                 }
                 // 문항 + 답변
+                //questionType 1 = 미디어 2 = 언론
                 for(let i=0; i<CONT[0].evaluateMaster.evaluateQuestionList.length; i++){
                     let tempData = {
                         'questionSerialNo' : CONT[0].evaluateMaster.evaluateQuestionList[i].questionSerialNo,
                         'questionItemSerialNo' : []
                     }
                     let tempSerialNo = CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionSerialNo;
-                    if (CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType != '0') {
+                    if (CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '0') {
                         tempData.questionItemSerialNo.push('(0)')
                     } else if(CONT[0].evaluateMaster.evaluateQuestionList[i].evaluateQuestionMaster.questionType == '1'){
                         // 단일
@@ -140,6 +141,7 @@
                     success: function(data){
                         alert('강의평가 등록이 완료되었습니다.');
                         parent.window.closePop();
+                        window.location.reload();
                     },
                     error: function (e){
                         console.log(e)
