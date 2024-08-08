@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+
+    <div class="subpage_banner" th:style="'background-image: url(' + @{/assets/images/top_visual5.png} + ')'">
+        <div class="ly_grid">
+            <div class="banner_title_area">
+                <h3 class="banner_title">참여/소통</h3>
+            </div>
+        </div>
+    </div>
+    <div class="navigation"></div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="ly_grid">
+                <div class="bl_tab2 js_tab">
+                    <div class="bl_iscroll" id="navTab2">
+                        <div class="hp_md_iscroll">
+                            <ul class="bl_tab2_menu">
+                                <li>
+                                    <a href="#" onclick="reset(1)">유관기관 및 단체</a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="reset(2)">관련 사이트</a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="reset(3)">국외기관 및 단체</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="bl_title">
+                    <div class="bl_title_left">
+                        <div style="margin-top:30px" class="page_title" id="main_title">유관기관 및 단체</div>
+                    </div>
+                </div><!---->
+
+                <!-- BOARD : CARD -->
+                <ul class="bl_gridCard2" id="title1">
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://sites.google.com/ginue.ac.kr/medialiteracy" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img th:src="@{/assets/images/linkset/1_8.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">경인교육대학교 미디어 리터러시 연구소
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://sml.sogang.ac.kr/sml/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_6.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">서강대학교 미디어교육연구센터
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.ssro.net/main/index.jsp" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_2.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">시립청소년미디어센터
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://kcmf.or.kr/cms/index.php" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_11.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">시청자미디어재단
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.unesco.or.kr/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_3.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">유네스코 한국위원회
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.katom.me/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_12.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">전국미디어리터러시교사협회
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="http://www.krmedia.org/home.php?" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_10.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">전국미디어센터협의회
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.keris.or.kr/main/main.do" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_4.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국교육학술정보원
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.kpf.or.kr/front/user/main.do" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_1.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국언론진흥재단
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.nia.or.kr/site/nia_kor/main.do" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_5.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국지능정보사회진흥원
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.nypi.re.kr/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_9.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국청소년정책연구원
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.kocca.kr/kocca/main.do" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/1_7.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국콘텐츠진흥원
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="bl_gridCard2" id="title2">
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.dilit.kr/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_12.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">부산시교육청 디지털 리터러시 포털 <디릿(DILIT)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://factcheck.snu.ac.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_9.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">서울대학교 언론정보연구소 <factcheck>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://blog.naver.com/kcmf83 " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_5.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">시청자미디어재단 &lt미디어리&gt
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://edu.kcmf.or.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_7.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">시청자미디어재단 &lt미디온&gt
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.edunet.net/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_14.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국교육학술정보원 <에듀넷>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://enie.forme.or.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_6.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국언론진흥재단 &lt;e-NIE &gt;
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.뉴스읽기뉴스일기.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_2.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국언론진흥재단 <뉴스읽기 뉴스일기 공모전>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://dadoc.or.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_1.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국언론진흥재단 <다독다독>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://www.checkathon.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_4.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국언론진흥재단 <청소년 체커톤 대회>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://gooddigital.or.kr/site/DRP0000/main.do " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_2.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국지능정보사회진흥원 <디지털역기능대응 통합안내시스템>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </li>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://iapc.or.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_13.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국지능정보사회진흥원 <스마트쉼센터>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://xn--2z1b40gs9nlqcf0n.kr/main.do" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_10.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국지능정보사회진흥원 <아인세>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://miline.or.kr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_8.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국청소년정책연구원 <미리네>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+
+                    <li class="card_zoom"
+                        style="height: 326px;
+                        padding: 5px;
+                        border-radius: 14px;"
+                    >
+                        <a href="https://edu.kocca.kr/edu/main/main.do " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/2_3.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">한국콘텐츠진흥원 <에듀코카>
+                                    </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                </ul>
+                <ul class="bl_gridCard2" id="title3">
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.unesco.org/en/media-information-literacy " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_1.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">UNESCO &lt;Media and Information Literacy &gt;></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.medialit.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_7.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;Center for Media Literacy&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.commonsensemedia.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_13.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;common sense media&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://clalliance.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_9.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;Connected Learning Alliance&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://medialiteracynow.org/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_15.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;Media Literacy now&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.poynter.org/mediawise/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_5.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;MediaWise&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://namle.net/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_3.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;NAMLE&gt; </strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://nwamedialiteracy.org/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_11.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">미국 &lt;Northwest Alliance for Responsible Media&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.betterinternet.sg/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_17.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">싱가포르 &lt;MLC(Media Literacy Council)&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://mediasmart.uk.com/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_10.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">영국 &lt;미디어스마트(Media Smart)&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://eavi.eu/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_16.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">유럽 &lt;EAVI&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://aml.ca/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_2.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">캐나다 &lt;AML(미디어리터러시협회)&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://mediasmarts.ca/
+" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_4.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">캐나다 <미디어스마트(Media Smarts)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.clemi.fr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_6.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">프랑스 &lt;CLEMI&gt;</strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://www.internetsanscrainte.fr/ " class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_8.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">프랑스 <두려움 없는 인터넷(Internet sans crainte)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://kavi.fi/
+" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_12.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">핀란드 <국립시청각연구소(KAVI)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://atomvic.org/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_14.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">호주 <미디어교사연합(빅토리아주)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    <li class="card_zoom"
+                        style="height: 326px;
+                            padding: 5px;
+                            border-radius: 14px;"
+                    >
+                        <a href="https://medialiteracy.org.au/" class="bl_card3">
+                            <p class="bl_card2_thumb" style="background-color:white">
+                                <img  th:src="@{/assets/images/linkset/3_18.png}" alt="">
+                            </p>
+                            <div class="bl_card3_details">
+                                <p class="bl_card3_subject">
+                                    <strong class="hp_ellipsis">호주 <미디어리터러시연합(AMLA)></strong>
+                                </p>
+
+                                <div class="bl_card3_info bl_breadcrumb">
+                                    <div class="bl_card3_date">
+                                        <span style="display: inline-block ! important" class="bl_card3_label hp_lg_show">가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="styled-button">바로가기</button>
+                        </a>
+                    </ul>
+
+                <div class="bl_paginate"></div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            $('.header').css('display','none');
+            $('.banner_title').css('display','none');
+            /* <![CDATA[ */
+            function onLoadSubmit() {
+                console.log('commonCode: ', [[ ${commonCode} ]] )
+                navigation(3,6);
+                reset(1);
+                console.log(window.innerWidth)
+                if(window.innerWidth < 1025 && window.innerWidth > 769){
+                    // $(".card_zoom").css("margin","0 auto")
+                    $(".bl_gridCard2").css("margin-left","6%")
+                    $(".card_zoom").css("flex","0 0 auto")
+                    $(".card_zoom").css("width","calc((100% - 20px) / 3.3)")
+                    $(".card_zoom").css("border","0.1px solid")
+                    $("bl_card2_thumb").css("border-bottom","1px solid")
+/*
+                    border: 0.1px solid
+*/
+                    $(".bl_card2_thumb").css("background-color","#FFFFFF")
+                    $(".bl_card3_label").css("display","inline-block ! important;")
+
+
+                    console.log('aa')
+                }else if(window.innerWidth <769){
+                    $(".card_zoom").css("margin","0%")
+                    $(".bl_tab2_menu").css("margin-left","-40px")
+                    $(".bl_card2_thumb").css("background-color","#FFFFFF")
+                    $(".bl_card3_label").css("display","inline-block !important;")
+                    console.log("bb")
+                }
+            }
+
+
+            function reset(pot) {
+                const tabMenu = $('.bl_tab2 .bl_tab2_menu li');
+                const urlParams = new URL(location.href).searchParams;
+                const tabCtgr = pot;
+                //텝 클릭시 add class
+                if (tabCtgr == 1) {
+                    tabMenu.eq(0).addClass('is_active');
+                    tabMenu.eq(1).removeClass('is_active');
+                    tabMenu.eq(2).removeClass('is_active');
+                    $(".pot1").css("display","block")
+                    $(".pot2").css("display","none")
+                    $(".pot3").css("display","none")
+                    $("#title1").css("display","flex")
+                    $("#title2").css("display","none")
+                    $("#title3").css("display","none")
+                    $("#main_title").text("유관기관 및 단체")
+                    // $("input[name='category']#ctgr_all").attr('checked', true);
+                    // $('#types').hide();
+                } else if (tabCtgr == 2) {
+                    tabMenu.eq(1).addClass('is_active');
+                    tabMenu.eq(0).removeClass('is_active');
+                    tabMenu.eq(2).removeClass('is_active');
+                    $(".pot2").css("display","block")
+                    $(".pot3").css("display","none")
+                    $(".pot1").css("display","none")
+                    $("#title1").css("display","none")
+                    $("#title2").css("display","flex")
+                    $("#title3").css("display","none")
+                    $("#main_title").text("관련사이트")
+                    // $("input[name='category']").attr('disabled', true);
+                    // $('#types').hide();
+                    $('.bl_board_type--long').hide();
+                } else if (tabCtgr == 3) {
+                    tabMenu.eq(1).removeClass('is_active');
+                    tabMenu.eq(0).removeClass('is_active');
+                    tabMenu.eq(2).addClass('is_active');
+                    $(".pot3").css("display","block")
+                    $(".pot1").css("display","none")
+                    $(".pot2").css("display","none")
+                    $("#title1").css("display","none")
+                    $("#title2").css("display","none")
+                    $("#title3").css("display","flex")
+                    $("#main_title").text("국외기관 및 단체")
+                    // $("input[name='category']").attr('disabled', true);
+                }
+
+            }
+            /* 탭 메뉴 제어 */
+
+        </script>
+    </th:block>
+</body>

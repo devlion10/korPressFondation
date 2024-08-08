@@ -31,8 +31,8 @@ public class LinkViewController extends CSViewControllerSupport {
     public String eNIE(){
         return new StringBuilder(COMMUNICATION).append("e-NIE").toString();
     }
-    /*@GetMapping(path={"/linkset"})
+    @GetMapping(path={"/linkset"})
     public String linkset(){
         return new StringBuilder(COMMUNICATION).append("linkset").toString();
-    }*/
+    }
 }

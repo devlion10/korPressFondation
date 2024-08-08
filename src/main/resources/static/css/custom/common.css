@@ -6531,3 +6531,9 @@ dd.bl_boardInfo_link {
 #hwpEditorBoardContent img{
 	max-width:100%;
 }
+.card_zoom:hover {
+	background-color: white;
+	color: #297edb;
+	border: 5px solid #297edb;
+	transform: scale(1.05);
+}

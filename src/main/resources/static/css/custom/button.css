@@ -532,3 +532,23 @@ button.btn_type3 {
 .btn_sns.btn_star {
 	background: #656d78 url(../../assets/images/icons/sns_star.png) no-repeat center;
 }
+.styled-button {
+	position: relative;
+	border: 0;
+	padding: 15px 25px;
+	display: inline-block;
+	text-align: center;
+	color: white;
+	background-color: #275efe;
+	/*box-shadow: 0px 4px 0px #73B9C9;*/
+	border-radius: 10px;
+	margin: 0 auto;
+	width: 100%;
+	top:10px;
+}
+
+.styled-button:hover {
+	background-color: white;
+	color: #297edb;
+	border: 2px solid #297edb;
+}
