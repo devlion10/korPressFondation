@@ -1631,7 +1631,7 @@ let CommonUtil = {};
 		if(window.innerWidth >768){
 			html.find(".layerBox").css({width:'552px' , height:'651px'});
 		}else{
-			html.find(".layerBox").css({width:'367px' , height:'651px'});
+			html.find(".layerBox").css({width:'367px' , height:'551px'});
 		}
 
 
